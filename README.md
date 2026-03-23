@@ -2,6 +2,12 @@
 
 Investigative journalism and political accountability reporting from West Virginia.
 
+## Operations
+
+For the full operations, ownership, publishing, and maintenance guide, see:
+
+- `docs/OWNERS-MANUAL.md`
+
 ## Stack
 
 - Eleventy v3
@@ -45,4 +51,3 @@ After deployment, configure a GitHub OAuth App for Sveltia CMS:
 
 - Homepage URL: `https://democraticjustice.org`
 - Authorization callback URL: `https://democraticjustice.org/admin/`
-
