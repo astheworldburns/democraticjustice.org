@@ -1,0 +1,50 @@
+<header class="border-b border-stone-900">
+  <div class="flex flex-col gap-2 border-b border-stone-300 px-6 py-3 font-ui text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-stone-600 md:flex-row md:items-center md:justify-between">
+    <p>West Virginia Accountability Desk</p>
+    <p>{{ buildDate | displayDate }}</p>
+  </div>
+  <div class="px-6 py-8 md:px-10 md:py-10">
+    <a class="block text-center font-display text-5xl font-black uppercase leading-none tracking-masthead text-stone-950 md:text-7xl" href="/">
+      Democratic Justice
+    </a>
+    <p class="mx-auto mt-4 max-w-3xl text-center font-ui text-[0.72rem] font-medium uppercase tracking-[0.28em] text-stone-600">
+      Investigative journalism and political accountability reporting from West Virginia
+    </p>
+  </div>
+  <nav aria-label="Primary" class="border-y border-stone-900">
+    <ul class="flex flex-wrap items-center justify-center gap-6 px-6 py-3 font-ui text-xs font-semibold uppercase tracking-[0.2em] text-stone-700">
+      <li>
+        <a class="{% if page.url == '/' %}text-stone-950{% else %}text-stone-600 hover:text-stone-950{% endif %}" href="/" {% if page.url == '/' %}aria-current="page"{% endif %}>
+          Home
+        </a>
+      </li>
+      <li>
+        <a class="{% if page.url == '/about/' %}text-stone-950{% else %}text-stone-600 hover:text-stone-950{% endif %}" href="/about/" {% if page.url == '/about/' %}aria-current="page"{% endif %}>
+          About
+        </a>
+      </li>
+      <li>
+        <a class="{% if page.url == '/archives/' %}text-stone-950{% else %}text-stone-600 hover:text-stone-950{% endif %}" href="/archives/" {% if page.url == '/archives/' %}aria-current="page"{% endif %}>
+          Archives
+        </a>
+      </li>
+      <li>
+        <a class="text-stone-600 hover:text-stone-950" href="/feed.xml">
+          RSS
+        </a>
+      </li>
+    </ul>
+  </nav>
+  {% if collections.editorialTagList.length %}
+    <div class="border-b border-stone-300 px-6 py-3 md:px-10">
+      <ul class="flex flex-wrap items-center gap-x-5 gap-y-2 font-ui text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-stone-500">
+        <li class="text-stone-400">Desks</li>
+        {% for tag in collections.editorialTagList %}
+          <li>
+            <a class="hover:text-stone-950" href="/category/{{ tag | slugifyTag }}/">{{ tag | tagLabel }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+</header>

@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-stone-200 text-stone-900;
+  }
+
+  ::selection {
+    @apply bg-stone-900 text-stone-50;
+  }
+}
+
+@layer components {
+  .article-prose > p:first-of-type::first-letter {
+    @apply float-left mr-3 mt-2 font-display text-6xl font-black leading-[0.78] text-stone-950 md:text-7xl;
+  }
+}
+

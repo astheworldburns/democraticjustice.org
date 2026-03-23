@@ -1,0 +1,38 @@
+backend:
+  name: github
+  repo: astheworldburns/democraticjustice.org
+  branch: main
+
+site_url: https://democraticjustice.org
+display_url: https://democraticjustice.org
+media_folder: src/assets/images/uploads
+public_folder: /assets/images/uploads
+
+collections:
+  - name: articles
+    label: Articles
+    folder: src/content/articles
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - label: Headline
+        name: title
+        widget: string
+      - label: Lede
+        name: description
+        widget: text
+      - label: Publication Date
+        name: date
+        widget: datetime
+      - label: Editorial Categories
+        name: tags
+        widget: list
+        default:
+          - article
+      - label: Featured Image
+        name: featured_image
+        widget: image
+        required: false
+      - label: Body
+        name: body
+        widget: markdown

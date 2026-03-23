@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% if title and title != site.name %}{{ title }} | {{ site.name }}{% else %}{{ site.name }}{% endif %}</title>
+    <meta name="description" content="{{ description or site.description }}" />
+    <meta name="generator" content="Eleventy v3" />
+    <meta property="og:title" content="{% if title and title != site.name %}{{ title }} | {{ site.name }}{% else %}{{ site.name }}{% endif %}" />
+    <meta property="og:description" content="{{ description or site.description }}" />
+    <meta property="og:type" content="{% if page.url == '/' %}website{% else %}article{% endif %}" />
+    <meta property="og:url" content="{{ page.url | absoluteUrl(site.url) }}" />
+    <link rel="canonical" href="{{ page.url | absoluteUrl(site.url) }}" />
+    <link rel="alternate" type="application/rss+xml" title="{{ site.name }} RSS Feed" href="/feed.xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:wght@400;700;900&family=Playfair+Display:wght@700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/assets/css/style.css" />
+  </head>
+  <body class="bg-stone-200 text-stone-900 antialiased">
+    <a class="sr-only focus:not-sr-only focus:absolute focus:left-6 focus:top-4 focus:z-50 focus:rounded-none focus:bg-stone-900 focus:px-4 focus:py-2 focus:text-stone-50" href="#main-content">
+      Skip to content
+    </a>
+    <div class="mx-auto min-h-screen max-w-paper bg-stone-50 shadow-page">
+      <div class="mx-auto border-x border-stone-300 bg-white">
+        {% include "components/header.njk" %}
+        <main id="main-content" class="px-6 py-8 md:px-10 md:py-10">
+          {{ content | safe }}
+        </main>
+        {% include "components/footer.njk" %}
+      </div>
+    </div>
+  </body>
+</html>
+

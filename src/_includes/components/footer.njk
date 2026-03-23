@@ -1,0 +1,20 @@
+<footer class="border-t border-stone-900 bg-stone-50 px-6 py-8 md:px-10">
+  <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+    <div>
+      <p class="font-display text-2xl font-black tracking-tight text-stone-950">
+        Democratic Justice
+      </p>
+      <p class="mt-2 max-w-2xl font-serif text-sm leading-relaxed text-stone-700">
+        Accountability reporting, public records work, and political analysis rooted in West Virginia.
+      </p>
+    </div>
+    <div class="font-ui text-xs font-semibold uppercase tracking-[0.16em] text-stone-600">
+      <a class="hover:text-stone-950" href="mailto:contact@democraticjustice.org">contact@democraticjustice.org</a>
+      <span class="mx-2 text-stone-300">/</span>
+      <a class="hover:text-stone-950" href="/feed.xml">RSS Feed</a>
+    </div>
+  </div>
+  <p class="mt-6 border-t border-stone-300 pt-4 font-ui text-[0.7rem] uppercase tracking-[0.18em] text-stone-500">
+    &copy; {{ buildDate | displayYear }} {{ site.author }}. All rights reserved.
+  </p>
+</footer>
