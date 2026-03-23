@@ -3,145 +3,163 @@ layout: layouts/base.njk
 title: Democratic Justice
 description: Investigative journalism and political accountability reporting from West Virginia.
 permalink: /
+ogType: website
 ---
 {% set stories = collections.article | reverse %}
 {% set lead = stories[0] %}
-<div class="space-y-12">
-  <section class="border-b border-stone-900 pb-10">
-    <div class="flex flex-col gap-3 border-b border-stone-300 pb-5 md:flex-row md:items-end md:justify-between">
-      <div>
-        <p class="font-ui text-xs font-semibold uppercase tracking-kicker text-stone-500">Front Page</p>
-        <h1 class="mt-2 font-display text-4xl font-black tracking-tight text-stone-950 md:text-5xl">
-          Reporting That Reads Like a Record
-        </h1>
-      </div>
-      <p class="max-w-xl font-serif text-base leading-relaxed text-stone-700">
-        Investigative reporting, document-driven accountability work, and sharp political analysis built for permanence.
-      </p>
-    </div>
-
-    {% if lead %}
-      <div class="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1.6fr)_minmax(18rem,0.95fr)]">
-        <article class="border-b border-stone-300 pb-8 lg:border-b-0 lg:border-r lg:pr-8">
-          <p class="font-ui text-xs font-semibold uppercase tracking-kicker text-stone-500">Lead Story</p>
-          <h2 class="mt-3 font-display text-4xl font-black leading-tight tracking-tight text-stone-950 md:text-6xl">
-            <a class="hover:text-stone-700" href="{{ lead.url }}">{{ lead.data.title }}</a>
-          </h2>
-          <div class="mt-4 flex flex-wrap gap-x-4 gap-y-2 font-ui text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">
-            <span>{{ lead.date | displayDate }}</span>
-            <span>By {{ lead.data.author or site.author }}</span>
+{% set leadAuthor = lead.data.author | getAuthor(collections.authorProfiles) if lead else null %}
+<div class="space-y-14">
+  <section class="border-b-2 border-[rgb(var(--rule-strong))] pb-10">
+    <div class="grid gap-8 xl:grid-cols-[minmax(0,1.55fr)_minmax(18rem,0.9fr)]">
+      <div class="space-y-6">
+        <div class="flex flex-col gap-4 border-b border-[rgba(var(--rule),0.92)] pb-5 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p class="section-kicker">Front page</p>
+            <h1 class="mt-3 font-display text-[clamp(2.8rem,5.4vw,4.8rem)] font-black leading-[0.92] tracking-tight text-[rgb(var(--ink))]">
+              Reporting that looks and reads like a publication
+            </h1>
           </div>
-          {% if lead.data.tags %}
-            <div class="mt-4 flex flex-wrap gap-3">
-              {% for tag in lead.data.tags %}
-                {% if tag != "article" %}
-                  <a class="border border-stone-300 px-3 py-1 font-ui text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-stone-600 hover:border-stone-900 hover:text-stone-950" href="/category/{{ tag | slugifyTag }}/">
-                    {{ tag | tagLabel }}
-                  </a>
-                {% endif %}
-              {% endfor %}
-            </div>
-          {% endif %}
-          <p class="mt-5 max-w-3xl font-serif text-xl leading-relaxed text-stone-700">
-            {{ lead.data.description }}
+          <p class="max-w-xl font-serif text-lg leading-relaxed text-[rgb(var(--ink-soft))]">
+            A document-driven, newsroom-style front page for political accountability reporting, designed to feel intentional on mobile and commanding on desktop.
           </p>
-          <p class="mt-6 max-w-3xl font-serif text-base leading-8 text-stone-800">
-            {{ lead.content | striptags | truncate(360, true, "…") }}
-          </p>
-          <a class="mt-6 inline-flex border-b border-stone-900 font-ui text-xs font-semibold uppercase tracking-[0.18em] text-stone-900" href="{{ lead.url }}">
-            Read the full report
-          </a>
-        </article>
+        </div>
 
-        <aside class="space-y-6">
-          <section class="border-b border-stone-300 pb-5">
-            <p class="font-ui text-xs font-semibold uppercase tracking-kicker text-stone-500">Mission</p>
-            <p class="mt-3 font-serif text-lg leading-relaxed text-stone-800">
-              Democratic Justice is built for document-driven journalism with a newspaper sensibility instead of a creator-brand aesthetic.
-            </p>
-          </section>
-
-          <section class="border-b border-stone-300 pb-5">
-            <p class="font-ui text-xs font-semibold uppercase tracking-kicker text-stone-500">Coverage</p>
-            <ul class="mt-3 space-y-3 font-serif text-base leading-relaxed text-stone-800">
-              {% for tag in collections.editorialTagList %}
-                <li>
-                  <a class="hover:text-stone-600" href="/category/{{ tag | slugifyTag }}/">{{ tag | tagLabel }}</a>
-                </li>
-              {% endfor %}
-            </ul>
-          </section>
-
-          <section>
-            <p class="font-ui text-xs font-semibold uppercase tracking-kicker text-stone-500">Archive</p>
-            <p class="mt-3 font-serif text-base leading-relaxed text-stone-800">
-              Browse reporting chronologically or hand the full-content RSS feed to newsletter automation tools.
-            </p>
-            <div class="mt-4 flex flex-wrap gap-5">
-              <a class="inline-flex border-b border-stone-900 font-ui text-xs font-semibold uppercase tracking-[0.18em] text-stone-900" href="/archives/">
-                Open archives
-              </a>
-              <a class="inline-flex border-b border-stone-900 font-ui text-xs font-semibold uppercase tracking-[0.18em] text-stone-900" href="/feed.xml">
-                Open RSS feed
-              </a>
+        {% if lead %}
+          <article class="story-card card-lift overflow-hidden p-6 md:p-8">
+            <p class="section-kicker">Lead investigation</p>
+            <h2 class="mt-3 font-display text-[clamp(2.2rem,4.6vw,4.7rem)] font-black leading-[0.94] tracking-tight text-[rgb(var(--ink))]">
+              <a class="headline-link" href="{{ lead.url }}">{{ lead.data.title }}</a>
+            </h2>
+            <div class="meta-row mt-4">
+              <span>{{ lead.date | displayDate }}</span>
+              <span>By {% if leadAuthor %}<a class="hover:text-[rgb(var(--ink))]" href="{{ leadAuthor.url }}">{{ leadAuthor.data.name }}</a>{% else %}{{ site.author }}{% endif %}</span>
             </div>
-          </section>
-        </aside>
-      </div>
-    {% else %}
-      <p class="mt-8 font-serif text-lg leading-relaxed text-stone-700">
-        The first reported pieces will appear here once publishing begins.
-      </p>
-    {% endif %}
-  </section>
-
-  {% if collections.editorialTagList.length %}
-    <section>
-      <div class="flex items-end justify-between border-b border-stone-900 pb-3">
-        <h2 class="font-display text-3xl font-black tracking-tight text-stone-950">Editorial Desks</h2>
-        <p class="font-ui text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">Dynamic taxonomy</p>
-      </div>
-      <div class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {% for tag in collections.editorialTagList %}
-          <article class="border border-stone-300 bg-stone-50 p-5">
-            <p class="font-ui text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">Category</p>
-            <h3 class="mt-2 font-serif text-2xl font-black leading-tight text-stone-950">
-              <a class="hover:text-stone-700" href="/category/{{ tag | slugifyTag }}/">{{ tag | tagLabel }}</a>
-            </h3>
-            <p class="mt-3 font-serif text-base leading-relaxed text-stone-700">
-              {{ collections[tag] | length }} published {% if collections[tag] | length == 1 %}piece{% else %}pieces{% endif %}.
+            {% if lead.data.tags %}
+              <div class="mt-4 flex flex-wrap gap-3">
+                {% for tag in lead.data.tags %}
+                  {% if tag != "article" %}
+                    <a class="story-chip" href="/category/{{ tag | slugifyTag }}/">{{ tag | tagLabel }}</a>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            {% endif %}
+            <p class="mt-6 max-w-4xl font-serif text-[clamp(1.18rem,1rem+0.4vw,1.5rem)] leading-relaxed text-[rgb(var(--ink-soft))]">
+              {{ lead.data.description }}
             </p>
+            <p class="mt-6 max-w-4xl font-serif text-base leading-8 text-[rgb(var(--ink-soft))]">
+              {{ lead.content | striptags | truncate(430, true, "…") }}
+            </p>
+            <div class="mt-8 flex flex-wrap gap-4">
+              <a class="button-link" href="{{ lead.url }}">Read the full report</a>
+              <a class="button-link-muted" href="/search/">Search the archive</a>
+            </div>
           </article>
-        {% endfor %}
+        {% endif %}
       </div>
-    </section>
-  {% endif %}
 
-  {% if stories | length > 1 %}
-    <section>
-      <div class="flex items-end justify-between border-b border-stone-900 pb-3">
-        <h2 class="font-display text-3xl font-black tracking-tight text-stone-950">Latest Dispatches</h2>
-        <p class="font-ui text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">Recent reporting</p>
-      </div>
-      <div class="divide-y divide-stone-300">
-        {% for story in stories %}
-          {% if not loop.first %}
-            <article class="grid gap-4 py-6 md:grid-cols-[1fr_auto] md:items-start">
+      <aside class="space-y-5">
+        <section class="rail-card p-5">
+          <p class="section-kicker">Mission</p>
+          <p class="mt-3 font-serif text-lg leading-relaxed text-[rgb(var(--ink-soft))]">
+            Democratic Justice is built to feel less like a creator feed and more like a disciplined accountability desk with room for long-form reporting.
+          </p>
+        </section>
+
+        {% if leadAuthor %}
+          <section class="rail-card p-5">
+            <p class="section-kicker">From the newsroom</p>
+            <div class="mt-4 flex items-start gap-4">
+              {% if leadAuthor.data.headshot %}
+                {% image leadAuthor.data.headshot, leadAuthor.data.name, "64px", "h-16 w-16 rounded-full object-cover" %}
+              {% else %}
+                <div class="author-avatar">{{ leadAuthor.data.name | initials }}</div>
+              {% endif %}
               <div>
-                <h3 class="font-serif text-2xl font-black leading-tight text-stone-950">
-                  <a class="hover:text-stone-700" href="{{ story.url }}">{{ story.data.title }}</a>
+                <h3 class="font-serif text-2xl font-black leading-tight text-[rgb(var(--ink))]">
+                  <a class="headline-link" href="{{ leadAuthor.url }}">{{ leadAuthor.data.name }}</a>
                 </h3>
-                <p class="mt-3 max-w-2xl font-serif text-base leading-relaxed text-stone-700">
-                  {{ story.data.description }}
+                <p class="mt-1 font-ui text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-[rgb(var(--ink-muted))]">
+                  {{ leadAuthor.data.role }}
+                </p>
+                <p class="mt-3 font-serif text-sm leading-relaxed text-[rgb(var(--ink-soft))]">
+                  {{ leadAuthor.data.short_bio }}
                 </p>
               </div>
-              <p class="font-ui text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">
-                {{ story.date | displayDate }}
+            </div>
+          </section>
+        {% endif %}
+
+        <section class="rail-card p-5">
+          <p class="section-kicker">Find reporting</p>
+          <div class="mt-4 space-y-3">
+            <a class="button-link" href="/search/">Search every article</a>
+            <a class="button-link-muted" href="/archives/">Browse the archive</a>
+            <a class="button-link-muted" href="/feed.xml">Subscribe by RSS</a>
+          </div>
+        </section>
+
+        {% if collections.editorialTagList.length %}
+          <section class="rail-card p-5">
+            <p class="section-kicker">Editorial desks</p>
+            <div class="mt-4 flex flex-wrap gap-3">
+              {% for tag in collections.editorialTagList %}
+                <a class="story-chip" href="/category/{{ tag | slugifyTag }}/">{{ tag | tagLabel }}</a>
+              {% endfor %}
+            </div>
+          </section>
+        {% endif %}
+      </aside>
+    </div>
+  </section>
+
+  {% if stories | length > 1 %}
+    <section class="space-y-6">
+      <div class="flex items-end justify-between border-b border-[rgb(var(--rule-strong))] pb-3">
+        <h2 class="font-display text-3xl font-black tracking-tight text-[rgb(var(--ink))]">Recent filing</h2>
+        <p class="section-kicker">Bento feed</p>
+      </div>
+      <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        {% for story in stories %}
+          {% if not loop.first %}
+            {% set storyAuthor = story.data.author | getAuthor(collections.authorProfiles) %}
+            <article class="story-card card-lift p-5 md:p-6">
+              <p class="meta-row">{{ story.date | displayDate }}</p>
+              <h3 class="mt-3 font-serif text-[clamp(1.7rem,1.4rem+0.6vw,2.25rem)] font-black leading-tight text-[rgb(var(--ink))]">
+                <a class="headline-link" href="{{ story.url }}">{{ story.data.title }}</a>
+              </h3>
+              <p class="mt-3 font-serif text-base leading-relaxed text-[rgb(var(--ink-soft))]">
+                {{ story.data.description }}
               </p>
+              <div class="meta-row mt-5">
+                <span>{% if storyAuthor %}<a class="hover:text-[rgb(var(--ink))]" href="{{ storyAuthor.url }}">{{ storyAuthor.data.name }}</a>{% else %}{{ site.author }}{% endif %}</span>
+              </div>
             </article>
           {% endif %}
         {% endfor %}
       </div>
     </section>
   {% endif %}
+
+  {% if collections.editorialTagList.length %}
+    <section class="space-y-6">
+      <div class="flex items-end justify-between border-b border-[rgb(var(--rule-strong))] pb-3">
+        <h2 class="font-display text-3xl font-black tracking-tight text-[rgb(var(--ink))]">Desk map</h2>
+        <p class="section-kicker">Dynamic taxonomy</p>
+      </div>
+      <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {% for tag in collections.editorialTagList %}
+          <article class="listing-card card-lift p-5">
+            <p class="section-kicker">Category</p>
+            <h3 class="mt-2 font-serif text-2xl font-black leading-tight text-[rgb(var(--ink))]">
+              <a class="headline-link" href="/category/{{ tag | slugifyTag }}/">{{ tag | tagLabel }}</a>
+            </h3>
+            <p class="mt-3 font-serif text-base leading-relaxed text-[rgb(var(--ink-soft))]">
+              {{ collections[tag] | length }} published {% if collections[tag] | length == 1 %}piece{% else %}pieces{% endif %}, automatically grouped into its own editorial desk page.
+            </p>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
 </div>
+

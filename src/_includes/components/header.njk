@@ -1,50 +1,77 @@
-<header class="border-b border-stone-900">
-  <div class="flex flex-col gap-2 border-b border-stone-300 px-6 py-3 font-ui text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-stone-600 md:flex-row md:items-center md:justify-between">
-    <p>West Virginia Accountability Desk</p>
-    <p>{{ buildDate | displayDate }}</p>
+<header class="border-b border-[rgb(var(--rule-strong))]">
+  <div class="flex flex-col gap-4 border-b border-[rgba(var(--rule),0.9)] bg-[rgba(var(--paper-muted),0.7)] px-5 py-3 md:flex-row md:items-center md:justify-between md:px-10">
+    <div class="flex flex-wrap items-center gap-x-5 gap-y-2">
+      <p class="section-kicker text-[rgb(var(--ink-soft))]">Independent Political Accountability Desk</p>
+      <p class="font-ui text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[rgb(var(--ink-muted))]">
+        Edition {{ buildDate | displayDate }}
+      </p>
+    </div>
+    <div class="flex flex-wrap items-center gap-3">
+      <a class="button-link-muted" href="/search/">Search</a>
+      <button class="theme-toggle" type="button" data-theme-toggle>
+        <span data-theme-label>Night edition</span>
+      </button>
+    </div>
   </div>
-  <div class="px-6 py-8 md:px-10 md:py-10">
-    <a class="block text-center font-display text-5xl font-black uppercase leading-none tracking-masthead text-stone-950 md:text-7xl" href="/">
-      Democratic Justice
-    </a>
-    <p class="mx-auto mt-4 max-w-3xl text-center font-ui text-[0.72rem] font-medium uppercase tracking-[0.28em] text-stone-600">
-      Investigative journalism and political accountability reporting from West Virginia
-    </p>
+
+  <div class="grid gap-6 px-5 py-8 md:px-10 lg:grid-cols-[minmax(0,1.35fr)_minmax(17rem,0.65fr)] lg:items-end">
+    <div>
+      <a class="block font-display text-[clamp(3.15rem,10vw,5.9rem)] font-black uppercase leading-[0.88] tracking-masthead text-[rgb(var(--ink))]" href="/">
+        Democratic Justice
+      </a>
+      <p class="mt-4 max-w-3xl font-ui text-[0.78rem] font-semibold uppercase tracking-[0.28em] text-[rgb(var(--ink-muted))]">
+        Investigative journalism and political accountability reporting from West Virginia
+      </p>
+    </div>
+    <div class="border-t border-[rgba(var(--rule),0.92)] pt-4 lg:border-l lg:border-t-0 lg:pl-6">
+      <p class="section-kicker">Front matter</p>
+      <p class="mt-3 max-w-md font-serif text-lg leading-relaxed text-[rgb(var(--ink-soft))]">
+        Document-driven reporting built for readers who need durable facts, disciplined analysis, and a site that feels more like a publication than a feed.
+      </p>
+    </div>
   </div>
-  <nav aria-label="Primary" class="border-y border-stone-900">
-    <ul class="flex flex-wrap items-center justify-center gap-6 px-6 py-3 font-ui text-xs font-semibold uppercase tracking-[0.2em] text-stone-700">
+
+  <nav aria-label="Primary" class="border-y border-[rgb(var(--rule-strong))] bg-[rgba(var(--paper-strong),0.82)]">
+    <ul class="flex flex-wrap items-center gap-x-6 gap-y-2 px-5 py-3 font-ui text-[0.74rem] font-semibold uppercase tracking-[0.2em] text-[rgb(var(--ink-soft))] md:px-10">
       <li>
-        <a class="{% if page.url == '/' %}text-stone-950{% else %}text-stone-600 hover:text-stone-950{% endif %}" href="/" {% if page.url == '/' %}aria-current="page"{% endif %}>
+        <a class="{% if page.url == '/' %}text-[rgb(var(--ink))]{% else %}hover:text-[rgb(var(--ink))]{% endif %}" href="/" {% if page.url == '/' %}aria-current="page"{% endif %}>
           Home
         </a>
       </li>
       <li>
-        <a class="{% if page.url == '/about/' %}text-stone-950{% else %}text-stone-600 hover:text-stone-950{% endif %}" href="/about/" {% if page.url == '/about/' %}aria-current="page"{% endif %}>
+        <a class="{% if page.url == '/about/' %}text-[rgb(var(--ink))]{% else %}hover:text-[rgb(var(--ink))]{% endif %}" href="/about/" {% if page.url == '/about/' %}aria-current="page"{% endif %}>
           About
         </a>
       </li>
       <li>
-        <a class="{% if page.url == '/archives/' %}text-stone-950{% else %}text-stone-600 hover:text-stone-950{% endif %}" href="/archives/" {% if page.url == '/archives/' %}aria-current="page"{% endif %}>
+        <a class="{% if page.url == '/archives/' %}text-[rgb(var(--ink))]{% else %}hover:text-[rgb(var(--ink))]{% endif %}" href="/archives/" {% if page.url == '/archives/' %}aria-current="page"{% endif %}>
           Archives
         </a>
       </li>
       <li>
-        <a class="text-stone-600 hover:text-stone-950" href="/feed.xml">
+        <a class="{% if page.url == '/search/' %}text-[rgb(var(--ink))]{% else %}hover:text-[rgb(var(--ink))]{% endif %}" href="/search/" {% if page.url == '/search/' %}aria-current="page"{% endif %}>
+          Search
+        </a>
+      </li>
+      <li>
+        <a class="hover:text-[rgb(var(--ink))]" href="/feed.xml">
           RSS
         </a>
       </li>
     </ul>
   </nav>
+
   {% if collections.editorialTagList.length %}
-    <div class="border-b border-stone-300 px-6 py-3 md:px-10">
-      <ul class="flex flex-wrap items-center gap-x-5 gap-y-2 font-ui text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-stone-500">
-        <li class="text-stone-400">Desks</li>
+    <div class="grid gap-3 border-b border-[rgba(var(--rule),0.92)] bg-[rgba(var(--paper-muted),0.55)] px-5 py-4 md:grid-cols-[auto_1fr] md:px-10">
+      <p class="section-kicker">Editorial desks</p>
+      <ul class="flex flex-wrap items-center gap-x-5 gap-y-2 font-ui text-[0.74rem] font-semibold uppercase tracking-[0.18em] text-[rgb(var(--ink-muted))]">
         {% for tag in collections.editorialTagList %}
           <li>
-            <a class="hover:text-stone-950" href="/category/{{ tag | slugifyTag }}/">{{ tag | tagLabel }}</a>
+            <a class="hover:text-[rgb(var(--ink))]" href="/category/{{ tag | slugifyTag }}/">{{ tag | tagLabel }}</a>
           </li>
         {% endfor %}
       </ul>
     </div>
   {% endif %}
 </header>
+

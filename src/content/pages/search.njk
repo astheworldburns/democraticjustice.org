@@ -1,0 +1,40 @@
+---
+layout: layouts/base.njk
+title: Search
+description: Search the Democratic Justice archive.
+permalink: /search/index.html
+ogType: website
+extraHead: |
+  <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+pageScripts: |
+  <script src="/pagefind/pagefind-ui.js"></script>
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      new PagefindUI({
+        element: "#news-search",
+        showSubResults: true,
+        excerptLength: 24,
+        resetStyles: false,
+        translations: {
+          placeholder: "Search the archive"
+        }
+      });
+    });
+  </script>
+---
+<section class="space-y-8">
+  <header class="border-b-2 border-[rgb(var(--rule-strong))] pb-6">
+    <p class="section-kicker">Archive search</p>
+    <h1 class="mt-3 font-display text-[clamp(2.7rem,5vw,4.4rem)] font-black tracking-tight text-[rgb(var(--ink))]">
+      Search the reporting archive
+    </h1>
+    <p class="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-[rgb(var(--ink-soft))]">
+      Full-text search runs entirely on the static site, so readers can move through the archive without relying on an external search service or a database-backed app.
+    </p>
+  </header>
+
+  <div class="search-shell p-5 md:p-7">
+    <div id="news-search"></div>
+  </div>
+</section>
+

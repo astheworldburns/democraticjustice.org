@@ -2,6 +2,7 @@
 title: "Sample Investigative Report"
 description: "A demonstration article for the Democratic Justice publishing platform."
 date: 2026-03-23T09:00:00-04:00
+author: seth-sturm
 tags:
   - exposes
   - accountability

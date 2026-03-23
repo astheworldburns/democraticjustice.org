@@ -1,8 +1,10 @@
 ---
-layout: layouts/base.njk
+layout: layouts/page.njk
 title: About
 description: Learn more about Democratic Justice and its reporting mission.
 permalink: /about/index.html
+ogType: website
+kicker: Publication
 ---
 
 # About Democratic Justice
@@ -24,4 +26,3 @@ The reporting focus is straightforward:
 This starter build uses Eleventy, Tailwind CSS, and Sveltia CMS. That stack keeps hosting costs low while preserving source control, plain-text content, and portability.
 
 If you are here to adapt the site, the main next step is not redesign. It is publishing real reporting, refining the editorial voice, and connecting the CMS authentication flow after deployment.
-

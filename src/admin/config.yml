@@ -9,6 +9,40 @@ media_folder: src/assets/images/uploads
 public_folder: /assets/images/uploads
 
 collections:
+  - name: authors
+    label: Authors
+    folder: src/content/authors
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - label: Full Name
+        name: name
+        widget: string
+      - label: Role
+        name: role
+        widget: string
+      - label: Short Bio
+        name: short_bio
+        widget: text
+      - label: Biography
+        name: bio
+        widget: text
+      - label: Email
+        name: email
+        widget: string
+        required: false
+      - label: Headshot
+        name: headshot
+        widget: image
+        required: false
+      - label: Bluesky
+        name: bluesky
+        widget: string
+        required: false
+      - label: Twitter / X
+        name: twitter
+        widget: string
+        required: false
   - name: articles
     label: Articles
     folder: src/content/articles
@@ -21,6 +55,16 @@ collections:
       - label: Lede
         name: description
         widget: text
+      - label: Author
+        name: author
+        widget: relation
+        collection: authors
+        search_fields:
+          - name
+          - role
+        value_field: "{{slug}}"
+        display_fields:
+          - name
       - label: Publication Date
         name: date
         widget: datetime

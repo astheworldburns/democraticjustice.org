@@ -2,6 +2,7 @@ import colors from "tailwindcss/colors";
 import typography from "@tailwindcss/typography";
 
 export default {
+  darkMode: ["class", '[data-theme="dark"]'],
   content: ["./src/**/*.{njk,md,html,js}"],
   theme: {
     colors: {
@@ -15,61 +16,81 @@ export default {
     },
     extend: {
       boxShadow: {
-        page: "0 0 0 1px rgba(28, 25, 23, 0.06), 0 18px 60px rgba(28, 25, 23, 0.08)"
+        page: "0 0 0 1px rgba(28, 25, 23, 0.06), 0 24px 90px rgba(12, 10, 9, 0.12)"
       },
       fontFamily: {
         ui: ["Inter", "\"Helvetica Neue\"", "Arial", "sans-serif"],
         serif: ["Merriweather", "Georgia", "serif"],
         display: ["\"Playfair Display\"", "Merriweather", "Georgia", "serif"]
       },
+      keyframes: {
+        rise: {
+          "0%": {
+            opacity: "0",
+            transform: "translateY(10px)"
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)"
+          }
+        }
+      },
+      animation: {
+        rise: "rise 500ms cubic-bezier(0.2, 0.65, 0.2, 1) both"
+      },
       letterSpacing: {
         masthead: "-0.05em",
         kicker: "0.18em"
       },
       maxWidth: {
-        paper: "80rem"
+        paper: "82rem",
+        measure: "72ch"
       },
-      typography: ({ theme }) => ({
+      typography: {
         DEFAULT: {
           css: {
-            color: theme("colors.stone.800"),
+            color: "rgb(var(--ink-soft))",
             maxWidth: "72ch",
-            lineHeight: "1.85",
+            lineHeight: "1.82",
             p: {
-              marginTop: "1.2em",
-              marginBottom: "1.2em"
+              marginTop: "1.15em",
+              marginBottom: "1.15em"
             },
             h2: {
-              color: theme("colors.stone.950"),
-              fontFamily: theme("fontFamily.serif").join(", "),
+              color: "rgb(var(--ink))",
+              fontFamily: "\"Playfair Display\", Merriweather, Georgia, serif",
               fontWeight: "800",
+              fontSize: "clamp(1.75rem, 1.15rem + 1.4vw, 2.4rem)",
               letterSpacing: "-0.03em",
-              lineHeight: "1.2"
+              lineHeight: "1.08",
+              marginTop: "1.7em",
+              marginBottom: "0.7em"
             },
             h3: {
-              color: theme("colors.stone.950"),
-              fontFamily: theme("fontFamily.serif").join(", "),
+              color: "rgb(var(--ink))",
+              fontFamily: "Merriweather, Georgia, serif",
               fontWeight: "700",
+              fontSize: "clamp(1.35rem, 1rem + 0.8vw, 1.75rem)",
               letterSpacing: "-0.02em",
-              lineHeight: "1.25"
+              lineHeight: "1.18"
             },
             strong: {
-              color: theme("colors.stone.950")
+              color: "rgb(var(--ink))"
             },
             a: {
-              color: theme("colors.stone.950"),
+              color: "rgb(var(--ink))",
               fontWeight: "700",
               textDecorationThickness: "1px",
               textUnderlineOffset: "0.18em"
             },
             blockquote: {
-              borderLeftColor: theme("colors.stone.900"),
+              borderLeftColor: "rgb(var(--rule-strong))",
               borderLeftWidth: "4px",
-              color: theme("colors.stone.700"),
-              fontFamily: theme("fontFamily.serif").join(", "),
+              color: "rgb(var(--ink-soft))",
+              fontFamily: "Merriweather, Georgia, serif",
               fontStyle: "italic",
               fontWeight: "400",
-              paddingLeft: "1.25rem"
+              paddingLeft: "1.35rem"
             },
             "blockquote p:first-of-type::before": {
               content: "none"
@@ -77,28 +98,30 @@ export default {
             "blockquote p:last-of-type::after": {
               content: "none"
             },
+            img: {
+              borderRadius: "0"
+            },
             figcaption: {
-              color: theme("colors.stone.600"),
-              fontFamily: theme("fontFamily.ui").join(", "),
-              fontSize: "0.75rem",
+              color: "rgb(var(--ink-muted))",
+              fontFamily: "Inter, \"Helvetica Neue\", Arial, sans-serif",
+              fontSize: "0.76rem",
               letterSpacing: "0.12em",
               textTransform: "uppercase"
             },
             hr: {
-              borderColor: theme("colors.stone.300")
+              borderColor: "rgb(var(--rule))"
             },
             "ul > li::marker": {
-              color: theme("colors.stone.600")
+              color: "rgb(var(--ink-muted))"
             },
             "ol > li::marker": {
-              color: theme("colors.stone.600"),
+              color: "rgb(var(--ink-muted))",
               fontWeight: "700"
             }
           }
         }
-      })
+      }
     }
   },
   plugins: [typography]
 };
-

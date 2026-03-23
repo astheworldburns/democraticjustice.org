@@ -3,43 +3,48 @@ layout: layouts/base.njk
 title: Archives
 description: Browse Democratic Justice reporting by publication month.
 permalink: /archives/index.html
+ogType: website
 ---
 <section class="space-y-8">
-  <header class="border-b border-stone-900 pb-6">
-    <p class="font-ui text-xs font-semibold uppercase tracking-kicker text-stone-500">Archive</p>
-    <h1 class="mt-3 font-display text-4xl font-black tracking-tight text-stone-950 md:text-5xl">
-      Reporting Archive
+  <header class="border-b-2 border-[rgb(var(--rule-strong))] pb-6">
+    <p class="section-kicker">Archive</p>
+    <h1 class="mt-3 font-display text-[clamp(2.7rem,5vw,4.4rem)] font-black tracking-tight text-[rgb(var(--ink))]">
+      Reporting archive
     </h1>
-    <p class="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-stone-700">
-      A chronological index of published reporting, grouped by month so the publication history remains legible as the archive grows.
+    <p class="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-[rgb(var(--ink-soft))]">
+      A month-by-month index of published work so the archive grows like a record, not a dump of old posts.
     </p>
   </header>
 
-  <div class="space-y-10">
+  <div class="space-y-8">
     {% for bucket in collections.articleArchive %}
-      <section class="grid gap-5 border-b border-stone-300 pb-8 lg:grid-cols-[14rem_minmax(0,1fr)]">
-        <div>
-          <p class="font-ui text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">{{ bucket.year }}</p>
-          <h2 class="mt-2 font-display text-3xl font-black tracking-tight text-stone-950">
-            {{ bucket.label }}
-          </h2>
-        </div>
-        <div class="divide-y divide-stone-200">
-          {% for story in bucket.posts %}
-            <article class="grid gap-3 py-4 md:grid-cols-[1fr_auto] md:items-start">
-              <div>
-                <h3 class="font-serif text-2xl font-black leading-tight text-stone-950">
-                  <a class="hover:text-stone-700" href="{{ story.url }}">{{ story.data.title }}</a>
-                </h3>
-                <p class="mt-2 max-w-3xl font-serif text-base leading-relaxed text-stone-700">
-                  {{ story.data.description }}
-                </p>
-              </div>
-              <p class="font-ui text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">
-                {{ story.date | displayDate }}
-              </p>
-            </article>
-          {% endfor %}
+      <section class="listing-card p-5 md:p-6">
+        <div class="grid gap-5 lg:grid-cols-[14rem_minmax(0,1fr)]">
+          <div>
+            <p class="section-kicker">{{ bucket.year }}</p>
+            <h2 class="mt-2 font-display text-3xl font-black tracking-tight text-[rgb(var(--ink))]">
+              {{ bucket.label }}
+            </h2>
+          </div>
+          <div class="divide-y divide-[rgba(var(--rule),0.92)]">
+            {% for story in bucket.posts %}
+              {% set storyAuthor = story.data.author | getAuthor(collections.authorProfiles) %}
+              <article class="grid gap-3 py-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-start">
+                <div>
+                  <h3 class="font-serif text-2xl font-black leading-tight text-[rgb(var(--ink))]">
+                    <a class="headline-link" href="{{ story.url }}">{{ story.data.title }}</a>
+                  </h3>
+                  <p class="mt-2 max-w-3xl font-serif text-base leading-relaxed text-[rgb(var(--ink-soft))]">
+                    {{ story.data.description }}
+                  </p>
+                </div>
+                <div class="meta-row md:text-right">
+                  <span>{{ story.date | displayDate }}</span>
+                  <span>{% if storyAuthor %}<a class="hover:text-[rgb(var(--ink))]" href="{{ storyAuthor.url }}">{{ storyAuthor.data.name }}</a>{% else %}{{ site.author }}{% endif %}</span>
+                </div>
+              </article>
+            {% endfor %}
+          </div>
         </div>
       </section>
     {% endfor %}

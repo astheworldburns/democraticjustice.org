@@ -58,6 +58,28 @@ function tagLabel(value = "") {
     .replace(/\b\w/g, (character) => character.toUpperCase());
 }
 
+function initials(value = "") {
+  return value
+    .toString()
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0].toUpperCase())
+    .join("");
+}
+
+function getAuthorProfile(authorKey, authorProfiles = []) {
+  if (!authorKey) {
+    return null;
+  }
+
+  return (
+    authorProfiles.find((profile) => profile.data.slug === authorKey) ||
+    authorProfiles.find((profile) => profile.fileSlug === authorKey) ||
+    null
+  );
+}
+
 export default async function (eleventyConfig) {
   eleventyConfig.addPlugin(pluginRss, {
     posthtmlRenderOptions: {
@@ -75,6 +97,12 @@ export default async function (eleventyConfig) {
     collectionApi
       .getFilteredByGlob("./src/content/articles/**/*.md")
       .sort((left, right) => left.date - right.date)
+  );
+
+  eleventyConfig.addCollection("authorProfiles", (collectionApi) =>
+    collectionApi
+      .getFilteredByGlob("./src/content/authors/**/*.md")
+      .sort((left, right) => left.data.name.localeCompare(right.data.name))
   );
 
   eleventyConfig.addCollection("editorialTagList", (collectionApi) => {
@@ -134,6 +162,8 @@ export default async function (eleventyConfig) {
 
   eleventyConfig.addFilter("slugifyTag", slugifyTag);
   eleventyConfig.addFilter("tagLabel", tagLabel);
+  eleventyConfig.addFilter("initials", initials);
+  eleventyConfig.addFilter("getAuthor", getAuthorProfile);
 
   eleventyConfig.addGlobalData("buildDate", new Date());
 
@@ -173,11 +203,13 @@ export default async function (eleventyConfig) {
     <language>en-US</language>
     {%- for post in collections.article | reverse %}
     {%- set absolutePostUrl = post.url | absoluteUrl(site.url) %}
+    {%- set postAuthor = post.data.author | getAuthor(collections.authorProfiles) %}
     <item>
       <title>{{ post.data.title }}</title>
       <link>{{ absolutePostUrl }}</link>
       <guid>{{ absolutePostUrl }}</guid>
       <description>{{ post.data.description | escape }}</description>
+      <author>{{ postAuthor.data.name if postAuthor else site.author }}</author>
       <content:encoded>{{ post.templateContent | htmlToAbsoluteUrls(site.url) }}</content:encoded>
       <pubDate>{{ post.date | dateToRfc822 }}</pubDate>
     </item>
@@ -206,6 +238,8 @@ export default async function (eleventyConfig) {
       cssOutputPath,
       "--minify"
     ]);
+
+    await execFileAsync("npx", ["pagefind", "--site", directories.output]);
   });
 
   return {

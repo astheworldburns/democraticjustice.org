@@ -1,14 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+      (() => {
+        const storageKey = "dj-theme";
+        const storedTheme = localStorage.getItem(storageKey);
+        const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.dataset.theme = storedTheme || systemTheme;
+      })();
+    </script>
     <title>{% if title and title != site.name %}{{ title }} | {{ site.name }}{% else %}{{ site.name }}{% endif %}</title>
     <meta name="description" content="{{ description or site.description }}" />
     <meta name="generator" content="Eleventy v3" />
+    <meta name="theme-color" content="#f6f3ee" />
     <meta property="og:title" content="{% if title and title != site.name %}{{ title }} | {{ site.name }}{% else %}{{ site.name }}{% endif %}" />
     <meta property="og:description" content="{{ description or site.description }}" />
-    <meta property="og:type" content="{% if page.url == '/' %}website{% else %}article{% endif %}" />
+    <meta property="og:type" content="{{ ogType or 'website' }}" />
     <meta property="og:url" content="{{ page.url | absoluteUrl(site.url) }}" />
     <link rel="canonical" href="{{ page.url | absoluteUrl(site.url) }}" />
     <link rel="alternate" type="application/rss+xml" title="{{ site.name }} RSS Feed" href="/feed.xml" />
@@ -19,20 +28,57 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/assets/css/style.css" />
+    {% if extraHead %}{{ extraHead | safe }}{% endif %}
   </head>
-  <body class="bg-stone-200 text-stone-900 antialiased">
-    <a class="sr-only focus:not-sr-only focus:absolute focus:left-6 focus:top-4 focus:z-50 focus:rounded-none focus:bg-stone-900 focus:px-4 focus:py-2 focus:text-stone-50" href="#main-content">
-      Skip to content
-    </a>
-    <div class="mx-auto min-h-screen max-w-paper bg-stone-50 shadow-page">
-      <div class="mx-auto border-x border-stone-300 bg-white">
+  <body class="bg-[rgb(var(--page))] text-[rgb(var(--ink))] antialiased">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <div class="site-frame">
+      <div class="paper-panel">
         {% include "components/header.njk" %}
-        <main id="main-content" class="px-6 py-8 md:px-10 md:py-10">
+        <main id="main-content" class="px-5 pb-16 pt-8 md:px-10 md:pb-20 md:pt-10 lg:px-14">
           {{ content | safe }}
         </main>
         {% include "components/footer.njk" %}
       </div>
     </div>
+    <script>
+      (() => {
+        const storageKey = "dj-theme";
+        const root = document.documentElement;
+        const labelNodes = document.querySelectorAll("[data-theme-label]");
+
+        function preferredTheme() {
+          const storedTheme = localStorage.getItem(storageKey);
+          if (storedTheme) {
+            return storedTheme;
+          }
+
+          return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+
+        function syncThemeLabel(theme) {
+          labelNodes.forEach((node) => {
+            node.textContent = theme === "dark" ? "Day edition" : "Night edition";
+          });
+        }
+
+        function applyTheme(theme) {
+          root.dataset.theme = theme;
+          syncThemeLabel(theme);
+        }
+
+        applyTheme(preferredTheme());
+
+        document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+          button.addEventListener("click", () => {
+            const nextTheme = root.dataset.theme === "dark" ? "light" : "dark";
+            localStorage.setItem(storageKey, nextTheme);
+            applyTheme(nextTheme);
+          });
+        });
+      })();
+    </script>
+    {% if pageScripts %}{{ pageScripts | safe }}{% endif %}
   </body>
 </html>
 

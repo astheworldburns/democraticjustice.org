@@ -1,0 +1,22 @@
+---
+layout: layouts/base.njk
+ogType: website
+---
+<section class="space-y-8">
+  <header class="border-b-2 border-[rgb(var(--rule-strong))] pb-6">
+    <p class="section-kicker">{{ kicker or "Background" }}</p>
+    <h1 class="mt-3 font-display text-[clamp(2.7rem,5vw,4.4rem)] font-black tracking-tight text-[rgb(var(--ink))]">
+      {{ title }}
+    </h1>
+    {% if description %}
+      <p class="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-[rgb(var(--ink-soft))]">
+        {{ description }}
+      </p>
+    {% endif %}
+  </header>
+
+  <div class="article-prose max-w-none">
+    {{ content | safe }}
+  </div>
+</section>
+
