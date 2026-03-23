@@ -49,6 +49,11 @@
         </a>
       </li>
       <li>
+        <a class="{% if page.url == '/staff/' %}text-[rgb(var(--ink))]{% else %}hover:text-[rgb(var(--ink))]{% endif %}" href="/staff/" {% if page.url == '/staff/' %}aria-current="page"{% endif %}>
+          Staff
+        </a>
+      </li>
+      <li>
         <a class="{% if page.url == '/search/' %}text-[rgb(var(--ink))]{% else %}hover:text-[rgb(var(--ink))]{% endif %}" href="/search/" {% if page.url == '/search/' %}aria-current="page"{% endif %}>
           Search
         </a>
@@ -73,5 +78,23 @@
       </ul>
     </div>
   {% endif %}
-</header>
 
+  <div class="edition-strip">
+    <div class="edition-strip__item">
+      <p class="section-kicker">Edition</p>
+      <span class="edition-strip__value">{{ buildDate | displayDate }}</span>
+    </div>
+    <div class="edition-strip__item">
+      <p class="section-kicker">Stories</p>
+      <span class="edition-strip__value">{{ collections.article | length }}</span>
+    </div>
+    <div class="edition-strip__item">
+      <p class="section-kicker">Desks</p>
+      <span class="edition-strip__value">{{ collections.editorialDesks | length }}</span>
+    </div>
+    <div class="edition-strip__item">
+      <p class="section-kicker">Bylines</p>
+      <span class="edition-strip__value">{{ collections.authorProfiles | length }}</span>
+    </div>
+  </div>
+</header>

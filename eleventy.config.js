@@ -68,6 +68,120 @@ function initials(value = "") {
     .join("");
 }
 
+function stripHtml(value = "") {
+  return value
+    .toString()
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, "\"")
+    .replace(/&#39;/g, "'")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function readingMinutes(value = "") {
+  const words = stripHtml(value).split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.ceil(words / 220));
+}
+
+function injectHeadingIds(value = "") {
+  const counts = new Map();
+
+  return value.toString().replace(/<h([23])([^>]*)>([\s\S]*?)<\/h\1>/gi, (match, level, attributes, inner) => {
+    if (/\sid=("|')/.test(attributes)) {
+      return match;
+    }
+
+    const text = stripHtml(inner);
+    const baseSlug = slugifyTag(text);
+
+    if (!baseSlug) {
+      return match;
+    }
+
+    const currentCount = counts.get(baseSlug) || 0;
+    counts.set(baseSlug, currentCount + 1);
+
+    const slug = currentCount === 0 ? baseSlug : `${baseSlug}-${currentCount + 1}`;
+    return `<h${level}${attributes} id="${slug}">${inner}</h${level}>`;
+  });
+}
+
+function extractHeadings(value = "") {
+  const headings = [];
+  const html = injectHeadingIds(value);
+
+  html.replace(/<h([23])([^>]*)id="([^"]+)"[^>]*>([\s\S]*?)<\/h\1>/gi, (match, level, attributes, id, inner) => {
+    headings.push({
+      level: Number(level),
+      id,
+      text: stripHtml(inner)
+    });
+
+    return match;
+  });
+
+  return headings;
+}
+
+function authorArticles(articles = [], authorKey = "") {
+  if (!authorKey) {
+    return [];
+  }
+
+  return articles
+    .filter((article) => article.data.author === authorKey)
+    .sort((left, right) => right.date - left.date);
+}
+
+function uniqueEditorialTags(articles = [], limit = 0) {
+  const tags = new Set();
+
+  for (const article of articles) {
+    const articleTags = Array.isArray(article.data.tags)
+      ? article.data.tags
+      : article.data.tags
+        ? [article.data.tags]
+        : [];
+
+    for (const tag of articleTags) {
+      if (tag && tag !== "article") {
+        tags.add(tag);
+      }
+    }
+  }
+
+  const values = Array.from(tags);
+  return limit > 0 ? values.slice(0, limit) : values;
+}
+
+function findRelatedArticles(articles = [], currentPage = {}, currentTags = [], limit = 3) {
+  const tags = (Array.isArray(currentTags) ? currentTags : [currentTags]).filter((tag) => tag && tag !== "article");
+
+  return articles
+    .filter((article) => article.url !== currentPage.url)
+    .map((article) => {
+      const articleTags = Array.isArray(article.data.tags)
+        ? article.data.tags
+        : article.data.tags
+          ? [article.data.tags]
+          : [];
+      const overlap = articleTags.filter((tag) => tags.includes(tag)).length;
+
+      return {
+        article,
+        overlap
+      };
+    })
+    .filter(({ overlap }) => overlap > 0)
+    .sort((left, right) => right.overlap - left.overlap || right.article.date - left.article.date)
+    .slice(0, limit)
+    .map(({ article }) => article);
+}
+
 function getAuthorProfile(authorKey, authorProfiles = []) {
   if (!authorKey) {
     return null;
@@ -125,6 +239,49 @@ export default async function (eleventyConfig) {
     return Array.from(tags).sort((left, right) => left.localeCompare(right));
   });
 
+  eleventyConfig.addCollection("editorialDesks", (collectionApi) => {
+    const posts = collectionApi
+      .getFilteredByGlob("./src/content/articles/**/*.md")
+      .sort((left, right) => right.date - left.date);
+    const desks = new Set();
+
+    for (const post of posts) {
+      const postTags = Array.isArray(post.data.tags)
+        ? post.data.tags
+        : post.data.tags
+          ? [post.data.tags]
+          : [];
+
+      for (const tag of postTags) {
+        if (tag && tag !== "article") {
+          desks.add(tag);
+        }
+      }
+    }
+
+    return Array.from(desks)
+      .map((tag) => {
+        const items = posts.filter((post) => {
+          const postTags = Array.isArray(post.data.tags)
+            ? post.data.tags
+            : post.data.tags
+              ? [post.data.tags]
+              : [];
+
+          return postTags.includes(tag);
+        });
+
+        return {
+          tag,
+          slug: slugifyTag(tag),
+          label: tagLabel(tag),
+          count: items.length,
+          latest: items[0] || null
+        };
+      })
+      .sort((left, right) => right.count - left.count || left.label.localeCompare(right.label));
+  });
+
   eleventyConfig.addCollection("articleArchive", (collectionApi) => {
     const posts = collectionApi
       .getFilteredByGlob("./src/content/articles/**/*.md")
@@ -150,6 +307,48 @@ export default async function (eleventyConfig) {
     return Array.from(buckets.values());
   });
 
+  eleventyConfig.addCollection("articleArchiveYears", (collectionApi) => {
+    const posts = collectionApi
+      .getFilteredByGlob("./src/content/articles/**/*.md")
+      .sort((left, right) => right.date - left.date);
+    const yearBuckets = new Map();
+
+    for (const post of posts) {
+      const publicationDate = toDateTime(post.date).setZone("America/New_York");
+      const monthKey = publicationDate.toFormat("yyyy-MM");
+      const yearKey = publicationDate.toFormat("yyyy");
+
+      if (!yearBuckets.has(yearKey)) {
+        yearBuckets.set(yearKey, {
+          year: yearKey,
+          label: yearKey,
+          months: new Map()
+        });
+      }
+
+      const yearBucket = yearBuckets.get(yearKey);
+
+      if (!yearBucket.months.has(monthKey)) {
+        yearBucket.months.set(monthKey, {
+          key: monthKey,
+          label: publicationDate.toFormat("MMMM yyyy"),
+          year: yearKey,
+          posts: []
+        });
+      }
+
+      yearBucket.months.get(monthKey).posts.push(post);
+    }
+
+    return Array.from(yearBuckets.values())
+      .map((bucket) => ({
+        year: bucket.year,
+        label: bucket.label,
+        months: Array.from(bucket.months.values())
+      }))
+      .sort((left, right) => Number(right.year) - Number(left.year));
+  });
+
   eleventyConfig.addFilter("displayDate", (value) => {
     const parsed = toDateTime(value);
     return parsed.isValid ? parsed.toFormat("MMMM d, yyyy") : "";
@@ -164,6 +363,12 @@ export default async function (eleventyConfig) {
   eleventyConfig.addFilter("tagLabel", tagLabel);
   eleventyConfig.addFilter("initials", initials);
   eleventyConfig.addFilter("getAuthor", getAuthorProfile);
+  eleventyConfig.addFilter("readingMinutes", readingMinutes);
+  eleventyConfig.addFilter("withHeadingIds", injectHeadingIds);
+  eleventyConfig.addFilter("extractHeadings", extractHeadings);
+  eleventyConfig.addFilter("articlesByAuthor", authorArticles);
+  eleventyConfig.addFilter("uniqueEditorialTags", uniqueEditorialTags);
+  eleventyConfig.addFilter("relatedArticles", findRelatedArticles);
 
   eleventyConfig.addGlobalData("buildDate", new Date());
 

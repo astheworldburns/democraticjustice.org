@@ -49,6 +49,10 @@ collections:
     create: true
     slug: "{{slug}}"
     fields:
+      - label: Kicker
+        name: kicker
+        widget: string
+        required: false
       - label: Headline
         name: title
         widget: string

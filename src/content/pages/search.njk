@@ -12,6 +12,7 @@ pageScripts: |
     window.addEventListener("DOMContentLoaded", () => {
       new PagefindUI({
         element: "#news-search",
+        showEmptyFilters: false,
         showSubResults: true,
         excerptLength: 24,
         resetStyles: false,
@@ -34,7 +35,26 @@ pageScripts: |
   </header>
 
   <div class="search-shell p-5 md:p-7">
+    <div class="mb-6 grid gap-4 border-b border-[rgba(var(--rule),0.92)] pb-6 md:grid-cols-3">
+      <div>
+        <p class="section-kicker">Desk filters</p>
+        <p class="mt-2 font-serif text-sm leading-relaxed text-[rgb(var(--ink-soft))]">
+          Filter the archive by editorial desk, author, or publication year as the index grows.
+        </p>
+      </div>
+      <div>
+        <p class="section-kicker">No hosted backend</p>
+        <p class="mt-2 font-serif text-sm leading-relaxed text-[rgb(var(--ink-soft))]">
+          Search results are generated from the built site itself, keeping the stack portable and low-friction.
+        </p>
+      </div>
+      <div>
+        <p class="section-kicker">Reader workflow</p>
+        <p class="mt-2 font-serif text-sm leading-relaxed text-[rgb(var(--ink-soft))]">
+          Use search when you know the subject, then jump into desks and archives once you’ve found the thread.
+        </p>
+      </div>
+    </div>
     <div id="news-search"></div>
   </div>
 </section>
-

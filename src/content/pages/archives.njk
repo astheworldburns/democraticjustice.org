@@ -5,49 +5,85 @@ description: Browse Democratic Justice reporting by publication month.
 permalink: /archives/index.html
 ogType: website
 ---
-<section class="space-y-8">
+<section class="space-y-8" data-pagefind-body>
   <header class="border-b-2 border-[rgb(var(--rule-strong))] pb-6">
-    <p class="section-kicker">Archive</p>
-    <h1 class="mt-3 font-display text-[clamp(2.7rem,5vw,4.4rem)] font-black tracking-tight text-[rgb(var(--ink))]">
-      Reporting archive
-    </h1>
-    <p class="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-[rgb(var(--ink-soft))]">
-      A month-by-month index of published work so the archive grows like a record, not a dump of old posts.
-    </p>
+    <div class="grid gap-8 xl:grid-cols-[minmax(0,1.3fr)_18rem]">
+      <div>
+        <div class="sr-only" aria-hidden="true">
+          <span data-pagefind-meta="type">Archive page</span>
+        </div>
+        <p class="section-kicker">Archive</p>
+        <h1 class="mt-3 font-display text-[clamp(2.7rem,5vw,4.4rem)] font-black tracking-tight text-[rgb(var(--ink))]">
+          Reporting archive
+        </h1>
+        <p class="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-[rgb(var(--ink-soft))]">
+          A chronological record of published reporting, grouped by year and month so the archive grows like a newsroom index instead of a stack of forgotten posts.
+        </p>
+      </div>
+      <aside class="tool-card p-5">
+        <p class="section-kicker">Jump by year</p>
+        <div class="mt-4 flex flex-wrap gap-2">
+          {% for bucket in collections.articleArchiveYears %}
+            <a class="story-chip" href="#year-{{ bucket.year }}">{{ bucket.year }}</a>
+          {% endfor %}
+        </div>
+      </aside>
+    </div>
   </header>
 
-  <div class="space-y-8">
-    {% for bucket in collections.articleArchive %}
-      <section class="listing-card p-5 md:p-6">
-        <div class="grid gap-5 lg:grid-cols-[14rem_minmax(0,1fr)]">
-          <div>
-            <p class="section-kicker">{{ bucket.year }}</p>
-            <h2 class="mt-2 font-display text-3xl font-black tracking-tight text-[rgb(var(--ink))]">
-              {{ bucket.label }}
-            </h2>
+  <div class="grid gap-8 xl:grid-cols-[minmax(0,1fr)_18rem]">
+    <div class="space-y-10">
+      {% for yearBucket in collections.articleArchiveYears %}
+        <section id="year-{{ yearBucket.year }}" class="space-y-5">
+          <div class="flex items-end justify-between border-b border-[rgb(var(--rule-strong))] pb-3">
+            <h2 class="font-display text-3xl font-black tracking-tight text-[rgb(var(--ink))]">{{ yearBucket.year }}</h2>
+            <p class="section-kicker">{{ yearBucket.months | length }} {% if yearBucket.months | length == 1 %}month{% else %}months{% endif %}</p>
           </div>
-          <div class="divide-y divide-[rgba(var(--rule),0.92)]">
-            {% for story in bucket.posts %}
-              {% set storyAuthor = story.data.author | getAuthor(collections.authorProfiles) %}
-              <article class="grid gap-3 py-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-start">
-                <div>
-                  <h3 class="font-serif text-2xl font-black leading-tight text-[rgb(var(--ink))]">
-                    <a class="headline-link" href="{{ story.url }}">{{ story.data.title }}</a>
-                  </h3>
-                  <p class="mt-2 max-w-3xl font-serif text-base leading-relaxed text-[rgb(var(--ink-soft))]">
-                    {{ story.data.description }}
-                  </p>
+          <div class="space-y-6">
+            {% for monthBucket in yearBucket.months %}
+              <section class="listing-card p-5 md:p-6">
+                <div class="grid gap-5 lg:grid-cols-[14rem_minmax(0,1fr)]">
+                  <div>
+                    <p class="section-kicker">{{ monthBucket.year }}</p>
+                    <h3 class="mt-2 font-display text-3xl font-black tracking-tight text-[rgb(var(--ink))]">
+                      {{ monthBucket.label }}
+                    </h3>
+                  </div>
+                  <div class="divide-y divide-[rgba(var(--rule),0.92)]">
+                    {% for story in monthBucket.posts %}
+                      {% set storyAuthor = story.data.author | getAuthor(collections.authorProfiles) %}
+                      <article class="grid gap-3 py-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-start">
+                        <div>
+                          <h4 class="font-serif text-2xl font-black leading-tight text-[rgb(var(--ink))]">
+                            <a class="headline-link" href="{{ story.url }}">{{ story.data.title }}</a>
+                          </h4>
+                          <p class="mt-2 max-w-3xl font-serif text-base leading-relaxed text-[rgb(var(--ink-soft))]">
+                            {{ story.data.description }}
+                          </p>
+                        </div>
+                        <div class="meta-row md:text-right">
+                          <span>{{ story.date | displayDate }}</span>
+                          <span>{% if storyAuthor %}<a class="hover:text-[rgb(var(--ink))]" href="{{ storyAuthor.url }}">{{ storyAuthor.data.name }}</a>{% else %}{{ site.author }}{% endif %}</span>
+                        </div>
+                      </article>
+                    {% endfor %}
+                  </div>
                 </div>
-                <div class="meta-row md:text-right">
-                  <span>{{ story.date | displayDate }}</span>
-                  <span>{% if storyAuthor %}<a class="hover:text-[rgb(var(--ink))]" href="{{ storyAuthor.url }}">{{ storyAuthor.data.name }}</a>{% else %}{{ site.author }}{% endif %}</span>
-                </div>
-              </article>
+              </section>
             {% endfor %}
           </div>
+        </section>
+      {% endfor %}
+    </div>
+
+    <aside class="space-y-4 xl:pt-1">
+      <div class="tool-card p-5 xl:sticky xl:top-6">
+        <p class="section-kicker">Archive tools</p>
+        <div class="mt-4 space-y-3">
+          <a class="button-link" href="/search/">Search the reporting</a>
+          <a class="button-link-muted" href="/feed.xml">Read the feed</a>
         </div>
-      </section>
-    {% endfor %}
+      </div>
+    </aside>
   </div>
 </section>
-

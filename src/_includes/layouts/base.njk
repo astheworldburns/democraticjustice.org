@@ -14,7 +14,7 @@
     <title>{% if title and title != site.name %}{{ title }} | {{ site.name }}{% else %}{{ site.name }}{% endif %}</title>
     <meta name="description" content="{{ description or site.description }}" />
     <meta name="generator" content="Eleventy v3" />
-    <meta name="theme-color" content="#f6f3ee" />
+    <meta name="theme-color" content="#f6f3ee" data-theme-color />
     <meta property="og:title" content="{% if title and title != site.name %}{{ title }} | {{ site.name }}{% else %}{{ site.name }}{% endif %}" />
     <meta property="og:description" content="{{ description or site.description }}" />
     <meta property="og:type" content="{{ ogType or 'website' }}" />
@@ -31,6 +31,9 @@
     {% if extraHead %}{{ extraHead | safe }}{% endif %}
   </head>
   <body class="bg-[rgb(var(--page))] text-[rgb(var(--ink))] antialiased">
+    <div class="reading-progress" aria-hidden="true">
+      <span class="reading-progress__bar" data-reading-progress></span>
+    </div>
     <a class="skip-link" href="#main-content">Skip to content</a>
     <div class="site-frame">
       <div class="paper-panel">
@@ -46,6 +49,8 @@
         const storageKey = "dj-theme";
         const root = document.documentElement;
         const labelNodes = document.querySelectorAll("[data-theme-label]");
+        const themeColorMeta = document.querySelector("[data-theme-color]");
+        const systemQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
         function preferredTheme() {
           const storedTheme = localStorage.getItem(storageKey);
@@ -54,6 +59,14 @@
           }
 
           return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+
+        function syncThemeColor(theme) {
+          if (!themeColorMeta) {
+            return;
+          }
+
+          themeColorMeta.setAttribute("content", theme === "dark" ? "#111827" : "#f6f3ee");
         }
 
         function syncThemeLabel(theme) {
@@ -65,6 +78,7 @@
         function applyTheme(theme) {
           root.dataset.theme = theme;
           syncThemeLabel(theme);
+          syncThemeColor(theme);
         }
 
         applyTheme(preferredTheme());
@@ -76,9 +90,72 @@
             applyTheme(nextTheme);
           });
         });
+
+        systemQuery.addEventListener("change", (event) => {
+          if (!localStorage.getItem(storageKey)) {
+            applyTheme(event.matches ? "dark" : "light");
+          }
+        });
+
+        const articleRoot = document.querySelector("[data-reading-root]");
+        const progressBar = document.querySelector("[data-reading-progress]");
+
+        if (articleRoot && progressBar) {
+          const updateProgress = () => {
+            const articleTop = articleRoot.offsetTop;
+            const articleHeight = articleRoot.offsetHeight;
+            const viewportHeight = window.innerHeight;
+            const distance = Math.max(articleHeight - viewportHeight, 1);
+            const progress = Math.min(Math.max((window.scrollY - articleTop) / distance, 0), 1);
+            progressBar.style.width = `${progress * 100}%`;
+          };
+
+          updateProgress();
+          window.addEventListener("scroll", updateProgress, { passive: true });
+          window.addEventListener("resize", updateProgress);
+        }
+
+        document.querySelectorAll("[data-copy-link]").forEach((button) => {
+          button.addEventListener("click", async () => {
+            const defaultLabel = button.dataset.copyLabelDefault || "Copy link";
+            const successLabel = button.dataset.copyLabelSuccess || "Link copied";
+
+            try {
+              await navigator.clipboard.writeText(window.location.href);
+              button.textContent = successLabel;
+              window.setTimeout(() => {
+                button.textContent = defaultLabel;
+              }, 1800);
+            } catch (error) {
+              button.textContent = "Copy failed";
+            }
+          });
+        });
+
+        document.querySelectorAll("[data-print-page]").forEach((button) => {
+          button.addEventListener("click", () => window.print());
+        });
+
+        document.querySelectorAll("[data-share-page]").forEach((button) => {
+          if (!navigator.share) {
+            button.hidden = true;
+            return;
+          }
+
+          button.hidden = false;
+          button.addEventListener("click", async () => {
+            try {
+              await navigator.share({
+                title: document.title,
+                url: window.location.href
+              });
+            } catch (error) {
+              // Ignore cancelled shares.
+            }
+          });
+        });
       })();
     </script>
     {% if pageScripts %}{{ pageScripts | safe }}{% endif %}
   </body>
 </html>
-
