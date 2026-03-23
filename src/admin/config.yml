@@ -2,6 +2,7 @@ backend:
   name: github
   repo: astheworldburns/democraticjustice.org
   branch: main
+  base_url: https://sveltia-cms-auth.sethsturm.workers.dev
 
 site_url: https://democraticjustice.org
 display_url: https://democraticjustice.org
