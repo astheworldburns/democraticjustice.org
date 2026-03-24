@@ -5,7 +5,7 @@ layout: layouts/base.njk
 {% set reporterTags = reporterStories | uniqueEditorialTags(4) %}
 <section class="space-y-10" data-pagefind-body>
   <header class="border-b-2 border-[rgb(var(--rule-strong))] pb-8">
-    <p class="section-kicker">Staff Profile</p>
+    <p class="section-kicker">Newsroom</p>
     <div class="mt-5 grid gap-8 xl:grid-cols-[minmax(0,1.2fr)_18rem]">
       <div class="grid gap-5 md:grid-cols-[auto_1fr] md:items-end">
         {% if headshot %}
@@ -31,9 +31,9 @@ layout: layouts/base.njk
       </div>
       <aside class="space-y-4">
         <div class="tool-card p-5">
-          <p class="section-kicker">Reporter at a glance</p>
+          <p class="section-kicker">Reporting brief</p>
           <p class="stat-card__value">{{ reporterStories | length }}</p>
-          <p class="stat-card__caption">Published pieces currently filed to this byline.</p>
+          <p class="stat-card__caption">Published reports currently attached to this byline.</p>
         </div>
         {% if reporterTags | length %}
           <div class="tool-card p-5">
@@ -47,7 +47,7 @@ layout: layouts/base.njk
         {% endif %}
         {% if email or bluesky or twitter %}
           <div class="tool-card p-5">
-            <p class="section-kicker">Contact</p>
+            <p class="section-kicker">Reach the desk</p>
             <div class="social-list mt-4">
               {% if email %}
                 <a class="social-link" href="mailto:{{ email }}">Email</a>

@@ -9,112 +9,93 @@ ogType: website
 {% set lead = stories[0] %}
 {% set leadAuthor = lead.data.author | getAuthor(collections.authorProfiles) if lead else null %}
 <div class="space-y-14" data-pagefind-body>
-  <section class="space-y-8 border-b-2 border-[rgb(var(--rule-strong))] pb-10">
-    <div class="grid gap-8 xl:grid-cols-[minmax(0,1.6fr)_minmax(18rem,0.82fr)]">
-      <div class="space-y-6">
-        <div class="flex flex-col gap-4 border-b border-[rgba(var(--rule),0.92)] pb-5 md:flex-row md:items-end md:justify-between">
-          <div>
-            <p class="section-kicker">Front page</p>
-            <h1 class="mt-3 font-display text-[clamp(2.9rem,5.8vw,5rem)] font-black leading-[0.92] tracking-tight text-[rgb(var(--ink))]">
-              Accountability reporting shaped like a publication, not a content feed
+  {% if lead %}
+    <section class="space-y-8 border-b-2 border-[rgb(var(--rule-strong))] pb-10">
+      <div class="grid gap-8 xl:grid-cols-[minmax(0,1.6fr)_minmax(18rem,0.82fr)]">
+        <article class="lead-card news-grid-accent overflow-hidden p-6 md:p-8">
+          <div class="ml-3">
+            <p class="section-kicker">{{ lead.data.kicker or "Lead report" }}</p>
+            <h1 class="mt-3 max-w-5xl font-display text-[clamp(2.45rem,4.9vw,5rem)] font-black leading-[0.94] tracking-tight text-[rgb(var(--ink))]">
+              <a class="headline-link" href="{{ lead.url }}">{{ lead.data.title }}</a>
             </h1>
-          </div>
-          <p class="max-w-xl font-serif text-lg leading-relaxed text-[rgb(var(--ink-soft))]">
-            Democratic Justice is organized as a living desk: searchable, syndication-ready, and structured so serious reporting can accumulate with weight.
-          </p>
-        </div>
-
-        {% if lead %}
-          <article class="lead-card news-grid-accent overflow-hidden p-6 md:p-8">
-            <div class="ml-3">
-              <p class="section-kicker">{{ lead.data.kicker or "Lead report" }}</p>
-              <h2 class="mt-3 max-w-5xl font-display text-[clamp(2.35rem,4.7vw,4.9rem)] font-black leading-[0.94] tracking-tight text-[rgb(var(--ink))]">
-                <a class="headline-link" href="{{ lead.url }}">{{ lead.data.title }}</a>
-              </h2>
-              <div class="meta-row mt-4">
-                <span>{{ lead.date | displayDate }}</span>
-                <span class="meta-divider">By {% if leadAuthor %}<a class="hover:text-[rgb(var(--ink))]" href="{{ leadAuthor.url }}">{{ leadAuthor.data.name }}</a>{% else %}{{ site.author }}{% endif %}</span>
-                <span class="meta-divider">{{ lead.templateContent | readingMinutes }} min read</span>
+            <div class="meta-row mt-4">
+              <span>{{ lead.date | displayDate }}</span>
+              <span class="meta-divider">By {% if leadAuthor %}<a class="hover:text-[rgb(var(--ink))]" href="{{ leadAuthor.url }}">{{ leadAuthor.data.name }}</a>{% else %}{{ site.name }}{% endif %}</span>
+              <span class="meta-divider">{{ lead.templateContent | readingMinutes }} min read</span>
+            </div>
+            {% if lead.data.tags %}
+              <div class="mt-4 flex flex-wrap gap-3">
+                {% for tag in lead.data.tags %}
+                  {% if tag != "article" %}
+                    <a class="story-chip" href="/category/{{ tag | slugifyTag }}/">{{ tag | tagLabel }}</a>
+                  {% endif %}
+                {% endfor %}
               </div>
-              {% if lead.data.tags %}
-                <div class="mt-4 flex flex-wrap gap-3">
-                  {% for tag in lead.data.tags %}
-                    {% if tag != "article" %}
-                      <a class="story-chip" href="/category/{{ tag | slugifyTag }}/">{{ tag | tagLabel }}</a>
-                    {% endif %}
-                  {% endfor %}
-                </div>
-              {% endif %}
-              <p class="mt-6 max-w-4xl font-serif text-[clamp(1.18rem,1rem+0.4vw,1.5rem)] leading-relaxed text-[rgb(var(--ink-soft))]">
+            {% endif %}
+            <p class="mt-6 max-w-4xl font-serif text-[clamp(1.18rem,1rem+0.4vw,1.5rem)] leading-relaxed text-[rgb(var(--ink-soft))]">
               {{ lead.data.description }}
             </p>
             <p class="mt-6 max-w-4xl font-serif text-base leading-8 text-[rgb(var(--ink-soft))]">
-              {{ lead.templateContent | striptags | truncate(430, true, "…") }}
+              {{ lead.templateContent | excerptText(430) }}
             </p>
-              <div class="mt-8 flex flex-wrap gap-4">
-                <a class="button-link" href="{{ lead.url }}">Read the full report</a>
-                <a class="button-link-muted" href="/search/">Search the archive</a>
-              </div>
+            <div class="mt-8 flex flex-wrap gap-4">
+              <a class="button-link" href="{{ lead.url }}">Read the full report</a>
+              <a class="button-link-muted" href="/archives/">Browse the archive</a>
             </div>
-          </article>
-        {% endif %}
-      </div>
-
-      <aside class="space-y-5">
-        <section class="stat-card">
-          <p class="section-kicker">Edition note</p>
-          <p class="stat-card__value">{{ collections.article | length }}</p>
-          <p class="stat-card__caption">
-            Published pieces in the archive, organized into {{ collections.editorialDesks | length }} editorial desks and distributed through a full-content feed.
-          </p>
-        </section>
-
-        <section class="rail-card p-5">
-          <p class="section-kicker">Newsroom brief</p>
-          <p class="mt-3 font-serif text-lg leading-relaxed text-[rgb(var(--ink-soft))]">
-            The platform is designed for long-form accountability work: durable URLs, text-first reading, and publication-wide search that runs without a hosted backend.
-          </p>
-          <div class="mt-5 flex flex-wrap gap-3">
-            <a class="button-link" href="/about/">Read the mission</a>
-            <a class="button-link-muted" href="/feed.xml">Follow by RSS</a>
           </div>
-        </section>
+        </article>
 
-        {% if collections.editorialDesks | length %}
+        <aside class="space-y-5">
           <section class="rail-card p-5">
-            <p class="section-kicker">Desk map</p>
-            <div class="mt-4 space-y-4">
-              {% for desk in collections.editorialDesks %}
-                <article class="border-b border-[rgba(var(--rule),0.92)] pb-4 last:border-b-0 last:pb-0">
-                  <div class="flex items-start justify-between gap-4">
-                    <div>
-                      <h3 class="font-serif text-xl font-black leading-tight text-[rgb(var(--ink))]">
-                        <a class="headline-link" href="/category/{{ desk.slug }}/">{{ desk.label }}</a>
-                      </h3>
-                      {% if desk.latest %}
-                        <p class="mt-2 font-serif text-sm leading-relaxed text-[rgb(var(--ink-soft))]">
-                          Latest: <a class="headline-link" href="{{ desk.latest.url }}">{{ desk.latest.data.title }}</a>
-                        </p>
-                      {% endif %}
-                    </div>
-                    <span class="font-ui text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[rgb(var(--ink-muted))]">
-                      {{ desk.count }}
-                    </span>
-                  </div>
-                </article>
-              {% endfor %}
+            <p class="section-kicker">Mission</p>
+            <h2 class="mt-3 font-display text-3xl font-black leading-tight tracking-tight text-[rgb(var(--ink))]">
+              Reporting meant to hold up over time
+            </h2>
+            <p class="mt-4 font-serif text-base leading-relaxed text-[rgb(var(--ink-soft))]">
+              Democratic Justice covers public power, party machinery, elections, and accountability failures with document-based reporting rooted in West Virginia.
+            </p>
+            <div class="mt-5 flex flex-wrap gap-3">
+              <a class="button-link" href="/about/">Read the mission</a>
+              <a class="button-link-muted" href="/feed.xml">Follow by RSS</a>
             </div>
           </section>
-        {% endif %}
-      </aside>
-    </div>
-  </section>
+
+          {% if collections.editorialDesks | length %}
+            <section class="rail-card p-5">
+              <p class="section-kicker">Editorial desks</p>
+              <div class="mt-4 space-y-4">
+                {% for desk in collections.editorialDesks %}
+                  <article class="border-b border-[rgba(var(--rule),0.92)] pb-4 last:border-b-0 last:pb-0">
+                    <div class="flex items-start justify-between gap-4">
+                      <div>
+                        <h2 class="font-serif text-xl font-black leading-tight text-[rgb(var(--ink))]">
+                          <a class="headline-link" href="/category/{{ desk.slug }}/">{{ desk.label }}</a>
+                        </h2>
+                        {% if desk.latest %}
+                          <p class="mt-2 font-serif text-sm leading-relaxed text-[rgb(var(--ink-soft))]">
+                            Latest: <a class="headline-link" href="{{ desk.latest.url }}">{{ desk.latest.data.title }}</a>
+                          </p>
+                        {% endif %}
+                      </div>
+                      <span class="font-ui text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[rgb(var(--ink-muted))]">
+                        {{ desk.count }}
+                      </span>
+                    </div>
+                  </article>
+                {% endfor %}
+              </div>
+            </section>
+          {% endif %}
+        </aside>
+      </div>
+    </section>
+  {% endif %}
 
   {% if stories | length > 1 %}
     <section class="space-y-6">
       <div class="flex items-end justify-between border-b border-[rgb(var(--rule-strong))] pb-3">
-        <h2 class="font-display text-3xl font-black tracking-tight text-[rgb(var(--ink))]">Recent filing</h2>
-        <p class="section-kicker">Broadsheet grid</p>
+        <h2 class="font-display text-3xl font-black tracking-tight text-[rgb(var(--ink))]">Latest reporting</h2>
+        <p class="section-kicker">From the archive</p>
       </div>
       <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-6">
         {% for story in stories %}
@@ -142,29 +123,29 @@ ogType: website
 
   <section class="space-y-6">
     <div class="flex items-end justify-between border-b border-[rgb(var(--rule-strong))] pb-3">
-      <h2 class="font-display text-3xl font-black tracking-tight text-[rgb(var(--ink))]">How the desk is built</h2>
-      <p class="section-kicker">Static-first features</p>
+      <h2 class="font-display text-3xl font-black tracking-tight text-[rgb(var(--ink))]">Reporting standards</h2>
+      <p class="section-kicker">Method</p>
     </div>
     <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
       <article class="stat-card">
-        <p class="section-kicker">Search</p>
-        <p class="stat-card__value">Static</p>
-        <p class="stat-card__caption">Full-text search runs through Pagefind, so readers can move through the archive without a hosted search service.</p>
+        <p class="section-kicker">Records</p>
+        <p class="stat-card__value">Documented</p>
+        <p class="stat-card__caption">Reporting starts with records, filings, source documents, and traceable claims that can be checked after publication.</p>
       </article>
       <article class="stat-card">
-        <p class="section-kicker">Publishing</p>
-        <p class="stat-card__value">Git-backed</p>
-        <p class="stat-card__caption">Writers publish structured content through Sveltia CMS while the source stays portable and reviewable.</p>
+        <p class="section-kicker">Copy</p>
+        <p class="stat-card__value">Tight</p>
+        <p class="stat-card__caption">Stories are written for clarity, attribution, and durable reading rather than the churn and posture of social feeds.</p>
       </article>
       <article class="stat-card">
-        <p class="section-kicker">Delivery</p>
-        <p class="stat-card__value">Edge</p>
-        <p class="stat-card__caption">Cloudflare Pages distributes the build globally, preserving speed and resilience during traffic spikes.</p>
+        <p class="section-kicker">Accountability</p>
+        <p class="stat-card__value">Named</p>
+        <p class="stat-card__caption">Power, institutions, parties, and decision makers are identified directly so responsibility is never blurred into process language.</p>
       </article>
       <article class="stat-card">
-        <p class="section-kicker">Syndication</p>
-        <p class="stat-card__value">Full HTML</p>
-        <p class="stat-card__caption">The RSS feed carries complete article markup so newsletters and downstream readers inherit the full reporting package.</p>
+        <p class="section-kicker">Archive</p>
+        <p class="stat-card__value">Durable</p>
+        <p class="stat-card__caption">Each piece is published with permanent routing, desk taxonomy, and searchable archives so the reporting keeps its value after the first wave.</p>
       </article>
     </div>
   </section>
@@ -172,7 +153,7 @@ ogType: website
   {% if collections.authorProfiles | length %}
     <section class="space-y-6">
       <div class="flex items-end justify-between border-b border-[rgb(var(--rule-strong))] pb-3">
-        <h2 class="font-display text-3xl font-black tracking-tight text-[rgb(var(--ink))]">Bylines</h2>
+        <h2 class="font-display text-3xl font-black tracking-tight text-[rgb(var(--ink))]">Newsroom</h2>
         <p class="section-kicker">Newsroom</p>
       </div>
       <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -199,7 +180,7 @@ ogType: website
               {{ reporter.data.short_bio }}
             </p>
             <div class="meta-row mt-5">
-              <span>{{ reporterStories | length }} filed</span>
+              <span>{{ reporterStories | length }} published</span>
             </div>
             {% if reporterTags | length %}
               <div class="mt-4 flex flex-wrap gap-2">

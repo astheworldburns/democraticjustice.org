@@ -9,10 +9,10 @@ ogType: website
   <header class="border-b-2 border-[rgb(var(--rule-strong))] pb-6">
     <p class="section-kicker">Newsroom</p>
     <h1 class="mt-3 font-display text-[clamp(2.7rem,5vw,4.4rem)] font-black tracking-tight text-[rgb(var(--ink))]">
-      Staff and bylines
+      Staff
     </h1>
     <p class="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-[rgb(var(--ink-soft))]">
-      Reporter profiles, beats, and recent filing history. The newsroom can scale author by author without changing the publication’s underlying architecture.
+      Reporter bios, beats, and recent work. Democratic Justice is organized so every byline is attached to consistent standards, searchable archives, and a publication-wide editorial frame.
     </p>
   </header>
 
@@ -44,7 +44,7 @@ ogType: website
           {{ reporter.data.bio or reporter.data.short_bio }}
         </p>
         <div class="meta-row mt-5">
-          <span>{{ reporterStories | length }} filed</span>
+          <span>{{ reporterStories | length }} published</span>
         </div>
         {% if reporterTags | length %}
           <div class="mt-4 flex flex-wrap gap-2">

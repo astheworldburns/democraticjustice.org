@@ -9,22 +9,36 @@ kicker: Publication
 
 # About Democratic Justice
 
-Democratic Justice is an editorial platform for investigative journalism and political accountability reporting rooted in West Virginia. It is built to communicate authority before the reader reaches the second paragraph: restrained typography, durable URLs, disciplined archives, and a publishing stack designed for permanence rather than platform dependence.
+Democratic Justice is an investigative journalism publication focused on political accountability, public power, elections, and institutional failure in West Virginia. The mission is simple: produce reporting that can be checked, cited, archived, and revisited long after the news cycle moves on.
 
-The publication is structured to begin as a single-author operation and grow into a multi-bylined newsroom without changing its underlying architecture. Stories are written in plain text, managed through a Git-backed CMS, syndicated through a full-content RSS feed, and deployed statically through Cloudflare Pages without database overhead.
+The publication is being built to grow beyond any single voice. Reporters, editors, archives, and editorial desks are structured so the authority of the work comes from verification, clarity, and consistency rather than personality alone.
 
-## Editorial Intent
+## Mission
 
-The reporting focus is straightforward:
+The newsroom exists to document how power is exercised, shielded, and justified. That includes the mechanics of parties, institutions, campaigns, public agencies, and the people who run them.
+
+The standard is not speed for its own sake. It is durable reporting with enough context and structure that readers can return to it, search it, and use it.
+
+## Coverage Priorities
+
+The reporting focus is direct:
 
 - Follow public records.
-- Document power, money, and influence.
-- Publish with enough structure and clarity that the work can circulate beyond social feeds.
+- Track money, patronage, and institutional control.
+- Name decisions, decision makers, and the consequences that follow.
+- Preserve findings in archives organized by desk, date, and byline.
 
-The goal is not simply to publish commentary quickly. It is to build a body of reporting that can be searched, cited, revisited, and trusted over time.
+## Standards
 
-## Technical Approach
+The editorial approach is built around a few non-negotiables:
 
-The site uses Eleventy, Tailwind CSS, Sveltia CMS, and Pagefind. That stack keeps hosting costs low while preserving source control, plain-text content, and portability, while also delivering modern expectations such as responsive theming, static search, and strong article performance.
+- Lead with the strongest verified fact.
+- Attribute assertions clearly and avoid soft, evasive language.
+- Keep copy tight enough to read cleanly and detailed enough to stand up to scrutiny.
+- Publish in a form that remains accessible, searchable, and portable.
 
-If you are here to adapt the site, the next phase is editorial and operational: publish real reporting, refine newsroom standards, expand bylines, and complete the CMS authentication flow for contributing writers.
+## Why The Site Is Built This Way
+
+Democratic Justice uses a static publishing stack so the reporting remains fast, portable, and resistant to platform dependency. The design favors legibility, restraint, and durable archives over the short half-life of algorithmic feeds.
+
+This is a publication designed for accumulation. Stories should not disappear into a timeline. They should compound into a body of work.

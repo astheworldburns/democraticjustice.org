@@ -83,6 +83,16 @@ function stripHtml(value = "") {
     .trim();
 }
 
+function excerptText(value = "", length = 430) {
+  const plainText = stripHtml(value);
+
+  if (plainText.length <= length) {
+    return plainText;
+  }
+
+  return `${plainText.slice(0, Math.max(0, length - 1)).trimEnd()}…`;
+}
+
 function readingMinutes(value = "") {
   const words = stripHtml(value).split(/\s+/).filter(Boolean).length;
   return Math.max(1, Math.ceil(words / 220));
@@ -402,6 +412,7 @@ export default async function (eleventyConfig) {
   eleventyConfig.addFilter("tagLabel", tagLabel);
   eleventyConfig.addFilter("initials", initials);
   eleventyConfig.addFilter("getAuthor", getAuthorProfile);
+  eleventyConfig.addFilter("excerptText", excerptText);
   eleventyConfig.addFilter("readingMinutes", readingMinutes);
   eleventyConfig.addFilter("withHeadingIds", injectHeadingIds);
   eleventyConfig.addFilter("extractHeadings", extractHeadings);
