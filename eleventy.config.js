@@ -206,6 +206,15 @@ function sortByDateDesc(items = []) {
   return [...items].sort((left, right) => right.date - left.date);
 }
 
+function publishedArticles(items = []) {
+  const now = DateTime.now().setZone(SITE_TIMEZONE);
+
+  return items.filter((item) => {
+    const publicationDate = toDateTime(item.date).setZone(SITE_TIMEZONE);
+    return publicationDate.isValid && publicationDate <= now;
+  });
+}
+
 export default async function (eleventyConfig) {
   eleventyConfig.addPlugin(pluginRss, {
     posthtmlRenderOptions: {
@@ -233,6 +242,14 @@ export default async function (eleventyConfig) {
     collectionApi
       .getFilteredByGlob("./src/content/articles/**/*.md")
       .sort((left, right) => right.date - left.date)
+  );
+
+  eleventyConfig.addCollection("publishedArticle", (collectionApi) =>
+    publishedArticles(
+      collectionApi
+        .getFilteredByGlob("./src/content/articles/**/*.md")
+        .sort((left, right) => right.date - left.date)
+    )
   );
 
   eleventyConfig.addCollection("authorProfiles", (collectionApi) =>
@@ -392,6 +409,7 @@ export default async function (eleventyConfig) {
   eleventyConfig.addFilter("uniqueEditorialTags", uniqueEditorialTags);
   eleventyConfig.addFilter("relatedArticles", findRelatedArticles);
   eleventyConfig.addFilter("sortByDateDesc", sortByDateDesc);
+  eleventyConfig.addFilter("publishedArticles", publishedArticles);
 
   eleventyConfig.addGlobalData("buildDate", new Date());
 
