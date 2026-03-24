@@ -126,22 +126,52 @@
     line-height: 1;
   }
 
+  .brand-lockup {
+    --brand-gap: 0.72rem;
+    --brand-mark: 2.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.32rem;
+    min-width: 0;
+  }
+
+  .brand-lockup--home {
+    --brand-mark: 3.05rem;
+  }
+
+  .brand-lockup--section {
+    --brand-mark: 2.8rem;
+  }
+
+  .brand-lockup__tagline {
+    padding-left: calc(var(--brand-mark) + var(--brand-gap));
+    font-family: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 0.66rem;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgb(var(--ink-muted));
+  }
+
+  .brand-lockup__tagline--home {
+    max-width: 30rem;
+  }
+
+  .brand-lockup__tagline--section {
+    max-width: 28rem;
+  }
+
   .site-wordmark {
-    display: inline-flex;
+    display: inline-grid;
+    grid-template-columns: var(--brand-mark) auto;
     align-items: center;
+    column-gap: var(--brand-gap);
     width: max-content;
     max-width: 100%;
     line-height: 1;
     white-space: nowrap;
     text-decoration: none;
-  }
-
-  .site-wordmark--home {
-    gap: 0.7rem;
-  }
-
-  .site-wordmark--section {
-    gap: 0.7rem;
   }
 
   .site-wordmark__text {
@@ -155,14 +185,14 @@
 
   .site-wordmark__text--home {
     font-size: clamp(1.85rem, 4.5vw, 3.05rem);
-    line-height: 0.92;
-    letter-spacing: 0.08em;
+    line-height: 0.9;
+    letter-spacing: 0.075em;
   }
 
   .site-wordmark__text--section {
-    font-size: clamp(2.15rem, 6vw, 3.3rem);
+    font-size: clamp(2rem, 5.6vw, 3.05rem);
     line-height: 0.9;
-    letter-spacing: 0.085em;
+    letter-spacing: 0.08em;
   }
 
   .proof-mark {
@@ -172,8 +202,8 @@
   }
 
   .proof-mark--masthead {
-    width: 2.05rem;
-    height: 2.05rem;
+    width: var(--brand-mark);
+    height: var(--brand-mark);
     transform: translateY(0.03rem);
   }
 
@@ -183,25 +213,31 @@
   }
 
   @media (min-width: 768px) {
-    .site-wordmark--home {
-      gap: 0.8rem;
+    .brand-lockup {
+      gap: 0.4rem;
     }
 
-    .site-wordmark--section {
-      gap: 0.8rem;
+    .brand-lockup--home {
+      --brand-gap: 0.82rem;
+      --brand-mark: 3.45rem;
+    }
+
+    .brand-lockup--section {
+      --brand-gap: 0.8rem;
+      --brand-mark: 3.15rem;
+    }
+
+    .brand-lockup__tagline {
+      font-size: 0.69rem;
+      letter-spacing: 0.2em;
     }
 
     .site-wordmark__text--home {
-      letter-spacing: 0.095em;
+      letter-spacing: 0.082em;
     }
 
     .site-wordmark__text--section {
-      letter-spacing: 0.09em;
-    }
-
-    .proof-mark--masthead {
-      width: 2.3rem;
-      height: 2.3rem;
+      letter-spacing: 0.084em;
     }
   }
 
