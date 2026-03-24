@@ -3,6 +3,7 @@
 {% set proofMarkDaySrc = site.proofMarkDay ~ "?v=" ~ buildVersion %}
 {% set proofMarkNightSrc = site.proofMarkNight ~ "?v=" ~ buildVersion %}
 {% set proofMarkPrintSrc = site.proofMarkPrint ~ "?v=" ~ buildVersion %}
+{% set mastheadTagline = "Saving Democracy With Proof" %}
 
 {% if isArticlePage %}
   <header class="border-b border-[rgba(var(--rule-strong),0.9)]">
@@ -23,7 +24,7 @@
           </span>
         </a>
         <p class="brand-lockup__tagline brand-lockup__tagline--home">
-          Saving Democracy Through Accountability
+          {{ mastheadTagline }}
         </p>
       </div>
       <div class="flex flex-wrap items-center gap-3 lg:justify-end">
@@ -83,7 +84,7 @@
           </span>
         </a>
         <p class="brand-lockup__tagline brand-lockup__tagline--section">
-          Saving Democracy Through Accountability
+          {{ mastheadTagline }}
         </p>
       </div>
       <div class="flex flex-wrap items-center gap-3">
