@@ -194,6 +194,13 @@ function getAuthorProfile(authorKey, authorProfiles = []) {
   );
 }
 
+function wrapImageCaptions(value = "") {
+  return value.replace(
+    /<p>\s*(<img\b[^>]*>)\s*<\/p>\s*<p>\s*<em>([\s\S]*?)<\/em>\s*<\/p>/gi,
+    (match, imageHtml, captionHtml) => `<figure>${imageHtml}<figcaption>${captionHtml.trim()}</figcaption></figure>`
+  );
+}
+
 export default async function (eleventyConfig) {
   eleventyConfig.addPlugin(pluginRss, {
     posthtmlRenderOptions: {
@@ -206,6 +213,14 @@ export default async function (eleventyConfig) {
 
   eleventyConfig.addWatchTarget("./tailwind.config.js");
   eleventyConfig.addWatchTarget("./src/assets/css/tailwind.css");
+
+  eleventyConfig.addTransform("imageCaptions", (content, outputPath) => {
+    if (!outputPath || !outputPath.endsWith(".html")) {
+      return content;
+    }
+
+    return wrapImageCaptions(content);
+  });
 
   eleventyConfig.addCollection("article", (collectionApi) =>
     collectionApi

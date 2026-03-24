@@ -101,12 +101,20 @@ export default {
             img: {
               borderRadius: "0"
             },
+            figure: {
+              margin: "0"
+            },
             figcaption: {
-              color: "rgb(var(--ink-muted))",
+              borderTopColor: colors.gray[300],
+              borderTopStyle: "solid",
+              borderTopWidth: "1px",
+              color: colors.gray[500],
               fontFamily: "Inter, \"Helvetica Neue\", Arial, sans-serif",
-              fontSize: "0.76rem",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase"
+              fontSize: "0.78rem",
+              fontStyle: "italic",
+              lineHeight: "1.5",
+              marginTop: "0.5rem",
+              paddingTop: "0.45rem"
             },
             hr: {
               borderColor: "rgb(var(--rule))"
