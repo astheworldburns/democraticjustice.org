@@ -3,10 +3,10 @@ kicker: Crime
 title: The Takeover of the West Virginia Young Democrats
 description: Documents Show WV Democratic Party Staged Extrajudicial Hearing to Seize Youth Organization
 author: seth-sturm
-date: 2026-02-11T12:00:00
+date: 2026-02-11T12:00:00-05:00
 tags:
-  - crime, article
-featured_image: /assets/images/uploads/Screenshot 2026-03-23 at 9.16.29 PM.png
+  - crime
+featured_image: ""
 ---
 
 The verdict was prewritten and in hand when Delegate Mike Pushkin, Chair of the West Virginia Democratic Party (WVDP), called the February 22, 2024, meeting to order.
@@ -31,7 +31,9 @@ The youth volunteers complied.
 
 On January 23, 2025, nearly eleven months later, Pushkin filed an amended form F-4 Statement of Organization for the WVYD with the Secretary of State, naming himself chairperson and a state party staff member as treasurer. The updated mailing address and contact email belonged to the state party.
 
-Show Image _In an amended F-4 filing from January 2025, Delegate Mike Pushkin installed himself as Chairperson of the West Virginia Young Democrats, listing the state party's P.O. Box and email as the primary contact information._
+![Amended January 2025 F-4 filing listing Mike Pushkin as Chairperson of the West Virginia Young Democrats and the state party contact information](/assets/images/uploads/Screenshot%202026-03-23%20at%209.16.29%20PM.png)
+
+_In an amended F-4 filing from January 2025, Delegate Mike Pushkin installed himself as Chairperson of the West Virginia Young Democrats, listing the state party's P.O. Box and email as the primary contact information._
 
 An F-4 Statement of Organization declares who legally controls a political organization.
 
@@ -44,8 +46,6 @@ In other words, only its constitution and its leaders may decide internal govern
 Burger King cannot fire Colonel Sanders. They are separate entities.
 
 The West Virginia Democratic Party claiming authority over an independently registered organization is, legally speaking, no different.
-
-Show Image
 
 While the board cited the WVYD's lapsed national charter as grounds for its decision, documents published by the party reveal that officials knew about the lapse for months and withheld the information from the youth group's president.
 
@@ -60,8 +60,6 @@ On November 7, 2023, WVDP Executive Director Ryan Frankenberry sent an email to 
 Party officials did not disclose the lapsed charter or their communications with the YDA to Hively.
 
 On Nov 21, 2023, Frankenberry emailed Hively stating, "Chair Pushkin is requesting a meeting on Friday, December 1, 2023, at 10:00 AM at WVDP HQ. WVDP Legal Counsel Marc Williams will be present to advise WVDP regarding concerns that could involve legal issues. You may want to have counsel present as well."
-
-Show Image _Two months before the takeover, Executive Director Ryan Frankenberry escalated the dispute by summoning the acting youth president to a meeting with the party's attorney and advising him to "have counsel present as well."_
 
 Hively declined, and the party did not take further direct action.
 
@@ -83,7 +81,7 @@ Nearly six months later, on June 15, 2024, Powell was elected as an Associate Ch
 
 Powell did not respond to requests for comment.
 
-Show Image _Digital metadata from the evidence files reveals that Selina Vickers, a member of the WVSDEC and the DNC Standing Credentials Committee, highlighted the documents on January 7, 2024. On Monday, Powell filed the grievance._
+Digital metadata from the evidence files reveals that Selina Vickers, a member of the WVSDEC and the DNC Standing Credentials Committee, highlighted the documents on January 7, 2024. On Monday, Powell filed the grievance.
 
 The takeover comes at the end of a decade-long near-total collapse of the Democratic Party in West Virginia.
 

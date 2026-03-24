@@ -5,7 +5,7 @@ description: Investigative journalism and political accountability reporting fro
 permalink: /
 ogType: website
 ---
-{% set stories = collections.article | reverse %}
+{% set stories = collections.article | sortByDateDesc %}
 {% set lead = stories[0] %}
 {% set leadAuthor = lead.data.author | getAuthor(collections.authorProfiles) if lead else null %}
 <div class="space-y-14" data-pagefind-body>

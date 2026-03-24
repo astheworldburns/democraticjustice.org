@@ -331,8 +331,10 @@
   }
 
   .article-prose > p:first-of-type::first-letter {
-    @apply float-left mr-3 mt-2 font-display text-6xl font-black leading-[0.75] md:text-7xl;
+    @apply float-left mt-2 font-display text-6xl font-black leading-[0.75] md:text-7xl;
     color: rgb(var(--ink));
+    margin-right: 0.35rem;
+    padding-right: 0.02em;
   }
 
   .article-prose picture img,

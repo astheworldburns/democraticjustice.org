@@ -11,7 +11,7 @@ eleventyComputed:
   ogType: "website"
 eleventyExcludeFromCollections: true
 ---
-{% set stories = collections[currentTag] | reverse %}
+{% set stories = collections[currentTag] | sortByDateDesc %}
 {% set lead = stories[0] %}
 {% set leadAuthor = lead.data.author | getAuthor(collections.authorProfiles) if lead else null %}
 <section class="space-y-8" data-pagefind-body>

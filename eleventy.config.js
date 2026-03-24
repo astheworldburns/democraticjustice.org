@@ -8,6 +8,7 @@ import pluginRss from "@11ty/eleventy-plugin-rss";
 import { DateTime } from "luxon";
 
 const execFileAsync = promisify(execFile);
+const SITE_TIMEZONE = "America/New_York";
 
 function toDateTime(value) {
   if (DateTime.isDateTime(value)) {
@@ -201,6 +202,10 @@ function wrapImageCaptions(value = "") {
   );
 }
 
+function sortByDateDesc(items = []) {
+  return [...items].sort((left, right) => right.date - left.date);
+}
+
 export default async function (eleventyConfig) {
   eleventyConfig.addPlugin(pluginRss, {
     posthtmlRenderOptions: {
@@ -209,6 +214,8 @@ export default async function (eleventyConfig) {
   });
 
   eleventyConfig.addPassthroughCopy("src/assets");
+  eleventyConfig.addPassthroughCopy("src/assets/images/uploads");
+  eleventyConfig.addPassthroughCopy("src/documents");
   eleventyConfig.addPassthroughCopy("src/admin");
 
   eleventyConfig.addWatchTarget("./tailwind.config.js");
@@ -225,7 +232,7 @@ export default async function (eleventyConfig) {
   eleventyConfig.addCollection("article", (collectionApi) =>
     collectionApi
       .getFilteredByGlob("./src/content/articles/**/*.md")
-      .sort((left, right) => left.date - right.date)
+      .sort((left, right) => right.date - left.date)
   );
 
   eleventyConfig.addCollection("authorProfiles", (collectionApi) =>
@@ -365,12 +372,12 @@ export default async function (eleventyConfig) {
   });
 
   eleventyConfig.addFilter("displayDate", (value) => {
-    const parsed = toDateTime(value);
+    const parsed = toDateTime(value).setZone(SITE_TIMEZONE);
     return parsed.isValid ? parsed.toFormat("MMMM d, yyyy") : "";
   });
 
   eleventyConfig.addFilter("displayYear", (value) => {
-    const parsed = toDateTime(value);
+    const parsed = toDateTime(value).setZone(SITE_TIMEZONE);
     return parsed.isValid ? parsed.toFormat("yyyy") : "";
   });
 
@@ -384,6 +391,7 @@ export default async function (eleventyConfig) {
   eleventyConfig.addFilter("articlesByAuthor", authorArticles);
   eleventyConfig.addFilter("uniqueEditorialTags", uniqueEditorialTags);
   eleventyConfig.addFilter("relatedArticles", findRelatedArticles);
+  eleventyConfig.addFilter("sortByDateDesc", sortByDateDesc);
 
   eleventyConfig.addGlobalData("buildDate", new Date());
 
@@ -421,7 +429,7 @@ export default async function (eleventyConfig) {
     <atom:link href="{{ "/feed.xml" | absoluteUrl(site.url) }}" rel="self" type="application/rss+xml" />
     <description>{{ site.description }}</description>
     <language>en-US</language>
-    {%- for post in collections.article | reverse %}
+    {%- for post in collections.article %}
     {%- set absolutePostUrl = post.url | absoluteUrl(site.url) %}
     {%- set postAuthor = post.data.author | getAuthor(collections.authorProfiles) %}
     <item>

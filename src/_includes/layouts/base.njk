@@ -91,6 +91,21 @@
           });
         });
 
+        const editionDateNodes = document.querySelectorAll("[data-edition-date]");
+        if (editionDateNodes.length) {
+          const editionFormatter = new Intl.DateTimeFormat("en-US", {
+            timeZone: "America/New_York",
+            month: "long",
+            day: "numeric",
+            year: "numeric"
+          });
+          const editionText = editionFormatter.format(new Date());
+
+          editionDateNodes.forEach((node) => {
+            node.textContent = editionText;
+          });
+        }
+
         systemQuery.addEventListener("change", (event) => {
           if (!localStorage.getItem(storageKey)) {
             applyTheme(event.matches ? "dark" : "light");
