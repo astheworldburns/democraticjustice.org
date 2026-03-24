@@ -429,6 +429,7 @@ export default async function (eleventyConfig) {
   eleventyConfig.addFilter("publishedArticles", publishedArticles);
 
   eleventyConfig.addGlobalData("buildDate", new Date());
+  eleventyConfig.addGlobalData("buildVersion", Date.now().toString());
 
   eleventyConfig.addNunjucksAsyncShortcode(
     "image",

@@ -7,6 +7,9 @@
     {% set socialDescription = site.description if page.url == "/" else description or site.description %}
     {% set socialImagePath = featured_image if featured_image else site.defaultSocialImage %}
     {% set socialImageUrl = socialImagePath | absoluteUrl(site.url) %}
+    {% set assetVersion = buildVersion %}
+    {% set faviconHref = site.favicon ~ "?v=" ~ assetVersion %}
+    {% set appleTouchHref = site.appleTouchIcon ~ "?v=" ~ assetVersion %}
     {% set authorProfile = author | getAuthor(collections.authorProfiles) if ogType == "article" and author else null %}
     {% set articleAuthorName = authorProfile.data.name if authorProfile else author or site.name %}
     <meta charset="utf-8" />
@@ -38,8 +41,9 @@
       <meta property="article:published_time" content="{{ date | machineDate }}" />
     {% endif %}
     <link rel="canonical" href="{{ canonicalUrl }}" />
-    <link rel="icon" type="image/svg+xml" href="{{ site.favicon }}" />
-    <link rel="apple-touch-icon" href="{{ site.appleTouchIcon }}" />
+    <link rel="icon" type="image/svg+xml" sizes="any" href="{{ faviconHref }}" />
+    <link rel="shortcut icon" href="{{ faviconHref }}" />
+    <link rel="apple-touch-icon" href="{{ appleTouchHref }}" />
     <link rel="alternate" type="application/rss+xml" title="{{ site.name }} RSS Feed" href="/feed.xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -49,7 +53,7 @@
       rel="stylesheet"
     />
     <link href="https://fonts.cdnfonts.com/css/century-schoolbook" rel="stylesheet" />
-    <link rel="stylesheet" href="/assets/css/style.css" />
+    <link rel="stylesheet" href="/assets/css/style.css?v={{ assetVersion }}" />
     {% if extraHead %}{{ extraHead | safe }}{% endif %}
   </head>
   <body class="bg-[rgb(var(--page))] text-[rgb(var(--ink))] antialiased">
