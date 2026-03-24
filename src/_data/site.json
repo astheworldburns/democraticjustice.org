@@ -3,5 +3,11 @@
   "url": "https://democraticjustice.org",
   "author": "Democratic Justice",
   "description": "Investigative journalism and political accountability reporting rooted in West Virginia.",
-  "contactEmail": "contact@democraticjustice.org"
+  "contactEmail": "contact@democraticjustice.org",
+  "favicon": "/assets/images/uploads/proof-mark-ink.svg",
+  "appleTouchIcon": "/assets/images/uploads/apple-touch-icon.png",
+  "defaultSocialImage": "/assets/images/uploads/default-social-card.png",
+  "proofMarkDay": "/assets/images/uploads/proof-mark-ink.svg",
+  "proofMarkNight": "/assets/images/uploads/proof-mark-light.svg",
+  "proofMarkPrint": "/assets/images/uploads/proof-mark-black.svg"
 }

@@ -121,6 +121,46 @@
       0 28px 80px rgba(var(--page-shadow), 0.18);
   }
 
+  .proof-mark-frame {
+    @apply relative inline-flex shrink-0 items-center justify-center;
+  }
+
+  .proof-mark-frame--masthead {
+    @apply h-11 w-11 md:h-12 md:w-12;
+  }
+
+  .proof-mark-frame--compact {
+    @apply h-8 w-8;
+  }
+
+  .proof-mark {
+    @apply h-full w-full object-contain;
+  }
+
+  .proof-mark--night,
+  .proof-mark--print {
+    display: none;
+  }
+
+  html[data-theme="dark"] .proof-mark--day {
+    display: none;
+  }
+
+  html[data-theme="dark"] .proof-mark--night {
+    display: block;
+  }
+
+  @media print {
+    .proof-mark--day,
+    .proof-mark--night {
+      display: none !important;
+    }
+
+    .proof-mark--print {
+      display: block !important;
+    }
+  }
+
   .section-kicker {
     @apply font-ui text-[0.68rem] font-semibold uppercase tracking-[0.24em];
     color: rgb(var(--ink-muted));

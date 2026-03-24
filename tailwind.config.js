@@ -20,8 +20,8 @@ export default {
       },
       fontFamily: {
         ui: ["Inter", "\"Helvetica Neue\"", "Arial", "sans-serif"],
-        serif: ["Merriweather", "Georgia", "serif"],
-        display: ["\"Playfair Display\"", "Merriweather", "Georgia", "serif"]
+        serif: ["\"Century Schoolbook\"", "serif"],
+        display: ["\"Century Schoolbook\"", "serif"]
       },
       keyframes: {
         rise: {
@@ -58,7 +58,7 @@ export default {
             },
             h2: {
               color: "rgb(var(--ink))",
-              fontFamily: "\"Playfair Display\", Merriweather, Georgia, serif",
+              fontFamily: "\"Century Schoolbook\", serif",
               fontWeight: "800",
               fontSize: "clamp(1.75rem, 1.15rem + 1.4vw, 2.4rem)",
               letterSpacing: "-0.03em",
@@ -68,7 +68,7 @@ export default {
             },
             h3: {
               color: "rgb(var(--ink))",
-              fontFamily: "Merriweather, Georgia, serif",
+              fontFamily: "\"Century Schoolbook\", serif",
               fontWeight: "700",
               fontSize: "clamp(1.35rem, 1rem + 0.8vw, 1.75rem)",
               letterSpacing: "-0.02em",
@@ -87,7 +87,7 @@ export default {
               borderLeftColor: "rgb(var(--rule-strong))",
               borderLeftWidth: "4px",
               color: "rgb(var(--ink-soft))",
-              fontFamily: "Merriweather, Georgia, serif",
+              fontFamily: "\"Century Schoolbook\", serif",
               fontStyle: "italic",
               fontWeight: "400",
               paddingLeft: "1.35rem"
@@ -109,7 +109,7 @@ export default {
               borderTopStyle: "solid",
               borderTopWidth: "1px",
               color: colors.gray[500],
-              fontFamily: "Inter, \"Helvetica Neue\", Arial, sans-serif",
+              fontFamily: "\"Century Schoolbook\", serif",
               fontSize: "0.78rem",
               fontStyle: "italic",
               lineHeight: "1.5",

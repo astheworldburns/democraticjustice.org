@@ -37,17 +37,6 @@ ogType: article
           <span class="meta-divider">{{ date | displayDate }}</span>
           <span class="meta-divider">{{ articleHtml | readingMinutes }} min read</span>
         </div>
-        {% if tags and tags.length > 1 %}
-          <div class="mt-4 flex flex-wrap gap-3">
-            {% for tag in tags %}
-              {% if tag != "article" %}
-                <a class="story-chip" href="/category/{{ tag | slugifyTag }}/">
-                  {{ tag | tagLabel }}
-                </a>
-              {% endif %}
-            {% endfor %}
-          </div>
-        {% endif %}
       </header>
 
       {% if featured_image %}
@@ -154,19 +143,6 @@ ogType: article
             <p class="mt-2 font-serif text-sm leading-relaxed text-[rgb(var(--ink-soft))]">
               {{ authorProfile.data.short_bio }}
             </p>
-          </section>
-        {% endif %}
-
-        {% if tags and tags.length > 1 %}
-          <section class="border-t border-[rgba(var(--rule),0.92)] pt-5">
-            <p class="section-kicker">Filed under</p>
-            <div class="mt-3 flex flex-wrap gap-2">
-              {% for tag in tags %}
-                {% if tag != "article" %}
-                  <a class="story-chip" href="/category/{{ tag | slugifyTag }}/">{{ tag | tagLabel }}</a>
-                {% endif %}
-              {% endfor %}
-            </div>
           </section>
         {% endif %}
 

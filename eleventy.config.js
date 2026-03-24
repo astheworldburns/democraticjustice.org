@@ -93,6 +93,11 @@ function excerptText(value = "", length = 430) {
   return `${plainText.slice(0, Math.max(0, length - 1)).trimEnd()}…`;
 }
 
+function machineDate(value) {
+  const parsed = toDateTime(value).setZone(SITE_TIMEZONE);
+  return parsed.isValid ? parsed.toISO() : "";
+}
+
 function readingMinutes(value = "") {
   const words = stripHtml(value).split(/\s+/).filter(Boolean).length;
   return Math.max(1, Math.ceil(words / 220));
@@ -408,6 +413,7 @@ export default async function (eleventyConfig) {
     return parsed.isValid ? parsed.toFormat("yyyy") : "";
   });
 
+  eleventyConfig.addFilter("machineDate", machineDate);
   eleventyConfig.addFilter("slugifyTag", slugifyTag);
   eleventyConfig.addFilter("tagLabel", tagLabel);
   eleventyConfig.addFilter("initials", initials);
