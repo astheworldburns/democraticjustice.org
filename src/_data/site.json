@@ -7,6 +7,9 @@
   "favicon": "/assets/images/uploads/proof-mark-ink.svg",
   "appleTouchIcon": "/assets/images/uploads/apple-touch-icon.png",
   "defaultSocialImage": "/assets/images/uploads/default-social-card.png",
+  "wordmarkDay": "/assets/images/uploads/proof-mark-with-words-ink.svg",
+  "wordmarkNight": "/assets/images/uploads/proof-mark-with-words-light.svg",
+  "wordmarkPrint": "/assets/images/uploads/wordmark-with-words-black.svg",
   "proofMarkDay": "/assets/images/uploads/proof-mark-ink.svg",
   "proofMarkNight": "/assets/images/uploads/proof-mark-light.svg",
   "proofMarkPrint": "/assets/images/uploads/proof-mark-black.svg"

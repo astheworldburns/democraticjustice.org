@@ -126,73 +126,24 @@
     line-height: 1;
   }
 
-  .brand-lockup {
-    --brand-gap: 0.66rem;
-    --brand-mark-width: 3.35rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.18rem;
-    min-width: 0;
-  }
-
-  .brand-lockup--home {
-    --brand-mark-width: 3.65rem;
-  }
-
-  .brand-lockup--section {
-    --brand-mark-width: 3.2rem;
-  }
-
-  .brand-lockup__tagline {
-    padding-left: calc(var(--brand-mark-width) + var(--brand-gap));
-    font-family: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 0.74rem;
-    font-weight: 600;
-    line-height: 1.2;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: rgb(var(--ink-muted));
-  }
-
-  .brand-lockup__tagline--home {
-    max-width: 38rem;
-  }
-
-  .brand-lockup__tagline--section {
-    max-width: 34rem;
-  }
-
-  .site-wordmark {
-    display: inline-grid;
-    grid-template-columns: var(--brand-mark-width) auto;
-    align-items: start;
-    column-gap: var(--brand-gap);
-    width: max-content;
-    max-width: 100%;
-    line-height: 1;
-    white-space: nowrap;
+  .masthead-wordmark-link {
+    display: block;
+    width: 100%;
     text-decoration: none;
   }
 
-  .site-wordmark__text {
+  .masthead-wordmark {
     display: block;
-    font-family: "Century Schoolbook", serif;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: rgb(var(--ink));
-    white-space: nowrap;
+    width: 100%;
+    height: auto;
   }
 
-  .site-wordmark__text--home {
-    font-size: clamp(2.05rem, 4.6vw, 3.3rem);
-    line-height: 0.86;
-    letter-spacing: 0.068em;
+  .masthead-wordmark--home {
+    max-width: 88rem;
   }
 
-  .site-wordmark__text--section {
-    font-size: clamp(1.95rem, 5vw, 3rem);
-    line-height: 0.87;
-    letter-spacing: 0.072em;
+  .masthead-wordmark--section {
+    max-width: 66rem;
   }
 
   .proof-mark {
@@ -201,43 +152,18 @@
     object-fit: contain;
   }
 
-  .proof-mark--masthead {
-    width: var(--brand-mark-width);
-    height: auto;
-    transform: translateY(0.1rem);
-  }
-
   .proof-mark--compact {
-    width: 1.85rem;
-    height: 1.85rem;
+    width: 2.1rem;
+    height: auto;
   }
 
   @media (min-width: 768px) {
-    .brand-lockup {
-      gap: 0.24rem;
+    .masthead-wordmark--home {
+      max-width: 94rem;
     }
 
-    .brand-lockup--home {
-      --brand-gap: 0.76rem;
-      --brand-mark-width: 4.85rem;
-    }
-
-    .brand-lockup--section {
-      --brand-gap: 0.72rem;
-      --brand-mark-width: 4.15rem;
-    }
-
-    .brand-lockup__tagline {
-      font-size: 0.92rem;
-      letter-spacing: 0.28em;
-    }
-
-    .site-wordmark__text--home {
-      letter-spacing: 0.064em;
-    }
-
-    .site-wordmark__text--section {
-      letter-spacing: 0.07em;
+    .masthead-wordmark--section {
+      max-width: 72rem;
     }
   }
 

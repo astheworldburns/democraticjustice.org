@@ -107,6 +107,18 @@
           });
         }
 
+        function syncWordmarks(theme) {
+          document.querySelectorAll("[data-wordmark]").forEach((node) => {
+            const nextSrc = theme === "dark"
+              ? node.dataset.wordmarkNight || node.dataset.wordmarkDay
+              : node.dataset.wordmarkDay;
+
+            if (nextSrc && node.getAttribute("src") !== nextSrc) {
+              node.setAttribute("src", nextSrc);
+            }
+          });
+        }
+
         function syncThemeLabel(theme) {
           labelNodes.forEach((node) => {
             node.textContent = theme === "dark" ? "Day edition" : "Night edition";
@@ -118,6 +130,7 @@
           syncThemeLabel(theme);
           syncThemeColor(theme);
           syncProofMarks(theme);
+          syncWordmarks(theme);
         }
 
         applyTheme(preferredTheme());
@@ -154,6 +167,13 @@
         window.addEventListener("beforeprint", () => {
           document.querySelectorAll("[data-proof-mark]").forEach((node) => {
             const printSrc = node.dataset.proofMarkPrint;
+            if (printSrc) {
+              node.setAttribute("src", printSrc);
+            }
+          });
+
+          document.querySelectorAll("[data-wordmark]").forEach((node) => {
+            const printSrc = node.dataset.wordmarkPrint;
             if (printSrc) {
               node.setAttribute("src", printSrc);
             }
