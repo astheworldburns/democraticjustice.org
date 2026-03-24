@@ -91,6 +91,18 @@
           themeColorMeta.setAttribute("content", theme === "dark" ? "#111827" : "#f6f3ee");
         }
 
+        function syncProofMarks(theme) {
+          document.querySelectorAll("[data-proof-mark]").forEach((node) => {
+            const nextSrc = theme === "dark"
+              ? node.dataset.proofMarkNight || node.dataset.proofMarkDay
+              : node.dataset.proofMarkDay;
+
+            if (nextSrc && node.getAttribute("src") !== nextSrc) {
+              node.setAttribute("src", nextSrc);
+            }
+          });
+        }
+
         function syncThemeLabel(theme) {
           labelNodes.forEach((node) => {
             node.textContent = theme === "dark" ? "Day edition" : "Night edition";
@@ -101,6 +113,7 @@
           root.dataset.theme = theme;
           syncThemeLabel(theme);
           syncThemeColor(theme);
+          syncProofMarks(theme);
         }
 
         applyTheme(preferredTheme());
@@ -132,6 +145,19 @@
           if (!localStorage.getItem(storageKey)) {
             applyTheme(event.matches ? "dark" : "light");
           }
+        });
+
+        window.addEventListener("beforeprint", () => {
+          document.querySelectorAll("[data-proof-mark]").forEach((node) => {
+            const printSrc = node.dataset.proofMarkPrint;
+            if (printSrc) {
+              node.setAttribute("src", printSrc);
+            }
+          });
+        });
+
+        window.addEventListener("afterprint", () => {
+          applyTheme(preferredTheme());
         });
 
         const articleRoot = document.querySelector("[data-reading-root]");
