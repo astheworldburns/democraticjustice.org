@@ -695,10 +695,6 @@
     --proof-ghost-opacity: 0.14;
   }
 
-  .proof-card--standalone {
-    @apply my-0;
-  }
-
   .proof-card--inline {
     @apply my-0;
   }
@@ -974,25 +970,6 @@
       --proof-accent: #666d77;
       --proof-ghost-opacity: 0.12;
     }
-  }
-
-  .proof-page-header {
-    @apply max-w-3xl space-y-3 border-t pt-5;
-    border-color: rgba(var(--rule), 0.88);
-  }
-
-  .proof-page-header__title {
-    @apply max-w-4xl font-display text-[clamp(2.15rem,4.4vw,3.55rem)] font-black leading-[0.98] tracking-tight;
-    color: rgb(var(--ink));
-  }
-
-  .proof-page-header__description {
-    @apply max-w-2xl font-serif text-[0.98rem] leading-relaxed md:text-[1.02rem];
-    color: rgb(var(--ink-soft));
-  }
-
-  .proof-page-header__actions {
-    @apply flex flex-wrap gap-3 pt-1;
   }
 
   .document-shell {

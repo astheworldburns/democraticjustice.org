@@ -1,9 +1,7 @@
-{% set variant = proofCardVariant or "inline" %}
-{% set standalone = variant == "standalone" %}
 {% set proofMarkDaySrc = site.proofMarkDay ~ "?v=" ~ buildVersion %}
 {% set proofMarkNightSrc = site.proofMarkNight ~ "?v=" ~ buildVersion %}
 {% set proofMarkPrintSrc = site.proofMarkPrint ~ "?v=" ~ buildVersion %}
-<section class="proof-card {% if standalone %}proof-card--standalone{% else %}proof-card--inline{% endif %}" aria-labelledby="proof-card-issue-{{ proofCard.slug }}">
+<section class="proof-card proof-card--inline" aria-labelledby="proof-card-issue-{{ proofCard.slug }}">
   <div class="proof-card__body">
     <header class="proof-card__strap">
       <div class="proof-card__identity">
@@ -67,20 +65,10 @@
 
     <footer class="proof-card__footer">
       <p class="proof-card__footer-text">
-        {% if standalone %}
-          This proof accompanies <a class="headline-link" href="{{ proofCard.articleUrl }}">{{ proofCard.articleTitle }}</a>.
-        {% else %}
-          Cite or share this proof separately from the article.
-        {% endif %}
+        This proof opens the reported record and travels with the article when shared.
       </p>
       <div class="proof-card__links">
-        {% if standalone %}
-          <a class="proof-card__link" href="{{ proofCard.articleUrl }}">Read the full article</a>
-          <a class="proof-card__link" href="{{ proofCard.shareImagePath }}">Open proof image</a>
-        {% else %}
-          <a class="proof-card__link" href="{{ proofCard.proofUrl }}">Open standalone proof</a>
-          <a class="proof-card__link" href="{{ proofCard.shareImagePath }}">Open proof image</a>
-        {% endif %}
+        <a class="proof-card__link" href="{{ proofCard.shareImagePath }}">Open proof image</a>
       </div>
     </footer>
   </div>

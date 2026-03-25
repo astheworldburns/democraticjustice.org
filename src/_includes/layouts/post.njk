@@ -7,7 +7,6 @@ ogType: article
 {% set tocItems = articleHtml | extractHeadings %}
 {% set relatedStories = collections.article | relatedArticles(page, tags, 3) %}
 {% if proofCard %}
-  {% set proofCardVariant = "inline" %}
   <section class="proof-first-shell" data-pagefind-body data-pagefind-meta="type: Proof-backed article">
     <div class="proof-first-shell__slab">
       {% include "components/proof-card.njk" %}
@@ -126,7 +125,7 @@ ogType: article
             <button class="toolbar-button" type="button" data-copy-link data-copy-label-default="Copy link" data-copy-label-success="Link copied">
               Copy link
             </button>
-            <button class="toolbar-button" type="button" data-share-page {% if proofCard %}data-share-title="{{ title }} proof card" data-share-url="{{ proofCard.shareImagePath | absoluteUrl(site.url) }}"{% endif %} hidden>
+            <button class="toolbar-button" type="button" data-share-page data-share-title="{{ title }}" hidden>
               Share
             </button>
             <button class="toolbar-button" type="button" data-print-page>
