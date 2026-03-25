@@ -682,7 +682,8 @@
   }
 
   .proof-card__eyebrow {
-    @apply font-ui text-[0.8rem] font-black uppercase tracking-[0.26em];
+    font-family: "Century Schoolbook", serif;
+    @apply text-[0.94rem] font-bold uppercase tracking-[0.14em];
     color: var(--proof-accent);
   }
 
@@ -692,7 +693,8 @@
   }
 
   .proof-card__label {
-    @apply font-ui text-[0.78rem] font-black uppercase tracking-[0.22em];
+    font-family: "Century Schoolbook", serif;
+    @apply text-[0.96rem] font-bold uppercase tracking-[0.12em] md:text-[1.02rem];
     color: var(--proof-accent);
   }
 
