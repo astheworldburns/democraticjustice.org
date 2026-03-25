@@ -613,6 +613,7 @@
     --proof-border: rgba(49, 43, 37, 0.92);
     --proof-accent: #1a4a7a;
     --proof-ghost-opacity: 0.12;
+    --proof-label-opacity: 0.16;
     position: relative;
     overflow: hidden;
     border: 1.5px solid var(--proof-border);
@@ -630,6 +631,7 @@
     --proof-border: rgba(240, 231, 217, 0.3);
     --proof-accent: rgb(var(--accent));
     --proof-ghost-opacity: 0.14;
+    --proof-label-opacity: 0.2;
   }
 
   .proof-card--standalone {
@@ -694,15 +696,26 @@
 
   .proof-card__label {
     font-family: "Century Schoolbook", serif;
-    @apply inline-block text-[1.02rem] font-bold leading-none tracking-[-0.02em] md:text-[1.08rem];
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    pointer-events: none;
+    user-select: none;
+    opacity: var(--proof-label-opacity);
+    @apply text-[1.78rem] font-bold leading-[0.88] tracking-[-0.04em] md:text-[2.08rem];
     color: var(--proof-accent);
   }
 
   .proof-card__issue-block {
-    @apply grid gap-3 px-5 py-6 md:px-8 md:py-7;
+    position: relative;
+    @apply grid gap-0 px-5 py-6 md:px-8 md:py-7;
   }
 
   .proof-card__issue {
+    position: relative;
+    z-index: 1;
+    padding-top: 1.1rem;
     @apply max-w-4xl font-serif text-[1.28rem] font-medium leading-[1.45] tracking-[0em] md:text-[1.42rem];
     color: currentColor;
   }
@@ -713,15 +726,22 @@
   }
 
   .proof-card__section {
-    @apply grid gap-4;
+    position: relative;
+    @apply grid gap-0;
   }
 
   .proof-card__section-head {
-    @apply flex flex-col gap-1 border-b pb-2;
-    border-color: var(--proof-rule-soft);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    min-height: 0;
   }
 
   .proof-card__section-body {
+    position: relative;
+    z-index: 1;
+    padding-top: 1.15rem;
     @apply min-w-0;
   }
 
@@ -768,13 +788,14 @@
   }
 
   .proof-card__conclusion-block {
-    @apply grid gap-3 px-5 py-6 md:px-8 md:py-7;
+    position: relative;
+    @apply grid gap-0 px-5 py-6 md:px-8 md:py-7;
   }
 
   .proof-card__conclusion-body {
     overflow: hidden;
     min-height: 10rem;
-    padding-top: 0.25rem;
+    padding-top: 1.15rem;
   }
 
   .proof-card__ghost-mark {
