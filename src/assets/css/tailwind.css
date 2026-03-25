@@ -613,16 +613,13 @@
     --proof-rule-soft: rgba(86, 78, 68, 0.22);
     --proof-border: rgba(49, 43, 37, 0.92);
     --proof-accent: #1a4a7a;
+    --proof-accent-soft: rgba(26, 74, 122, 0.08);
     --proof-ghost-opacity: 0.12;
-    --proof-label-opacity: 0.22;
-    --proof-label-top: 0.12rem;
-    --proof-label-band: 1.9rem;
     --proof-section-pad-x: 1.25rem;
-    --proof-section-pad-top: 0.2rem;
-    --proof-section-pad-bottom: 1rem;
+    --proof-section-gap: 1rem;
     position: relative;
     display: grid;
-    gap: 0.55rem;
+    gap: 0.9rem;
     color: var(--proof-ink);
   }
 
@@ -636,8 +633,8 @@
     --proof-rule-soft: rgba(240, 231, 217, 0.12);
     --proof-border: rgba(240, 231, 217, 0.3);
     --proof-accent: rgb(var(--accent));
+    --proof-accent-soft: rgba(128, 160, 202, 0.12);
     --proof-ghost-opacity: 0.14;
-    --proof-label-opacity: 0.26;
   }
 
   .proof-card--standalone {
@@ -649,14 +646,13 @@
   }
 
   .proof-card__strap {
-    @apply flex flex-col gap-4 px-5 py-4 md:flex-row md:items-center md:justify-between md:px-8;
-    border: 1.5px solid var(--proof-border);
-    background: var(--proof-strap-surface);
+    @apply flex flex-col gap-3 md:flex-row md:items-center md:justify-between;
   }
 
   .proof-card__body {
     overflow: hidden;
-    border: 1.5px solid var(--proof-border);
+    border: 2px solid var(--proof-border);
+    border-radius: 1.55rem;
     background: var(--proof-surface);
   }
 
@@ -686,68 +682,64 @@
   }
 
   .proof-card__identity {
-    display: grid;
+    display: inline-grid;
     grid-template-columns: auto minmax(0, 1fr);
     gap: 0.8rem;
-    align-items: start;
+    align-items: center;
+    justify-self: start;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid var(--proof-border);
+    border-radius: 999px;
+    background: var(--proof-strap-surface);
   }
 
   .proof-card__mark {
     width: 1.45rem;
-    margin-top: 0.14rem;
   }
 
   .proof-card__eyebrow {
-    font-family: "Century Schoolbook", serif;
-    @apply inline-block text-[1rem] font-bold leading-none tracking-[-0.02em] md:text-[1.05rem];
+    @apply inline-block font-ui text-[0.78rem] font-black uppercase leading-none tracking-[0.2em];
     color: var(--proof-accent);
   }
 
   .proof-card__counts {
-    @apply font-ui text-[0.7rem] font-semibold uppercase tracking-[0.18em];
+    @apply inline-flex items-center self-start rounded-full border px-3 py-3 font-ui text-[0.68rem] font-semibold uppercase tracking-[0.18em] md:self-center;
+    border-color: var(--proof-border);
+    background: var(--proof-strap-surface);
     color: var(--proof-muted-soft);
   }
 
   .proof-card__label {
-    font-family: "Century Schoolbook", serif;
-    position: absolute;
-    left: 0;
-    z-index: 0;
-    pointer-events: none;
-    user-select: none;
-    opacity: var(--proof-label-opacity);
-    top: var(--proof-label-top);
-    @apply text-[1.9rem] font-bold leading-[0.84] tracking-[-0.045em] md:text-[2.18rem];
+    @apply inline-flex self-start rounded-full border px-3 py-1.5 font-ui text-[0.64rem] font-black uppercase leading-none tracking-[0.2em];
+    border-color: rgba(var(--accent), 0.24);
+    background: var(--proof-accent-soft);
     color: var(--proof-accent);
   }
 
   .proof-card__details {
     @apply grid gap-10;
     padding-inline: var(--proof-section-pad-x);
-    padding-top: var(--proof-section-pad-top);
-    padding-bottom: var(--proof-section-pad-bottom);
+    padding-top: 0;
+    padding-bottom: 1.35rem;
   }
 
   .proof-card__section {
-    position: relative;
-    @apply grid gap-0;
-    padding-top: var(--proof-section-pad-top);
-    padding-bottom: var(--proof-section-pad-bottom);
+    @apply grid;
+    gap: var(--proof-section-gap);
   }
 
   .proof-card__section--full {
     padding-inline: var(--proof-section-pad-x);
+    padding-top: 1.35rem;
+    padding-bottom: 0;
   }
 
   .proof-card__section-body {
-    position: relative;
-    z-index: 1;
-    padding-top: var(--proof-label-band);
     @apply min-w-0;
   }
 
   .proof-card__issue {
-    @apply max-w-4xl font-serif text-[1.28rem] font-medium leading-[1.45] tracking-[0em] md:text-[1.42rem];
+    @apply max-w-4xl font-serif text-[1.34rem] font-semibold leading-[1.24] tracking-[-0.02em] md:text-[1.66rem];
     color: currentColor;
   }
 
@@ -790,11 +782,8 @@
 
   @media (min-width: 768px) {
     .proof-card {
-      --proof-label-top: 0.08rem;
-      --proof-label-band: 2rem;
       --proof-section-pad-x: 2rem;
-      --proof-section-pad-top: 0.25rem;
-      --proof-section-pad-bottom: 1.08rem;
+      --proof-section-gap: 1.1rem;
     }
   }
 
