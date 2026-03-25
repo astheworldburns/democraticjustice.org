@@ -7,16 +7,7 @@
   <header class="proof-card__header">
     <div class="proof-card__identity">
       <img class="proof-mark proof-card__mark" data-proof-mark data-proof-mark-day="{{ proofMarkDaySrc }}" data-proof-mark-night="{{ proofMarkNightSrc }}" data-proof-mark-print="{{ proofMarkPrintSrc }}" src="{{ proofMarkDaySrc }}" alt="" />
-      <div class="proof-card__identity-copy">
-        <p class="proof-card__eyebrow">Proof</p>
-        <p class="proof-card__eyebrow-note">
-          {% if standalone %}
-            Published as a formal Democratic Justice proof.
-          {% else %}
-            This investigation includes a published proof.
-          {% endif %}
-        </p>
-      </div>
+      <p class="proof-card__eyebrow">Proof</p>
     </div>
     <p class="proof-card__counts">{{ proofCard.axiomCount }} axioms · {{ proofCard.logicCount }} propositions</p>
   </header>

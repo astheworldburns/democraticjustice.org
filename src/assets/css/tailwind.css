@@ -666,8 +666,7 @@
   }
 
   .proof-card__header {
-    @apply flex flex-col gap-4 border-b px-5 pb-5 pt-5 md:flex-row md:items-start md:justify-between md:px-8 md:pt-6;
-    border-color: var(--proof-rule);
+    @apply flex flex-col gap-4 px-5 pb-0 pt-5 md:flex-row md:items-start md:justify-between md:px-8 md:pt-6;
   }
 
   .proof-card__identity {
@@ -682,18 +681,9 @@
     margin-top: 0.14rem;
   }
 
-  .proof-card__identity-copy {
-    @apply min-w-0 grid gap-1;
-  }
-
   .proof-card__eyebrow {
     @apply font-ui text-[0.8rem] font-black uppercase tracking-[0.26em];
     color: var(--proof-accent);
-  }
-
-  .proof-card__eyebrow-note {
-    @apply max-w-2xl font-serif text-[0.97rem] leading-relaxed;
-    color: var(--proof-muted);
   }
 
   .proof-card__counts {
