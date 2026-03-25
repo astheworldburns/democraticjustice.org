@@ -2,7 +2,7 @@
 {% set standalone = variant == "standalone" %}
 <section class="proof-card {% if standalone %}proof-card--standalone{% endif %}" aria-labelledby="proof-card-heading-{{ proofCard.slug }}">
   <header class="proof-card__header">
-    <p class="section-kicker">Proof Card</p>
+    <p class="section-kicker">Proof</p>
     <h2 id="proof-card-heading-{{ proofCard.slug }}" class="proof-card__heading">
       {% if standalone %}
         Democratic Justice publishes the following conclusion as proved.
@@ -17,58 +17,66 @@
     </ul>
   </header>
 
-  <div class="proof-card__body">
-    <section class="proof-card__lede">
-      <div class="proof-card__summary">
+  <div class="proof-card__rows">
+    <section class="proof-card__row">
+      <div class="proof-card__rail">
         <p class="proof-card__label">Issue</p>
-        <p class="proof-card__issue">{{ proofCard.issue }}</p>
       </div>
-      <div class="proof-card__summary proof-card__summary--conclusion">
-        <p class="proof-card__label">Conclusion</p>
-        <p class="proof-card__conclusion">{{ proofCard.conclusionMarked }}</p>
+      <div class="proof-card__content">
+        <p class="proof-card__issue">{{ proofCard.issue }}</p>
       </div>
     </section>
 
-    <div class="proof-card__columns">
-      <section class="proof-card__group">
-        <div class="proof-card__group-head">
-          <p class="proof-card__label">Axioms</p>
-          <p class="proof-card__section-note">Documented, source-linked facts</p>
-        </div>
+    <section class="proof-card__row">
+      <div class="proof-card__rail">
+        <p class="proof-card__label">Axioms</p>
+        <p class="proof-card__rail-note">Documented facts</p>
+      </div>
+      <div class="proof-card__content">
         <ol class="proof-card__list" aria-label="Axioms">
           {% for axiom in proofCard.axioms %}
             <li class="proof-card__list-item">
-              <p class="proof-card__list-text">
-                <span class="proof-card__marker">A{{ axiom.index }}</span>
-                {{ axiom.premise }}
-              </p>
-              <a class="proof-card__source-link" href="{{ axiom.sourceUrl }}">{{ axiom.sourceLabel }}</a>
+              <span class="proof-card__marker">A{{ axiom.index }}</span>
+              <div class="proof-card__item-copy">
+                <p class="proof-card__list-text">{{ axiom.premise }}</p>
+                <a class="proof-card__source-link" href="{{ axiom.sourceUrl }}">{{ axiom.sourceLabel }}</a>
+              </div>
             </li>
           {% endfor %}
         </ol>
-      </section>
+      </div>
+    </section>
 
-      <section class="proof-card__group">
-        <div class="proof-card__group-head">
-          <p class="proof-card__label">Logic</p>
-          <p class="proof-card__section-note">Each step follows from the prior one</p>
-        </div>
+    <section class="proof-card__row">
+      <div class="proof-card__rail">
+        <p class="proof-card__label">Reasoning</p>
+        <p class="proof-card__rail-note">Logic and inference</p>
+      </div>
+      <div class="proof-card__content">
         <ol class="proof-card__list" aria-label="Logic chain">
           {% for entry in proofCard.logic %}
             <li class="proof-card__list-item">
-              <p class="proof-card__list-text">
-                <span class="proof-card__marker">L{{ entry.index }}</span>
-                {{ entry.step }}
-              </p>
+              <span class="proof-card__marker">L{{ entry.index }}</span>
+              <div class="proof-card__item-copy">
+                <p class="proof-card__list-text">{{ entry.step }}</p>
+              </div>
             </li>
           {% endfor %}
         </ol>
-      </section>
-    </div>
+        <p class="proof-card__bridge">
+          <span class="proof-card__bridge-label">Inference.</span>
+          {{ proofCard.inference }}
+        </p>
+      </div>
+    </section>
 
-    <section class="proof-card__group">
-      <p class="proof-card__label">Inference</p>
-      <p class="proof-card__inference">{{ proofCard.inference }}</p>
+    <section class="proof-card__row proof-card__row--conclusion">
+      <div class="proof-card__rail">
+        <p class="proof-card__label">Conclusion</p>
+      </div>
+      <div class="proof-card__content">
+        <p class="proof-card__conclusion">{{ proofCard.conclusionMarked }}</p>
+      </div>
     </section>
   </div>
 
@@ -82,11 +90,11 @@
     </p>
     <div class="proof-card__links">
       {% if standalone %}
-        <a class="button-link-muted" href="{{ proofCard.articleUrl }}">Read the full article</a>
-        <a class="button-link-muted" href="{{ proofCard.shareImagePath }}">Open proof image</a>
+        <a class="proof-card__link" href="{{ proofCard.articleUrl }}">Read the full article</a>
+        <a class="proof-card__link" href="{{ proofCard.shareImagePath }}">Open proof image</a>
       {% else %}
-        <a class="button-link-muted" href="{{ proofCard.proofUrl }}">Open standalone proof</a>
-        <a class="button-link-muted" href="{{ proofCard.shareImagePath }}">Open proof image</a>
+        <a class="proof-card__link" href="{{ proofCard.proofUrl }}">Open standalone proof</a>
+        <a class="proof-card__link" href="{{ proofCard.shareImagePath }}">Open proof image</a>
       {% endif %}
     </div>
   </footer>
