@@ -284,9 +284,11 @@ export default async function (eleventyConfig) {
   );
 
   eleventyConfig.addCollection("proofArticle", (collectionApi) => {
-    const items = collectionApi
-      .getFilteredByGlob("./src/content/articles/**/*.md")
-      .sort((left, right) => right.date - left.date);
+    const items = publishedArticles(
+      collectionApi
+        .getFilteredByGlob("./src/content/articles/**/*.md")
+        .sort((left, right) => right.date - left.date)
+    );
 
     proofShareManifest.length = 0;
 

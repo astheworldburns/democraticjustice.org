@@ -8,7 +8,44 @@ ogType: website
 {% set stories = collections.publishedArticle | sortByDateDesc %}
 {% set lead = stories[0] %}
 {% set leadAuthor = lead.data.author | getAuthor(collections.authorProfiles) if lead else null %}
+{% set proofEntries = collections.proofArticle or [] %}
+{% set featuredProof = proofEntries[0] %}
 <div class="space-y-14" data-pagefind-body>
+  {% if featuredProof %}
+    <section class="proof-home-zone">
+      <div class="proof-home-zone__intro">
+        <div class="space-y-3">
+          <p class="proof-home-zone__eyebrow">Proof Index</p>
+          <h1 class="proof-home-zone__title">Published proofs</h1>
+          <p class="proof-home-zone__description">Published proofs index the findings Democratic Justice is prepared to defend in public.</p>
+        </div>
+        <p class="proof-home-zone__count">{{ proofEntries | length }} published proof{% if proofEntries | length != 1 %}s{% endif %}</p>
+      </div>
+
+      <div class="proof-home-zone__feature">
+        {% set proofEntry = featuredProof %}
+        {% set proofIndexVariant = "featured" %}
+        {% include "components/proof-index-card.njk" %}
+      </div>
+
+      {% if proofEntries | length > 1 %}
+        <div class="proof-home-zone__grid">
+          {% for proofEntry in proofEntries %}
+            {% if not loop.first and loop.index0 < 4 %}
+              {% set proofIndexVariant = "compact" %}
+              {% include "components/proof-index-card.njk" %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </section>
+
+    <section class="record-zone-intro">
+      <p class="record-zone-intro__label">The Record</p>
+      <p class="record-zone-intro__text">The reported narrative behind the published proofs and the broader archive of public power.</p>
+    </section>
+  {% endif %}
+
   {% if lead %}
     <section class="space-y-8 border-b-2 border-[rgb(var(--rule-strong))] pb-10">
       <div class="grid gap-8 xl:grid-cols-[minmax(0,1.6fr)_minmax(18rem,0.82fr)]">

@@ -1,0 +1,42 @@
+{% set featured = proofIndexVariant == "featured" %}
+{% set proofCard = proofEntry.proofCard %}
+{% set proofMarkPrintSrc = site.proofMarkPrint ~ "?v=" ~ buildVersion %}
+<article class="proof-index-card {% if featured %}proof-index-card--featured{% else %}proof-index-card--compact{% endif %}">
+  <header class="proof-index-card__header">
+    <div class="proof-index-card__identity">
+      <img class="proof-mark proof-index-card__mark" src="{{ proofMarkPrintSrc }}" alt="" />
+      <p class="proof-index-card__eyebrow">Proof</p>
+    </div>
+    <p class="proof-index-card__counts">{{ proofCard.axiomCount }} axioms · {{ proofCard.logicCount }} inferences</p>
+  </header>
+
+  <div class="proof-index-card__body">
+    <section class="proof-index-card__block">
+      <p class="proof-index-card__label">Issue</p>
+      {% if featured %}
+        <h2 class="proof-index-card__issue">
+          <a class="headline-link" href="{{ proofCard.proofUrl }}">{{ proofCard.issue }}</a>
+        </h2>
+      {% else %}
+        <h3 class="proof-index-card__issue">
+          <a class="headline-link" href="{{ proofCard.proofUrl }}">{{ proofCard.issue }}</a>
+        </h3>
+      {% endif %}
+    </section>
+
+    <section class="proof-index-card__block proof-index-card__block--conclusion">
+      <p class="proof-index-card__label">Conclusion</p>
+      <p class="proof-index-card__conclusion">{{ proofCard.conclusion }}</p>
+    </section>
+  </div>
+
+  <footer class="proof-index-card__footer">
+    <p class="proof-index-card__article">
+      <a class="headline-link" href="{{ proofCard.articleUrl }}">{{ proofCard.articleTitle }}</a>
+    </p>
+    <div class="proof-index-card__links">
+      <a class="proof-index-card__link" href="{{ proofCard.proofUrl }}">Open proof</a>
+      <a class="proof-index-card__link" href="{{ proofCard.articleUrl }}">Read record</a>
+    </div>
+  </footer>
+</article>
