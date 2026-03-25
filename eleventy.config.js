@@ -235,12 +235,27 @@ function sortByDateDesc(items = []) {
   return [...items].sort((left, right) => right.date - left.date);
 }
 
+function proofCardForItem(item = {}) {
+  try {
+    return createProofCard({
+      ...item.data,
+      title: item.data?.title,
+      description: item.data?.description,
+      proof: item.data?.proof,
+      fileSlug: item.fileSlug,
+      url: item.url
+    });
+  } catch (error) {
+    return null;
+  }
+}
+
 function publishedArticles(items = []) {
   const now = DateTime.now().setZone(SITE_TIMEZONE);
 
   return items.filter((item) => {
     const publicationDate = toDateTime(item.date).setZone(SITE_TIMEZONE);
-    return publicationDate.isValid && publicationDate <= now;
+    return publicationDate.isValid && publicationDate <= now && Boolean(proofCardForItem(item));
   });
 }
 
@@ -270,9 +285,11 @@ export default async function (eleventyConfig) {
   });
 
   eleventyConfig.addCollection("article", (collectionApi) =>
-    collectionApi
-      .getFilteredByGlob("./src/content/articles/**/*.md")
-      .sort((left, right) => right.date - left.date)
+    publishedArticles(
+      collectionApi
+        .getFilteredByGlob("./src/content/articles/**/*.md")
+        .sort((left, right) => right.date - left.date)
+    )
   );
 
   eleventyConfig.addCollection("publishedArticle", (collectionApi) =>
@@ -331,7 +348,7 @@ export default async function (eleventyConfig) {
   eleventyConfig.addCollection("editorialTagList", (collectionApi) => {
     const tags = new Set();
 
-    for (const item of collectionApi.getFilteredByGlob("./src/content/articles/**/*.md")) {
+    for (const item of publishedArticles(collectionApi.getFilteredByGlob("./src/content/articles/**/*.md"))) {
       const itemTags = Array.isArray(item.data.tags)
         ? item.data.tags
         : item.data.tags
@@ -349,9 +366,11 @@ export default async function (eleventyConfig) {
   });
 
   eleventyConfig.addCollection("editorialDesks", (collectionApi) => {
-    const posts = collectionApi
-      .getFilteredByGlob("./src/content/articles/**/*.md")
-      .sort((left, right) => right.date - left.date);
+    const posts = publishedArticles(
+      collectionApi
+        .getFilteredByGlob("./src/content/articles/**/*.md")
+        .sort((left, right) => right.date - left.date)
+    );
     const desks = new Set();
 
     for (const post of posts) {
@@ -392,9 +411,11 @@ export default async function (eleventyConfig) {
   });
 
   eleventyConfig.addCollection("articleArchive", (collectionApi) => {
-    const posts = collectionApi
-      .getFilteredByGlob("./src/content/articles/**/*.md")
-      .sort((left, right) => right.date - left.date);
+    const posts = publishedArticles(
+      collectionApi
+        .getFilteredByGlob("./src/content/articles/**/*.md")
+        .sort((left, right) => right.date - left.date)
+    );
     const buckets = new Map();
 
     for (const post of posts) {
@@ -417,9 +438,11 @@ export default async function (eleventyConfig) {
   });
 
   eleventyConfig.addCollection("articleArchiveYears", (collectionApi) => {
-    const posts = collectionApi
-      .getFilteredByGlob("./src/content/articles/**/*.md")
-      .sort((left, right) => right.date - left.date);
+    const posts = publishedArticles(
+      collectionApi
+        .getFilteredByGlob("./src/content/articles/**/*.md")
+        .sort((left, right) => right.date - left.date)
+    );
     const yearBuckets = new Map();
 
     for (const post of posts) {
