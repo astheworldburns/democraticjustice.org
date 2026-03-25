@@ -780,7 +780,6 @@
   }
 
   .proof-card__conclusion-body {
-    position: relative;
     overflow: hidden;
     min-height: 10rem;
     padding-top: 0.25rem;
@@ -788,20 +787,26 @@
 
   .proof-card__ghost-mark {
     position: absolute;
-    top: 0.55rem;
-    left: 0.35rem;
+    top: -0.45rem;
+    left: 0;
     width: clamp(9rem, 18vw, 13rem);
     transform: none;
     opacity: var(--proof-ghost-opacity);
     pointer-events: none;
     user-select: none;
+    z-index: 0;
   }
 
   .proof-card__conclusion {
     position: relative;
-    z-index: 1;
     @apply max-w-4xl pl-24 font-serif text-[1.24rem] font-semibold leading-[1.44] md:text-[1.34rem];
     color: currentColor;
+  }
+
+  .proof-card__conclusion-text {
+    position: relative;
+    z-index: 1;
+    display: block;
   }
 
   .proof-card__footer {
