@@ -614,6 +614,8 @@
     --proof-accent: #1a4a7a;
     --proof-ghost-opacity: 0.12;
     --proof-label-opacity: 0.22;
+    --proof-label-top: 0.05rem;
+    --proof-label-band: 1.62rem;
     position: relative;
     overflow: hidden;
     border: 1.5px solid var(--proof-border);
@@ -697,12 +699,12 @@
   .proof-card__label {
     font-family: "Century Schoolbook", serif;
     position: absolute;
-    top: 0;
     left: 0;
     z-index: 0;
     pointer-events: none;
     user-select: none;
     opacity: var(--proof-label-opacity);
+    top: var(--proof-label-top);
     @apply text-[1.9rem] font-bold leading-[0.84] tracking-[-0.045em] md:text-[2.18rem];
     color: var(--proof-accent);
   }
@@ -715,7 +717,7 @@
   .proof-card__issue {
     position: relative;
     z-index: 1;
-    padding-top: 1.55rem;
+    padding-top: var(--proof-label-band);
     @apply max-w-4xl font-serif text-[1.28rem] font-medium leading-[1.45] tracking-[0em] md:text-[1.42rem];
     color: currentColor;
   }
@@ -741,7 +743,7 @@
   .proof-card__section-body {
     position: relative;
     z-index: 1;
-    padding-top: 1.6rem;
+    padding-top: var(--proof-label-band);
     @apply min-w-0;
   }
 
@@ -795,17 +797,13 @@
   .proof-card__conclusion-body {
     overflow: hidden;
     min-height: 10rem;
-    padding-top: 1.6rem;
+    padding-top: var(--proof-label-band);
   }
 
   @media (min-width: 768px) {
-    .proof-card__issue {
-      padding-top: 1.72rem;
-    }
-
-    .proof-card__section-body,
-    .proof-card__conclusion-body {
-      padding-top: 1.74rem;
+    .proof-card {
+      --proof-label-top: 0.04rem;
+      --proof-label-band: 1.76rem;
     }
   }
 
