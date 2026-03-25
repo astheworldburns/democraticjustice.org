@@ -65,9 +65,19 @@
 
     <footer class="proof-card__footer">
       <p class="proof-card__footer-text">
-        This proof opens the reported record and travels with the article when shared.
+        Share the full article from the reading tools, or share this proof card directly from here.
       </p>
       <div class="proof-card__links">
+        <button
+          class="proof-card__link"
+          type="button"
+          data-share-page
+          data-share-title="{{ proofCard.articleTitle }} proof card"
+          data-share-url="{{ proofCard.shareImagePath | absoluteUrl(site.url) }}"
+          hidden
+        >
+          Share proof card
+        </button>
         <a class="proof-card__link" href="{{ proofCard.shareImagePath }}">Open proof image</a>
       </div>
     </footer>
