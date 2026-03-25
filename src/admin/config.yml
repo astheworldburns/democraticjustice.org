@@ -79,7 +79,7 @@ collections:
     label: Articles
     label_singular: Article
     icon: article
-    description: Longform reporting. Add a Proof Card only when the conclusion is fully sourced and defensible.
+    description: Longform reporting. Every published piece requires a completed Proof Card.
     folder: src/content/articles
     slug: "{{slug}}"
     summary: "{{title}} - {{date | date('DD MMM YYYY')}}"
@@ -126,10 +126,9 @@ collections:
       - label: Proof Card
         name: proof
         widget: object
-        required: false
-        collapsed: true
+        required: true
         summary: "{{issue}}"
-        hint: Optional. Use this only when the piece meets the publication's proof standard.
+        hint: Required before publication. If the proof is incomplete, the piece is not ready to publish.
         fields:
           - label: Issue
             name: issue

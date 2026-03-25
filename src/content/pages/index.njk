@@ -5,47 +5,14 @@ description: Investigative journalism and political accountability reporting fro
 permalink: /
 ogType: website
 ---
+{% set proofMarkDaySrc = site.proofMarkDay ~ "?v=" ~ buildVersion %}
+{% set proofMarkNightSrc = site.proofMarkNight ~ "?v=" ~ buildVersion %}
+{% set proofMarkPrintSrc = site.proofMarkPrint ~ "?v=" ~ buildVersion %}
 {% set stories = collections.publishedArticle | sortByDateDesc %}
 {% set lead = stories[0] %}
 {% set leadAuthor = lead.data.author | getAuthor(collections.authorProfiles) if lead else null %}
 {% set proofEntries = collections.proofArticle or [] %}
-{% set featuredProof = proofEntries[0] %}
 <div class="space-y-14" data-pagefind-body>
-  {% if featuredProof %}
-    <section class="proof-home-zone">
-      <div class="proof-home-zone__intro">
-        <div class="space-y-3">
-          <p class="proof-home-zone__eyebrow">Proof Index</p>
-          <h1 class="proof-home-zone__title">Published proofs</h1>
-          <p class="proof-home-zone__description">Published proofs index the findings Democratic Justice is prepared to defend in public.</p>
-        </div>
-        <p class="proof-home-zone__count">{{ proofEntries | length }} published proof{% if proofEntries | length != 1 %}s{% endif %}</p>
-      </div>
-
-      <div class="proof-home-zone__feature">
-        {% set proofEntry = featuredProof %}
-        {% set proofIndexVariant = "featured" %}
-        {% include "components/proof-index-card.njk" %}
-      </div>
-
-      {% if proofEntries | length > 1 %}
-        <div class="proof-home-zone__grid">
-          {% for proofEntry in proofEntries %}
-            {% if not loop.first and loop.index0 < 4 %}
-              {% set proofIndexVariant = "compact" %}
-              {% include "components/proof-index-card.njk" %}
-            {% endif %}
-          {% endfor %}
-        </div>
-      {% endif %}
-    </section>
-
-    <section class="record-zone-intro">
-      <p class="record-zone-intro__label">The Record</p>
-      <p class="record-zone-intro__text">The reported narrative behind the published proofs and the broader archive of public power.</p>
-    </section>
-  {% endif %}
-
   {% if lead %}
     <section class="space-y-8 border-b-2 border-[rgb(var(--rule-strong))] pb-10">
       <div class="grid gap-8 xl:grid-cols-[minmax(0,1.6fr)_minmax(18rem,0.82fr)]">
@@ -55,6 +22,12 @@ ogType: website
             <h1 class="mt-3 max-w-5xl font-display text-[clamp(2.45rem,4.9vw,5rem)] font-black leading-[0.94] tracking-tight text-[rgb(var(--ink))]">
               <a class="headline-link" href="{{ lead.url }}">{{ lead.data.title }}</a>
             </h1>
+            {% if lead.data.proofCard %}
+              <p class="lead-proof-status">
+                <img class="proof-mark lead-proof-status__mark" data-proof-mark data-proof-mark-day="{{ proofMarkDaySrc }}" data-proof-mark-night="{{ proofMarkNightSrc }}" data-proof-mark-print="{{ proofMarkPrintSrc }}" src="{{ proofMarkDaySrc }}" alt="" />
+                <span>Published proof</span>
+              </p>
+            {% endif %}
             <div class="meta-row mt-4">
               <span>{{ lead.date | displayDate }}</span>
               <span class="meta-divider">By {% if leadAuthor %}<a class="hover:text-[rgb(var(--ink))]" href="{{ leadAuthor.url }}">{{ leadAuthor.data.name }}</a>{% else %}{{ site.name }}{% endif %}</span>
@@ -76,7 +49,10 @@ ogType: website
               {{ lead.templateContent | excerptText(430) }}
             </p>
             <div class="mt-8 flex flex-wrap gap-4">
-              <a class="button-link" href="{{ lead.url }}">Read the full report</a>
+              <a class="button-link" href="{{ lead.url }}">Read the record</a>
+              {% if lead.data.proofCard %}
+                <a class="button-link-muted" href="{{ lead.data.proofCard.proofUrl }}">Open proof</a>
+              {% endif %}
               <a class="button-link-muted" href="/archives/">Browse the archive</a>
             </div>
           </div>
@@ -146,13 +122,38 @@ ogType: website
                 {% endif %}
               </p>
               <h3 class="mt-3 font-serif text-[clamp(1.7rem,1.4rem+0.6vw,2.25rem)] font-black leading-tight text-[rgb(var(--ink))]">
-                <a class="headline-link" href="{{ story.url }}">{{ story.data.title }}</a>
+                <a class="headline-link" href="{{ story.url }}">
+                  <span class="story-proof-mark">
+                    <img class="proof-mark story-proof-mark__icon" data-proof-mark data-proof-mark-day="{{ proofMarkDaySrc }}" data-proof-mark-night="{{ proofMarkNightSrc }}" data-proof-mark-print="{{ proofMarkPrintSrc }}" src="{{ proofMarkDaySrc }}" alt="" />
+                  </span>
+                  {{ story.data.title }}
+                </a>
               </h3>
               <p class="mt-3 font-serif text-base leading-relaxed text-[rgb(var(--ink-soft))]">
                 {{ story.data.description }}
               </p>
             </article>
           {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  {% if proofEntries | length %}
+    <section class="space-y-6">
+      <div class="flex items-end justify-between border-b border-[rgb(var(--rule-strong))] pb-3">
+        <h2 class="font-display text-3xl font-black tracking-tight text-[rgb(var(--ink))]">Published proofs</h2>
+        <p class="section-kicker">Proof archive</p>
+      </div>
+      <div class="proof-archive-band">
+        {% for proofEntry in proofEntries %}
+          <a class="proof-archive-link" href="{{ proofEntry.proofCard.proofUrl }}">
+            <span class="proof-archive-link__primary">
+              <img class="proof-mark proof-archive-link__mark" data-proof-mark data-proof-mark-day="{{ proofMarkDaySrc }}" data-proof-mark-night="{{ proofMarkNightSrc }}" data-proof-mark-print="{{ proofMarkPrintSrc }}" src="{{ proofMarkDaySrc }}" alt="" />
+              <span class="proof-archive-link__title">{{ proofEntry.article.data.title }}</span>
+            </span>
+            <span class="proof-archive-link__meta">{{ proofEntry.article.date | displayDate }}</span>
+          </a>
         {% endfor %}
       </div>
     </section>
