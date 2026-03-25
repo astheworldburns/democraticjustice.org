@@ -605,6 +605,7 @@
 
   .proof-card {
     --proof-surface: #f5f3ee;
+    --proof-strap-surface: #e9e2d7;
     --proof-ink: #1f1b17;
     --proof-muted: rgba(31, 27, 23, 0.82);
     --proof-muted-soft: rgba(31, 27, 23, 0.72);
@@ -620,14 +621,14 @@
     --proof-section-pad-top: 0.2rem;
     --proof-section-pad-bottom: 1rem;
     position: relative;
-    overflow: hidden;
-    border: 1.5px solid var(--proof-border);
-    background: var(--proof-surface);
+    display: grid;
+    gap: 0.55rem;
     color: var(--proof-ink);
   }
 
   html[data-theme="dark"] .proof-card {
     --proof-surface: #1d1916;
+    --proof-strap-surface: #15110f;
     --proof-ink: #f0e7d9;
     --proof-muted: rgba(240, 231, 217, 0.8);
     --proof-muted-soft: rgba(240, 231, 217, 0.66);
@@ -645,6 +646,18 @@
 
   .proof-card--inline {
     @apply my-0;
+  }
+
+  .proof-card__strap {
+    @apply flex flex-col gap-4 px-5 py-4 md:flex-row md:items-center md:justify-between md:px-8;
+    border: 1.5px solid var(--proof-border);
+    background: var(--proof-strap-surface);
+  }
+
+  .proof-card__body {
+    overflow: hidden;
+    border: 1.5px solid var(--proof-border);
+    background: var(--proof-surface);
   }
 
   .proof-first-shell {
@@ -670,10 +683,6 @@
 
   .article-record-header__meta {
     @apply mt-5;
-  }
-
-  .proof-card__header {
-    @apply flex flex-col gap-4 px-5 pb-0 pt-5 md:flex-row md:items-start md:justify-between md:px-8 md:pt-6;
   }
 
   .proof-card__identity {
@@ -873,6 +882,7 @@
     .proof-card {
       break-inside: avoid-page;
       --proof-surface: #f5f3ee;
+      --proof-strap-surface: #e9e2d7;
       --proof-ink: #1f1b17;
       --proof-muted: rgba(31, 27, 23, 0.82);
       --proof-muted-soft: rgba(31, 27, 23, 0.72);
