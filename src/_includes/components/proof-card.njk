@@ -6,14 +6,14 @@
 <section class="proof-card {% if standalone %}proof-card--standalone{% else %}proof-card--inline{% endif %}" aria-labelledby="proof-card-issue-{{ proofCard.slug }}">
   <header class="proof-card__strap">
     <div class="proof-card__identity">
-      <img class="proof-mark proof-card__mark" data-proof-mark data-proof-mark-day="{{ proofMarkDaySrc }}" data-proof-mark-night="{{ proofMarkNightSrc }}" data-proof-mark-print="{{ proofMarkPrintSrc }}" src="{{ proofMarkDaySrc }}" alt="" />
+      <img class="proof-mark proof-card__mark" src="{{ proofMarkPrintSrc }}" alt="" />
       <p class="proof-card__eyebrow">Proof</p>
     </div>
     <p class="proof-card__counts">{{ proofCard.axiomCount }} axioms · {{ proofCard.logicCount }} inferences</p>
   </header>
 
   <div class="proof-card__body">
-    <section class="proof-card__section proof-card__section--full" aria-label="Issue under proof">
+    <section class="proof-card__section proof-card__section--full proof-card__section--hero" aria-label="Issue under proof">
       <p class="proof-card__label">Issue</p>
       <div class="proof-card__section-body">
         <h2 id="proof-card-issue-{{ proofCard.slug }}" class="proof-card__issue">{{ proofCard.issue }}</h2>
@@ -21,7 +21,7 @@
     </section>
 
     <div class="proof-card__details">
-      <section class="proof-card__section">
+      <section class="proof-card__section proof-card__section--panel">
         <p class="proof-card__label">Axioms</p>
         <div class="proof-card__section-body">
           <ol class="proof-card__list" aria-label="Axioms">
@@ -38,7 +38,7 @@
         </div>
       </section>
 
-      <section class="proof-card__section">
+      <section class="proof-card__section proof-card__section--panel">
         <p class="proof-card__label">Inferences</p>
         <div class="proof-card__section-body">
           <ol class="proof-card__list" aria-label="Inferences">
@@ -55,7 +55,7 @@
       </section>
     </div>
 
-    <section class="proof-card__section proof-card__section--full" aria-label="Conclusion">
+    <section class="proof-card__section proof-card__section--full proof-card__section--conclusion" aria-label="Conclusion">
       <p class="proof-card__label">Conclusion</p>
       <div class="proof-card__section-body proof-card__section-body--conclusion">
         <p class="proof-card__conclusion">
