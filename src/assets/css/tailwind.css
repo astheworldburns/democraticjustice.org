@@ -614,8 +614,8 @@
     --proof-accent: #1a4a7a;
     --proof-ghost-opacity: 0.12;
     --proof-label-opacity: 0.22;
-    --proof-label-top: 0.05rem;
-    --proof-label-band: 1.62rem;
+    --proof-label-top: 0.08rem;
+    --proof-label-band: 1.84rem;
     position: relative;
     overflow: hidden;
     border: 1.5px solid var(--proof-border);
@@ -711,7 +711,7 @@
 
   .proof-card__issue-block {
     position: relative;
-    @apply grid gap-0 px-5 pb-6 pt-4 md:px-8 md:pb-7 md:pt-5;
+    @apply grid gap-0 px-5 pb-7 pt-3 md:px-8 md:pb-8 md:pt-4;
   }
 
   .proof-card__issue {
@@ -723,7 +723,7 @@
   }
 
   .proof-card__details {
-    @apply grid gap-10 px-5 pb-8 pt-2 md:px-8 md:pb-9 md:pt-3;
+    @apply grid gap-10 px-5 pb-7 pt-3 md:px-8 md:pb-8 md:pt-4;
   }
 
   .proof-card__section {
@@ -790,7 +790,7 @@
 
   .proof-card__conclusion-block {
     position: relative;
-    @apply grid gap-0 px-5 pb-7 pt-2 md:px-8 md:pb-8 md:pt-3;
+    @apply grid gap-0 px-5 pb-7 pt-3 md:px-8 md:pb-8 md:pt-4;
   }
 
   .proof-card__conclusion-body {
@@ -801,8 +801,8 @@
 
   @media (min-width: 768px) {
     .proof-card {
-      --proof-label-top: 0.04rem;
-      --proof-label-band: 1.76rem;
+      --proof-label-top: 0.06rem;
+      --proof-label-band: 2rem;
     }
   }
 
