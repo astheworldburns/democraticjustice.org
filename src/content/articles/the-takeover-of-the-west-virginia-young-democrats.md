@@ -7,6 +7,25 @@ date: 2026-02-11T12:00:00-05:00
 tags:
   - crime
 featured_image: ""
+proof:
+  issue: State-party officials routed the official control channels of the West Virginia Young Democrats into party infrastructure and kept them there.
+  axioms:
+    - premise: An amended January 23, 2025 WVYD F-4 filing names Mike Pushkin as chairperson and routes official WVYD contact information to West Virginia Democratic Party channels.
+      source_label: WVYD January 2025 F-4 Amendment
+      source_url: /documents/wvyd-january-2025-amended-f4/
+    - premise: A January 21, 2026 WVYD F-4 filing still routes the organization's official mailing address, phone number, and email through West Virginia Democratic Party infrastructure.
+      source_label: WVYD January 2026 F-4 Amendment
+      source_url: /documents/wvyd-january-2026-amended-f4/
+    - premise: Public-facing WVYD materials used a Gmail address while the January 2026 state filing directed official correspondence to a party-controlled email address.
+      source_label: WVYD Contact Channel Comparison
+      source_url: /documents/wvyd-contact-channel-comparison/
+  logic:
+    - step: If the official state filing defines where legal correspondence and organizational control flow, whoever controls those channels controls the organization's durable administrative access.
+    - step: If the 2025 filing moved those channels into state-party hands, the takeover transferred more than temporary custody.
+    - step: If the 2026 filing kept those channels inside party infrastructure after rechartering, the control was preserved rather than unwound.
+    - step: If public-facing materials presented a different contact channel than the legal filing, the appearance of autonomy did not match the official record.
+  inference: The filing chain is the durable record. Whatever public story surrounded rechartering, the state documents continued to place the organization's official contact rails inside the party's own infrastructure.
+  conclusion: The West Virginia Democratic Party retained official administrative control over the West Virginia Young Democrats after the takeover.
 ---
 
 The verdict was prewritten and in hand when Delegate Mike Pushkin, Chair of the West Virginia Democratic Party (WVDP), called the February 22, 2024, meeting to order.

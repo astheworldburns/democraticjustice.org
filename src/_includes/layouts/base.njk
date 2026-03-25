@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
   <head>
+    {% set siteTitle = siteSettings.site_title or site.name %}
+    {% set siteMetaDescription = siteSettings.meta_description or site.description %}
     {% set canonicalUrl = page.url | absoluteUrl(site.url) %}
-    {% set browserTitle = title + " | " + site.name if title and title != site.name else site.name %}
+    {% set browserTitle = title + " | " + siteTitle if title and title != siteTitle else siteTitle %}
     {% set socialTitle = title if ogType == "article" and title else browserTitle %}
-    {% set socialDescription = site.description if page.url == "/" else description or site.description %}
-    {% set socialImagePath = featured_image if featured_image else site.defaultSocialImage %}
+    {% set socialDescription = socialDescription or (siteMetaDescription if page.url == "/" else description or siteMetaDescription) %}
+    {% set socialImagePath = socialImage or (featured_image if featured_image else site.defaultSocialImage) %}
     {% set socialImageUrl = socialImagePath | absoluteUrl(site.url) %}
     {% set assetVersion = buildVersion %}
     {% set faviconHref = site.favicon ~ "?v=" ~ assetVersion %}
     {% set appleTouchHref = site.appleTouchIcon ~ "?v=" ~ assetVersion %}
     {% set authorProfile = author | getAuthor(collections.authorProfiles) if ogType == "article" and author else null %}
-    {% set articleAuthorName = authorProfile.data.name if authorProfile else author or site.name %}
+    {% set articleAuthorName = authorProfile.data.name if authorProfile else author or siteTitle %}
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script>
@@ -30,7 +32,7 @@
     <meta property="og:description" content="{{ socialDescription }}" />
     <meta property="og:type" content="{{ ogType or 'website' }}" />
     <meta property="og:url" content="{{ canonicalUrl }}" />
-    <meta property="og:site_name" content="{{ site.name }}" />
+    <meta property="og:site_name" content="{{ siteTitle }}" />
     <meta property="og:image" content="{{ socialImageUrl }}" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="{{ socialTitle }}" />
@@ -44,7 +46,7 @@
     <link rel="icon" type="image/svg+xml" sizes="any" href="{{ faviconHref }}" />
     <link rel="shortcut icon" href="{{ faviconHref }}" />
     <link rel="apple-touch-icon" href="{{ appleTouchHref }}" />
-    <link rel="alternate" type="application/rss+xml" title="{{ site.name }} RSS Feed" href="/feed.xml" />
+    <link rel="alternate" type="application/rss+xml" title="{{ siteTitle }} RSS Feed" href="/feed.xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://fonts.cdnfonts.com" crossorigin />
@@ -107,18 +109,6 @@
           });
         }
 
-        function syncWordmarks(theme) {
-          document.querySelectorAll("[data-wordmark]").forEach((node) => {
-            const nextSrc = theme === "dark"
-              ? node.dataset.wordmarkNight || node.dataset.wordmarkDay
-              : node.dataset.wordmarkDay;
-
-            if (nextSrc && node.getAttribute("src") !== nextSrc) {
-              node.setAttribute("src", nextSrc);
-            }
-          });
-        }
-
         function syncThemeLabel(theme) {
           labelNodes.forEach((node) => {
             node.textContent = theme === "dark" ? "Day edition" : "Night edition";
@@ -130,7 +120,6 @@
           syncThemeLabel(theme);
           syncThemeColor(theme);
           syncProofMarks(theme);
-          syncWordmarks(theme);
         }
 
         applyTheme(preferredTheme());
@@ -172,12 +161,6 @@
             }
           });
 
-          document.querySelectorAll("[data-wordmark]").forEach((node) => {
-            const printSrc = node.dataset.wordmarkPrint;
-            if (printSrc) {
-              node.setAttribute("src", printSrc);
-            }
-          });
         });
 
         window.addEventListener("afterprint", () => {

@@ -1,14 +1,28 @@
 import { execFile } from "node:child_process";
 import path from "node:path";
-import { mkdir } from "node:fs/promises";
+import { mkdir, readFile } from "node:fs/promises";
 import { promisify } from "node:util";
 
 import Image from "@11ty/eleventy-img";
 import pluginRss from "@11ty/eleventy-plugin-rss";
 import { DateTime } from "luxon";
 
+import { createProofCard } from "./lib/proof.js";
+import { renderProofShareImage } from "./lib/proof-share.js";
+
 const execFileAsync = promisify(execFile);
 const SITE_TIMEZONE = "America/New_York";
+const PROJECT_ROOT = process.cwd();
+
+async function loadSiteSettings(projectRoot = PROJECT_ROOT) {
+  try {
+    const siteSettingsPath = path.join(projectRoot, "src/_data/siteSettings.json");
+    const raw = await readFile(siteSettingsPath, "utf8");
+    return JSON.parse(raw);
+  } catch (error) {
+    return {};
+  }
+}
 
 function toDateTime(value) {
   if (DateTime.isDateTime(value)) {
@@ -231,6 +245,8 @@ function publishedArticles(items = []) {
 }
 
 export default async function (eleventyConfig) {
+  const proofShareManifest = [];
+
   eleventyConfig.addPlugin(pluginRss, {
     posthtmlRenderOptions: {
       closingSingleTag: "default"
@@ -239,7 +255,7 @@ export default async function (eleventyConfig) {
 
   eleventyConfig.addPassthroughCopy("src/assets");
   eleventyConfig.addPassthroughCopy("src/assets/images/uploads");
-  eleventyConfig.addPassthroughCopy("src/documents");
+  eleventyConfig.addPassthroughCopy({ "static/documents": "documents" });
   eleventyConfig.addPassthroughCopy("src/admin");
 
   eleventyConfig.addWatchTarget("./tailwind.config.js");
@@ -265,6 +281,43 @@ export default async function (eleventyConfig) {
         .getFilteredByGlob("./src/content/articles/**/*.md")
         .sort((left, right) => right.date - left.date)
     )
+  );
+
+  eleventyConfig.addCollection("proofArticle", (collectionApi) => {
+    const items = collectionApi
+      .getFilteredByGlob("./src/content/articles/**/*.md")
+      .sort((left, right) => right.date - left.date);
+
+    proofShareManifest.length = 0;
+
+    return items.reduce((entries, article) => {
+      const proofCard = createProofCard({
+        ...article.data,
+        title: article.data.title,
+        description: article.data.description,
+        proof: article.data.proof,
+        fileSlug: article.fileSlug,
+        url: article.url
+      });
+
+      if (!proofCard) {
+        return entries;
+      }
+
+      proofShareManifest.push(proofCard);
+      entries.push({
+        article,
+        proofCard
+      });
+
+      return entries;
+    }, []);
+  });
+
+  eleventyConfig.addCollection("sourceDocument", (collectionApi) =>
+    collectionApi
+      .getFilteredByGlob("./src/content/documents/**/*.md")
+      .sort((left, right) => left.data.title.localeCompare(right.data.title))
   );
 
   eleventyConfig.addCollection("authorProfiles", (collectionApi) =>
@@ -489,6 +542,8 @@ export default async function (eleventyConfig) {
   eleventyConfig.on("eleventy.after", async ({ directories }) => {
     const cssOutputDir = path.resolve(directories.output, "assets/css");
     const cssOutputPath = path.join(cssOutputDir, "style.css");
+    const proofOutputDir = path.resolve(directories.output, "assets/images/proof-cards");
+    const siteSettings = await loadSiteSettings(PROJECT_ROOT);
 
     await mkdir(cssOutputDir, { recursive: true });
 
@@ -502,6 +557,15 @@ export default async function (eleventyConfig) {
       cssOutputPath,
       "--minify"
     ]);
+
+    await Promise.all(
+      proofShareManifest.map((proofCard) =>
+        renderProofShareImage(proofCard, proofOutputDir, {
+          projectRoot: PROJECT_ROOT,
+          siteTitle: siteSettings.site_title
+        })
+      )
+    );
 
     await execFileAsync("npx", ["pagefind", "--site", directories.output]);
   });

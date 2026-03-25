@@ -9,12 +9,43 @@ display_url: https://democraticjustice.org
 media_folder: src/assets/images/uploads
 public_folder: /assets/images/uploads
 
+singletons:
+  - name: site_settings
+    label: Site Settings
+    icon: settings
+    description: Core brand copy for the masthead, footer, and default metadata.
+    file: src/_data/siteSettings.json
+    fields:
+      - label: Site Title
+        name: site_title
+        widget: string
+      - label: Tagline
+        name: tagline
+        widget: string
+      - label: Mission Statement
+        name: mission_statement
+        widget: text
+      - label: Footer Description
+        name: footer_description
+        widget: text
+      - label: Standards Tagline
+        name: standards_tagline
+        widget: string
+      - label: Meta Description / Open Graph Description
+        name: meta_description
+        widget: text
+
 collections:
   - name: authors
     label: Authors
+    label_singular: Author
+    icon: group
+    description: Reporter and editor bylines used throughout the publication.
     folder: src/content/authors
-    create: true
+    identifier_field: name
     slug: "{{slug}}"
+    summary: "{{name}} - {{role}}"
+    preview_path: "/staff/{{slug}}/"
     fields:
       - label: Full Name
         name: name
@@ -46,9 +77,19 @@ collections:
         required: false
   - name: articles
     label: Articles
+    label_singular: Article
+    icon: article
+    description: Longform reporting. Add a Proof Card only when the conclusion is fully sourced and defensible.
     folder: src/content/articles
-    create: true
     slug: "{{slug}}"
+    summary: "{{title}} - {{date | date('DD MMM YYYY')}}"
+    preview_path: "/articles/{{slug}}/"
+    preview_path_date_field: date
+    thumbnail: featured_image
+    sortable_fields:
+      - title
+      - date
+      - author
     fields:
       - label: Kicker
         name: kicker
@@ -82,6 +123,113 @@ collections:
         name: featured_image
         widget: image
         required: false
+      - label: Proof Card
+        name: proof
+        widget: object
+        required: false
+        collapsed: true
+        summary: "{{issue}}"
+        hint: Optional. Use this only when the piece meets the publication's proof standard.
+        fields:
+          - label: Issue
+            name: issue
+            widget: string
+            required: true
+            hint: One sentence. What happened that shouldn't have.
+          - label: Axioms
+            name: axioms
+            widget: list
+            required: true
+            min: 1
+            collapsed: true
+            label_singular: Axiom
+            summary: "{{fields.premise}}"
+            fields:
+              - label: Premise
+                name: premise
+                widget: string
+                required: true
+                hint: The undisputed, documented truth.
+              - label: Source Label
+                name: source_label
+                widget: string
+                required: true
+                hint: Human-readable source name, e.g. SOS Filing
+              - label: Source URL
+                name: source_url
+                widget: relation
+                required: true
+                collection: source_documents
+                search_fields:
+                  - title
+                  - description
+                  - source_method
+                value_field: "/documents/{{slug}}/"
+                display_fields:
+                  - title
+                hint: Select the corresponding source document entry. Stored as /documents/.../
+          - label: Logic
+            name: logic
+            widget: list
+            required: true
+            min: 1
+            collapsed: true
+            label_singular: Step
+            summary: "{{fields.step}}"
+            fields:
+              - label: Step
+                name: step
+                widget: string
+                required: true
+                hint: One if/then sentence. Each step builds on the previous.
+          - label: Inference
+            name: inference
+            widget: text
+            required: true
+            hint: The journalist's bridge between the logic chain and the conclusion.
+          - label: Conclusion
+            name: conclusion
+            widget: text
+            required: true
+            hint: The stated finding. Own it.
       - label: Body
         name: body
         widget: markdown
+  - name: source_documents
+    label: Source Documents
+    label_singular: Source Document
+    icon: folder_open
+    description: Create a source entry first, then cite it from article Proof Card axioms.
+    folder: src/content/documents
+    slug: "{{slug}}"
+    extension: md
+    format: yaml-frontmatter
+    media_folder: static/documents
+    public_folder: /documents
+    summary: "{{title}} - {{obtained | date('DD MMM YYYY')}}"
+    preview_path: "/documents/{{slug}}/"
+    sortable_fields:
+      - title
+      - obtained
+      - source_method
+    fields:
+      - label: Title
+        name: title
+        widget: string
+      - label: File
+        name: file
+        widget: file
+        accept: application/pdf,.pdf,image/*
+        choose_url: false
+      - label: Description
+        name: description
+        widget: text
+        hint: What this document proves and why it matters.
+      - label: Obtained
+        name: obtained
+        widget: datetime
+        type: date
+      - label: Source Method
+        name: source_method
+        widget: string
+        hint: "How obtained: FOIA, public database, provided by source, etc."

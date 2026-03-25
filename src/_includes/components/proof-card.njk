@@ -1,0 +1,92 @@
+{% set variant = proofCardVariant or "inline" %}
+{% set standalone = variant == "standalone" %}
+<section class="proof-card {% if standalone %}proof-card--standalone{% endif %}" aria-labelledby="proof-card-heading-{{ proofCard.slug }}">
+  <header class="proof-card__header">
+    <div class="space-y-3">
+      <p class="section-kicker">Proof Card</p>
+      <h2 id="proof-card-heading-{{ proofCard.slug }}" class="proof-card__heading">
+        {% if standalone %}
+          The reported conclusion below is published as a formal proof.
+        {% else %}
+          This investigation carries a published proof. The conclusion below is owned and defended.
+        {% endif %}
+      </h2>
+    </div>
+    <div class="proof-card__meta" aria-label="Proof structure">
+      <span>{{ proofCard.axiomCount }} axioms</span>
+      <span>{{ proofCard.logicCount }} logic steps</span>
+      <span>Binary standard</span>
+    </div>
+  </header>
+
+  <div class="proof-card__body">
+    <section class="proof-card__section">
+      <p class="proof-card__label">Issue</p>
+      <p class="proof-card__issue">{{ proofCard.issue }}</p>
+    </section>
+
+    <section class="proof-card__section">
+      <div class="proof-card__section-topline">
+        <p class="proof-card__label">Axioms</p>
+        <p class="proof-card__section-note">Documented, source-linked facts</p>
+      </div>
+      <ol class="proof-card__list" aria-label="Axioms">
+        {% for axiom in proofCard.axioms %}
+          <li class="proof-card__list-item">
+            <div class="proof-card__list-index">A{{ axiom.index }}</div>
+            <div class="proof-card__list-copy">
+              <p class="proof-card__list-text">{{ axiom.premise }}</p>
+              <a class="proof-card__source-link" href="{{ axiom.sourceUrl }}">{{ axiom.sourceLabel }}</a>
+            </div>
+          </li>
+        {% endfor %}
+      </ol>
+    </section>
+
+    <section class="proof-card__section">
+      <div class="proof-card__section-topline">
+        <p class="proof-card__label">Logic</p>
+        <p class="proof-card__section-note">Each step depends on the prior one</p>
+      </div>
+      <ol class="proof-card__list" aria-label="Logic chain">
+        {% for entry in proofCard.logic %}
+          <li class="proof-card__list-item">
+            <div class="proof-card__list-index">L{{ entry.index }}</div>
+            <div class="proof-card__list-copy">
+              <p class="proof-card__list-text">{{ entry.step }}</p>
+            </div>
+          </li>
+        {% endfor %}
+      </ol>
+    </section>
+
+    <section class="proof-card__section">
+      <p class="proof-card__label">Inference</p>
+      <p class="proof-card__inference">{{ proofCard.inference }}</p>
+    </section>
+
+    <section class="proof-card__section proof-card__section--conclusion">
+      <p class="proof-card__label">Conclusion</p>
+      <p class="proof-card__conclusion">{{ proofCard.conclusionMarked }}</p>
+    </section>
+  </div>
+
+  <footer class="proof-card__footer">
+    <p class="proof-card__footer-text">
+      {% if standalone %}
+        This proof accompanies <a class="headline-link" href="{{ proofCard.articleUrl }}">{{ proofCard.articleTitle }}</a>.
+      {% else %}
+        This Proof Card has its own citation surface and share image for this investigation.
+      {% endif %}
+    </p>
+    <div class="proof-card__links">
+      {% if standalone %}
+        <a class="button-link-muted" href="{{ proofCard.articleUrl }}">Read the full article</a>
+        <a class="button-link-muted" href="{{ proofCard.shareImagePath }}">Open proof image</a>
+      {% else %}
+        <a class="button-link-muted" href="{{ proofCard.proofUrl }}">Open standalone proof</a>
+        <a class="button-link-muted" href="{{ proofCard.shareImagePath }}">Open proof image</a>
+      {% endif %}
+    </div>
+  </footer>
+</section>
