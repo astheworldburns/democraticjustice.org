@@ -181,7 +181,7 @@ collections:
                 name: step
                 widget: string
                 required: true
-                hint: One if/then sentence. Each step builds on the previous.
+                hint: One plain-language reasoning step. State what follows from the documented facts.
           - label: Inference
             name: inference
             widget: text

@@ -619,21 +619,21 @@
   }
 
   .proof-card__label {
-    @apply font-ui text-[0.68rem] font-semibold uppercase tracking-[0.22em];
-    color: rgb(var(--ink-muted));
+    @apply font-ui text-[0.74rem] font-bold uppercase tracking-[0.16em];
+    color: rgb(var(--ink));
   }
 
   .proof-card__rows {
-    @apply divide-y;
-    border-color: rgba(var(--rule), 0.86);
+    @apply mt-7 grid gap-8;
   }
 
   .proof-card__row {
-    @apply grid gap-3 py-5;
+    @apply grid gap-3;
   }
 
   .proof-card__row--conclusion {
-    @apply py-6;
+    @apply border-t pt-6;
+    border-color: rgba(var(--rule-strong), 0.82);
   }
 
   .proof-card__rail {
@@ -651,7 +651,7 @@
 
   .proof-card__issue,
   .proof-card__bridge {
-    @apply max-w-4xl font-serif text-[1.02rem] leading-8 md:text-[1.08rem];
+    @apply max-w-4xl font-serif text-[1.05rem] leading-8 md:text-[1.12rem];
     color: rgb(var(--ink-soft));
   }
 
@@ -674,7 +674,7 @@
   }
 
   .proof-card__list-text {
-    @apply font-serif text-[1.02rem] leading-8 md:text-[1.06rem];
+    @apply font-serif text-[1.04rem] leading-8 md:text-[1.1rem];
     color: rgb(var(--ink));
   }
 
@@ -688,8 +688,7 @@
   }
 
   .proof-card__bridge {
-    @apply mt-5 border-t pt-5;
-    border-color: rgba(var(--rule), 0.76);
+    @apply mt-6 pt-1;
   }
 
   .proof-card__bridge-label {
@@ -728,8 +727,8 @@
 
   @media (min-width: 960px) {
     .proof-card__row {
-      grid-template-columns: 8.75rem minmax(0, 1fr);
-      gap: 2rem;
+      grid-template-columns: 10rem minmax(0, 1fr);
+      gap: 2.25rem;
       align-items: start;
     }
   }

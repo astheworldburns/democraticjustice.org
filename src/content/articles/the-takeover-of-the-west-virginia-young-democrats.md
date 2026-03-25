@@ -20,10 +20,10 @@ proof:
       source_label: WVYD Contact Channel Comparison
       source_url: /documents/wvyd-contact-channel-comparison/
   logic:
-    - step: If the official state filing defines where legal correspondence and organizational control flow, whoever controls those channels controls the organization's durable administrative access.
-    - step: If the 2025 filing moved those channels into state-party hands, the takeover transferred more than temporary custody.
-    - step: If the 2026 filing kept those channels inside party infrastructure after rechartering, the control was preserved rather than unwound.
-    - step: If public-facing materials presented a different contact channel than the legal filing, the appearance of autonomy did not match the official record.
+    - step: State filings determine where an organization's legal correspondence and durable administrative control flow.
+    - step: The January 2025 filing moved those control channels into West Virginia Democratic Party hands.
+    - step: The January 2026 filing shows those same channels remained inside party infrastructure after rechartering.
+    - step: The public-facing Gmail did not match the official state record, so the appearance of independence was not the governing reality.
   inference: The filing chain is the durable record. Whatever public story surrounded rechartering, the state documents continued to place the organization's official contact rails inside the party's own infrastructure.
   conclusion: The West Virginia Democratic Party retained official administrative control over the West Virginia Young Democrats after the takeover.
 ---
