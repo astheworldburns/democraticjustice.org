@@ -16,13 +16,13 @@ eleventyComputed:
 {% set proofCard = proofEntry.proofCard %}
 <article class="mx-auto max-w-5xl space-y-8" data-pagefind-ignore>
   <header class="proof-page-header">
-    <p class="section-kicker">Proof Page</p>
-    <h1 class="proof-page-header__title">Formal proof for {{ proofEntry.article.data.title }}</h1>
+    <p class="section-kicker">Proof</p>
+    <h1 class="proof-page-header__title">{{ proofEntry.article.data.title }}</h1>
     <p class="proof-page-header__description">
-      Every axiom links to a public source page. Every logic step is stated. The conclusion is not hedged.
+      Public proof for this investigation.
     </p>
     <div class="proof-page-header__actions">
-      <a class="button-link" href="{{ proofEntry.article.url }}">Read the article</a>
+      <a class="button-link-muted" href="{{ proofEntry.article.url }}">Read the article</a>
       <a class="button-link-muted" href="{{ proofCard.shareImagePath }}">Open proof image</a>
     </div>
   </header>

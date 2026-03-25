@@ -135,7 +135,7 @@ collections:
             name: issue
             widget: string
             required: true
-            hint: One sentence. What happened that shouldn't have.
+            hint: Short charged proposition. State plainly what is being proved.
           - label: Axioms
             name: axioms
             widget: list
@@ -168,20 +168,20 @@ collections:
                 display_fields:
                   - title
                 hint: Select the corresponding source document entry. Stored as /documents/.../
-          - label: Logic
+          - label: Propositions
             name: logic
             widget: list
             required: true
             min: 1
             collapsed: true
-            label_singular: Step
+            label_singular: Proposition
             summary: "{{fields.step}}"
             fields:
-              - label: Step
+              - label: Proposition
                 name: step
                 widget: string
                 required: true
-                hint: One plain-language reasoning step. State what follows from the documented facts.
+                hint: Declarative proposition. State what follows from the documented facts.
           - label: Inference
             name: inference
             widget: text
@@ -191,7 +191,7 @@ collections:
             name: conclusion
             widget: text
             required: true
-            hint: The stated finding. Own it.
+            hint: Fuller proved finding. More detailed and earned than the issue.
       - label: Body
         name: body
         widget: markdown
