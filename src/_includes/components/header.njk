@@ -68,7 +68,7 @@
           </a>
         </li>
         <li>
-          <a class="hover:text-[rgb(var(--ink))]" href="/feed.xml">
+          <a class="{% if page.url == '/rss/' %}text-[rgb(var(--ink))]{% else %}hover:text-[rgb(var(--ink))]{% endif %}" href="/rss/" {% if page.url == '/rss/' %}aria-current="page"{% endif %}>
             RSS
           </a>
         </li>

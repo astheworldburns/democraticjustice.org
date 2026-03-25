@@ -189,9 +189,10 @@
           button.addEventListener("click", async () => {
             const defaultLabel = button.dataset.copyLabelDefault || "Copy link";
             const successLabel = button.dataset.copyLabelSuccess || "Link copied";
+            const copyValue = button.dataset.copyValue || window.location.href;
 
             try {
-              await navigator.clipboard.writeText(window.location.href);
+              await navigator.clipboard.writeText(copyValue);
               button.textContent = successLabel;
               window.setTimeout(() => {
                 button.textContent = defaultLabel;
