@@ -126,12 +126,7 @@ ogType: article
             <button class="toolbar-button" type="button" data-copy-link data-copy-label-default="Copy link" data-copy-label-success="Link copied">
               Copy link
             </button>
-            {% if proofCard %}
-              <a class="toolbar-button" href="{{ proofCard.proofUrl }}">
-                Open proof
-              </a>
-            {% endif %}
-            <button class="toolbar-button" type="button" data-share-page hidden>
+            <button class="toolbar-button" type="button" data-share-page {% if proofCard %}data-share-title="{{ title }} proof card" data-share-url="{{ proofCard.shareImagePath | absoluteUrl(site.url) }}"{% endif %} hidden>
               Share
             </button>
             <button class="toolbar-button" type="button" data-print-page>

@@ -215,10 +215,13 @@
 
           button.hidden = false;
           button.addEventListener("click", async () => {
+            const shareTitle = button.dataset.shareTitle || document.title;
+            const shareUrl = button.dataset.shareUrl || window.location.href;
+
             try {
               await navigator.share({
-                title: document.title,
-                url: window.location.href
+                title: shareTitle,
+                url: shareUrl
               });
             } catch (error) {
               // Ignore cancelled shares.
