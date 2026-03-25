@@ -4,15 +4,15 @@
 {% set proofMarkNightSrc = site.proofMarkNight ~ "?v=" ~ buildVersion %}
 {% set proofMarkPrintSrc = site.proofMarkPrint ~ "?v=" ~ buildVersion %}
 <section class="proof-card {% if standalone %}proof-card--standalone{% else %}proof-card--inline{% endif %}" aria-labelledby="proof-card-issue-{{ proofCard.slug }}">
-  <header class="proof-card__strap">
-    <div class="proof-card__identity">
-      <img class="proof-mark proof-card__mark" src="{{ proofMarkPrintSrc }}" alt="" />
-      <p class="proof-card__eyebrow">Proof</p>
-    </div>
-    <p class="proof-card__counts">{{ proofCard.axiomCount }} axioms · {{ proofCard.logicCount }} inferences</p>
-  </header>
-
   <div class="proof-card__body">
+    <header class="proof-card__strap">
+      <div class="proof-card__identity">
+        <img class="proof-mark proof-card__mark" src="{{ proofMarkPrintSrc }}" alt="" />
+        <p class="proof-card__eyebrow">Proof</p>
+      </div>
+      <p class="proof-card__counts">{{ proofCard.axiomCount }} axioms · {{ proofCard.logicCount }} inferences</p>
+    </header>
+
     <section class="proof-card__section proof-card__section--full proof-card__section--hero" aria-label="Issue under proof">
       <p class="proof-card__label">Issue</p>
       <div class="proof-card__section-body">
