@@ -73,11 +73,56 @@
             background: var(--paper);
             padding: 1.5rem;
           }
-          .topbar {
+          .masthead {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--rule-strong);
+          }
+          .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: inherit;
+            text-decoration: none;
+          }
+          .brand-mark {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Inter, Arial, sans-serif;
+            font-size: 1.15rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+          }
+          .brand-copy {
+            display: flex;
+            flex-direction: column;
+            gap: 0.12rem;
+          }
+          .brand-name {
+            font-size: clamp(1.15rem, 2vw, 1.45rem);
+            font-weight: 700;
+            line-height: 1;
+          }
+          .brand-subtitle {
+            font-family: Inter, Arial, sans-serif;
+            font-size: 0.64rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--ink-soft);
+          }
+          .masthead-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+          }
+          .intro {
+            margin-top: 1.15rem;
           }
           .kicker {
             margin: 0;
@@ -183,10 +228,20 @@
       <body>
         <div class="shell">
           <div class="panel">
-            <div class="topbar">
-              <p class="kicker">RSS Feed</p>
-              <button class="theme-toggle" type="button" data-theme-toggle="true">Night edition</button>
+            <div class="masthead">
+              <a class="brand" href="{rss/channel/link}">
+                <span class="brand-mark">[∴]</span>
+                <span class="brand-copy">
+                  <span class="brand-name"><xsl:value-of select="rss/channel/title"/></span>
+                  <span class="brand-subtitle">Return to homepage</span>
+                </span>
+              </a>
+              <div class="masthead-actions">
+                <a class="button" href="{rss/channel/link}">Homepage</a>
+                <button class="theme-toggle" type="button" data-theme-toggle="true">Night edition</button>
+              </div>
             </div>
+            <div class="intro">
             <h1><xsl:value-of select="rss/channel/title"/></h1>
             <p class="dek">
               This is the machine-readable RSS feed for Democratic Justice. If you were expecting a normal webpage, start with the RSS guide instead.
@@ -198,6 +253,7 @@
             <p class="note">
               Paste this feed URL into any RSS reader to subscribe: <code><xsl:value-of select="rss/channel/atom:link/@href"/></code>
             </p>
+            </div>
 
             <div class="items">
               <xsl:for-each select="rss/channel/item">
