@@ -575,14 +575,11 @@
   }
 
   .proof-card {
-    @apply my-8 border p-5 md:p-7;
-    border-color: rgba(var(--rule-strong), 0.92);
+    @apply my-8 px-1 py-6 md:py-8;
+    border-top: 2px solid rgba(var(--rule-strong), 0.92);
+    border-bottom: 1px solid rgba(var(--rule), 0.92);
     background:
-      linear-gradient(180deg, rgba(var(--paper-strong), 0.98), rgba(var(--paper), 0.96)),
-      linear-gradient(135deg, rgba(var(--accent-soft), 0.34), transparent 48%);
-    box-shadow:
-      inset 0 0 0 1px rgba(var(--paper-strong), 0.4),
-      0 20px 46px rgba(var(--page-shadow), 0.1);
+      linear-gradient(180deg, rgba(var(--paper-muted), 0.46), rgba(var(--paper-strong), 0) 42%);
   }
 
   .proof-card--standalone {
@@ -590,44 +587,62 @@
   }
 
   .proof-card__header {
-    @apply flex flex-col gap-5 border-b pb-5 md:flex-row md:items-end md:justify-between;
+    @apply flex flex-col gap-3 border-b pb-5;
     border-color: rgba(var(--rule), 0.92);
   }
 
   .proof-card__heading {
-    @apply max-w-3xl font-display text-[clamp(2rem,4vw,3rem)] font-black leading-[0.95] tracking-tight;
+    @apply max-w-3xl font-display text-[clamp(1.7rem,3vw,2.35rem)] font-black leading-[1.02] tracking-tight;
     color: rgb(var(--ink));
   }
 
   .proof-card__meta {
-    @apply flex flex-wrap gap-2;
+    @apply flex flex-wrap gap-x-4 gap-y-2 font-ui text-[0.66rem] font-semibold uppercase tracking-[0.16em];
+    color: rgb(var(--ink-muted));
   }
 
-  .proof-card__meta span {
-    @apply inline-flex items-center border px-3 py-2 font-ui text-[0.64rem] font-semibold uppercase tracking-[0.18em];
-    border-color: rgba(var(--rule), 0.92);
-    background: rgba(var(--paper-strong), 0.84);
-    color: rgb(var(--ink-soft));
+  .proof-card__meta li {
+    @apply inline-flex items-center;
+  }
+
+  .proof-card__meta li::before {
+    content: "\2022";
+    margin-right: 0.7rem;
+    color: rgb(var(--rule-strong));
+  }
+
+  .proof-card__meta li:first-child::before {
+    content: "";
+    margin-right: 0;
   }
 
   .proof-card__body {
-    @apply mt-6 grid gap-5;
+    @apply mt-7 grid gap-8;
   }
 
-  .proof-card__section {
-    @apply border p-4 md:p-5;
+  .proof-card__lede {
+    @apply grid gap-6 border-b pb-7;
     border-color: rgba(var(--rule), 0.92);
-    background: rgba(var(--paper-strong), 0.74);
   }
 
-  .proof-card__section--conclusion {
-    border-color: rgba(var(--rule-strong), 0.92);
-    background:
-      linear-gradient(180deg, rgba(var(--paper-strong), 0.94), rgba(var(--paper-muted), 0.96)),
-      linear-gradient(135deg, rgba(var(--accent-soft), 0.36), transparent 44%);
+  .proof-card__summary {
+    @apply max-w-4xl;
   }
 
-  .proof-card__section-topline {
+  .proof-card__summary--conclusion {
+    @apply max-w-5xl;
+  }
+
+  .proof-card__columns {
+    @apply grid gap-8;
+  }
+
+  .proof-card__group {
+    @apply border-t pt-5;
+    border-color: rgba(var(--rule), 0.82);
+  }
+
+  .proof-card__group-head {
     @apply flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between;
   }
 
@@ -648,11 +663,11 @@
   }
 
   .proof-card__list {
-    @apply mt-4 grid gap-3;
+    @apply mt-4 grid gap-4;
   }
 
   .proof-card__list-item {
-    @apply grid gap-3 border-t pt-3 md:grid-cols-[auto_minmax(0,1fr)];
+    @apply border-t pt-4;
     border-color: rgba(var(--rule), 0.72);
   }
 
@@ -660,25 +675,18 @@
     @apply border-t-0 pt-0;
   }
 
-  .proof-card__list-index {
-    @apply inline-flex h-9 min-w-9 items-center justify-center border px-3 font-ui text-[0.64rem] font-bold uppercase tracking-[0.18em];
-    border-color: rgba(var(--rule), 0.92);
-    background: rgba(var(--accent-soft), 0.38);
+  .proof-card__marker {
+    @apply mr-3 inline-block font-ui text-[0.66rem] font-bold uppercase tracking-[0.18em];
     color: rgb(var(--accent));
   }
 
-  .proof-card__list-copy {
-    @apply min-w-0;
-  }
-
   .proof-card__list-text {
-    @apply font-serif text-base leading-relaxed;
+    @apply font-serif text-[1.02rem] leading-8;
     color: rgb(var(--ink));
   }
 
   .proof-card__source-link {
-    @apply mt-3 inline-flex items-center border-b pb-1 font-ui text-[0.68rem] font-semibold uppercase tracking-[0.18em];
-    border-color: rgba(var(--rule-strong), 0.92);
+    @apply mt-2 inline-flex items-center font-ui text-[0.66rem] font-semibold uppercase tracking-[0.16em];
     color: rgb(var(--accent));
   }
 
@@ -687,12 +695,12 @@
   }
 
   .proof-card__conclusion {
-    @apply mt-3 max-w-4xl font-serif text-[clamp(1.65rem,3vw,2.6rem)] font-black leading-[1.1];
+    @apply mt-3 max-w-5xl font-serif text-[clamp(1.9rem,3.4vw,3rem)] font-black leading-[1.04];
     color: rgb(var(--ink));
   }
 
   .proof-card__footer {
-    @apply mt-6 flex flex-col gap-4 border-t pt-5;
+    @apply mt-2 flex flex-col gap-4 border-t pt-5;
     border-color: rgba(var(--rule), 0.92);
   }
 
@@ -703,6 +711,13 @@
 
   .proof-card__links {
     @apply flex flex-wrap gap-3;
+  }
+
+  @media (min-width: 1024px) {
+    .proof-card__columns {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 3rem;
+    }
   }
 
   .proof-page-header {
