@@ -21,7 +21,7 @@ ogType: article
       {% if proofCard %}
         <div class="article-record-transition" data-pagefind-ignore>
           <p class="article-record-transition__label">The Record</p>
-          <p class="article-record-transition__text">The reported narrative behind the published proof.</p>
+          <p class="article-record-transition__text">The reported narrative behind the proof.</p>
         </div>
       {% endif %}
 
@@ -126,6 +126,11 @@ ogType: article
             <button class="toolbar-button" type="button" data-copy-link data-copy-label-default="Copy link" data-copy-label-success="Link copied">
               Copy link
             </button>
+            {% if proofCard %}
+              <a class="toolbar-button" href="{{ proofCard.proofUrl }}">
+                Open proof
+              </a>
+            {% endif %}
             <button class="toolbar-button" type="button" data-share-page hidden>
               Share
             </button>
@@ -134,21 +139,6 @@ ogType: article
             </button>
           </div>
         </section>
-
-        {% if proofCard %}
-          <section class="border-t border-[rgba(var(--rule),0.92)] pt-5">
-            <p class="section-kicker">Proof status</p>
-            <p class="mt-3 font-serif text-xl font-black leading-tight text-[rgb(var(--ink))]">
-              This investigation carries a published proof.
-            </p>
-            <p class="mt-2 font-serif text-sm leading-relaxed text-[rgb(var(--ink-soft))]">
-              Every axiom is sourced, every inferential step is stated, and the conclusion is owned in public.
-            </p>
-            <div class="mt-4 flex flex-wrap gap-3">
-              <a class="button-link-muted" href="{{ proofCard.proofUrl }}">Standalone proof</a>
-            </div>
-          </section>
-        {% endif %}
 
         {% if tocItems | length %}
           <section class="border-t border-[rgba(var(--rule),0.92)] pt-5">
