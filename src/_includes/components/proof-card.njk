@@ -3,7 +3,7 @@
 {% set proofMarkDaySrc = site.proofMarkDay ~ "?v=" ~ buildVersion %}
 {% set proofMarkNightSrc = site.proofMarkNight ~ "?v=" ~ buildVersion %}
 {% set proofMarkPrintSrc = site.proofMarkPrint ~ "?v=" ~ buildVersion %}
-<section class="proof-card {% if standalone %}proof-card--standalone{% endif %}" aria-labelledby="proof-card-issue-{{ proofCard.slug }}">
+<section class="proof-card {% if standalone %}proof-card--standalone{% else %}proof-card--inline{% endif %}" aria-labelledby="proof-card-issue-{{ proofCard.slug }}">
   <header class="proof-card__header">
     <div class="proof-card__identity">
       <img class="proof-mark proof-card__mark" data-proof-mark data-proof-mark-day="{{ proofMarkDaySrc }}" data-proof-mark-night="{{ proofMarkNightSrc }}" data-proof-mark-print="{{ proofMarkPrintSrc }}" src="{{ proofMarkDaySrc }}" alt="" />
@@ -61,20 +61,19 @@
             </li>
           {% endfor %}
         </ol>
-        <div class="proof-card__bridge">
-          <p class="proof-card__bridge-label">Inference</p>
-          <p class="proof-card__bridge-text">{{ proofCard.inference }}</p>
-        </div>
+        <p class="proof-card__bridge"><span class="proof-card__bridge-prefix">Inference:</span> {{ proofCard.inference }}</p>
       </div>
     </section>
   </div>
 
   <section class="proof-card__conclusion-block" aria-label="Conclusion">
     <p class="proof-card__label">Conclusion</p>
-    <p class="proof-card__conclusion">
-      <span class="proof-card__therefore" aria-hidden="true">∴</span>
+    <div class="proof-card__conclusion-body">
+      <img class="proof-card__ghost-mark" src="{{ proofMarkDaySrc }}" alt="" aria-hidden="true" />
+      <p class="proof-card__conclusion">
       <span>{{ proofCard.conclusion }}</span>
-    </p>
+      </p>
+    </div>
   </section>
 
   <footer class="proof-card__footer">

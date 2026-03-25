@@ -15,18 +15,18 @@ eleventyComputed:
 ---
 {% set proofCard = proofEntry.proofCard %}
 <article class="mx-auto max-w-5xl space-y-8" data-pagefind-ignore>
+  {% set proofCardVariant = "standalone" %}
+  {% include "components/proof-card.njk" %}
+
   <header class="proof-page-header">
-    <p class="section-kicker">Proof</p>
+    <p class="section-kicker">Proof Record</p>
     <h1 class="proof-page-header__title">{{ proofEntry.article.data.title }}</h1>
     <p class="proof-page-header__description">
-      Public proof for this investigation.
+      This proof accompanies the published investigation and can be cited independently.
     </p>
     <div class="proof-page-header__actions">
       <a class="button-link-muted" href="{{ proofEntry.article.url }}">Read the article</a>
       <a class="button-link-muted" href="{{ proofCard.shareImagePath }}">Open proof image</a>
     </div>
   </header>
-
-  {% set proofCardVariant = "standalone" %}
-  {% include "components/proof-card.njk" %}
 </article>
