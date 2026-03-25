@@ -56,6 +56,16 @@ export default {
               marginTop: "1.15em",
               marginBottom: "1.15em"
             },
+            h1: {
+              color: "rgb(var(--ink))",
+              fontFamily: "\"Century Schoolbook\", serif",
+              fontWeight: "800",
+              fontSize: "clamp(2.2rem, 1.55rem + 1.8vw, 3.35rem)",
+              letterSpacing: "-0.04em",
+              lineHeight: "0.98",
+              marginTop: "1.25em",
+              marginBottom: "0.72em"
+            },
             h2: {
               color: "rgb(var(--ink))",
               fontFamily: "\"Century Schoolbook\", serif",
