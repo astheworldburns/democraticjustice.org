@@ -448,13 +448,17 @@
     color: rgb(var(--ink-muted));
   }
 
-  .footer-contact-email {
-    @apply block max-w-full break-all font-ui text-[0.9rem] font-semibold leading-tight tracking-[0.01em];
+  .footer-contact-link {
+    @apply block;
+    color: rgb(var(--ink-soft));
+  }
+
+  .footer-contact-link:hover {
     color: rgb(var(--ink));
   }
 
-  .footer-contact-email:hover {
-    color: rgb(var(--ink-soft));
+  .footer-contact-link--email {
+    @apply max-w-full break-all;
   }
 
   .news-grid-accent {
