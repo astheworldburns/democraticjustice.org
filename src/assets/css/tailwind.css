@@ -95,6 +95,35 @@
       scroll-behavior: auto !important;
     }
   }
+
+  @media print {
+    html,
+    html[data-theme="dark"] {
+      color-scheme: light;
+      --page: 255 255 255;
+      --page-shadow: 0 0 0;
+      --paper: 255 255 255;
+      --paper-muted: 247 243 236;
+      --paper-strong: 255 255 255;
+      --ink: 26 22 18;
+      --ink-soft: 82 74 65;
+      --ink-muted: 118 110 101;
+      --rule: 197 190 180;
+      --rule-strong: 49 43 37;
+      --accent: 35 53 78;
+      --accent-soft: 219 227 238;
+    }
+
+    body {
+      background: #ffffff !important;
+    }
+
+    body::before,
+    .reading-progress,
+    .theme-toggle {
+      display: none !important;
+    }
+  }
 }
 
 @layer components {
@@ -583,9 +612,9 @@
   }
 
   html[data-theme="dark"] .proof-card {
-    border-color: rgba(220, 210, 197, 0.7);
-    background: #1f1c19;
-    color: #f3eee5;
+    border-color: rgba(49, 43, 37, 0.92);
+    background: #f5f3ee;
+    color: #1f1b17;
   }
 
   .proof-card--standalone {
@@ -610,11 +639,11 @@
   }
 
   .article-record-header__title {
-    @apply mt-3 max-w-4xl font-display text-[clamp(1.95rem,3.4vw,3.25rem)] font-black leading-[1] tracking-tight text-[rgb(var(--ink))];
+    @apply mt-3 max-w-4xl font-display text-[clamp(1.72rem,2.9vw,2.55rem)] font-semibold leading-[1.02] tracking-tight text-[rgb(var(--ink))];
   }
 
   .article-record-header__description {
-    @apply mt-4 max-w-3xl font-serif text-[0.98rem] italic leading-relaxed text-[rgb(var(--ink-soft))] md:text-[1.02rem];
+    @apply mt-4 max-w-3xl font-serif text-[0.94rem] leading-relaxed text-[rgb(var(--ink-soft))] md:text-[0.98rem];
   }
 
   .article-record-header__meta {
@@ -656,10 +685,6 @@
     color: rgba(31, 27, 23, 0.82);
   }
 
-  html[data-theme="dark"] .proof-card__eyebrow-note {
-    color: rgba(243, 238, 229, 0.8);
-  }
-
   .proof-card__counts {
     @apply font-ui text-[0.7rem] font-semibold uppercase tracking-[0.18em];
     color: currentColor;
@@ -684,10 +709,6 @@
     border-color: rgba(86, 78, 68, 0.26);
   }
 
-  html[data-theme="dark"] .proof-card__details {
-    border-color: rgba(218, 208, 194, 0.18);
-  }
-
   .proof-card__section {
     @apply grid gap-4;
   }
@@ -695,10 +716,6 @@
   .proof-card__section-head {
     @apply flex flex-col gap-1 border-b pb-2;
     border-color: rgba(86, 78, 68, 0.22);
-  }
-
-  html[data-theme="dark"] .proof-card__section-head {
-    border-color: rgba(218, 208, 194, 0.16);
   }
 
   .proof-card__section-body {
@@ -742,10 +759,6 @@
     color: rgba(31, 27, 23, 0.78);
   }
 
-  html[data-theme="dark"] .proof-card__bridge {
-    color: rgba(243, 238, 229, 0.76);
-  }
-
   .proof-card__bridge-prefix {
     @apply mr-2 font-ui text-[0.68rem] font-black uppercase tracking-[0.18em];
     color: #1a4a7a;
@@ -765,24 +778,18 @@
   .proof-card__ghost-mark {
     position: absolute;
     top: 52%;
-    left: 0.6rem;
-    width: clamp(8rem, 18vw, 12rem);
+    left: 0.35rem;
+    width: clamp(9rem, 18vw, 13rem);
     transform: translateY(-50%);
-    opacity: 0.08;
+    opacity: 0.1;
     pointer-events: none;
     user-select: none;
-    filter: grayscale(1) brightness(0);
-  }
-
-  html[data-theme="dark"] .proof-card__ghost-mark {
-    opacity: 0.1;
-    filter: grayscale(1) brightness(3);
   }
 
   .proof-card__conclusion {
     position: relative;
     z-index: 1;
-    @apply max-w-4xl pl-20 font-serif text-[1.3rem] font-semibold leading-[1.42] md:text-[1.4rem];
+    @apply max-w-4xl pl-24 font-serif text-[1.24rem] font-semibold leading-[1.44] md:text-[1.34rem];
     color: currentColor;
   }
 
@@ -800,10 +807,6 @@
     color: rgba(31, 27, 23, 0.72);
   }
 
-  html[data-theme="dark"] .proof-card__footer-text {
-    color: rgba(243, 238, 229, 0.68);
-  }
-
   .proof-card__links {
     @apply flex flex-wrap gap-x-4 gap-y-2;
   }
@@ -812,11 +815,6 @@
     @apply inline-flex items-center border-b pb-1 font-ui text-[0.68rem] font-semibold uppercase tracking-[0.2em];
     border-color: rgba(86, 78, 68, 0.4);
     color: rgba(31, 27, 23, 0.72);
-  }
-
-  html[data-theme="dark"] .proof-card__link {
-    border-color: rgba(218, 208, 194, 0.3);
-    color: rgba(243, 238, 229, 0.72);
   }
 
   .proof-card__link:hover {
@@ -839,6 +837,29 @@
   @media (min-width: 1024px) {
     .proof-first-shell {
       margin: -2rem -3.5rem 3rem;
+    }
+  }
+
+  @media print {
+    .site-frame {
+      max-width: none;
+      padding: 0 !important;
+    }
+
+    .paper-panel {
+      border: none !important;
+      background: #ffffff !important;
+      box-shadow: none !important;
+    }
+
+    .proof-first-shell {
+      margin: 0 0 1.75rem !important;
+    }
+
+    .proof-card {
+      break-inside: avoid-page;
+      background: #f5f3ee !important;
+      color: #1f1b17 !important;
     }
   }
 

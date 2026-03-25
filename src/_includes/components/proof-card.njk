@@ -69,7 +69,7 @@
   <section class="proof-card__conclusion-block" aria-label="Conclusion">
     <p class="proof-card__label">Conclusion</p>
     <div class="proof-card__conclusion-body">
-      <img class="proof-card__ghost-mark" src="{{ proofMarkDaySrc }}" alt="" aria-hidden="true" />
+      <img class="proof-card__ghost-mark" data-proof-mark data-proof-mark-day="{{ proofMarkDaySrc }}" data-proof-mark-night="{{ proofMarkNightSrc }}" data-proof-mark-print="{{ proofMarkPrintSrc }}" src="{{ proofMarkDaySrc }}" alt="" aria-hidden="true" />
       <p class="proof-card__conclusion">
       <span>{{ proofCard.conclusion }}</span>
       </p>
