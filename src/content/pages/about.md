@@ -7,8 +7,6 @@ ogType: website
 kicker: Publication
 ---
 
-# About Democratic Justice
-
 Democratic Justice is an investigative journalism publication focused on political accountability, public power, elections, and institutional failure in West Virginia. The mission is simple: produce reporting that can be checked, cited, archived, and revisited long after the news cycle moves on.
 
 The publication is being built to grow beyond any single voice. Reporters, editors, archives, and editorial desks are structured so the authority of the work comes from verification, clarity, and consistency rather than personality alone.

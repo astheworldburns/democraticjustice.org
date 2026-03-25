@@ -4,7 +4,6 @@
 {% set proofMarkNightSrc = site.proofMarkNight ~ "?v=" ~ buildVersion %}
 {% set proofMarkPrintSrc = site.proofMarkPrint ~ "?v=" ~ buildVersion %}
 {% set siteTitle = siteSettings.site_title or site.name %}
-{% set siteTagline = siteSettings.tagline or site.tagline or site.description %}
 
 {% if isArticlePage %}
   <header class="border-b border-[rgba(var(--rule-strong),0.9)]">
@@ -27,7 +26,6 @@
         <img class="proof-mark masthead-brand__mark {% if isHomePage %}masthead-brand__mark--home{% else %}masthead-brand__mark--section{% endif %}" data-proof-mark data-proof-mark-day="{{ proofMarkDaySrc }}" data-proof-mark-night="{{ proofMarkNightSrc }}" data-proof-mark-print="{{ proofMarkPrintSrc }}" src="{{ proofMarkDaySrc }}" alt="" />
         <span class="masthead-brand__copy">
           <span class="masthead-brand__name {% if isHomePage %}masthead-brand__name--home{% else %}masthead-brand__name--section{% endif %}">{{ siteTitle }}</span>
-          <span class="masthead-brand__tagline">{{ siteTagline }}</span>
         </span>
       </a>
       <div class="masthead-meta">
