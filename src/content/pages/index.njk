@@ -22,12 +22,6 @@ ogType: website
             <h1 class="mt-3 max-w-5xl font-display text-[clamp(2.45rem,4.9vw,5rem)] font-black leading-[0.94] tracking-tight text-[rgb(var(--ink))]">
               <a class="headline-link" href="{{ lead.url }}">{{ lead.data.title }}</a>
             </h1>
-            {% if lead.data.proofCard %}
-              <p class="lead-proof-status">
-                <img class="proof-mark lead-proof-status__mark" data-proof-mark data-proof-mark-day="{{ proofMarkDaySrc }}" data-proof-mark-night="{{ proofMarkNightSrc }}" data-proof-mark-print="{{ proofMarkPrintSrc }}" src="{{ proofMarkDaySrc }}" alt="" />
-                <span>Published proof</span>
-              </p>
-            {% endif %}
             <div class="meta-row mt-4">
               <span>{{ lead.date | displayDate }}</span>
               <span class="meta-divider">By {% if leadAuthor %}<a class="hover:text-[rgb(var(--ink))]" href="{{ leadAuthor.url }}">{{ leadAuthor.data.name }}</a>{% else %}{{ site.name }}{% endif %}</span>
@@ -142,7 +136,7 @@ ogType: website
   {% if proofEntries | length %}
     <section class="space-y-6">
       <div class="flex items-end justify-between border-b border-[rgb(var(--rule-strong))] pb-3">
-        <h2 class="font-display text-3xl font-black tracking-tight text-[rgb(var(--ink))]">Published proofs</h2>
+        <h2 class="font-display text-3xl font-black tracking-tight text-[rgb(var(--ink))]">Proof archive</h2>
         <p class="section-kicker">Proof archive</p>
       </div>
       <div class="proof-archive-band">

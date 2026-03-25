@@ -400,15 +400,6 @@
     border: 1px solid rgba(var(--rule-strong), 0.92);
   }
 
-  .lead-proof-status {
-    @apply mt-4 inline-flex items-center gap-2 font-ui text-[0.68rem] font-black uppercase tracking-[0.2em];
-    color: rgb(var(--accent));
-  }
-
-  .lead-proof-status__mark {
-    width: 1rem;
-  }
-
   .story-proof-mark {
     display: inline-flex;
     vertical-align: 0.02em;
