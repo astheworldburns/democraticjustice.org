@@ -614,8 +614,11 @@
     --proof-accent: #1a4a7a;
     --proof-ghost-opacity: 0.12;
     --proof-label-opacity: 0.22;
-    --proof-label-top: 0.08rem;
-    --proof-label-band: 1.84rem;
+    --proof-label-top: 0.12rem;
+    --proof-label-band: 1.9rem;
+    --proof-section-pad-x: 1.25rem;
+    --proof-section-pad-top: 0.2rem;
+    --proof-section-pad-bottom: 1rem;
     position: relative;
     overflow: hidden;
     border: 1.5px solid var(--proof-border);
@@ -709,34 +712,22 @@
     color: var(--proof-accent);
   }
 
-  .proof-card__issue-block {
-    position: relative;
-    @apply grid gap-0 px-5 pb-7 pt-3 md:px-8 md:pb-8 md:pt-4;
-  }
-
-  .proof-card__issue {
-    position: relative;
-    z-index: 1;
-    padding-top: var(--proof-label-band);
-    @apply max-w-4xl font-serif text-[1.28rem] font-medium leading-[1.45] tracking-[0em] md:text-[1.42rem];
-    color: currentColor;
-  }
-
   .proof-card__details {
-    @apply grid gap-10 px-5 pb-7 pt-3 md:px-8 md:pb-8 md:pt-4;
+    @apply grid gap-10;
+    padding-inline: var(--proof-section-pad-x);
+    padding-top: var(--proof-section-pad-top);
+    padding-bottom: var(--proof-section-pad-bottom);
   }
 
   .proof-card__section {
     position: relative;
     @apply grid gap-0;
+    padding-top: var(--proof-section-pad-top);
+    padding-bottom: var(--proof-section-pad-bottom);
   }
 
-  .proof-card__section-head {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    min-height: 0;
+  .proof-card__section--full {
+    padding-inline: var(--proof-section-pad-x);
   }
 
   .proof-card__section-body {
@@ -744,6 +735,11 @@
     z-index: 1;
     padding-top: var(--proof-label-band);
     @apply min-w-0;
+  }
+
+  .proof-card__issue {
+    @apply max-w-4xl font-serif text-[1.28rem] font-medium leading-[1.45] tracking-[0em] md:text-[1.42rem];
+    color: currentColor;
   }
 
   .proof-card__list {
@@ -788,21 +784,18 @@
     color: var(--proof-accent);
   }
 
-  .proof-card__conclusion-block {
-    position: relative;
-    @apply grid gap-0 px-5 pb-7 pt-3 md:px-8 md:pb-8 md:pt-4;
-  }
-
-  .proof-card__conclusion-body {
+  .proof-card__section-body--conclusion {
     overflow: hidden;
     min-height: 10rem;
-    padding-top: var(--proof-label-band);
   }
 
   @media (min-width: 768px) {
     .proof-card {
-      --proof-label-top: 0.06rem;
+      --proof-label-top: 0.08rem;
       --proof-label-band: 2rem;
+      --proof-section-pad-x: 2rem;
+      --proof-section-pad-top: 0.25rem;
+      --proof-section-pad-bottom: 1.08rem;
     }
   }
 

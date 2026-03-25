@@ -12,16 +12,16 @@
     <p class="proof-card__counts">{{ proofCard.axiomCount }} axioms · {{ proofCard.logicCount }} propositions</p>
   </header>
 
-  <section class="proof-card__issue-block" aria-label="Issue under proof">
+  <section class="proof-card__section proof-card__section--full" aria-label="Issue under proof">
     <p class="proof-card__label">Issue</p>
-    <h2 id="proof-card-issue-{{ proofCard.slug }}" class="proof-card__issue">{{ proofCard.issue }}</h2>
+    <div class="proof-card__section-body">
+      <h2 id="proof-card-issue-{{ proofCard.slug }}" class="proof-card__issue">{{ proofCard.issue }}</h2>
+    </div>
   </section>
 
   <div class="proof-card__details">
     <section class="proof-card__section">
-      <div class="proof-card__section-head">
-        <p class="proof-card__label">Axioms</p>
-      </div>
+      <p class="proof-card__label">Axioms</p>
       <div class="proof-card__section-body">
         <ol class="proof-card__list" aria-label="Axioms">
           {% for axiom in proofCard.axioms %}
@@ -38,9 +38,7 @@
     </section>
 
     <section class="proof-card__section">
-      <div class="proof-card__section-head">
-        <p class="proof-card__label">Propositions</p>
-      </div>
+      <p class="proof-card__label">Propositions</p>
       <div class="proof-card__section-body">
         <ol class="proof-card__list" aria-label="Propositions">
           {% for entry in proofCard.logic %}
@@ -57,9 +55,9 @@
     </section>
   </div>
 
-  <section class="proof-card__conclusion-block" aria-label="Conclusion">
+  <section class="proof-card__section proof-card__section--full" aria-label="Conclusion">
     <p class="proof-card__label">Conclusion</p>
-    <div class="proof-card__conclusion-body">
+    <div class="proof-card__section-body proof-card__section-body--conclusion">
       <p class="proof-card__conclusion">
         <img class="proof-card__ghost-mark" data-proof-mark data-proof-mark-day="{{ proofMarkDaySrc }}" data-proof-mark-night="{{ proofMarkNightSrc }}" data-proof-mark-print="{{ proofMarkPrintSrc }}" src="{{ proofMarkDaySrc }}" alt="" aria-hidden="true" />
         <span class="proof-card__conclusion-text">{{ proofCard.conclusion }}</span>
