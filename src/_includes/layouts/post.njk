@@ -18,6 +18,13 @@ ogType: article
 <article class="grid gap-10 xl:grid-cols-[minmax(0,1fr)_18rem]">
   <div class="space-y-12">
     <div>
+      {% if proofCard %}
+        <div class="article-record-transition" data-pagefind-ignore>
+          <p class="article-record-transition__label">The Record</p>
+          <p class="article-record-transition__text">The reported narrative behind the published proof.</p>
+        </div>
+      {% endif %}
+
       <header class="article-record-header">
         <div class="sr-only" aria-hidden="true">
           <span data-pagefind-meta="type">Article</span>

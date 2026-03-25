@@ -677,6 +677,22 @@
     border-color: rgba(var(--rule), 0.88);
   }
 
+  .article-record-transition {
+    @apply max-w-3xl space-y-3 pb-6;
+  }
+
+  .article-record-transition__label {
+    @apply inline-flex items-center rounded-full border px-3 py-2 font-ui text-[0.64rem] font-black uppercase tracking-[0.22em];
+    border-color: rgba(var(--accent), 0.24);
+    background: rgba(var(--accent), 0.08);
+    color: rgb(var(--accent));
+  }
+
+  .article-record-transition__text {
+    @apply max-w-2xl font-serif text-[0.94rem] leading-relaxed italic;
+    color: rgb(var(--ink-soft));
+  }
+
   .article-record-header__title {
     @apply mt-3 max-w-4xl font-display text-[clamp(1.72rem,2.9vw,2.55rem)] font-semibold leading-[1.02] tracking-tight text-[rgb(var(--ink))];
   }
