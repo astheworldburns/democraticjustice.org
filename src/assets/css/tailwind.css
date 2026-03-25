@@ -788,10 +788,10 @@
 
   .proof-card__ghost-mark {
     position: absolute;
-    top: 52%;
+    top: 0.55rem;
     left: 0.35rem;
     width: clamp(9rem, 18vw, 13rem);
-    transform: translateY(-50%);
+    transform: none;
     opacity: var(--proof-ghost-opacity);
     pointer-events: none;
     user-select: none;
