@@ -168,25 +168,25 @@ collections:
                 display_fields:
                   - title
                 hint: Select the corresponding source document entry. Stored as /documents/.../
-          - label: Propositions
+          - label: Inferences
             name: logic
             widget: list
             required: true
             min: 1
             collapsed: true
-            label_singular: Proposition
+            label_singular: Inference
             summary: "{{fields.step}}"
             fields:
-              - label: Proposition
+              - label: Inference
                 name: step
                 widget: string
                 required: true
-                hint: Declarative proposition. State what follows from the documented facts.
-          - label: Inference
+                hint: Plain-language inferential step. State what follows from the documented facts.
+          - label: Bridge Note (Optional)
             name: inference
             widget: text
-            required: true
-            hint: The journalist's bridge between the logic chain and the conclusion.
+            required: false
+            hint: Optional bridge note for the newsroom. Not currently displayed on published proofs.
           - label: Conclusion
             name: conclusion
             widget: text

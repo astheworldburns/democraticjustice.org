@@ -774,16 +774,6 @@
     color: currentColor;
   }
 
-  .proof-card__bridge {
-    @apply mt-4 font-serif text-[0.95rem] leading-[1.58] md:text-[0.98rem];
-    color: var(--proof-muted);
-  }
-
-  .proof-card__bridge-prefix {
-    @apply mr-2 font-ui text-[0.68rem] font-black uppercase tracking-[0.18em];
-    color: var(--proof-accent);
-  }
-
   .proof-card__section-body--conclusion {
     overflow: hidden;
     min-height: 10rem;
