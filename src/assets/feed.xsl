@@ -100,20 +100,12 @@
           .brand-copy {
             display: flex;
             flex-direction: column;
-            gap: 0.12rem;
+            gap: 0;
           }
           .brand-name {
             font-size: clamp(1.15rem, 2vw, 1.45rem);
             font-weight: 700;
             line-height: 1;
-          }
-          .brand-subtitle {
-            font-family: Inter, Arial, sans-serif;
-            font-size: 0.64rem;
-            font-weight: 700;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: var(--ink-soft);
           }
           .masthead-actions {
             display: flex;
@@ -233,7 +225,6 @@
                 <span class="brand-mark">[∴]</span>
                 <span class="brand-copy">
                   <span class="brand-name"><xsl:value-of select="rss/channel/title"/></span>
-                  <span class="brand-subtitle">Return to homepage</span>
                 </span>
               </a>
               <div class="masthead-actions">
