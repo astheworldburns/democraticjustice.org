@@ -124,15 +124,13 @@ It also uses the current build date at the top of the letter.
 
 And the body reads:
 
-> Democratic Justice publishes reporting that readers can inspect from source document to conclusion. Each story opens with a Proof Card and carries the source documents behind it.
+> I started Democratic Justice to publish reporting that readers can inspect from source document to conclusion. Every story opens with a Proof Card and carries the source documents behind it.
 
-> The Proof Card comes first for a reason. It states the claim, shows the record, and lays out the logic before the story begins, so readers can judge the conclusion as they read.
+> The Proof Card comes first because I want readers to see the case before they enter the story. You should have the claim, the record, and the reasoning in front of you as you read.
 
-> This publication will move when the reporting is ready. Some stretches will be quiet. When Democratic Justice publishes, it should be worth watching for.
+> You may not see a new story every week. Some months may pass between publications. When Democratic Justice publishes, it should mean the reporting is ready and the work is worth your attention.
 
-> We put our names on work we are willing to defend in public. We report on power, elections, parties, and public failure. We follow records, track money and control, name decisions and decision makers, and keep each story in the archive so it can be searched, cited, and revisited.
-
-> If the work is worth publishing, it should also be worth checking.
+> I want to publish factual reporting and analysis that can stand in public, be checked by readers, and still matter months later. If the work is worth publishing, it should also be worth checking.
 
 The page closes with the typed signoff:
 
