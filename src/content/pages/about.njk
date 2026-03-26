@@ -1,20 +1,34 @@
 ---
 layout: layouts/base.njk
 title: About
-description: Democratic Justice exists to publish reporting that readers can inspect from source document to conclusion.
+description: A letter from Seth Sturm on what Democratic Justice publishes and how the proof-first structure works.
 permalink: /about/index.html
 ogType: website
 ---
 <section class="about-letter-page" data-pagefind-body>
   <article class="about-letter">
-    <p class="about-letter__salutation">To readers,</p>
+    <div class="about-letter__header">
+      <div>
+        <p class="about-letter__salutation">To readers,</p>
+        <p class="about-letter__dateline">{{ buildDate | displayDate }}</p>
+      </div>
+      <div class="about-letter__portrait-wrap">
+        {% image "/assets/images/uploads/Seth Headshot.jpg", "Seth Sturm", "176px", "about-letter__portrait" %}
+      </div>
+    </div>
 
     <div class="about-letter__body">
       <p>
-        Democratic Justice publishes reporting that readers can inspect from source document to conclusion. Each story opens with a Proof Card and carries the source documents behind it. We put the logic first so readers can judge the conclusion as they read.
+        Democratic Justice publishes reporting that readers can inspect from source document to conclusion. Each story opens with a Proof Card and carries the source documents behind it.
       </p>
       <p>
-        We report on power, elections, parties, and public failure. We follow records, track money and control, and name decisions and decision makers. We keep each story in the archive so it can be searched, cited, and revisited.
+        The Proof Card comes first for a reason. It states the claim, shows the record, and lays out the logic before the story begins, so readers can judge the conclusion as they read.
+      </p>
+      <p>
+        This publication will move when the reporting is ready. Some stretches will be quiet. When Democratic Justice publishes, it should be worth watching for.
+      </p>
+      <p>
+        We put our names on work we are willing to defend in public. We report on power, elections, parties, and public failure. We follow records, track money and control, name decisions and decision makers, and keep each story in the archive so it can be searched, cited, and revisited.
       </p>
       <p>
         If the work is worth publishing, it should also be worth checking.

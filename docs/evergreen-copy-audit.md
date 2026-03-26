@@ -120,11 +120,17 @@ It opens with:
 
 > To readers,
 
+It also uses the current build date and `Seth Headshot.jpg` at the top of the letter.
+
 And the body reads:
 
-> Democratic Justice publishes reporting that readers can inspect from source document to conclusion. Each story opens with a Proof Card and carries the source documents behind it. We put the logic first so readers can judge the conclusion as they read.
+> Democratic Justice publishes reporting that readers can inspect from source document to conclusion. Each story opens with a Proof Card and carries the source documents behind it.
 
-> We report on power, elections, parties, and public failure. We follow records, track money and control, and name decisions and decision makers. We keep each story in the archive so it can be searched, cited, and revisited.
+> The Proof Card comes first for a reason. It states the claim, shows the record, and lays out the logic before the story begins, so readers can judge the conclusion as they read.
+
+> This publication will move when the reporting is ready. Some stretches will be quiet. When Democratic Justice publishes, it should be worth watching for.
+
+> We put our names on work we are willing to defend in public. We report on power, elections, parties, and public failure. We follow records, track money and control, name decisions and decision makers, and keep each story in the archive so it can be searched, cited, and revisited.
 
 > If the work is worth publishing, it should also be worth checking.
 
@@ -135,6 +141,7 @@ The page closes with the typed signoff:
 
 It also uses:
 
+- `Seth Headshot.jpg`
 - `signature-seth.svg` for light mode
 - `signature-seth-white.svg` for dark mode
 

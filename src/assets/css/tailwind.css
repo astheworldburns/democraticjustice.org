@@ -535,9 +535,28 @@
     @apply max-w-4xl;
   }
 
+  .about-letter__header {
+    @apply grid gap-6 md:grid-cols-[minmax(0,1fr)_11rem] md:items-start;
+  }
+
   .about-letter__salutation {
     @apply font-serif text-[1.18rem] italic leading-none md:text-[1.24rem];
     color: rgb(var(--ink-soft));
+  }
+
+  .about-letter__dateline {
+    @apply mt-3 font-ui text-[0.7rem] font-semibold uppercase tracking-[0.18em];
+    color: rgb(var(--ink-muted));
+  }
+
+  .about-letter__portrait-wrap {
+    @apply w-full md:justify-self-end;
+  }
+
+  .about-letter__portrait {
+    @apply h-40 w-40 object-cover md:h-44 md:w-44;
+    border: 1px solid rgba(var(--rule), 0.92);
+    background: rgba(var(--paper-muted), 0.72);
   }
 
   .about-letter__body {
