@@ -1,21 +1,23 @@
 ---
 layout: layouts/page.njk
 title: About
-description: Learn more about Democratic Justice and its reporting mission.
+description: What Democratic Justice publishes and how the reporting works.
 permalink: /about/index.html
 ogType: website
 kicker: Publication
 ---
 
-Democratic Justice is an investigative journalism publication focused on political accountability, public power, elections, and institutional failure in West Virginia. The mission is simple: produce reporting that can be checked, cited, archived, and revisited long after the news cycle moves on.
+Democratic Justice is an investigative reporting publication focused on power, elections, party politics, and public failure in West Virginia.
 
-The publication is being built to grow beyond any single voice. Reporters, editors, archives, and editorial desks are structured so the authority of the work comes from verification, clarity, and consistency rather than personality alone.
+We publish reporting that readers can check, cite, search, and revisit.
+
+The publication is built to outlast any single voice. The work should stand on sourcing and editing.
 
 ## Mission
 
-The newsroom exists to document how power is exercised, shielded, and justified. That includes the mechanics of parties, institutions, campaigns, public agencies, and the people who run them.
+This newsroom documents how power is used, protected, and justified. That includes parties, campaigns, public agencies, institutions, and the people who run them.
 
-The standard is not speed for its own sake. It is durable reporting with enough context and structure that readers can return to it, search it, and use it.
+Speed is not the standard. The standard is reporting that remains useful when readers return to it later.
 
 ## Coverage Priorities
 
@@ -31,12 +33,12 @@ The reporting focus is direct:
 The editorial approach is built around a few non-negotiables:
 
 - Lead with the strongest verified fact.
-- Attribute assertions clearly and avoid soft, evasive language.
-- Keep copy tight enough to read cleanly and detailed enough to stand up to scrutiny.
-- Publish in a form that remains accessible, searchable, and portable.
+- Attribute claims clearly.
+- Keep the writing clear, tight, and detailed enough to withstand scrutiny.
+- Publish work that stays searchable and citable.
 
 ## Why The Site Is Built This Way
 
-Democratic Justice uses a static publishing stack so the reporting remains fast, portable, and resistant to platform dependency. The design favors legibility, restraint, and durable archives over the short half-life of algorithmic feeds.
+Democratic Justice uses a static publishing stack so the reporting stays fast, portable, and easy to archive.
 
-This is a publication designed for accumulation. Stories should not disappear into a timeline. They should compound into a body of work.
+The site is built for reading, search, and return. Stories should add to the record over time.

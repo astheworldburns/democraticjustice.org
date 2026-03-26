@@ -33,7 +33,7 @@ layout: layouts/base.njk
         <div class="tool-card p-5">
           <p class="section-kicker">Reporting brief</p>
           <p class="stat-card__value">{{ reporterStories | length }}</p>
-          <p class="stat-card__caption">Published reports currently attached to this byline.</p>
+          <p class="stat-card__caption">Published reports under this byline.</p>
         </div>
         {% if reporterTags | length %}
           <div class="tool-card p-5">
@@ -47,7 +47,7 @@ layout: layouts/base.njk
         {% endif %}
         {% if email or bluesky or twitter %}
           <div class="tool-card p-5">
-            <p class="section-kicker">Reach the desk</p>
+            <p class="section-kicker">Contact</p>
             <div class="social-list mt-4">
               {% if email %}
                 <a class="social-link" href="mailto:{{ email }}">Email</a>

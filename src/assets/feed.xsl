@@ -235,14 +235,14 @@
             <div class="intro">
             <h1><xsl:value-of select="rss/channel/title"/></h1>
             <p class="dek">
-              This is the machine-readable RSS feed for Democratic Justice. If you were expecting a normal webpage, start with the RSS guide instead.
+              This is the Democratic Justice RSS feed. If you want the guide, open the RSS page.
             </p>
             <div class="actions">
               <a class="button" href="/rss/">How to use RSS</a>
               <a class="button" href="{rss/channel/link}">Open site</a>
             </div>
             <p class="note">
-              Paste this feed URL into any RSS reader to subscribe: <code><xsl:value-of select="rss/channel/atom:link/@href"/></code>
+              Paste this feed URL into your RSS reader: <code><xsl:value-of select="rss/channel/atom:link/@href"/></code>
             </p>
             </div>
 
