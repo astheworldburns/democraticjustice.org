@@ -7,7 +7,7 @@ ogType: website
 kicker: Publication
 ---
 
-Democratic Justice is an investigative reporting publication focused on power, elections, party politics, and public failure in West Virginia.
+Democratic Justice is an investigative reporting publication focused on power, elections, party politics, and public failure.
 
 We publish reporting that readers can check, cite, search, and revisit.
 
@@ -21,21 +21,11 @@ Speed is not the standard. The standard is reporting that remains useful when re
 
 ## Coverage Priorities
 
-The reporting focus is direct:
-
-- Follow public records.
-- Track money, patronage, and institutional control.
-- Name decisions, decision makers, and the consequences that follow.
-- Preserve findings in archives organized by desk, date, and byline.
+The reporting follows public records, tracks money and institutional control, names decisions and decision makers, and keeps findings in archives organized by desk, date, and byline.
 
 ## Standards
 
-The editorial approach is built around a few non-negotiables:
-
-- Lead with the strongest verified fact.
-- Attribute claims clearly.
-- Keep the writing clear, tight, and detailed enough to withstand scrutiny.
-- Publish work that stays searchable and citable.
+Lead with the strongest verified fact. Attribute claims clearly. Keep the writing clear, tight, and detailed enough to withstand scrutiny. Publish work that stays searchable and citable.
 
 ## Why The Site Is Built This Way
 
