@@ -8,24 +8,24 @@ tags:
   - crime
 featured_image: ""
 proof:
-  issue: State-party officials routed the official control channels of the West Virginia Young Democrats into party infrastructure and kept them there.
+  issue: WVDP officers took official control of the West Virginia Young Democrats and kept it inside party infrastructure.
   axioms:
-    - premise: An amended January 23, 2025 WVYD F-4 filing names Mike Pushkin as chairperson and routes official WVYD contact information to West Virginia Democratic Party channels.
+    - premise: An amended January 23, 2025 WVYD F-4 filing names Mike Pushkin as chairperson and routes the organization's official contact channels through West Virginia Democratic Party infrastructure.
       source_label: WVYD January 2025 F-4 Amendment
       source_url: /documents/wvyd-january-2025-amended-f4/
-    - premise: A January 21, 2026 WVYD F-4 filing still routes the organization's official mailing address, phone number, and email through West Virginia Democratic Party infrastructure.
+    - premise: A January 21, 2026 WVYD F-4 filing still routes the organization's official mailing address, phone number, and email through West Virginia Democratic Party infrastructure after rechartering.
       source_label: WVYD January 2026 F-4 Amendment
       source_url: /documents/wvyd-january-2026-amended-f4/
-    - premise: Public-facing WVYD materials used a Gmail address while the January 2026 state filing directed official correspondence to a party-controlled email address.
+    - premise: Public-facing WVYD materials used a Gmail address while the January 2026 state filing directed official correspondence to a party-controlled address.
       source_label: WVYD Contact Channel Comparison
       source_url: /documents/wvyd-contact-channel-comparison/
   logic:
-    - step: State filings determine where an organization's legal correspondence and durable administrative control flow.
-    - step: The January 2025 filing moved those control channels into West Virginia Democratic Party hands.
-    - step: The January 2026 filing shows those same channels remained inside party infrastructure after rechartering.
-    - step: The public-facing Gmail did not match the official state record, so the appearance of independence was not the governing reality.
-  inference: The filing chain is the durable record. Whatever public story surrounded rechartering, the state documents continued to place the organization's official contact rails inside the party's own infrastructure.
-  conclusion: The West Virginia Democratic Party retained official administrative control over the West Virginia Young Democrats after the takeover.
+    - step: State filings determine who officially receives a political organization's legal correspondence and speaks for it in the record.
+    - step: By placing Pushkin and party channels on the January 2025 filing, WVDP officers turned the takeover into official control.
+    - step: The January 2026 filing shows that control remained inside party infrastructure after rechartering.
+    - step: The public-facing Gmail did not change the governing record. The official organization still ran through party-controlled channels.
+  inference: The filing chain is the official record. It shows that WVDP officers did not just influence the organization. They placed it inside party infrastructure and kept it there.
+  conclusion: WVDP officers turned the takeover of the West Virginia Young Democrats into official control and kept that control inside party infrastructure.
 ---
 
 The verdict was prewritten and in hand when Delegate Mike Pushkin, Chair of the West Virginia Democratic Party (WVDP), called the February 22, 2024, meeting to order.
