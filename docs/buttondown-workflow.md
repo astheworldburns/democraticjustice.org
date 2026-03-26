@@ -130,6 +130,7 @@ The draft tool creates a draft with:
 
 - `status: draft`
 - `email_type: public`
+- `template: classic`
 - the article URL as the canonical URL
 
 It does not send immediately.

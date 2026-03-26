@@ -71,6 +71,20 @@ function escapeHtml(value = "") {
     .replace(/'/g, "&#39;");
 }
 
+function formatPublishDate(value = "") {
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+
+  return new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric"
+  }).format(date);
+}
+
 function extractTag(source, tagName) {
   const pattern = new RegExp(`<${tagName}>([\\s\\S]*?)</${tagName}>`, "i");
   const match = source.match(pattern);
@@ -199,26 +213,33 @@ function readArticleExcerpt(articleLink) {
 
 function buildBody(article) {
   const excerptParagraphs = readArticleExcerpt(article.link);
-  const meta = [article.author, article.pubDate].filter(Boolean).join(" · ");
-  const lines = [
-    article.description,
-    meta ? "" : null,
-    meta ? `_${meta}_` : null,
-    meta ? "" : null
-  ];
+  const meta = [article.author, formatPublishDate(article.pubDate)].filter(Boolean).join(" · ");
+  const excerptHtml = excerptParagraphs
+    .map((paragraph) => `<p style="margin: 0 0 18px 0; font-family: Georgia, 'Times New Roman', serif; font-size: 20px; line-height: 1.75; color: #171717;">${escapeHtml(paragraph)}</p>`)
+    .join("\n");
 
-  for (const paragraph of excerptParagraphs) {
-    lines.push(paragraph);
-    lines.push("");
-  }
-
-  lines.push(
-    `<div style="margin-top: 32px; margin-bottom: 8px;"><a href="${escapeHtml(article.link)}" style="display: inline-block; background: #111111; color: #ffffff !important; text-decoration: none; padding: 14px 20px; font-weight: 700; letter-spacing: 0.01em;">Continue reading</a></div>`
-  );
-  lines.push("");
-  lines.push("On Democratic Justice, the proof and source documents open before the story.");
-
-  return lines.filter((line) => line != null).join("\n");
+  return [
+    "<!-- buttondown-editor-mode: fancy -->",
+    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width: 100%; border-collapse: collapse;">',
+    "  <tr>",
+    '    <td style="padding: 0;">',
+    '      <p style="margin: 0 0 18px 0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase; color: #5f6368;">Democratic Justice</p>',
+    `      <h1 style="margin: 0 0 16px 0; font-family: Georgia, 'Times New Roman', serif; font-size: 46px; line-height: 1.05; font-weight: 700; color: #111111;">${escapeHtml(article.title)}</h1>`,
+    `      <p style="margin: 0 0 18px 0; font-family: Arial, Helvetica, sans-serif; font-size: 24px; line-height: 1.45; color: #4b4f56;">${escapeHtml(article.description)}</p>`,
+    `      <p style="margin: 0 0 30px 0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #6b7280;">${escapeHtml(meta)}</p>`,
+    excerptHtml,
+    '      <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin: 34px 0 0 0; border-collapse: collapse;">',
+    "        <tr>",
+    '          <td bgcolor="#111111" style="background-color: #111111;">',
+    `            <a href="${escapeHtml(article.link)}" style="display: inline-block; padding: 15px 22px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #ffffff; text-decoration: none;">Continue reading</a>`,
+    "          </td>",
+    "        </tr>",
+    "      </table>",
+    '      <p style="margin: 28px 0 0 0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; line-height: 1.6; color: #6b7280;">Every Democratic Justice story opens with a Proof Card and the source documents behind it.</p>',
+    "    </td>",
+    "  </tr>",
+    "</table>"
+  ].join("\n");
 }
 
 async function fetchExistingDraft(headers, article, subject) {
@@ -258,6 +279,7 @@ async function createDraft(headers, article, subject, body) {
       body,
       status: "draft",
       email_type: "public",
+      template: "classic",
       description: article.description,
       canonical_url: article.link,
       metadata: {
