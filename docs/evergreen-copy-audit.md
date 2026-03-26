@@ -124,15 +124,17 @@ It also uses the current build date at the top of the letter.
 
 And the body reads:
 
-> I am launching Democratic Justice as a repository for my investigative work. I built it because too much reporting still asks readers to trust the finished story before they have seen the case underneath it. I think readers deserve the case first.
+> Imagine a world where every journalist were confident enough to put their reasoning and source documents before their work.
 
-> That is why every story here opens with a Proof Card and carries the source documents behind it. I want you to see the reasoning before the narrative takes over, so you can judge the conclusion as you read. If I publish something under this name, I am telling you I am prepared to stand behind it.
+> Right now, the internet is drowning in clickbait noise. Thousands of articles are churned out every hour just to pad ad revenue. The noise is becoming impossible to separate from reality, and it trains people to react emotionally rather than logically.
 
-> That standard changes the pace of the work. This site may go quiet for a while. I can live with that, because a new piece from Democratic Justice should mean you are looking at work I am willing to own.
+> Democratic Justice exists to fight that trend with proof-based journalism.
 
-> I did not learn that lesson from a distance. I learned it in campaign work and in organizations where the exact wording of a rule could decide what happened next. I carry that same respect for language into my work on the Non-GMO Project Standards Committee, where the standard behind the Butterfly label touches more than 66,000 products and about $48.9 billion in annual sales. That kind of responsibility changes how you look at records. You stop treating them like paperwork and start treating them like force.
+> Every story we publish opens with a Proof Card. Before you read a single line of narrative prose, we hand you the foundation of facts, our exact reasoning, and the conclusion we reached. You get to test the case yourself before our writing ever has a chance to influence you.
 
-> I want this site to help change how people read. A reported story should not hide the reasoning that supports it. Misinformation spreads in darkness, so we're betting everything on radical transparency.
+> Because we refuse to churn out content just to feed an algorithm, months might pass between stories. But when an email from Democratic Justice hits your inbox, you will know that it has been rigorously sourced and tested.
+
+> Misinformation spreads in darkness, so we're betting everything on radical transparency.
 
 The page closes with the typed signoff:
 
