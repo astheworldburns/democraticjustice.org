@@ -139,7 +139,7 @@ The page closes with the typed signoff:
 
 And the closing bio reads:
 
-> Before I started Democratic Justice, I worked in campaigns and standards bodies where language on paper carried real consequences. I managed Mary Ann Claytor’s 2016 State Auditor campaign, was elected to lead the WVDP Indigenous Caucus when it formed in 2021, and serve on the Non-GMO Project Standards Committee, which helps maintain a standard behind a certification that represents about $48.9 billion in annual sales.
+> Before I started Democratic Justice, I worked in places where decisions on paper carried real consequences. I managed Mary Ann Claytor’s 2016 State Auditor campaign, was elected to lead the WVDP Indigenous Caucus when it formed in 2021, served on the executive board of Our Future West Virginia, and sit on the Non-GMO Project Standards Committee, where rule language reaches products in kitchens across the country. That work taught me to watch records, rules, and the people behind them.
 
 It also uses:
 
