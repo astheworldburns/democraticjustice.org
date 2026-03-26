@@ -112,37 +112,41 @@ The newsroom section uses the title `Newsroom`.
 
 Source file:
 
-`src/content/pages/about.md`
+`src/content/pages/about.njk`
 
 The page chrome uses `Publication` as the kicker, `About` as the title, and this description:
 
-> What Democratic Justice publishes and how the reporting works.
+> A letter explaining what Democratic Justice publishes and why.
 
-The body now reads as follows:
+The page is now structured as a signed letter rather than a standard prose page.
 
-> Democratic Justice is an investigative reporting publication.
+It opens with:
 
-> We publish reporting that readers can check, cite, search, and revisit.
+> To readers,
 
-> Every story opens with a Proof Card and carries the source documents behind it.
+And the body reads:
 
-Mission:
-
-> We publish reporting that readers can inspect from source document to conclusion.
+> Democratic Justice exists to publish reporting that readers can inspect from source document to conclusion.
 
 > Our reporting puts the logic first so readers can judge the conclusion as they read.
 
-Coverage Priorities:
+> Each story opens with a Proof Card and carries the source documents behind it. The article that follows shows the reporting behind the finding.
 
-> We follow public records, track money and control, name decisions and decision makers, attach the source documents, and keep each story in the archive by desk, date, and byline.
+> We report on power, elections, parties, and public failure. We follow records, track money and control, and name decisions and decision makers.
 
-Standards:
+> We keep each story in the archive by desk, date, and byline. The site is there for reading, search, citation, and return.
 
-> Lead with the strongest verified fact. Attribute claims clearly. Keep the writing clear and detailed enough to withstand scrutiny. Keep every story searchable and citable.
+> If the work is worth publishing, it should also be worth checking.
 
-Why The Site Works This Way:
+The page closes with the typed signoff:
 
-> The site is there for reading, search, and return. Stories stay in place. Links stay usable. The archive grows one story at a time.
+`Seth Sturm`
+`Founder and editor`
+
+It also uses:
+
+- `signature-seth.svg` for light mode
+- `signature-seth-white.svg` for dark mode
 
 ## Archives Page
 
