@@ -124,15 +124,15 @@ It also uses the current build date at the top of the letter.
 
 And the body reads:
 
-> I started Democratic Justice because too much reporting asks readers to trust the finished story before they have seen the case underneath it. I want you to see the case first.
+> I am launching Democratic Justice as a repository for my investigative work. I built it because too much reporting still asks readers to trust the finished story before they have seen the case underneath it. I think readers deserve the case first.
 
-> That is why every story here opens with a Proof Card and carries the source documents behind it. You should be able to inspect the claim, read the record, and test the reasoning before the narrative takes over.
+> That is why every story here opens with a Proof Card and carries the source documents behind it. I want you to see the reasoning before the narrative takes over, so you can judge the conclusion as you read. If I publish something under this name, I am telling you I am prepared to stand behind it.
 
-> This publication will not move on a weekly clock. There may be long quiet stretches between stories. I would rather publish rarely than put my name on work that is rushed or thin. When Democratic Justice drops something new, it means the reporting is finished and I am standing behind it.
+> That standard changes the pace of the work. This site may go quiet for a while. I can live with that, because a new piece from Democratic Justice should mean you are looking at work I am willing to own.
 
-> I built this for readers who want the material in front of them. If I ask for your attention, I should also give you what you need to test what I am saying. That is the standard here.
+> I did not learn that lesson from a distance. I learned it in campaign work and in organizations where the exact wording of a rule could decide what happened next. I carry that same respect for language into my work on the Non-GMO Project Standards Committee, where the standard behind the Butterfly label touches more than 66,000 products and about $48.9 billion in annual sales. That kind of responsibility changes how you look at records. You stop treating them like paperwork and start treating them like force.
 
-> Before I started Democratic Justice, I learned how much force a few words on paper can carry. I saw it in electoral politics while managing Mary Ann Claytor’s 2016 State Auditor campaign. I saw it again when I was elected to lead the WVDP Indigenous Caucus as it formed in 2021 and while serving on the executive board of Our Future West Virginia. I see it now on the Non-GMO Project Standards Committee, where a standard reaches more than 66,000 products and about $48.9 billion in annual sales. That is why this publication treats records as live things. Once they are written, they move.
+> I want this site to help change how people read. A reported story should not hide the reasoning that supports it. Misinformation spreads in darkness, so we're betting everything on radical transparency.
 
 The page closes with the typed signoff:
 
