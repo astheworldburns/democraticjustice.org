@@ -233,13 +233,13 @@
               </div>
             </div>
             <div class="intro">
-            <h1><xsl:value-of select="rss/channel/title"/></h1>
+            <h1>RSS feed</h1>
             <p class="dek">
-              This is the Democratic Justice RSS feed. If you want the guide, open the RSS page.
+              This page is the live feed for Democratic Justice. Use the RSS guide if you want setup help.
             </p>
             <div class="actions">
-              <a class="button" href="/rss/">How to use RSS</a>
-              <a class="button" href="{rss/channel/link}">Open site</a>
+              <a class="button" href="/rss/">RSS guide</a>
+              <a class="button" href="{rss/channel/link}">Homepage</a>
             </div>
             <p class="note">
               Paste this feed URL into your RSS reader: <code><xsl:value-of select="rss/channel/atom:link/@href"/></code>

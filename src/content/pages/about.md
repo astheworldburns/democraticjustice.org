@@ -7,28 +7,26 @@ ogType: website
 kicker: Publication
 ---
 
-Democratic Justice is an investigative reporting publication focused on power, elections, party politics, and public failure.
+Democratic Justice is an investigative reporting publication.
 
 We publish reporting that readers can check, cite, search, and revisit.
 
-The publication is built to outlast any single voice. The work should stand on sourcing and editing.
+Every story opens with a Proof Card.
 
 ## Mission
 
-This newsroom documents how power is used, protected, and justified. That includes parties, campaigns, public agencies, institutions, and the people who run them.
+We report on power, elections, parties, and public failure.
 
-Speed is not the standard. The standard is reporting that remains useful when readers return to it later.
+We start with records, name who acted, and show readers how we reached the conclusion.
 
 ## Coverage Priorities
 
-The reporting follows public records, tracks money and institutional control, names decisions and decision makers, and keeps findings in archives organized by desk, date, and byline.
+We follow public records, track money and control, name decisions and decision makers, and keep each story in the archive by desk, date, and byline.
 
 ## Standards
 
-Lead with the strongest verified fact. Attribute claims clearly. Keep the writing clear, tight, and detailed enough to withstand scrutiny. Publish work that stays searchable and citable.
+Lead with the strongest verified fact. Attribute claims clearly. Keep the writing clear and detailed enough to withstand scrutiny. Keep every story searchable and citable.
 
-## Why The Site Is Built This Way
+## Why The Site Works This Way
 
-Democratic Justice uses a static publishing stack so the reporting stays fast, portable, and easy to archive.
-
-The site is built for reading, search, and return. Stories should add to the record over time.
+The site is there for reading, search, and return. Stories stay in place. Links stay usable. The archive grows one story at a time.

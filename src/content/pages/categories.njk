@@ -27,7 +27,7 @@ eleventyExcludeFromCollections: true
           {{ currentTag | tagLabel }}
         </h1>
         <p class="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-[rgb(var(--ink-soft))]">
-          Reporting and analysis filed under the {{ currentTag | tagLabel | lower }} desk, with the newest work first and older work kept in the archive.
+          Stories filed under the {{ currentTag | tagLabel | lower }} desk. New work appears first. Older work stays in the archive.
         </p>
         <div class="meta-row mt-5">
           <span>{{ stories | length }} {% if stories | length == 1 %}piece{% else %}pieces{% endif %}</span>
@@ -38,7 +38,7 @@ eleventyExcludeFromCollections: true
       </div>
       <aside class="space-y-4">
         <div class="tool-card p-5">
-          <p class="section-kicker">Archive tools</p>
+          <p class="section-kicker">Archive</p>
           <div class="mt-4 flex flex-wrap gap-3">
             <a class="button-link-muted" href="/archives/">Monthly archive</a>
             <a class="button-link-muted" href="/search/">Search</a>
