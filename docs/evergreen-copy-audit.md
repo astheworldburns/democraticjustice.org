@@ -114,11 +114,7 @@ Source file:
 
 `src/content/pages/about.njk`
 
-The page chrome uses `Publication` as the kicker, `About` as the title, and this description:
-
-> A letter explaining what Democratic Justice publishes and why.
-
-The page is now structured as a signed letter rather than a standard prose page.
+The page now opens directly as a signed letter rather than a standard prose page.
 
 It opens with:
 
