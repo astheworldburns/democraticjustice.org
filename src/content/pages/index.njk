@@ -11,7 +11,6 @@ ogType: website
 {% set stories = collections.publishedArticle | sortByDateDesc %}
 {% set lead = stories[0] %}
 {% set leadAuthor = lead.data.author | getAuthor(collections.authorProfiles) if lead else null %}
-{% set proofEntries = collections.proofArticle or [] %}
 <div class="space-y-14" data-pagefind-body>
   {% if lead %}
     <section class="space-y-8 border-b-2 border-[rgb(var(--rule-strong))] pb-10">
@@ -125,26 +124,6 @@ ogType: website
               </p>
             </article>
           {% endif %}
-        {% endfor %}
-      </div>
-    </section>
-  {% endif %}
-
-  {% if proofEntries | length %}
-    <section class="space-y-6">
-      <div class="flex items-end justify-between border-b border-[rgb(var(--rule-strong))] pb-3">
-        <h2 class="font-display text-3xl font-black tracking-tight text-[rgb(var(--ink))]">Proof archive</h2>
-        <p class="section-kicker">Proof archive</p>
-      </div>
-        <div class="proof-archive-band">
-          {% for proofEntry in proofEntries %}
-          <a class="proof-archive-link" href="{{ proofEntry.article.url }}">
-            <span class="proof-archive-link__primary">
-              <img class="proof-mark proof-archive-link__mark" data-proof-mark data-proof-mark-day="{{ proofMarkDaySrc }}" data-proof-mark-night="{{ proofMarkNightSrc }}" data-proof-mark-print="{{ proofMarkPrintSrc }}" src="{{ proofMarkDaySrc }}" alt="" />
-              <span class="proof-archive-link__title">{{ proofEntry.article.data.title }}</span>
-            </span>
-            <span class="proof-archive-link__meta">{{ proofEntry.article.date | displayDate }}</span>
-          </a>
         {% endfor %}
       </div>
     </section>
