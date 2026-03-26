@@ -17,7 +17,7 @@ Every story opens with a Proof Card and carries the source documents behind it.
 
 We publish reporting that readers can inspect from source document to conclusion.
 
-Our reporting puts the logic before the story so that you have the information needed to analyze the veracity as you read it.
+Our reporting puts the logic first so readers can judge the conclusion as they read.
 
 ## Coverage Priorities
 
