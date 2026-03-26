@@ -2,7 +2,6 @@
 layout: layouts/base.njk
 ---
 {% set reporterStories = collections.article | articlesByAuthor(page.fileSlug) %}
-{% set reporterTags = reporterStories | uniqueEditorialTags(4) %}
 <section class="space-y-10" data-pagefind-body>
   <header class="border-b-2 border-[rgb(var(--rule-strong))] pb-8">
     <p class="section-kicker">Newsroom</p>
@@ -35,16 +34,6 @@ layout: layouts/base.njk
           <p class="stat-card__value">{{ reporterStories | length }}</p>
           <p class="stat-card__caption">Stories under this byline.</p>
         </div>
-        {% if reporterTags | length %}
-          <div class="tool-card p-5">
-            <p class="section-kicker">Primary desks</p>
-            <div class="mt-4 flex flex-wrap gap-2">
-              {% for tag in reporterTags %}
-                <a class="story-chip" href="/category/{{ tag | slugifyTag }}/">{{ tag | tagLabel }}</a>
-              {% endfor %}
-            </div>
-          </div>
-        {% endif %}
         {% if email or bluesky or twitter %}
           <div class="tool-card p-5">
             <p class="section-kicker">Contact</p>

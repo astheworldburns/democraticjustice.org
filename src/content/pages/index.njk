@@ -137,24 +137,16 @@ ogType: website
       <h2 class="font-display text-3xl font-black tracking-tight text-[rgb(var(--ink))]">How the reporting works</h2>
       <p class="section-kicker">Method</p>
     </div>
-    <div class="grid gap-8 xl:grid-cols-[minmax(0,1.35fr)_minmax(18rem,0.75fr)]">
-      <div class="space-y-4">
-        <p class="max-w-4xl font-serif text-[1.14rem] leading-relaxed text-[rgb(var(--ink-soft))]">
-          Each story starts with records, filings, and source documents. The writing states what happened, who acted, and what the record supports.
-        </p>
-        <p class="max-w-4xl font-serif text-[1.14rem] leading-relaxed text-[rgb(var(--ink-soft))]">
-          Every story opens with a Proof Card. The article that follows shows the reporting behind it.
-        </p>
-        <p class="max-w-4xl font-serif text-[1.14rem] leading-relaxed text-[rgb(var(--ink-soft))]">
-          Each story keeps a permanent URL, a desk label, and an archive path so readers can search it, cite it, and revisit it.
-        </p>
-      </div>
-      <div class="tool-card p-5 xl:mt-1">
-        <p class="section-kicker">For readers</p>
-        <p class="mt-4 font-serif text-base leading-relaxed text-[rgb(var(--ink-soft))]">
-          Read the finding, open the documents, and follow the reporting in the same place.
-        </p>
-      </div>
+    <div class="max-w-4xl space-y-4">
+      <p class="font-serif text-[1.14rem] leading-relaxed text-[rgb(var(--ink-soft))]">
+        Each story starts with records, filings, and source documents. The writing states what happened, who acted, and what the record supports.
+      </p>
+      <p class="font-serif text-[1.14rem] leading-relaxed text-[rgb(var(--ink-soft))]">
+        Every story opens with a Proof Card. The article that follows shows the reporting behind it.
+      </p>
+      <p class="font-serif text-[1.14rem] leading-relaxed text-[rgb(var(--ink-soft))]">
+        The finding, the documents, and the reporting live in the same place. Each story keeps a permanent URL, a desk label, and an archive path so readers can search it, cite it, and revisit it.
+      </p>
     </div>
   </section>
 
@@ -167,7 +159,6 @@ ogType: website
       <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {% for reporter in collections.authorProfiles %}
           {% set reporterStories = collections.article | articlesByAuthor(reporter.fileSlug) %}
-          {% set reporterTags = reporterStories | uniqueEditorialTags(3) %}
           <article class="author-card card-lift p-5">
             <div class="flex items-start gap-4">
               {% if reporter.data.headshot %}
@@ -190,13 +181,6 @@ ogType: website
             <div class="meta-row mt-5">
               <span>{{ reporterStories | length }} published</span>
             </div>
-            {% if reporterTags | length %}
-              <div class="mt-4 flex flex-wrap gap-2">
-                {% for tag in reporterTags %}
-                  <a class="story-chip" href="/category/{{ tag | slugifyTag }}/">{{ tag | tagLabel }}</a>
-                {% endfor %}
-              </div>
-            {% endif %}
           </article>
         {% endfor %}
       </div>

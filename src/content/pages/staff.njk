@@ -19,7 +19,6 @@ ogType: website
   <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
     {% for reporter in collections.authorProfiles %}
       {% set reporterStories = collections.article | articlesByAuthor(reporter.fileSlug) %}
-      {% set reporterTags = reporterStories | uniqueEditorialTags(4) %}
       <article class="author-card card-lift p-5">
         <div class="sr-only" aria-hidden="true">
           <span data-pagefind-filter="author">{{ reporter.data.name }}</span>
@@ -46,13 +45,6 @@ ogType: website
         <div class="meta-row mt-5">
           <span>{{ reporterStories | length }} published</span>
         </div>
-        {% if reporterTags | length %}
-          <div class="mt-4 flex flex-wrap gap-2">
-            {% for tag in reporterTags %}
-              <a class="story-chip" href="/category/{{ tag | slugifyTag }}/">{{ tag | tagLabel }}</a>
-            {% endfor %}
-          </div>
-        {% endif %}
       </article>
     {% endfor %}
   </div>
