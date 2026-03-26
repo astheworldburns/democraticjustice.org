@@ -235,9 +235,15 @@ function buildBody(article) {
     "          </td>",
     "        </tr>",
     "      </table>",
-    '      <p style="margin: 28px 0 0 0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; line-height: 1.6; color: #6b7280;">Every Democratic Justice story opens with a Proof Card and the source documents behind it.</p>',
+    '      <p style="margin: 28px 0 0 0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; line-height: 1.6; color: #4b5563;">Every Democratic Justice story opens with a Proof Card and the source documents behind it.</p>',
+    '      <p style="margin: 18px 0 0 0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; line-height: 1.7; color: #111111;">',
+    '        <a href="{{ unsubscribe_url }}" style="color: #111111; text-decoration: underline; font-weight: 700;">Unsubscribe</a>',
+    '        {% if manage_subscription_url %}',
+    '          <span style="color: #6b7280;"> · </span><a href="{{ manage_subscription_url }}" style="color: #111111; text-decoration: underline; font-weight: 700;">Manage subscription</a>',
+    "        {% endif %}",
+    "      </p>",
     "    </td>",
-    "  </tr>",
+  "  </tr>",
     "</table>"
   ].join("\n");
 }
