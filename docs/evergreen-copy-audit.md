@@ -128,7 +128,7 @@ And the body reads:
 
 > That is why every story here opens with a Proof Card and carries the source documents behind it. You should be able to inspect the claim, read the record, and test the reasoning before the narrative takes over.
 
-> This publication will not move on a weekly clock. There may be long quiet stretches between stories. I would rather publish rarely than put my name on work that is rushed or thin. When Democratic Justice drops something new, I want it to mean the reporting is ready.
+> This publication will not move on a weekly clock. There may be long quiet stretches between stories. I would rather publish rarely than put my name on work that is rushed or thin. When Democratic Justice drops something new, it means the reporting is finished and I am standing behind it.
 
 > I built this for readers who want the material in front of them. If I ask for your attention, I should also give you what you need to test what I am saying. That is the standard here.
 
