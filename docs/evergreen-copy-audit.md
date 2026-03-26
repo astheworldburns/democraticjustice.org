@@ -91,17 +91,6 @@ The desks rail uses the label `Editorial desks` and, when available, the helper 
 
 The archive section opens with `Archive`, the title `Reporting archive`, and the action `Open archive`.
 
-The method section reads:
-
-Title: `Why it reads this way`
-Kicker: `Method`
-
-> Most stories online ask you to trust the narrative before you see the case. Democratic Justice does the reverse.
-
-> Every story opens with a Proof Card and the source documents behind it. You can test the reasoning before the prose has a chance to carry you along.
-
-> We publish when the work is finished. That may take time. When something new appears here, it is something we are willing to stand behind.
-
 The newsroom section uses the title `Newsroom`.
 
 ## About Page
