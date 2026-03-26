@@ -365,7 +365,7 @@ async function loadWorkerSession() {
 
     if (!response.ok) {
       state.sessionUser = null;
-      state.authMode = "token";
+      state.authMode = "worker";
       return;
     }
 
@@ -374,7 +374,7 @@ async function loadWorkerSession() {
     state.authMode = "worker";
   } catch (error) {
     state.sessionUser = null;
-    state.authMode = "token";
+    state.authMode = "worker";
   }
 }
 
@@ -946,7 +946,7 @@ function render() {
               <p>${escapeHtml(detectedLabel)}</p>
               <p class="editor-muted">The Proof Desk now loads article and source data directly from GitHub after you authenticate. It no longer publishes draft manifests on the public site.</p>
               ${
-                state.authMode === "worker"
+                hasProofApi()
                   ? `
                     <div class="editor-actions" style="margin-top: 1rem;">
                       ${
@@ -980,10 +980,10 @@ function render() {
                 <span class="editor-muted">${state.articles.length} total</span>
               </div>
               ${
-                (state.authMode === "worker" ? state.sessionUser : state.token)
+                (hasProofApi() ? state.sessionUser : state.token)
                   ? ""
                   : `<div class="editor-empty">${
-                      state.authMode === "worker"
+                      hasProofApi()
                         ? "Sign in with GitHub to load article and document data."
                         : "Add a GitHub token to load article and document data."
                     }</div>`
@@ -1098,10 +1098,11 @@ async function loadDeskData() {
   }
 
   if (hasProofApi()) {
+    state.authMode = "worker";
     await loadWorkerSession();
   }
 
-  if (state.authMode === "worker" && !state.sessionUser) {
+  if (hasProofApi() && !state.sessionUser) {
     state.articles = [];
     state.documents = [];
     state.selectedSlug = "";
@@ -1443,6 +1444,7 @@ function handleClick(event) {
     })
       .then(async () => {
         state.sessionUser = null;
+        state.authMode = hasProofApi() ? "worker" : "token";
         state.articles = [];
         state.documents = [];
         state.selectedSlug = "";

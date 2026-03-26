@@ -4,8 +4,6 @@ backend:
   branch: main
   base_url: https://sveltia-cms-auth.sethsturm.workers.dev
 
-proof_api_base_url: https://auth.democraticjustice.org
-
 site_url: https://democraticjustice.org
 display_url: https://democraticjustice.org
 media_folder: src/assets/images/uploads

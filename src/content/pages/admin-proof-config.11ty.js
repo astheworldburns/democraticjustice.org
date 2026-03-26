@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
 import yaml from "js-yaml";
+import adminProof from "../../_data/adminProof.json" with { type: "json" };
 
 export default class AdminProofConfig {
   data() {
@@ -20,7 +21,7 @@ export default class AdminProofConfig {
         repo_name: repoName,
         branch: parsed.backend?.branch || "main",
         base_url: parsed.backend?.base_url || "",
-        proof_api_base_url: parsed.proof_api_base_url || "",
+        proof_api_base_url: adminProof?.proof_api_base_url || "",
         article_content_path: "src/content/articles/",
         document_content_path: "src/content/documents/",
         document_asset_path: "static/documents/"
