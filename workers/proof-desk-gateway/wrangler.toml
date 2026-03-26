@@ -19,4 +19,4 @@ ALLOWED_ORIGINS = "https://democraticjustice.org,http://localhost:8080"
 
 [[kv_namespaces]]
 binding = "EDITOR_SESSIONS"
-id = "REPLACE_WITH_KV_NAMESPACE_ID"
+id = "9e5f8f021cb74009ba886642f92f7567"

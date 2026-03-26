@@ -4,8 +4,7 @@ backend:
   branch: main
   base_url: https://sveltia-cms-auth.sethsturm.workers.dev
 
-# Set this once the dedicated Proof Desk gateway Worker is deployed.
-# proof_api_base_url: https://auth.democraticjustice.org
+proof_api_base_url: https://auth.democraticjustice.org
 
 site_url: https://democraticjustice.org
 display_url: https://democraticjustice.org
