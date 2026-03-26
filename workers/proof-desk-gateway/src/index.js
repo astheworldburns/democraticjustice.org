@@ -288,7 +288,8 @@ async function githubTokenExchange(requestUrl, code, env) {
     method: "POST",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "User-Agent": env.GITHUB_USER_AGENT || "democraticjustice-proof-desk"
     },
     body: JSON.stringify({
       code,
@@ -317,6 +318,7 @@ async function githubRequest(pathname, token, env, options = {}) {
     headers: {
       Accept: "application/vnd.github+json",
       "X-GitHub-Api-Version": "2022-11-28",
+      "User-Agent": env.GITHUB_USER_AGENT || "democraticjustice-proof-desk",
       Authorization: `Bearer ${token}`,
       ...(options.headers || {})
     }
@@ -353,6 +355,7 @@ async function verifyUserAllowed(user, token, env) {
         headers: {
           Accept: "application/vnd.github+json",
           "X-GitHub-Api-Version": "2022-11-28",
+          "User-Agent": env.GITHUB_USER_AGENT || "democraticjustice-proof-desk",
           Authorization: `Bearer ${token}`
         }
       }
