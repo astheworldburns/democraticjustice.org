@@ -7,15 +7,8 @@ ogType: website
 ---
 <section class="about-letter-page" data-pagefind-body>
   <article class="about-letter">
-    <div class="about-letter__header">
-      <div>
-        <p class="about-letter__salutation">To readers,</p>
-        <p class="about-letter__dateline">{{ buildDate | displayDate }}</p>
-      </div>
-      <div class="about-letter__portrait-wrap">
-        {% image "/assets/images/uploads/Seth Headshot.jpg", "Seth Sturm", "176px", "about-letter__portrait" %}
-      </div>
-    </div>
+    <p class="about-letter__salutation">To readers,</p>
+    <p class="about-letter__dateline">{{ buildDate | displayDate }}</p>
 
     <div class="about-letter__body">
       <p>
@@ -36,12 +29,17 @@ ogType: website
     </div>
 
     <div class="about-letter__signature-block">
-      <img class="about-letter__signature about-letter__signature--light" src="/assets/images/uploads/signature-seth.svg" alt="Seth Sturm signature" loading="lazy" />
-      <img class="about-letter__signature about-letter__signature--dark" src="/assets/images/uploads/signature-seth-white.svg" alt="Seth Sturm signature" loading="lazy" />
-      <p class="about-letter__signoff">
-        Seth Sturm
-        <span>Founder and editor</span>
-      </p>
+      <div class="about-letter__portrait-wrap">
+        {% image "/assets/images/uploads/Seth Headshot.jpg", "Seth Sturm", "176px", "about-letter__portrait" %}
+      </div>
+      <div class="about-letter__signature-copy">
+        <img class="about-letter__signature about-letter__signature--light" src="/assets/images/uploads/signature-seth.svg" alt="Seth Sturm signature" loading="lazy" />
+        <img class="about-letter__signature about-letter__signature--dark" src="/assets/images/uploads/signature-seth-white.svg" alt="Seth Sturm signature" loading="lazy" />
+        <p class="about-letter__signoff">
+          Seth Sturm
+          <span>Founder and editor</span>
+        </p>
+      </div>
     </div>
   </article>
 </section>

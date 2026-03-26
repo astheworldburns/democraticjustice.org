@@ -528,53 +528,54 @@
   }
 
   .about-letter-page {
-    @apply mx-auto max-w-5xl pt-6 md:pt-10;
+    @apply pt-6 md:pt-10;
   }
 
   .about-letter {
-    @apply max-w-4xl;
-  }
-
-  .about-letter__header {
-    @apply grid gap-6 md:grid-cols-[minmax(0,1fr)_11rem] md:items-start;
+    @apply w-full;
   }
 
   .about-letter__salutation {
-    @apply font-serif text-[1.18rem] italic leading-none md:text-[1.24rem];
+    @apply font-serif text-[1.14rem] italic leading-none md:text-[1.2rem];
     color: rgb(var(--ink-soft));
   }
 
   .about-letter__dateline {
-    @apply mt-3 font-ui text-[0.7rem] font-semibold uppercase tracking-[0.18em];
+    @apply mt-3 font-ui text-[0.68rem] font-medium uppercase tracking-[0.16em];
     color: rgb(var(--ink-muted));
   }
 
   .about-letter__portrait-wrap {
-    @apply w-full md:justify-self-end;
+    @apply shrink-0;
   }
 
   .about-letter__portrait {
-    @apply h-40 w-40 object-cover md:h-44 md:w-44;
+    @apply h-24 w-24 object-cover md:h-28 md:w-28;
     border: 1px solid rgba(var(--rule), 0.92);
     background: rgba(var(--paper-muted), 0.72);
   }
 
   .about-letter__body {
-    @apply mt-8 space-y-8;
+    @apply mt-8 space-y-7;
   }
 
   .about-letter__body p {
-    @apply max-w-[42rem] font-serif text-[1.22rem] leading-[1.9] md:text-[1.34rem];
+    @apply max-w-[54rem] font-serif text-[1.18rem] leading-[1.95] md:text-[1.28rem];
     color: rgb(var(--ink));
     text-wrap: pretty;
+    font-weight: 400;
   }
 
   .about-letter__signature-block {
-    @apply mt-14;
+    @apply mt-14 flex items-end gap-5;
+  }
+
+  .about-letter__signature-copy {
+    @apply min-w-0;
   }
 
   .about-letter__signature {
-    width: min(15rem, 100%);
+    width: min(14rem, 100%);
     height: auto;
   }
 
@@ -583,13 +584,20 @@
   }
 
   .about-letter__signoff {
-    @apply mt-4 font-serif text-xl leading-relaxed;
+    @apply mt-4 font-serif text-[1.05rem] leading-relaxed;
     color: rgb(var(--ink));
+    font-weight: 400;
   }
 
   .about-letter__signoff span {
-    @apply mt-1 block font-ui text-[0.7rem] font-semibold uppercase tracking-[0.18em];
+    @apply mt-1 block font-ui text-[0.68rem] font-medium uppercase tracking-[0.16em];
     color: rgb(var(--ink-muted));
+  }
+
+  @media (max-width: 767px) {
+    .about-letter__signature-block {
+      @apply items-start;
+    }
   }
 
   html[data-theme="dark"] .about-letter__signature--light {

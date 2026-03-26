@@ -120,7 +120,7 @@ It opens with:
 
 > To readers,
 
-It also uses the current build date and `Seth Headshot.jpg` at the top of the letter.
+It also uses the current build date at the top of the letter.
 
 And the body reads:
 
@@ -144,6 +144,8 @@ It also uses:
 - `Seth Headshot.jpg`
 - `signature-seth.svg` for light mode
 - `signature-seth-white.svg` for dark mode
+
+The portrait now sits with the signature at the close of the letter rather than at the top.
 
 ## Archives Page
 
