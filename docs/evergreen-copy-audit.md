@@ -29,7 +29,7 @@ Tagline: `Reporting readers can check.`
 
 Mission statement:
 
-> Democratic Justice publishes reporting that readers can inspect from source document to conclusion. Every story opens with a Proof Card and carries the record behind it.
+> We publish reporting that readers can inspect from source document to conclusion. Our reporting puts the logic before the story so that you have the information needed to analyze the veracity as you read it.
 
 Footer description:
 
@@ -80,7 +80,7 @@ Mission heading: `Reporting readers can check`
 
 Mission copy:
 
-> Every story opens with a Proof Card and carries the source documents behind it. We report on power, elections, parties, and public failure.
+> We publish reporting that readers can inspect from source document to conclusion. Our reporting puts the logic before the story so that you have the information needed to analyze the veracity as you read it.
 
 Mission actions:
 
@@ -130,7 +130,7 @@ Mission:
 
 > We publish reporting that readers can inspect from source document to conclusion.
 
-> The reporting follows power, elections, parties, and public failure. It starts with records, names who acted, and shows how we reached the conclusion.
+> Our reporting puts the logic before the story so that you have the information needed to analyze the veracity as you read it.
 
 Coverage Priorities:
 
