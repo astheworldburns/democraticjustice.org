@@ -239,7 +239,7 @@
   }
 
   .masthead-brand__name--footer {
-    font-size: clamp(1.42rem, 2vw, 1.72rem);
+    font-size: clamp(1.5rem, 2.1vw, 1.84rem);
   }
 
   .masthead-meta {
