@@ -1,18 +1,18 @@
 # Evergreen Copy Audit
 
-Current evergreen/public-facing copy pulled into one review document for brand and positioning work.
+Current evergreen and public-facing site copy compiled into one review document.
 
 Updated: March 25, 2026
 
 ## Excluded On Purpose
 
-The following are intentionally not included in this audit because they are tied to the current test story/proof:
+The following are intentionally not included in this audit because they belong to the current story/proof surface rather than the evergreen site:
 
 - `src/content/articles/**`
 - `src/_includes/components/proof-card.njk`
 - `src/_includes/layouts/post.njk`
 
-This document focuses on evergreen site copy, public page framing, recurring UI language, and durable non-article content.
+This document covers recurring site chrome, public utility pages, evergreen brand copy, and durable non-article templates.
 
 ## Brand Core
 
@@ -21,30 +21,26 @@ Source files:
 - `src/_data/siteSettings.json`
 - `src/_data/site.json`
 
-Visible and strategic brand copy:
+Current brand copy:
 
 - Site title: `Democratic Justice`
-- Tagline: `Proof journalism for democratic accountability`
+- Tagline: `Reporting readers can check.`
 - Mission statement:
 
-  > Democratic Justice publishes accountability reporting built to endure. When an investigation carries a Proof Card, every axiom is sourced, every inference is explicit, and the conclusion is stated plainly, defended openly, and owned without hedging.
+  > Democratic Justice publishes reporting with source records, named facts, and a Proof Card at the top of every story.
 
 - Footer description:
 
-  > Democratic Justice is building PROOF journalism: document-based investigations, durable archives, and structured proofs that let readers examine every source, every foundational fact, and every inferential step.
+  > Democratic Justice publishes document-based reporting with source records, clear findings, and archives readers can search, cite, and revisit.
 
 - Standards tagline: `Reported. Sourced. Proved.`
 - Meta description:
 
-  > Democratic Justice is a proof journalism outlet publishing accountability reporting, source documents, and formal Proof Cards grounded in documented facts.
+  > Democratic Justice publishes reporting with source records, Proof Cards, and archives readers can search, cite, and revisit.
 
 - Site description:
 
-  > Investigative journalism and political accountability reporting rooted in West Virginia.
-
-- Legacy site tagline:
-
-  > Investigative journalism and political accountability reporting rooted in West Virginia
+  > Reporting on power, elections, parties, and public failure.
 
 - Contact email: `proof@democraticjustice.org`
 
@@ -81,7 +77,7 @@ Article pages:
 - `Democratic Justice`
 - Footer paragraph:
 
-  > Democratic Justice is building PROOF journalism: document-based investigations, durable archives, and structured proofs that let readers examine every source, every foundational fact, and every inferential step.
+  > Democratic Justice publishes document-based reporting with source records, clear findings, and archives readers can search, cite, and revisit.
 
 - `Contact`
 - `proof@democraticjustice.org`
@@ -96,18 +92,18 @@ Source file:
 
 - `src/content/pages/index.njk`
 
-Dynamic article titles, decks, dates, bylines, and desk labels are omitted here. Static homepage copy:
+Dynamic story titles, descriptions, bylines, dates, and desk labels are omitted here. Static homepage copy:
 
 ### Lead / mission area
 
-- `Lead report`
-- `Read the record`
-- `Browse the archive`
+- Lead fallback kicker: `Lead report`
+- CTA: `Read the record`
+- CTA: `Browse the archive`
 - `Mission`
-- `Reporting meant to hold up over time`
+- `Reporting readers can check`
 - Mission rail paragraph:
 
-  > Democratic Justice covers public power, party machinery, elections, and accountability failures with document-based reporting rooted in West Virginia.
+  > Democratic Justice reports on power, elections, parties, and public failure. Every story opens with a Proof Card and stays in the archive.
 
 - `Read the mission`
 - `Follow by RSS`
@@ -120,29 +116,24 @@ Dynamic article titles, decks, dates, bylines, and desk labels are omitted here.
 - `Reporting archive`
 - `Open archive`
 
-### Standards section
+### Method section
 
-- `Reporting standards`
+- `How the reporting works`
 - `Method`
-- `Records`
-- `Documented`
 
-  > Reporting starts with records, filings, source documents, and traceable claims that can be checked after publication.
+Main copy:
 
-- `Copy`
-- `Tight`
+> Each story starts with records, filings, and source documents. The writing states what happened, who acted, and what the record supports.
 
-  > Stories are written for clarity, attribution, and durable reading rather than the churn and posture of social feeds.
+> Every story opens with a Proof Card. The article that follows shows the reporting behind it.
 
-- `Accountability`
-- `Named`
+> Each story keeps a permanent URL, a desk label, and an archive path so readers can search it, cite it, and revisit it.
 
-  > Power, institutions, parties, and decision makers are identified directly so responsibility is never blurred into process language.
+Support box:
 
-- `Archive`
-- `Durable`
+- `For readers`
 
-  > Each piece is published with permanent routing, desk taxonomy, and searchable archives so the reporting keeps its value after the first wave.
+  > Read the finding, open the documents, and follow the reporting in the same place.
 
 ### Newsroom section
 
@@ -158,43 +149,33 @@ Source file:
 - Title: `About`
 - Description:
 
-  > Learn more about Democratic Justice and its reporting mission.
+  > What Democratic Justice publishes and how the reporting works.
 
-- Intro:
+Intro:
 
-  > Democratic Justice is an investigative journalism publication focused on political accountability, public power, elections, and institutional failure in West Virginia. The mission is simple: produce reporting that can be checked, cited, archived, and revisited long after the news cycle moves on.
+> Democratic Justice is an investigative reporting publication.
 
-  > The publication is being built to grow beyond any single voice. Reporters, editors, archives, and editorial desks are structured so the authority of the work comes from verification, clarity, and consistency rather than personality alone.
+> We publish reporting that readers can check, cite, search, and revisit.
 
-- Section: `Mission`
+> Every story opens with a Proof Card.
 
-  > The newsroom exists to document how power is exercised, shielded, and justified. That includes the mechanics of parties, institutions, campaigns, public agencies, and the people who run them.
+Section: `Mission`
 
-  > The standard is not speed for its own sake. It is durable reporting with enough context and structure that readers can return to it, search it, and use it.
+> We report on power, elections, parties, and public failure.
 
-- Section: `Coverage Priorities`
+> We start with records, name who acted, and show readers how we reached the conclusion.
 
-  > The reporting focus is direct:
+Section: `Coverage Priorities`
 
-  - `Follow public records.`
-  - `Track money, patronage, and institutional control.`
-  - `Name decisions, decision makers, and the consequences that follow.`
-  - `Preserve findings in archives organized by desk, date, and byline.`
+> We follow public records, track money and control, name decisions and decision makers, and keep each story in the archive by desk, date, and byline.
 
-- Section: `Standards`
+Section: `Standards`
 
-  > The editorial approach is built around a few non-negotiables:
+> Lead with the strongest verified fact. Attribute claims clearly. Keep the writing clear and detailed enough to withstand scrutiny. Keep every story searchable and citable.
 
-  - `Lead with the strongest verified fact.`
-  - `Attribute assertions clearly and avoid soft, evasive language.`
-  - `Keep copy tight enough to read cleanly and detailed enough to stand up to scrutiny.`
-  - `Publish in a form that remains accessible, searchable, and portable.`
+Section: `Why The Site Works This Way`
 
-- Section: `Why The Site Is Built This Way`
-
-  > Democratic Justice uses a static publishing stack so the reporting remains fast, portable, and resistant to platform dependency. The design favors legibility, restraint, and durable archives over the short half-life of algorithmic feeds.
-
-  > This is a publication designed for accumulation. Stories should not disappear into a timeline. They should compound into a body of work.
+> The site is there for reading, search, and return. Stories stay in place. Links stay usable. The archive grows one story at a time.
 
 ## Archives Page
 
@@ -208,15 +189,17 @@ Static copy:
 - `Reporting archive`
 - Description:
 
-  > A chronological record of published reporting, grouped by year and month so the archive grows like a newsroom index instead of a stack of forgotten posts.
+  > Published reporting, grouped by year and month.
 
 - `Jump by year`
-- `Archive tools`
+- `Archive`
 - `Search the reporting`
-- `Read the feed`
-- Dynamic structural labels:
-  - `month`
-  - `months`
+- `Follow by RSS`
+
+Dynamic structural labels:
+
+- `month`
+- `months`
 
 ## Desk / Category Pages
 
@@ -229,17 +212,17 @@ Static copy:
 - `Editorial desk`
 - Description pattern:
 
-  > Reporting and analysis grouped under the [desk] desk, with the newest filing surfaced first and older work retained as a durable archive.
+  > Stories filed under the [desk] desk. New work appears first. Older work stays in the archive.
 
 - `piece`
 - `pieces`
 - `Latest`
-- `Navigate the archive`
+- `Archive`
 - `Monthly archive`
 - `Search`
 - `Other desks`
-- Lead fallback: `Lead filing`
-- Lead CTA: `Read the desk lead`
+- Lead fallback: `Lead report`
+- Lead CTA: `Read the lead report`
 
 ## Search Page
 
@@ -253,19 +236,11 @@ Static copy:
 - `Search the reporting archive`
 - Description:
 
-  > Full-text search runs entirely on the static site, so readers can move through the archive without relying on an external search service or a database-backed app.
+  > Search the archive by name, subject, desk, or date.
 
-- `Desk filters`
+- `Search tips`
 
-  > Filter the archive by editorial desk, author, or publication year as the index grows.
-
-- `No hosted backend`
-
-  > Search results are generated from the built site itself, keeping the stack portable and low-friction.
-
-- `Reader workflow`
-
-  > Use search when you know the subject, then jump into desks and archives once you’ve found the thread.
+  > Start with a name, subject, organization, or desk. Follow the results into the archive.
 
 - Search placeholder: `Search the archive`
 
@@ -281,7 +256,7 @@ Static copy:
 - `Staff`
 - Description:
 
-  > Reporter bios, beats, and recent work. Democratic Justice is organized so every byline is attached to consistent standards, searchable archives, and a publication-wide editorial frame.
+  > Reporter bios, beats, and recent work. Every byline follows the same standards and appears in the same archive.
 
 - `published`
 
@@ -295,17 +270,19 @@ Source files:
 Template/static copy:
 
 - `Newsroom`
-- `Reporting brief`
-- `Published reports currently attached to this byline.`
+- `Published`
+- `Stories under this byline.`
 - `Primary desks`
-- `Reach the desk`
+- `Contact`
 - `Email`
 - `Bluesky`
 - `X`
 - `Recent reporting`
 - `By [name]`
-- Hidden/search metadata labels:
-  - `Staff profile`
+
+Hidden/search metadata labels:
+
+- `Staff profile`
 
 Current live profile copy for Seth Sturm:
 
@@ -331,38 +308,40 @@ Static copy:
 - `Follow by RSS`
 - Description:
 
-  > RSS is the simplest way to follow Democratic Justice without relying on social feeds or algorithms. You subscribe once, and new stories appear automatically in your reader.
+  > RSS sends new stories straight to your reader.
 
 - `Copy feed URL`
 - `Feed URL copied`
 - `Open feed URL`
 - `Browse the archive`
 
-- Section: `How it works`
-  - `Step 1`
-  - `Copy the feed URL`
-  - `Use the button above to copy the Democratic Justice feed address.`
-  - `Step 2`
-  - `Paste it into any RSS reader`
-  - `Most feed readers have an "Add feed" or "Subscribe by URL" option. Paste the address there.`
-  - `Step 3`
-  - `Read new stories automatically`
-  - `Whenever Democratic Justice publishes, the new story will appear in your reader without platform interference.`
+Section: `Get started`
 
-- Section: `Feed URL`
+- `Step 1`
+- `Copy the feed URL`
+- `Copy the Democratic Justice feed address.`
+- `Step 2`
+- `Add it to your reader`
+- `Use the add-feed or subscribe-by-URL option in your reader.`
+- `Step 3`
+- `Read new stories there`
+- `New stories appear in your reader when they are published.`
 
-  > This is the address you paste into a feed reader:
+Section: `Feed URL`
 
-- Section: `Why we offer it`
+> Paste this address into your reader:
 
-  > Democratic Justice is built for readers who want durable reporting, not platform churn. RSS keeps that relationship direct.
+Section: `Why we offer it`
 
-  > If you use the feed, you get the publication as a stream of records: no ranking, no suppression, no recommendation engine standing between you and the work.
+> RSS gives readers a direct line to new stories.
 
-- Sidebar: `What you get`
-  - `Full-story entries from the publication feed.`
-  - `A permanent URL you can archive or cite.`
-  - `A direct publishing channel independent of social platforms.`
+> It keeps the archive easy to follow over time.
+
+Sidebar: `What you get`
+
+- `New stories in one feed.`
+- `A permanent URL for each story.`
+- `A simple way to follow the archive.`
 
 ## Browser-Rendered Feed View
 
@@ -372,19 +351,19 @@ Source file:
 
 Visible copy in `/feed.xml` when opened in a browser:
 
-- `RSS Feed`
+- `RSS feed`
 - `Homepage`
 - `Night edition`
 - `Day edition`
 - Main intro:
 
-  > This is the machine-readable RSS feed for Democratic Justice. If you were expecting a normal webpage, start with the RSS guide instead.
+  > This page is the live feed for Democratic Justice. Use the RSS guide if you want setup help.
 
-- `How to use RSS`
-- `Open site`
+- `RSS guide`
+- `Homepage`
 - Note:
 
-  > Paste this feed URL into any RSS reader to subscribe:
+  > Paste this feed URL into your RSS reader:
 
 ## Source Document Page Template
 
@@ -395,10 +374,10 @@ Source file:
 Static copy:
 
 - `Source Document`
-- `Open original file`
+- `Open file`
 - `Download`
 - `Preview unavailable`
-- `This source document can be opened directly from the file link above.`
+- `Open the file directly from the link above.`
 - `Document record`
 - `Obtained`
 - `Source method`
@@ -416,7 +395,7 @@ Fallback/static template copy:
 
 ## Audit Notes
 
-The biggest concentration points for positioning language are:
+The main concentration points for evergreen positioning and brand language are:
 
 1. `src/_data/siteSettings.json`
 2. `src/content/pages/index.njk`
@@ -426,4 +405,4 @@ The biggest concentration points for positioning language are:
 6. `src/content/pages/rss.njk`
 7. `src/assets/feed.xsl`
 
-If the next phase is a wording overhaul, those files will carry most of the change.
+If the next phase is a deeper copy overhaul, those files still carry most of the site’s institutional voice.
