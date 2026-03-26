@@ -2,7 +2,12 @@
 layout: layouts/base.njk
 ogType: website
 ---
-<article class="document-shell">
+<article class="document-shell" data-pagefind-body>
+  <div class="sr-only" aria-hidden="true">
+    <span data-pagefind-meta="type">Source document</span>
+    <span data-pagefind-meta="source_method">{{ source_method }}</span>
+    <span data-pagefind-meta="obtained">{{ obtained }}</span>
+  </div>
   <header class="document-shell__header">
     <p class="section-kicker">Source Document</p>
     <h1 class="document-shell__title">{{ title }}</h1>

@@ -8,7 +8,7 @@
         <img class="proof-mark proof-card__mark" src="{{ proofMarkPrintSrc }}" alt="" />
         <p class="proof-card__eyebrow">Proof</p>
       </div>
-      <p class="proof-card__counts">{{ proofCard.axiomCount }} axioms · {{ proofCard.logicCount }} inferences</p>
+      <p class="proof-card__counts">{{ proofCard.axiomCount }} axioms · {{ proofCard.logicCount }} inferences · {{ proofCard.sourceDocumentCount }} documents</p>
     </header>
 
     <section class="proof-card__section proof-card__section--full proof-card__section--hero" aria-label="Issue under proof">
@@ -28,7 +28,14 @@
                 <span class="proof-card__marker">A{{ axiom.index }}</span>
                 <div class="proof-card__item-copy">
                   <p class="proof-card__list-text">{{ axiom.premise }}</p>
-                  <a class="proof-card__source-link" href="{{ axiom.sourceUrl }}">{{ axiom.sourceLabel }}</a>
+                  {% if axiom.sources | length %}
+                    <div class="proof-card__source-list">
+                      {% for source in axiom.sources %}
+                        {% set sourceRecord = source.documentUrl | getSourceDocument(collections.sourceDocument) %}
+                        <a class="proof-card__source-link" href="{{ source.documentUrl }}">{{ sourceRecord.data.title if sourceRecord else source.label }}</a>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
                 </div>
               </li>
             {% endfor %}
@@ -62,6 +69,24 @@
         </p>
       </div>
     </section>
+
+    {% if proofCard.sourceDocuments | length %}
+      <section class="proof-card__section proof-card__section--full proof-card__section--sources" aria-label="Source documents">
+        <p class="proof-card__label">Source documents</p>
+        <div class="proof-card__section-body">
+          <ul class="proof-card__source-document-list" aria-label="Source documents used in this proof">
+            {% for source in proofCard.sourceDocuments %}
+              {% set sourceRecord = source.documentUrl | getSourceDocument(collections.sourceDocument) %}
+              <li class="proof-card__source-document-item">
+                <a class="proof-card__source-document-link" href="{{ source.documentUrl }}">
+                  {{ sourceRecord.data.title if sourceRecord else source.label }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </section>
+    {% endif %}
 
     <footer class="proof-card__footer">
       <p class="proof-card__footer-text">

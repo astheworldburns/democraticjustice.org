@@ -11,14 +11,17 @@ proof:
   issue: WVDP officers took official control of the West Virginia Young Democrats and kept it inside party infrastructure.
   axioms:
     - premise: An amended January 23, 2025 WVYD F-4 filing names Mike Pushkin as chairperson and routes the organization's official contact channels through West Virginia Democratic Party infrastructure.
-      source_label: WVYD January 2025 F-4 Amendment
-      source_url: /documents/wvyd-january-2025-amended-f4/
+      sources:
+        - document_url: /documents/wvyd-january-2025-amended-f4/
+      no_source_needed: false
     - premise: A January 21, 2026 WVYD F-4 filing still routes the organization's official mailing address, phone number, and email through West Virginia Democratic Party infrastructure after rechartering.
-      source_label: WVYD January 2026 F-4 Amendment
-      source_url: /documents/wvyd-january-2026-amended-f4/
+      sources:
+        - document_url: /documents/wvyd-january-2026-amended-f4/
+      no_source_needed: false
     - premise: Public-facing WVYD materials used a Gmail address while the January 2026 state filing directed official correspondence to a party-controlled address.
-      source_label: WVYD Contact Channel Comparison
-      source_url: /documents/wvyd-contact-channel-comparison/
+      sources:
+        - document_url: /documents/wvyd-contact-channel-comparison/
+      no_source_needed: false
   logic:
     - step: State filings determine who officially receives a political organization's legal correspondence and speaks for it in the record.
     - step: By placing Pushkin and party channels on the January 2025 filing, WVDP officers turned the takeover into official control.

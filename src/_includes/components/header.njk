@@ -56,6 +56,11 @@
           </a>
         </li>
         <li>
+          <a class="{% if page.url == '/documents/' %}text-[rgb(var(--ink))]{% else %}hover:text-[rgb(var(--ink))]{% endif %}" href="/documents/" {% if page.url == '/documents/' %}aria-current="page"{% endif %}>
+            Documents
+          </a>
+        </li>
+        <li>
           <a class="{% if page.url == '/staff/' %}text-[rgb(var(--ink))]{% else %}hover:text-[rgb(var(--ink))]{% endif %}" href="/staff/" {% if page.url == '/staff/' %}aria-current="page"{% endif %}>
             Staff
           </a>

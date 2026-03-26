@@ -1,12 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Democratic Justice — Editorial Dashboard</title>
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Democratic Justice Editorial Desk</title>
+    <link rel="stylesheet" href="/admin/editorial.css" />
   </head>
   <body>
-    <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
+    <div class="editor-shell">
+      <div class="editor-frame editor-home">
+        <section class="editor-hero">
+          <p class="editor-kicker">Editorial desk</p>
+          <h1 class="editor-title">Proof-first publishing.</h1>
+          <p class="editor-copy">
+            Use the Content Desk for article body and metadata. Use the Proof Desk to build the case, link documents,
+            and keep the source record tied to the proof.
+          </p>
+        </section>
+
+        <section class="editor-grid">
+          <article class="editor-card">
+            <p class="editor-kicker">Content desk</p>
+            <h2>Articles, authors, and source records</h2>
+            <p>Open the existing CMS for story body, metadata, bylines, and standalone source-document entries.</p>
+            <div class="editor-actions">
+              <a class="editor-button" href="/admin/cms/">Open Content Desk</a>
+            </div>
+          </article>
+
+          <article class="editor-card">
+            <p class="editor-kicker">Proof desk</p>
+            <h2>Axioms, linked sources, and proof integrity</h2>
+            <p>
+              Build the proof inside the article workflow. Attach one or more documents to each axiom, or mark it as
+              source-free when needed.
+            </p>
+            <div class="editor-actions">
+              <a class="editor-button" href="/admin/proof/">Open Proof Desk</a>
+            </div>
+          </article>
+        </section>
+      </div>
+    </div>
   </body>
 </html>
-

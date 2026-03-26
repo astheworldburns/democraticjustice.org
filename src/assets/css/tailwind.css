@@ -909,6 +909,13 @@
     background: var(--proof-panel-strong);
   }
 
+  .proof-card__section--sources {
+    padding: 1.15rem;
+    border: 1px solid var(--proof-rule);
+    border-radius: 1.12rem;
+    background: var(--proof-panel);
+  }
+
   .proof-card__section-body {
     @apply min-w-0;
   }
@@ -946,6 +953,10 @@
   .proof-card__source-link {
     @apply mt-2 inline-flex items-center font-ui text-[0.62rem] font-semibold uppercase tracking-[0.2em];
     color: var(--proof-accent);
+  }
+
+  .proof-card__source-list {
+    @apply mt-2 flex flex-wrap gap-2;
   }
 
   .proof-card__source-link:hover {
@@ -990,6 +1001,24 @@
 
   .proof-card__footer {
     @apply flex flex-col gap-4 px-1 pb-1 pt-1 md:flex-row md:items-start md:justify-between;
+  }
+
+  .proof-card__source-document-list {
+    @apply grid gap-3;
+  }
+
+  .proof-card__source-document-item {
+    @apply border-t pt-3 first:border-t-0 first:pt-0;
+    border-color: var(--proof-rule);
+  }
+
+  .proof-card__source-document-link {
+    @apply inline-flex font-ui text-[0.74rem] font-semibold uppercase tracking-[0.18em];
+    color: var(--proof-accent);
+  }
+
+  .proof-card__source-document-link:hover {
+    color: currentColor;
   }
 
   .proof-card__footer-text {

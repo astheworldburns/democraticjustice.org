@@ -1,19 +1,17 @@
-import { createProofCard } from "../../../lib/proof.js";
+import { createProofCard, hasMeaningfulValue } from "../../../lib/proof.js";
 import { DateTime } from "luxon";
 
 const SITE_TIMEZONE = "America/New_York";
 
 function isPublicArticle(data = {}) {
-  let proofCard;
-
-  try {
-    proofCard = createProofCard({
-      ...data,
-      siteTitle: data.siteSettings?.site_title || data.site?.name
-    });
-  } catch (error) {
+  if (!hasMeaningfulValue(data.proof)) {
     return false;
   }
+
+  const proofCard = createProofCard({
+    ...data,
+    siteTitle: data.siteSettings?.site_title || data.site?.name
+  });
 
   if (!proofCard) {
     return false;

@@ -7,7 +7,7 @@ import Image from "@11ty/eleventy-img";
 import pluginRss from "@11ty/eleventy-plugin-rss";
 import { DateTime } from "luxon";
 
-import { createProofCard } from "./lib/proof.js";
+import { createProofCard, hasMeaningfulValue } from "./lib/proof.js";
 import { renderProofShareImage } from "./lib/proof-share.js";
 
 const execFileAsync = promisify(execFile);
@@ -224,6 +224,20 @@ function getAuthorProfile(authorKey, authorProfiles = []) {
   );
 }
 
+function getSourceDocument(documentUrl, sourceDocuments = []) {
+  if (!documentUrl) {
+    return null;
+  }
+
+  const normalizedUrl = documentUrl.replace(/\/+$/, "");
+
+  return (
+    sourceDocuments.find((item) => (item.url || "").replace(/\/+$/, "") === normalizedUrl) ||
+    sourceDocuments.find((item) => `/documents/${item.fileSlug}` === normalizedUrl) ||
+    null
+  );
+}
+
 function wrapImageCaptions(value = "") {
   return value.replace(
     /<p>\s*(<img\b[^>]*>)\s*<\/p>\s*<p>\s*<em>([\s\S]*?)<\/em>\s*<\/p>/gi,
@@ -236,18 +250,18 @@ function sortByDateDesc(items = []) {
 }
 
 function proofCardForItem(item = {}) {
-  try {
-    return createProofCard({
-      ...item.data,
-      title: item.data?.title,
-      description: item.data?.description,
-      proof: item.data?.proof,
-      fileSlug: item.fileSlug,
-      url: item.url
-    });
-  } catch (error) {
+  if (!hasMeaningfulValue(item.data?.proof)) {
     return null;
   }
+
+  return createProofCard({
+    ...item.data,
+    title: item.data?.title,
+    description: item.data?.description,
+    proof: item.data?.proof,
+    fileSlug: item.fileSlug,
+    url: item.url
+  });
 }
 
 function publishedArticles(items = []) {
@@ -298,6 +312,12 @@ export default async function (eleventyConfig) {
         .getFilteredByGlob("./src/content/articles/**/*.md")
         .sort((left, right) => right.date - left.date)
     )
+  );
+
+  eleventyConfig.addCollection("articleFile", (collectionApi) =>
+    collectionApi
+      .getFilteredByGlob("./src/content/articles/**/*.md")
+      .sort((left, right) => right.date - left.date)
   );
 
   eleventyConfig.addCollection("proofArticle", (collectionApi) => {
@@ -496,6 +516,7 @@ export default async function (eleventyConfig) {
   eleventyConfig.addFilter("tagLabel", tagLabel);
   eleventyConfig.addFilter("initials", initials);
   eleventyConfig.addFilter("getAuthor", getAuthorProfile);
+  eleventyConfig.addFilter("getSourceDocument", getSourceDocument);
   eleventyConfig.addFilter("excerptText", excerptText);
   eleventyConfig.addFilter("readingMinutes", readingMinutes);
   eleventyConfig.addFilter("withHeadingIds", injectHeadingIds);
@@ -601,7 +622,7 @@ export default async function (eleventyConfig) {
       input: "src",
       output: "_site"
     },
-    templateFormats: ["md", "njk"],
+    templateFormats: ["md", "njk", "11ty.js"],
     markdownTemplateEngine: "njk",
     htmlTemplateEngine: "njk",
     dataTemplateEngine: "njk"
