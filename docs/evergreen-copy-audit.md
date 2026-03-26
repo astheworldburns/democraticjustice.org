@@ -137,6 +137,10 @@ The page closes with the typed signoff:
 `Seth Sturm`
 `Founder and editor`
 
+And the closing bio reads:
+
+> Before I started Democratic Justice, I worked in campaigns and standards bodies where language on paper carried real consequences. I managed Mary Ann Claytor’s 2016 State Auditor campaign, was elected to lead the WVDP Indigenous Caucus when it formed in 2021, and serve on the Non-GMO Project Standards Committee, which helps maintain a standard behind a certification that represents about $48.9 billion in annual sales.
+
 It also uses:
 
 - `Seth Headshot.jpg`
