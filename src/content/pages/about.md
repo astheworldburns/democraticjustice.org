@@ -11,17 +11,17 @@ Democratic Justice is an investigative reporting publication.
 
 We publish reporting that readers can check, cite, search, and revisit.
 
-Every story opens with a Proof Card.
+Every story opens with a Proof Card and carries the source documents behind it.
 
 ## Mission
 
-We report on power, elections, parties, and public failure.
+We publish reporting that readers can inspect from source document to conclusion.
 
-We start with records, name who acted, and show readers how we reached the conclusion.
+The reporting follows power, elections, parties, and public failure. It starts with records, names who acted, and shows how we reached the conclusion.
 
 ## Coverage Priorities
 
-We follow public records, track money and control, name decisions and decision makers, and keep each story in the archive by desk, date, and byline.
+We follow public records, track money and control, name decisions and decision makers, attach the source documents, and keep each story in the archive by desk, date, and byline.
 
 ## Standards
 

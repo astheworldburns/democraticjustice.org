@@ -27,16 +27,16 @@ Current brand copy:
 - Tagline: `Reporting readers can check.`
 - Mission statement:
 
-  > Democratic Justice publishes reporting with source records, named facts, and a Proof Card at the top of every story.
+  > Democratic Justice publishes reporting that readers can inspect from source document to conclusion. Every story opens with a Proof Card and carries the record behind it.
 
 - Footer description:
 
-  > Democratic Justice publishes document-based reporting with source records, clear findings, and archives readers can search, cite, and revisit.
+  > Democratic Justice publishes reporting that readers can inspect from source document to conclusion. Every story stays searchable, citable, and in place.
 
 - Standards tagline: `Reported. Sourced. Proved.`
 - Meta description:
 
-  > Democratic Justice publishes reporting with source records, Proof Cards, and archives readers can search, cite, and revisit.
+  > Democratic Justice publishes reporting with source documents, Proof Cards, and archives readers can search, cite, and revisit.
 
 - Site description:
 
@@ -103,7 +103,7 @@ Dynamic story titles, descriptions, bylines, dates, and desk labels are omitted 
 - `Reporting readers can check`
 - Mission rail paragraph:
 
-  > Democratic Justice reports on power, elections, parties, and public failure. Every story opens with a Proof Card and stays in the archive.
+  > Every story opens with a Proof Card and carries the source documents behind it. We report on power, elections, parties, and public failure.
 
 - `Read the mission`
 - `Follow by RSS`
@@ -157,17 +157,17 @@ Intro:
 
 > We publish reporting that readers can check, cite, search, and revisit.
 
-> Every story opens with a Proof Card.
+> Every story opens with a Proof Card and carries the source documents behind it.
 
 Section: `Mission`
 
-> We report on power, elections, parties, and public failure.
+> We publish reporting that readers can inspect from source document to conclusion.
 
-> We start with records, name who acted, and show readers how we reached the conclusion.
+> The reporting follows power, elections, parties, and public failure. It starts with records, names who acted, and shows how we reached the conclusion.
 
 Section: `Coverage Priorities`
 
-> We follow public records, track money and control, name decisions and decision makers, and keep each story in the archive by desk, date, and byline.
+> We follow public records, track money and control, name decisions and decision makers, attach the source documents, and keep each story in the archive by desk, date, and byline.
 
 Section: `Standards`
 
