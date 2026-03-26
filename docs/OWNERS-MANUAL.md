@@ -84,7 +84,7 @@ Current repository:
 
 #### Sveltia CMS authentication
 
-Status: not fully finished for a newsroom workflow.
+Status: working for the Content Desk, but still separate from the new Proof Desk gateway.
 
 What exists now:
 
@@ -100,6 +100,29 @@ What still needs owner action:
 4. Invite contributors to the GitHub repo as collaborators if they need publishing access.
 
 Without this, the CMS is not ready for non-technical multi-author use.
+
+#### Proof Desk gateway
+
+Status: scaffolded in-repo, but requires owner deployment.
+
+What exists now:
+
+- custom Proof Desk UI at `/admin/proof/`
+- Cloudflare Worker scaffold in `workers/proof-desk-gateway/`
+- server-side session flow for proof saves and inline source creation
+- legacy token fallback while setup is incomplete
+
+What owner action is needed:
+
+1. Create a GitHub OAuth App for the Proof Desk Worker.
+2. Create the `EDITOR_SESSIONS` KV namespace in Cloudflare.
+3. Deploy the Worker on a real HTTPS domain, ideally `auth.democraticjustice.org`.
+4. Set `proof_api_base_url` in `src/admin/config.yml`.
+5. Ensure every writer has GitHub write access to the repo.
+
+Primary setup guide:
+
+- `workers/proof-desk-gateway/README.md`
 
 #### Contact email
 
@@ -160,6 +183,7 @@ If analytics are needed, use a privacy-first tool such as Cloudflare Web Analyti
 As of this manual, the main owner-controlled tasks still open are:
 
 - complete Sveltia auth for Cloudflare Workers + GitHub OAuth
+- deploy the Proof Desk gateway Worker and point `proof_api_base_url` at it
 - make sure `proof@democraticjustice.org` is real and monitored
 - replace sample/demo content with real reporting
 - add additional author profiles if the newsroom grows

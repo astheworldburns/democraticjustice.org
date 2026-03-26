@@ -7,7 +7,10 @@
   "scripts": {
     "start": "npx @11ty/eleventy --serve",
     "build": "rm -rf _site && npx @11ty/eleventy",
-    "newsletter:draft": "node ./scripts/buttondown-draft.mjs"
+    "newsletter:draft": "node ./scripts/buttondown-draft.mjs",
+    "proof-gateway:install": "npm --prefix ./workers/proof-desk-gateway install",
+    "proof-gateway:dev": "npm --prefix ./workers/proof-desk-gateway run dev",
+    "proof-gateway:deploy": "npm --prefix ./workers/proof-desk-gateway run deploy"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.2",

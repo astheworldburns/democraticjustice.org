@@ -44,11 +44,17 @@ It may never have both, and it may never have neither.
 
 ## Authentication
 
-The Proof Desk now loads article and source data directly from GitHub after you authenticate.
+The permanent production setup is a dedicated Proof Desk gateway Worker.
 
-Use the `Session token` field in the Proof Desk to paste a GitHub token for the current browser session.
+Once that Worker is deployed and `proof_api_base_url` is set in [/src/admin/config.yml](/Users/sethsturm/Documents/New%20project/src/admin/config.yml), the Proof Desk will:
 
-That token is kept in session storage only. It is cleared when the browser session ends or when you click `Clear token`.
+1. send you to GitHub sign-in
+2. create a short-lived server-side session
+3. load articles and source docs without any pasted browser token
+
+Until that gateway is deployed, the Proof Desk falls back to the temporary `Session token` field.
+
+That token fallback is browser-session only. It exists as a setup and recovery path, not as the long-term newsroom workflow.
 
 ## Public result
 

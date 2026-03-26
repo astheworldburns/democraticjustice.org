@@ -1,0 +1,22 @@
+name = "proof-desk-gateway"
+main = "src/index.js"
+compatibility_date = "2026-03-26"
+
+[vars]
+GITHUB_HOSTNAME = "github.com"
+GITHUB_REPO_OWNER = "astheworldburns"
+GITHUB_REPO_NAME = "democraticjustice.org"
+GITHUB_BRANCH = "main"
+ARTICLE_CONTENT_PATH = "src/content/articles/"
+DOCUMENT_CONTENT_PATH = "src/content/documents/"
+DOCUMENT_ASSET_PATH = "static/documents/"
+ALLOWED_ORIGINS = "https://democraticjustice.org,http://localhost:8080"
+# Optional if you later move Content Desk auth to this same Worker:
+# ALLOWED_DOMAINS = "democraticjustice.org,*.democraticjustice.org"
+# Optional newsroom restrictions:
+# GITHUB_ALLOWED_USERS = "sethsturm"
+# GITHUB_ALLOWED_ORG = "your-github-org"
+
+[[kv_namespaces]]
+binding = "EDITOR_SESSIONS"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"

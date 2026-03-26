@@ -20,6 +20,7 @@ export default class AdminProofConfig {
         repo_name: repoName,
         branch: parsed.backend?.branch || "main",
         base_url: parsed.backend?.base_url || "",
+        proof_api_base_url: parsed.proof_api_base_url || "",
         article_content_path: "src/content/articles/",
         document_content_path: "src/content/documents/",
         document_asset_path: "static/documents/"

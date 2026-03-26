@@ -7,6 +7,8 @@ const state = {
   config: null,
   articles: [],
   documents: [],
+  authMode: "token",
+  sessionUser: null,
   articleFilter: "",
   selectedSlug: "",
   selectedArticle: null,
@@ -28,6 +30,25 @@ function escapeHtml(value = "") {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
+}
+
+function normalizeWhitespace(value = "") {
+  return value
+    .toString()
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function hasMeaningfulValue(value) {
+  if (Array.isArray(value)) {
+    return value.some((item) => hasMeaningfulValue(item));
+  }
+
+  if (value && typeof value === "object") {
+    return Object.values(value).some((entry) => hasMeaningfulValue(entry));
+  }
+
+  return normalizeWhitespace(value).length > 0;
 }
 
 function slugify(value = "") {
@@ -292,6 +313,71 @@ function looksLikeToken(value = "") {
   );
 }
 
+function proofApiBaseUrl() {
+  return (state.config?.proof_api_base_url || "").replace(/\/+$/, "");
+}
+
+function hasProofApi() {
+  return Boolean(proofApiBaseUrl());
+}
+
+function proofApiUrl(pathname = "") {
+  return `${proofApiBaseUrl()}${pathname}`;
+}
+
+async function workerRequest(pathname, options = {}) {
+  const response = await fetch(proofApiUrl(pathname), {
+    credentials: "include",
+    ...options,
+    headers: {
+      Accept: "application/json",
+      ...(options.headers || {})
+    }
+  });
+
+  if (!response.ok) {
+    const message = await response.text();
+    throw new Error(message || `Proof API request failed (${response.status}).`);
+  }
+
+  return response;
+}
+
+async function workerJson(pathname, options = {}) {
+  const response = await workerRequest(pathname, options);
+  return response.json();
+}
+
+async function loadWorkerSession() {
+  try {
+    const response = await fetch(proofApiUrl("/api/session"), {
+      credentials: "include",
+      headers: {
+        Accept: "application/json"
+      }
+    });
+
+    if (response.status === 401) {
+      state.sessionUser = null;
+      state.authMode = "worker";
+      return;
+    }
+
+    if (!response.ok) {
+      state.sessionUser = null;
+      state.authMode = "token";
+      return;
+    }
+
+    const payload = await response.json();
+    state.sessionUser = payload.user || null;
+    state.authMode = "worker";
+  } catch (error) {
+    state.sessionUser = null;
+    state.authMode = "token";
+  }
+}
+
 function detectStoredToken() {
   const explicit = sessionStorage.getItem(PROOF_TOKEN_KEY);
   if (looksLikeToken(explicit || "")) {
@@ -487,6 +573,16 @@ async function loadDocumentsFromRepo() {
   );
 
   return sortDocuments(documents);
+}
+
+async function loadArticlesFromWorker() {
+  const payload = await workerJson("/api/proof/articles");
+  return sortArticles(Array.isArray(payload.articles) ? payload.articles : []);
+}
+
+async function loadDocumentsFromWorker() {
+  const payload = await workerJson("/api/proof/documents");
+  return sortDocuments(Array.isArray(payload.documents) ? payload.documents : []);
 }
 
 async function readRepoFile(repoPath) {
@@ -817,7 +913,11 @@ function renderSelectedArticle() {
 
 function render() {
   const detectedLabel =
-    state.tokenSource === "saved-token"
+    state.authMode === "worker"
+      ? state.sessionUser
+        ? `Signed in as ${state.sessionUser.login || "GitHub user"}.`
+        : "Not signed in to the Proof Desk yet."
+      : state.tokenSource === "saved-token"
         ? "Using a GitHub token stored for this browser session."
         : "No GitHub token detected yet.";
 
@@ -845,14 +945,30 @@ function render() {
               </div>
               <p>${escapeHtml(detectedLabel)}</p>
               <p class="editor-muted">The Proof Desk now loads article and source data directly from GitHub after you authenticate. It no longer publishes draft manifests on the public site.</p>
-              <label class="editor-field">
-                <span class="editor-label">Session token</span>
-                <input class="editor-input" type="password" value="${escapeHtml(state.tokenDraft || "")}" data-ui="token-draft" placeholder="Paste a GitHub token for this browser session." />
-              </label>
-              <div class="editor-actions" style="margin-top: 1rem;">
-                <button class="editor-button-secondary" type="button" data-action="save-token">Use token</button>
-                <button class="editor-button-ghost" type="button" data-action="clear-token">Clear token</button>
-              </div>
+              ${
+                state.authMode === "worker"
+                  ? `
+                    <div class="editor-actions" style="margin-top: 1rem;">
+                      ${
+                        state.sessionUser
+                          ? `<button class="editor-button-ghost" type="button" data-action="worker-logout">Sign out</button>`
+                          : `<a class="editor-button-secondary" href="${escapeHtml(
+                              `${proofApiUrl("/proof/login")}?next=${encodeURIComponent(window.location.href)}`
+                            )}">Sign in with GitHub</a>`
+                      }
+                    </div>
+                  `
+                  : `
+                    <label class="editor-field">
+                      <span class="editor-label">Session token</span>
+                      <input class="editor-input" type="password" value="${escapeHtml(state.tokenDraft || "")}" data-ui="token-draft" placeholder="Paste a GitHub token for this browser session." />
+                    </label>
+                    <div class="editor-actions" style="margin-top: 1rem;">
+                      <button class="editor-button-secondary" type="button" data-action="save-token">Use token</button>
+                      <button class="editor-button-ghost" type="button" data-action="clear-token">Clear token</button>
+                    </div>
+                  `
+              }
             </section>
 
             <section class="editor-panel">
@@ -864,9 +980,13 @@ function render() {
                 <span class="editor-muted">${state.articles.length} total</span>
               </div>
               ${
-                state.token
+                (state.authMode === "worker" ? state.sessionUser : state.token)
                   ? ""
-                  : `<div class="editor-empty">Add a GitHub token to load article and document data.</div>`
+                  : `<div class="editor-empty">${
+                      state.authMode === "worker"
+                        ? "Sign in with GitHub to load article and document data."
+                        : "Add a GitHub token to load article and document data."
+                    }</div>`
               }
               <label class="editor-field">
                 <span class="editor-label">Search</span>
@@ -905,6 +1025,18 @@ function syncSelectedArticleIntoList() {
 
 async function loadSelectedArticleContent() {
   if (!state.selectedArticle) {
+    return;
+  }
+
+  if (state.authMode === "worker") {
+    const payload = await workerJson(`/api/proof/article?slug=${encodeURIComponent(state.selectedArticle.slug)}`);
+    const nextProof = hasMeaningfulValue(payload.article?.proof) ? normalizeProof(payload.article.proof || {}) : normalizeProof({});
+
+    state.selectedArticle = {
+      ...state.selectedArticle,
+      repo_path: payload.article?.repo_path || state.selectedArticle.repo_path,
+      proof: nextProof
+    };
     return;
   }
 
@@ -965,7 +1097,11 @@ async function loadDeskData() {
     state.config = await fetchJson("/admin/proof/data/config.json");
   }
 
-  if (!state.token) {
+  if (hasProofApi()) {
+    await loadWorkerSession();
+  }
+
+  if (state.authMode === "worker" && !state.sessionUser) {
     state.articles = [];
     state.documents = [];
     state.selectedSlug = "";
@@ -975,7 +1111,21 @@ async function loadDeskData() {
     return;
   }
 
-  const [articles, documents] = await Promise.all([loadArticlesFromRepo(), loadDocumentsFromRepo()]);
+  if (state.authMode !== "worker" && !state.token) {
+    state.articles = [];
+    state.documents = [];
+    state.selectedSlug = "";
+    state.selectedArticle = null;
+    state.loading = false;
+    render();
+    return;
+  }
+
+  const [articles, documents] = await Promise.all(
+    state.authMode === "worker"
+      ? [loadArticlesFromWorker(), loadDocumentsFromWorker()]
+      : [loadArticlesFromRepo(), loadDocumentsFromRepo()]
+  );
   state.articles = articles;
   state.documents = documents;
 
@@ -1007,7 +1157,12 @@ async function saveProof() {
     return;
   }
 
-  if (!state.token) {
+  if (state.authMode === "worker" && !state.sessionUser) {
+    setStatus("Sign in with GitHub before saving proof changes.", "error");
+    return;
+  }
+
+  if (state.authMode !== "worker" && !state.token) {
     setStatus("A GitHub token is required to save proof changes.", "error");
     return;
   }
@@ -1016,6 +1171,27 @@ async function saveProof() {
   render();
 
   try {
+    if (state.authMode === "worker") {
+      await workerJson("/api/proof/save", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          slug: state.selectedArticle.slug,
+          proof: serializeProof(state.selectedArticle.proof)
+        })
+      });
+
+      state.status = {
+        message: `Saved proof for "${state.selectedArticle.title}".`,
+        tone: "success"
+      };
+      state.saving = false;
+      render();
+      return;
+    }
+
     const { content, sha } = await readRepoFile(state.selectedArticle.repo_path);
     const parsed = parseFrontmatter(content);
     parsed.data.proof = serializeProof(state.selectedArticle.proof);
@@ -1050,7 +1226,12 @@ async function createSourceForAxiom(index) {
     return;
   }
 
-  if (!state.token) {
+  if (state.authMode === "worker" && !state.sessionUser) {
+    setStatus("Sign in with GitHub before creating source documents.", "error");
+    return;
+  }
+
+  if (state.authMode !== "worker" && !state.token) {
     setStatus("A GitHub token is required to create source documents.", "error");
     return;
   }
@@ -1066,6 +1247,39 @@ async function createSourceForAxiom(index) {
   }
 
   try {
+    if (state.authMode === "worker") {
+      const file = formState.file;
+      const fileBytes = new Uint8Array(await file.arrayBuffer());
+      const payload = await workerJson("/api/proof/create-document", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          title: formState.title.trim(),
+          description: formState.description.trim(),
+          obtained: formState.obtained,
+          source_method: formState.source_method.trim(),
+          file_name: file.name,
+          mime_type: file.type || "application/octet-stream",
+          file_base64: bytesToBase64(fileBytes)
+        })
+      });
+
+      const documentRecord = payload.document;
+      const documentUrl = documentRecord.url;
+      state.documents = sortDocuments([documentRecord, ...state.documents]);
+
+      const axiom = state.selectedArticle.proof.axioms[index];
+      axiom.sources = dedupeSources([...(axiom.sources || []), { document_url: documentUrl }]);
+      axiom.no_source_needed = false;
+      delete state.newSourceForms[index];
+
+      updateValidationPanel();
+      setStatus(`Created and attached "${formState.title.trim()}".`, "success");
+      return;
+    }
+
     const baseSlug = slugify(formState.title);
     const slug = ensureUniqueSlug(baseSlug);
     const extension = inferExtension(formState.file);
@@ -1223,6 +1437,22 @@ function handleClick(event) {
     return;
   }
 
+  if (action === "worker-logout") {
+    workerRequest("/proof/logout", {
+      method: "POST"
+    })
+      .then(async () => {
+        state.sessionUser = null;
+        state.articles = [];
+        state.documents = [];
+        state.selectedSlug = "";
+        state.selectedArticle = null;
+        setStatus("Signed out of the Proof Desk.", "success");
+      })
+      .catch((error) => setStatus(`Could not sign out. ${error.message || error}`, "error"));
+    return;
+  }
+
   if (action === "save-token") {
     if (!looksLikeToken(state.tokenDraft || "")) {
       setStatus("That does not look like a GitHub token yet.", "error");
@@ -1329,6 +1559,7 @@ async function init() {
     state.token = detected.token;
     state.tokenSource = detected.source;
     state.tokenDraft = detected.token;
+    state.authMode = "token";
     await loadDeskData();
     render();
   } catch (error) {
