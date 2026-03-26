@@ -132,14 +132,12 @@ And the body reads:
 
 > I built this for readers who want the material in front of them. If I ask for your attention, I should also give you what you need to test what I am saying. That is the standard here.
 
+> Before I started Democratic Justice, I worked in campaigns, organizing, and standards work where a few lines on paper could change what happened in public life. I managed Mary Ann Claytor’s 2016 State Auditor campaign, served on the executive board of Our Future West Virginia, and was elected to lead the WVDP Indigenous Caucus when it formed in 2021. I also serve on the Non-GMO Project Standards Committee, which maintains the standard behind a certification that represents about $48.9 billion in annual sales and more than 66,000 products. That work taught me to take records and rules seriously because they reach far beyond the room where they are written.
+
 The page closes with the typed signoff:
 
 `Seth Sturm`
 `Founder and editor`
-
-And the closing bio reads:
-
-> Before I started Democratic Justice, I worked in places where decisions on paper carried real consequences. I managed Mary Ann Claytor’s 2016 State Auditor campaign, was elected to lead the WVDP Indigenous Caucus when it formed in 2021, served on the executive board of Our Future West Virginia, and sit on the Non-GMO Project Standards Committee, where rule language reaches products in kitchens across the country. That work taught me to watch records, rules, and the people behind them.
 
 It also uses:
 

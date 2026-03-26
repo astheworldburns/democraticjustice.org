@@ -594,13 +594,6 @@
     color: rgb(var(--ink-muted));
   }
 
-  .about-letter__bio {
-    @apply mt-5 max-w-[44rem] font-serif text-[0.98rem] leading-[1.75] md:text-[1.04rem];
-    color: rgb(var(--ink-soft));
-    font-weight: 400;
-    text-wrap: pretty;
-  }
-
   @media (max-width: 767px) {
     .about-letter__signature-block {
       @apply items-start;
