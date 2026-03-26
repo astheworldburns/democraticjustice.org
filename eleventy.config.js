@@ -224,18 +224,24 @@ function getAuthorProfile(authorKey, authorProfiles = []) {
   );
 }
 
-function getSourceDocument(documentUrl, sourceDocuments = []) {
+function getSourceDocument(documentUrl, sourceDocuments = null) {
   if (!documentUrl) {
     return null;
   }
 
   const normalizedUrl = documentUrl.replace(/\/+$/, "");
+  const records = Array.isArray(sourceDocuments) ? sourceDocuments : [];
+  const sourceDocument =
+    records.find((item) => (item.url || "").replace(/\/+$/, "") === normalizedUrl) ||
+    records.find((item) => `/documents/${item.fileSlug}` === normalizedUrl) ||
+    records.find((item) => `/documents/${item.fileSlug}/` === normalizedUrl) ||
+    null;
 
-  return (
-    sourceDocuments.find((item) => (item.url || "").replace(/\/+$/, "") === normalizedUrl) ||
-    sourceDocuments.find((item) => `/documents/${item.fileSlug}` === normalizedUrl) ||
-    null
-  );
+  if (!sourceDocument && Array.isArray(sourceDocuments)) {
+    throw new Error(`Missing source document record for "${documentUrl}".`);
+  }
+
+  return sourceDocument;
 }
 
 function wrapImageCaptions(value = "") {
@@ -249,7 +255,7 @@ function sortByDateDesc(items = []) {
   return [...items].sort((left, right) => right.date - left.date);
 }
 
-function proofCardForItem(item = {}) {
+function proofCardForItem(item = {}, sourceDocuments = null) {
   if (!hasMeaningfulValue(item.data?.proof)) {
     return null;
   }
@@ -260,16 +266,17 @@ function proofCardForItem(item = {}) {
     description: item.data?.description,
     proof: item.data?.proof,
     fileSlug: item.fileSlug,
-    url: item.url
+    url: item.url,
+    sourceDocuments
   });
 }
 
-function publishedArticles(items = []) {
+function publishedArticles(items = [], sourceDocuments = null) {
   const now = DateTime.now().setZone(SITE_TIMEZONE);
 
   return items.filter((item) => {
     const publicationDate = toDateTime(item.date).setZone(SITE_TIMEZONE);
-    return publicationDate.isValid && publicationDate <= now && Boolean(proofCardForItem(item));
+    return publicationDate.isValid && publicationDate <= now && Boolean(proofCardForItem(item, sourceDocuments));
   });
 }
 
@@ -302,6 +309,9 @@ export default async function (eleventyConfig) {
     publishedArticles(
       collectionApi
         .getFilteredByGlob("./src/content/articles/**/*.md")
+        .sort((left, right) => right.date - left.date),
+      collectionApi
+        .getFilteredByGlob("./src/content/documents/**/*.md")
         .sort((left, right) => right.date - left.date)
     )
   );
@@ -310,6 +320,9 @@ export default async function (eleventyConfig) {
     publishedArticles(
       collectionApi
         .getFilteredByGlob("./src/content/articles/**/*.md")
+        .sort((left, right) => right.date - left.date),
+      collectionApi
+        .getFilteredByGlob("./src/content/documents/**/*.md")
         .sort((left, right) => right.date - left.date)
     )
   );
@@ -321,10 +334,14 @@ export default async function (eleventyConfig) {
   );
 
   eleventyConfig.addCollection("proofArticle", (collectionApi) => {
+    const sourceDocuments = collectionApi
+      .getFilteredByGlob("./src/content/documents/**/*.md")
+      .sort((left, right) => right.date - left.date);
     const items = publishedArticles(
       collectionApi
         .getFilteredByGlob("./src/content/articles/**/*.md")
-        .sort((left, right) => right.date - left.date)
+        .sort((left, right) => right.date - left.date),
+      sourceDocuments
     );
 
     proofShareManifest.length = 0;
@@ -336,7 +353,8 @@ export default async function (eleventyConfig) {
         description: article.data.description,
         proof: article.data.proof,
         fileSlug: article.fileSlug,
-        url: article.url
+        url: article.url,
+        sourceDocuments
       });
 
       if (!proofCard) {
@@ -367,8 +385,14 @@ export default async function (eleventyConfig) {
 
   eleventyConfig.addCollection("editorialTagList", (collectionApi) => {
     const tags = new Set();
+    const sourceDocuments = collectionApi
+      .getFilteredByGlob("./src/content/documents/**/*.md")
+      .sort((left, right) => right.date - left.date);
 
-    for (const item of publishedArticles(collectionApi.getFilteredByGlob("./src/content/articles/**/*.md"))) {
+    for (const item of publishedArticles(
+      collectionApi.getFilteredByGlob("./src/content/articles/**/*.md"),
+      sourceDocuments
+    )) {
       const itemTags = Array.isArray(item.data.tags)
         ? item.data.tags
         : item.data.tags
@@ -386,10 +410,14 @@ export default async function (eleventyConfig) {
   });
 
   eleventyConfig.addCollection("editorialDesks", (collectionApi) => {
+    const sourceDocuments = collectionApi
+      .getFilteredByGlob("./src/content/documents/**/*.md")
+      .sort((left, right) => right.date - left.date);
     const posts = publishedArticles(
       collectionApi
         .getFilteredByGlob("./src/content/articles/**/*.md")
-        .sort((left, right) => right.date - left.date)
+        .sort((left, right) => right.date - left.date),
+      sourceDocuments
     );
     const desks = new Set();
 
@@ -431,10 +459,14 @@ export default async function (eleventyConfig) {
   });
 
   eleventyConfig.addCollection("articleArchive", (collectionApi) => {
+    const sourceDocuments = collectionApi
+      .getFilteredByGlob("./src/content/documents/**/*.md")
+      .sort((left, right) => right.date - left.date);
     const posts = publishedArticles(
       collectionApi
         .getFilteredByGlob("./src/content/articles/**/*.md")
-        .sort((left, right) => right.date - left.date)
+        .sort((left, right) => right.date - left.date),
+      sourceDocuments
     );
     const buckets = new Map();
 
@@ -458,10 +490,14 @@ export default async function (eleventyConfig) {
   });
 
   eleventyConfig.addCollection("articleArchiveYears", (collectionApi) => {
+    const sourceDocuments = collectionApi
+      .getFilteredByGlob("./src/content/documents/**/*.md")
+      .sort((left, right) => right.date - left.date);
     const posts = publishedArticles(
       collectionApi
         .getFilteredByGlob("./src/content/articles/**/*.md")
-        .sort((left, right) => right.date - left.date)
+        .sort((left, right) => right.date - left.date),
+      sourceDocuments
     );
     const yearBuckets = new Map();
 

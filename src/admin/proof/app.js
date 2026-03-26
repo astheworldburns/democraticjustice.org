@@ -10,6 +10,7 @@ const state = {
   articleFilter: "",
   selectedSlug: "",
   selectedArticle: null,
+  selectedArticleLoading: false,
   sourceSearches: {},
   newSourceForms: {},
   token: "",
@@ -140,8 +141,9 @@ function dedupeSources(sources = []) {
   return entries;
 }
 
-function computeValidationErrors(proof = {}) {
+function computeValidationErrors(proof = {}, documents = state.documents) {
   const errors = [];
+  const knownDocuments = Array.isArray(documents) ? documents : [];
 
   if (!(proof.issue || "").trim()) {
     errors.push("Issue is required.");
@@ -163,6 +165,15 @@ function computeValidationErrors(proof = {}) {
 
       if (!axiom.no_source_needed && sourceCount === 0) {
         errors.push(`Axiom ${index + 1} needs at least one linked source or a no-source flag.`);
+      }
+
+      for (const source of axiom.sources || []) {
+        if (
+          source?.document_url &&
+          !knownDocuments.some((document) => document.url === source.document_url)
+        ) {
+          errors.push(`Axiom ${index + 1} links to a missing source document: ${source.document_url}`);
+        }
       }
     });
   }
@@ -281,73 +292,13 @@ function looksLikeToken(value = "") {
   );
 }
 
-function extractTokenFromUnknown(value, depth = 0) {
-  if (depth > 6 || value == null) {
-    return "";
-  }
-
-  if (typeof value === "string") {
-    if (looksLikeToken(value)) {
-      return value.trim();
-    }
-
-    try {
-      return extractTokenFromUnknown(JSON.parse(value), depth + 1);
-    } catch (error) {
-      return "";
-    }
-  }
-
-  if (Array.isArray(value)) {
-    for (const entry of value) {
-      const token = extractTokenFromUnknown(entry, depth + 1);
-      if (token) {
-        return token;
-      }
-    }
-    return "";
-  }
-
-  if (typeof value === "object") {
-    for (const key of ["access_token", "accessToken", "token"]) {
-      if (looksLikeToken(value[key] || "")) {
-        return value[key].trim();
-      }
-    }
-
-    for (const entry of Object.values(value)) {
-      const token = extractTokenFromUnknown(entry, depth + 1);
-      if (token) {
-        return token;
-      }
-    }
-  }
-
-  return "";
-}
-
 function detectStoredToken() {
-  const explicit = localStorage.getItem(PROOF_TOKEN_KEY);
+  const explicit = sessionStorage.getItem(PROOF_TOKEN_KEY);
   if (looksLikeToken(explicit || "")) {
     return {
       token: explicit.trim(),
       source: "saved-token"
     };
-  }
-
-  for (const store of [localStorage, sessionStorage]) {
-    for (let index = 0; index < store.length; index += 1) {
-      const key = store.key(index);
-      const rawValue = key ? store.getItem(key) : "";
-      const token = extractTokenFromUnknown(rawValue || "");
-
-      if (token) {
-        return {
-          token,
-          source: "cms-session"
-        };
-      }
-    }
   }
 
   return {
@@ -424,6 +375,26 @@ async function fetchJson(url) {
   return response.json();
 }
 
+function pathBasename(repoPath = "") {
+  return repoPath.split("/").pop() || "";
+}
+
+function pathStem(repoPath = "") {
+  return pathBasename(repoPath).replace(/\.[^.]+$/, "");
+}
+
+function sortArticles(items = []) {
+  return [...items].sort((left, right) => {
+    const leftTime = left.date ? new Date(left.date).getTime() : 0;
+    const rightTime = right.date ? new Date(right.date).getTime() : 0;
+    return rightTime - leftTime || left.title.localeCompare(right.title);
+  });
+}
+
+function sortDocuments(items = []) {
+  return [...items].sort((left, right) => left.title.localeCompare(right.title));
+}
+
 async function githubRequest(pathname, options = {}) {
   const token = state.token || "";
   const headers = {
@@ -447,6 +418,75 @@ async function githubRequest(pathname, options = {}) {
   }
 
   return response.json();
+}
+
+async function loadRepoTree(prefix) {
+  const { repo_owner: owner, repo_name: repo, branch } = state.config;
+  const response = await githubRequest(
+    `/repos/${owner}/${repo}/git/trees/${encodeURIComponent(branch)}?recursive=1`
+  );
+  const tree = Array.isArray(response.tree) ? response.tree : [];
+
+  return tree.filter(
+    (entry) =>
+      entry?.type === "blob" &&
+      entry?.path?.startsWith(prefix) &&
+      entry.path.endsWith(".md")
+  );
+}
+
+async function readRepoBlob(sha) {
+  const { repo_owner: owner, repo_name: repo } = state.config;
+  const response = await githubRequest(`/repos/${owner}/${repo}/git/blobs/${encodeURIComponent(sha)}`);
+  return base64ToUtf8(response.content || "");
+}
+
+async function loadArticlesFromRepo() {
+  const articleEntries = await loadRepoTree(state.config.article_content_path);
+  const articles = await Promise.all(
+    articleEntries.map(async (entry) => {
+      const raw = await readRepoBlob(entry.sha);
+      const parsed = parseFrontmatter(raw);
+      const slug = pathStem(entry.path);
+
+      return {
+        slug,
+        title: parsed.data?.title || slug,
+        description: parsed.data?.description || "",
+        author: parsed.data?.author || "",
+        date: parsed.data?.date || null,
+        url: `/articles/${slug}/`,
+        repo_path: entry.path,
+        proof: parsed.data?.proof || null
+      };
+    })
+  );
+
+  return sortArticles(articles);
+}
+
+async function loadDocumentsFromRepo() {
+  const documentEntries = await loadRepoTree(state.config.document_content_path);
+  const documents = await Promise.all(
+    documentEntries.map(async (entry) => {
+      const raw = await readRepoBlob(entry.sha);
+      const parsed = parseFrontmatter(raw);
+      const slug = pathStem(entry.path);
+
+      return {
+        slug,
+        title: parsed.data?.title || slug,
+        description: parsed.data?.description || "",
+        obtained: parsed.data?.obtained || "",
+        source_method: parsed.data?.source_method || "",
+        url: `/documents/${slug}/`,
+        file_url: parsed.data?.file || "",
+        repo_path: entry.path
+      };
+    })
+  );
+
+  return sortDocuments(documents);
 }
 
 async function readRepoFile(repoPath) {
@@ -502,8 +542,9 @@ function statusMarkup() {
 
 function renderArticleCard(article) {
   const isSelected = state.selectedSlug === article.slug;
-  const proof = normalizeProof(article.proof || {});
-  const sourceCount = countUniqueSources(proof);
+  const proof = hasMeaningfulValue(article.proof) ? normalizeProof(article.proof || {}) : null;
+  const sourceCount = proof ? countUniqueSources(proof) : 0;
+  const axiomCount = proof ? proof.axioms.length : 0;
 
   return `
     <button class="editor-list-card" type="button" data-action="select-article" data-slug="${escapeHtml(article.slug)}" data-selected="${isSelected ? "true" : "false"}">
@@ -511,7 +552,7 @@ function renderArticleCard(article) {
       <h3>${escapeHtml(article.title)}</h3>
       <p>${escapeHtml(article.description || "")}</p>
       <div class="editor-pill-row">
-        <span class="editor-pill">${proof.axioms.length} axioms</span>
+        <span class="editor-pill">${axiomCount} axioms</span>
         <span class="editor-pill">${sourceCount} docs</span>
       </div>
     </button>
@@ -675,7 +716,7 @@ function renderValidationPanel() {
     return "";
   }
 
-  const errors = computeValidationErrors(state.selectedArticle.proof);
+  const errors = computeValidationErrors(state.selectedArticle.proof, state.documents);
 
   if (!errors.length) {
     return `
@@ -701,6 +742,15 @@ function renderSelectedArticle() {
       <section class="editor-panel">
         <h2>Pick an article</h2>
         <p>Choose an article from the sidebar to build or revise its proof.</p>
+      </section>
+    `;
+  }
+
+  if (state.selectedArticleLoading) {
+    return `
+      <section class="editor-panel">
+        <h2>${escapeHtml(state.selectedArticle.title)}</h2>
+        <p>Loading the article from the repository so the Proof Desk can edit the current proof.</p>
       </section>
     `;
   }
@@ -767,10 +817,8 @@ function renderSelectedArticle() {
 
 function render() {
   const detectedLabel =
-    state.tokenSource === "cms-session"
-      ? "Using a browser token from the CMS session."
-      : state.tokenSource === "saved-token"
-        ? "Using a saved GitHub token for the Proof Desk."
+    state.tokenSource === "saved-token"
+        ? "Using a GitHub token stored for this browser session."
         : "No GitHub token detected yet.";
 
   root.innerHTML = `
@@ -796,9 +844,10 @@ function render() {
                 </div>
               </div>
               <p>${escapeHtml(detectedLabel)}</p>
+              <p class="editor-muted">The Proof Desk now loads article and source data directly from GitHub after you authenticate. It no longer publishes draft manifests on the public site.</p>
               <label class="editor-field">
-                <span class="editor-label">Manual token fallback</span>
-                <input class="editor-input" type="password" value="${escapeHtml(state.tokenDraft || "")}" data-ui="token-draft" placeholder="Paste a GitHub token only if detection fails." />
+                <span class="editor-label">Session token</span>
+                <input class="editor-input" type="password" value="${escapeHtml(state.tokenDraft || "")}" data-ui="token-draft" placeholder="Paste a GitHub token for this browser session." />
               </label>
               <div class="editor-actions" style="margin-top: 1rem;">
                 <button class="editor-button-secondary" type="button" data-action="save-token">Use token</button>
@@ -814,6 +863,11 @@ function render() {
                 </div>
                 <span class="editor-muted">${state.articles.length} total</span>
               </div>
+              ${
+                state.token
+                  ? ""
+                  : `<div class="editor-empty">Add a GitHub token to load article and document data.</div>`
+              }
               <label class="editor-field">
                 <span class="editor-label">Search</span>
                 <input class="editor-input" type="search" value="${escapeHtml(state.articleFilter)}" data-ui="article-filter" placeholder="Find an article" />
@@ -846,21 +900,25 @@ function updateValidationPanel() {
 }
 
 function syncSelectedArticleIntoList() {
+  // Article summaries stay proof-free now; the desk reloads the source file on demand.
+}
+
+async function loadSelectedArticleContent() {
   if (!state.selectedArticle) {
     return;
   }
 
-  const index = state.articles.findIndex((article) => article.slug === state.selectedArticle.slug);
+  const { content } = await readRepoFile(state.selectedArticle.repo_path);
+  const parsed = parseFrontmatter(content);
+  const nextProof = hasMeaningfulValue(parsed.data?.proof) ? normalizeProof(parsed.data.proof || {}) : normalizeProof({});
 
-  if (index >= 0) {
-    state.articles[index] = {
-      ...state.articles[index],
-      proof: serializeProof(state.selectedArticle.proof)
-    };
-  }
+  state.selectedArticle = {
+    ...state.selectedArticle,
+    proof: nextProof
+  };
 }
 
-function selectArticle(slug) {
+async function selectArticle(slug) {
   const article = state.articles.find((entry) => entry.slug === slug);
 
   if (!article) {
@@ -868,12 +926,27 @@ function selectArticle(slug) {
   }
 
   state.selectedSlug = slug;
+  state.selectedArticleLoading = true;
   state.selectedArticle = {
     ...article,
-    proof: normalizeProof(article.proof || {})
+    repo_path: article.repo_path,
+    proof: normalizeProof({})
   };
   state.sourceSearches = {};
   state.newSourceForms = {};
+  render();
+
+  try {
+    await loadSelectedArticleContent();
+  } catch (error) {
+    state.status = {
+      message: `Could not load the article proof. ${error.message || error}`,
+      tone: "error"
+    };
+  }
+
+  state.selectedArticleLoading = false;
+  updateValidationPanel();
   render();
 }
 
@@ -888,13 +961,21 @@ function setStatus(message, tone = "info") {
 async function loadDeskData() {
   state.loading = true;
 
-  const [config, articles, documents] = await Promise.all([
-    fetchJson("/admin/proof/data/config.json"),
-    fetchJson("/admin/proof/data/articles.json"),
-    fetchJson("/admin/proof/data/documents.json")
-  ]);
+  if (!state.config) {
+    state.config = await fetchJson("/admin/proof/data/config.json");
+  }
 
-  state.config = config;
+  if (!state.token) {
+    state.articles = [];
+    state.documents = [];
+    state.selectedSlug = "";
+    state.selectedArticle = null;
+    state.loading = false;
+    render();
+    return;
+  }
+
+  const [articles, documents] = await Promise.all([loadArticlesFromRepo(), loadDocumentsFromRepo()]);
   state.articles = articles;
   state.documents = documents;
 
@@ -906,7 +987,7 @@ async function loadDeskData() {
     const stillExists = state.articles.some((article) => article.slug === state.selectedSlug);
 
     if (stillExists) {
-      selectArticle(state.selectedSlug);
+      await selectArticle(state.selectedSlug);
     }
   }
 
@@ -918,7 +999,7 @@ async function saveProof() {
     return;
   }
 
-  const errors = computeValidationErrors(state.selectedArticle.proof);
+  const errors = computeValidationErrors(state.selectedArticle.proof, state.documents);
 
   if (errors.length) {
     updateValidationPanel();
@@ -947,7 +1028,6 @@ async function saveProof() {
       sha
     );
 
-    syncSelectedArticleIntoList();
     state.status = {
       message: `Saved proof for "${state.selectedArticle.title}".`,
       tone: "success"
@@ -1027,8 +1107,7 @@ async function createSourceForAxiom(index) {
         obtained: formState.obtained,
         source_method: formState.source_method.trim(),
         url: documentUrl,
-        file_url: fileUrl,
-        repo_path: documentPath
+        file_url: fileUrl
       },
       ...state.documents
     ].sort((left, right) => left.title.localeCompare(right.title));
@@ -1152,8 +1231,11 @@ function handleClick(event) {
 
     state.token = state.tokenDraft.trim();
     state.tokenSource = "saved-token";
-    localStorage.setItem(PROOF_TOKEN_KEY, state.token);
-    setStatus("Stored the GitHub token for the Proof Desk.", "success");
+    sessionStorage.setItem(PROOF_TOKEN_KEY, state.token);
+    localStorage.removeItem(PROOF_TOKEN_KEY);
+    loadDeskData()
+      .then(() => setStatus("Stored the GitHub token and loaded the Proof Desk.", "success"))
+      .catch((error) => setStatus(`Stored the token, but could not load desk data. ${error.message || error}`, "error"));
     return;
   }
 
@@ -1161,7 +1243,12 @@ function handleClick(event) {
     state.token = "";
     state.tokenDraft = "";
     state.tokenSource = "";
+    sessionStorage.removeItem(PROOF_TOKEN_KEY);
     localStorage.removeItem(PROOF_TOKEN_KEY);
+    state.articles = [];
+    state.documents = [];
+    state.selectedSlug = "";
+    state.selectedArticle = null;
     setStatus("Cleared the saved GitHub token.", "success");
     return;
   }
@@ -1237,6 +1324,7 @@ function handleClick(event) {
 
 async function init() {
   try {
+    localStorage.removeItem(PROOF_TOKEN_KEY);
     const detected = detectStoredToken();
     state.token = detected.token;
     state.tokenSource = detected.source;

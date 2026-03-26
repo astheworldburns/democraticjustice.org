@@ -77,7 +77,8 @@ Current repository:
 - GitHub
 - Cloudflare Pages
 - Sveltia CMS
-- Google Fonts
+- Buttondown
+- locally served `@fontsource` fonts
 
 ### Present in code, but still requires owner setup
 
@@ -106,7 +107,7 @@ Status: placeholder present in site data.
 
 Current value:
 
-- `contact@democraticjustice.org`
+- `proof@democraticjustice.org`
 
 Recommended owner action:
 
@@ -116,18 +117,20 @@ Recommended owner action:
 
 #### Buttondown
 
-Status: optional, not yet connected.
+Status: connected for site signup and local draft generation.
 
 What already exists:
 
+- a subscribe page that posts to Buttondown
+- a local draft workflow driven by `npm run newsletter:draft`
 - a full-content RSS feed at `/feed.xml`
 
 What owner action is needed:
 
-1. Create a Buttondown account.
-2. Configure RSS-to-email using the site feed.
-3. Test a full article ingest and email render.
-4. Configure branding and sender identity.
+1. Keep sender identity, reply handling, and mailing address configured correctly in Buttondown.
+2. Keep the custom sending domain verified.
+3. Test previews and scheduled sends after any major template or domain change.
+4. Keep the local API key only on trusted machines.
 
 #### Data visualization platforms
 
@@ -150,15 +153,14 @@ This is not installed. It is the best fit if you want lightweight GitHub-backed 
 
 Not installed.
 
-If analytics are needed, use a privacy-first tool such as Plausible rather than a heavy ad-tech stack.
+If analytics are needed, use a privacy-first tool such as Cloudflare Web Analytics rather than a heavy ad-tech stack.
 
 ## 4. Current Open Setup Items
 
 As of this manual, the main owner-controlled tasks still open are:
 
 - complete Sveltia auth for Cloudflare Workers + GitHub OAuth
-- make sure `contact@democraticjustice.org` is real and monitored
-- connect Buttondown if newsletter automation is a priority
+- make sure `proof@democraticjustice.org` is real and monitored
 - replace sample/demo content with real reporting
 - add additional author profiles if the newsroom grows
 - decide whether to add analytics
@@ -194,6 +196,7 @@ npm run start
 
 ### What a successful build does
 
+- clears `_site/` first so stale pages do not linger in output or search
 - generates the site in `_site/`
 - compiles the CSS
 - generates `feed.xml`
@@ -204,7 +207,7 @@ npm run start
 ### Production settings
 
 - Production branch: `main`
-- Build command: `npx @11ty/eleventy`
+- Build command: `npm run build`
 - Build output directory: `_site`
 - Root directory: blank
 - Environment variable: `NODE_VERSION=22.16.0`
@@ -289,8 +292,9 @@ Fields:
 
 1. Log in to `/admin/`.
 2. Confirm the author profile exists.
-3. Create or update the article.
-4. Fill in:
+3. Open `Content Desk`.
+4. Create or update the article.
+5. Fill in:
    - kicker
    - headline
    - lede
@@ -299,15 +303,27 @@ Fields:
    - editorial tags
    - featured image if needed
    - full body
-5. Publish.
-6. Wait for Cloudflare deploy to finish.
-7. Verify the article on the live site.
-8. Confirm it appears in:
+6. Save the article body and metadata.
+7. Open `Proof Desk`.
+8. Paste a GitHub session token if prompted.
+9. Open the same article in `Proof Desk`.
+10. Build or revise the proof:
+   - issue
+   - axioms
+   - linked source documents or `No source needed`
+   - inferences
+   - conclusion
+11. Save the proof.
+12. Publish.
+13. Wait for Cloudflare deploy to finish.
+14. Verify the article on the live site.
+15. Confirm it appears in:
    - homepage
    - desk page
    - archive
    - search
    - RSS feed
+   - source-document links inside the proof
 
 ### After every publish
 
@@ -320,6 +336,7 @@ Sanity-check:
 - dark mode still looks acceptable
 - article reading tools still appear
 - search can find the story
+- every proof citation resolves to a real source-document page
 
 ### If there are multiple writers
 
@@ -450,6 +467,8 @@ Likely causes:
 - article front matter is invalid
 - author reference is wrong
 - article date or permalink issue
+- proof is missing required fields
+- proof references a source document record that does not exist
 
 Check:
 

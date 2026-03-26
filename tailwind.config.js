@@ -20,8 +20,8 @@ export default {
       },
       fontFamily: {
         ui: ["Inter", "\"Helvetica Neue\"", "Arial", "sans-serif"],
-        serif: ["\"Century Schoolbook\"", "serif"],
-        display: ["\"Century Schoolbook\"", "serif"]
+        serif: ["Lora", "\"Century Schoolbook\"", "Georgia", "serif"],
+        display: ["Lora", "\"Century Schoolbook\"", "Georgia", "serif"]
       },
       keyframes: {
         rise: {
@@ -58,7 +58,7 @@ export default {
             },
             h1: {
               color: "rgb(var(--ink))",
-              fontFamily: "\"Century Schoolbook\", serif",
+              fontFamily: "Lora, \"Century Schoolbook\", Georgia, serif",
               fontWeight: "800",
               fontSize: "clamp(2.2rem, 1.55rem + 1.8vw, 3.35rem)",
               letterSpacing: "-0.04em",
@@ -68,7 +68,7 @@ export default {
             },
             h2: {
               color: "rgb(var(--ink))",
-              fontFamily: "\"Century Schoolbook\", serif",
+              fontFamily: "Lora, \"Century Schoolbook\", Georgia, serif",
               fontWeight: "800",
               fontSize: "clamp(1.75rem, 1.15rem + 1.4vw, 2.4rem)",
               letterSpacing: "-0.03em",
@@ -78,7 +78,7 @@ export default {
             },
             h3: {
               color: "rgb(var(--ink))",
-              fontFamily: "\"Century Schoolbook\", serif",
+              fontFamily: "Lora, \"Century Schoolbook\", Georgia, serif",
               fontWeight: "700",
               fontSize: "clamp(1.35rem, 1rem + 0.8vw, 1.75rem)",
               letterSpacing: "-0.02em",
@@ -97,7 +97,7 @@ export default {
               borderLeftColor: "rgb(var(--rule-strong))",
               borderLeftWidth: "4px",
               color: "rgb(var(--ink-soft))",
-              fontFamily: "\"Century Schoolbook\", serif",
+              fontFamily: "Lora, \"Century Schoolbook\", Georgia, serif",
               fontStyle: "italic",
               fontWeight: "400",
               paddingLeft: "1.35rem"
@@ -119,7 +119,7 @@ export default {
               borderTopStyle: "solid",
               borderTopWidth: "1px",
               color: colors.gray[500],
-              fontFamily: "\"Century Schoolbook\", serif",
+              fontFamily: "Lora, \"Century Schoolbook\", Georgia, serif",
               fontSize: "0.78rem",
               fontStyle: "italic",
               lineHeight: "1.5",

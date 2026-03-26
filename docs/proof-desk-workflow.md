@@ -44,9 +44,11 @@ It may never have both, and it may never have neither.
 
 ## Authentication
 
-The Proof Desk tries to reuse a GitHub token already present in the browser from the CMS session.
+The Proof Desk now loads article and source data directly from GitHub after you authenticate.
 
-If that token is not available, the desk accepts a manual GitHub token fallback and stores it locally in the browser under `dj-proof-desk-token`.
+Use the `Session token` field in the Proof Desk to paste a GitHub token for the current browser session.
+
+That token is kept in session storage only. It is cleared when the browser session ends or when you click `Clear token`.
 
 ## Public result
 
