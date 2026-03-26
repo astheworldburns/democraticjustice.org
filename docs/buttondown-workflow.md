@@ -75,14 +75,16 @@ What the command does:
 - reads the newest public item from `_site/feed.xml`
 - uses the article title for the subject line
 - uses the article description as the deck
-- creates a Buttondown draft with a simple story-first body
+- pulls the opening third of the article from the local source file
+- creates a Buttondown draft with a story-first body
 - refuses to create a duplicate draft for the same article unless you force it
 
-The draft body is intentionally simple:
+The draft body is built like a real newsletter:
 
-- headline
 - deck
-- `Read the record` link
+- byline and date
+- the opening third of the story
+- a `Continue reading` button
 
 No proof card leads the email.
 

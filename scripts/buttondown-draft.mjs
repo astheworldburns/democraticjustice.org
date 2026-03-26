@@ -4,6 +4,7 @@ import process from "node:process";
 
 const ROOT = process.cwd();
 const FEED_PATH = path.join(ROOT, "_site", "feed.xml");
+const ARTICLE_SOURCE_DIR = path.join(ROOT, "src", "content", "articles");
 const ENV_FILES = [".env.local", ".env"];
 const BUTTONDOWN_API_URL = "https://api.buttondown.com/v1/emails";
 
@@ -61,6 +62,15 @@ function decodeXmlEntities(value = "") {
     .replace(/&amp;/g, "&");
 }
 
+function escapeHtml(value = "") {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function extractTag(source, tagName) {
   const pattern = new RegExp(`<${tagName}>([\\s\\S]*?)</${tagName}>`, "i");
   const match = source.match(pattern);
@@ -103,22 +113,112 @@ function buildSubject(article) {
   return `${article.title} | Democratic Justice`;
 }
 
-function buildBody(article) {
-  const lines = [
-    "<!-- buttondown-editor-mode: plaintext -->",
-    `# ${article.title}`,
-    "",
-    article.description,
-    "",
-    `[Read the record](${article.link})`
-  ];
+function getArticleSlug(articleLink) {
+  const url = new URL(articleLink);
+  const parts = url.pathname.split("/").filter(Boolean);
+  return parts.at(-1) || "";
+}
 
-  if (article.author || article.pubDate) {
-    lines.push("");
-    lines.push(`_${[article.author, article.pubDate].filter(Boolean).join(" · ")}_`);
+function stripFrontmatter(markdown = "") {
+  return markdown.replace(/^---[\s\S]*?---\s*/, "");
+}
+
+function cleanMarkdownBlock(block = "") {
+  return block
+    .replace(/!\[[^\]]*]\([^)]+\)/g, "")
+    .replace(/\[([^\]]+)]\([^)]+\)/g, "$1")
+    .replace(/^>\s?/gm, "")
+    .replace(/[*_`#]/g, "")
+    .replace(/\\/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function isNarrativeBlock(block = "") {
+  const trimmed = block.trim();
+
+  if (!trimmed) {
+    return false;
   }
 
-  return lines.filter((line) => line !== undefined).join("\n");
+  if (trimmed.startsWith("![")) {
+    return false;
+  }
+
+  if (trimmed.startsWith("<")) {
+    return false;
+  }
+
+  if (trimmed.startsWith("#")) {
+    return false;
+  }
+
+  if (/^\*{0,2}Author'?s note:/i.test(trimmed)) {
+    return false;
+  }
+
+  if (/^_.*_$/.test(trimmed)) {
+    return false;
+  }
+
+  return true;
+}
+
+function readArticleExcerpt(articleLink) {
+  const slug = getArticleSlug(articleLink);
+
+  if (!slug) {
+    return [];
+  }
+
+  const sourcePath = path.join(ARTICLE_SOURCE_DIR, `${slug}.md`);
+
+  if (!fs.existsSync(sourcePath)) {
+    return [];
+  }
+
+  const markdown = fs.readFileSync(sourcePath, "utf8");
+  const body = stripFrontmatter(markdown);
+  const rawBlocks = body
+    .split(/\n\s*\n/)
+    .map((block) => block.trim())
+    .filter(Boolean);
+
+  const narrativeBlocks = rawBlocks
+    .filter(isNarrativeBlock)
+    .map(cleanMarkdownBlock)
+    .filter(Boolean);
+
+  if (!narrativeBlocks.length) {
+    return [];
+  }
+
+  const excerptCount = Math.max(1, Math.ceil(narrativeBlocks.length / 3));
+  return narrativeBlocks.slice(0, excerptCount);
+}
+
+function buildBody(article) {
+  const excerptParagraphs = readArticleExcerpt(article.link);
+  const meta = [article.author, article.pubDate].filter(Boolean).join(" · ");
+  const lines = [
+    article.description,
+    meta ? "" : null,
+    meta ? `_${meta}_` : null,
+    meta ? "" : null
+  ];
+
+  for (const paragraph of excerptParagraphs) {
+    lines.push(paragraph);
+    lines.push("");
+  }
+
+  lines.push(
+    `<div style="margin-top: 32px; margin-bottom: 8px;"><a href="${escapeHtml(article.link)}" style="display: inline-block; background: #111111; color: #ffffff !important; text-decoration: none; padding: 14px 20px; font-weight: 700; letter-spacing: 0.01em;">Continue reading</a></div>`
+  );
+  lines.push("");
+  lines.push("On Democratic Justice, the proof and source documents open before the story.");
+
+  return lines.filter((line) => line != null).join("\n");
 }
 
 async function fetchExistingDraft(headers, article, subject) {
