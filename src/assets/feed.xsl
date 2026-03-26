@@ -235,7 +235,7 @@
             <div class="intro">
             <h1>RSS feed</h1>
             <p class="dek">
-              This page is the live feed for Democratic Justice. Use the RSS guide if you want setup help.
+              This is the live Democratic Justice feed. Use it if you want new work without the noise.
             </p>
             <div class="actions">
               <a class="button" href="/rss/">RSS guide</a>

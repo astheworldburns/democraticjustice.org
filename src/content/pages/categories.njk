@@ -25,7 +25,7 @@ eleventyExcludeFromCollections: true
       {{ currentTag | tagLabel }}
     </h1>
     <p class="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-[rgb(var(--ink-soft))]">
-      Stories filed under the {{ currentTag | tagLabel | lower }} desk. New work appears first. Older work stays in the archive.
+      This desk collects reporting filed under {{ currentTag | tagLabel | lower }}. New work appears first and the rest stays in the archive.
     </p>
     <div class="meta-row mt-5">
       <span>{{ stories | length }} {% if stories | length == 1 %}piece{% else %}pieces{% endif %}</span>
@@ -34,8 +34,8 @@ eleventyExcludeFromCollections: true
       {% endif %}
     </div>
     <div class="mt-5 flex flex-wrap gap-3">
-      <a class="button-link-muted" href="/archives/">Monthly archive</a>
-      <a class="button-link-muted" href="/search/">Search</a>
+      <a class="button-link-muted" href="/archives/">Open archive</a>
+      <a class="button-link-muted" href="/search/">Search the archive</a>
     </div>
     {% if collections.editorialDesks | length > 1 %}
       <div class="mt-5 flex flex-wrap gap-2">

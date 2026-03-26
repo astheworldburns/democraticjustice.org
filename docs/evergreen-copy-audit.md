@@ -2,7 +2,7 @@
 
 Current evergreen and public-facing site copy compiled into one readable review document.
 
-Updated: March 25, 2026
+Updated: March 26, 2026
 
 ## Excluded On Purpose
 
@@ -25,25 +25,25 @@ The core brand language currently reads like this:
 
 Site title: `Democratic Justice`
 
-Tagline: `Reporting readers can check.`
+Tagline: `Proof before prose.`
 
 Mission statement:
 
-> We publish reporting that readers can inspect from source document to conclusion. Our reporting puts the logic first so readers can judge the conclusion as they read.
+> Every story opens with a Proof Card and the source documents behind it. Readers get the reasoning before the narrative.
 
 Footer description:
 
-> Democratic Justice publishes reporting that readers can inspect from source document to conclusion. Every story stays searchable, citable, and in place.
+> Democratic Justice publishes investigative work with Proof Cards and source documents so readers can test the case for themselves.
 
 Standards tagline: `Reported. Sourced. Proved.`
 
 Meta description:
 
-> Democratic Justice publishes reporting with source documents, Proof Cards, and archives readers can search, cite, and revisit.
+> Democratic Justice publishes investigative work with Proof Cards, source documents, and reporting readers can test for themselves.
 
 Site description:
 
-> Reporting on power, elections, parties, and public failure.
+> Investigative work with Proof Cards and source documents.
 
 Contact email: `proof@democraticjustice.org`
 
@@ -76,15 +76,15 @@ The lead package uses the fallback kicker `Lead report` and the actions `Read th
 
 The mission rail reads:
 
-Mission heading: `Reporting readers can check`
+Mission heading: `Proof before prose`
 
 Mission copy:
 
-> We publish reporting that readers can inspect from source document to conclusion. Our reporting puts the logic first so readers can judge the conclusion as they read.
+> Every story opens with a Proof Card and the source documents behind it. Readers get the reasoning before the narrative.
 
 Mission actions:
 
-`Read the mission`
+`Read the letter`
 `Follow by RSS`
 
 The desks rail uses the label `Editorial desks` and, when available, the helper label `Latest:`.
@@ -93,18 +93,14 @@ The archive section opens with `Archive`, the title `Reporting archive`, and the
 
 The method section reads:
 
-Title: `How the reporting works`
+Title: `Why it reads this way`
 Kicker: `Method`
 
-> Each story starts with records, filings, and source documents. The writing states what happened, who acted, and what the record supports.
+> Most stories online ask you to trust the narrative before you see the case. Democratic Justice does the reverse.
 
-> Every story opens with a Proof Card. The article that follows shows the reporting behind it.
+> Every story opens with a Proof Card and the source documents behind it. You can test the reasoning before the prose has a chance to carry you along.
 
-> Each story keeps a permanent URL, a desk label, and an archive path so readers can search it, cite it, and revisit it.
-
-The support box uses the label `For readers` and says:
-
-> Read the finding, open the documents, and follow the reporting in the same place.
+> We publish when the work is finished. That may take time. When something new appears here, it is something we are willing to stand behind.
 
 The newsroom section uses the title `Newsroom`.
 
@@ -157,11 +153,11 @@ Source file:
 
 The page uses the kicker `Archive`, the title `Reporting archive`, and this description:
 
-> Published reporting, grouped by year and month.
+> This is the public record of what we have published. Each story stays in place.
 
-The utility box uses `Jump by year`.
+The header actions use `Search the archive` and `Follow by RSS`.
 
-The right-side tools use the label `Archive` and the actions `Search the reporting` and `Follow by RSS`.
+Year chips appear directly in the header for fast jumps.
 
 Month grouping remains dynamic, including the labels `month` and `months`.
 
@@ -173,11 +169,11 @@ Source file:
 
 Desk pages use `Editorial desk` as the kicker and this standard description pattern:
 
-> Stories filed under the [desk] desk. New work appears first. Older work stays in the archive.
+> This desk collects reporting filed under the [desk] desk. New work appears first and the rest stays in the archive.
 
 They also use the labels `piece`, `pieces`, `Latest`, `Archive`, and `Other desks`.
 
-The archive actions are `Monthly archive` and `Search`.
+The archive actions are `Open archive` and `Search the archive`.
 
 The lead package uses the fallback kicker `Lead report` and the action `Read the lead report`.
 
@@ -187,15 +183,15 @@ Source file:
 
 `src/content/pages/search.njk`
 
-The page uses `Archive search` as the kicker and `Search the reporting archive` as the title.
+The page uses `Archive search` as the kicker and `Search the archive` as the title.
 
 The description reads:
 
-> Search the archive by name, subject, desk, or date.
+> Search by name, subject, desk, or date.
 
-The helper label is `Search tips`, followed by:
+The helper copy reads:
 
-> Start with a name, subject, organization, or desk. Follow the results into the archive.
+> Start with a name, subject, organization, or desk. Each result stays tied to the full story.
 
 The search placeholder remains `Search the archive`.
 
@@ -209,7 +205,7 @@ The staff directory uses `Newsroom` as the kicker and `Staff` as the title.
 
 Its description reads:
 
-> Reporter bios, beats, and recent work. Every byline follows the same standards and appears in the same archive.
+> These are the bylines behind Democratic Justice. Each reporter's work stays in one archive.
 
 Reporter cards also use the label `published`.
 
@@ -222,7 +218,7 @@ Source files:
 
 The profile template uses `Newsroom` as the page kicker.
 
-Its side rail uses `Published`, `Primary desks`, and `Contact`. The contact links are `Email`, `Bluesky`, and `X`.
+Its side rail uses `Published` and `Contact`. The contact links are `Email`, `Bluesky`, and `X`.
 
 The reporting section uses the title `Recent reporting` and the label `By [name]`.
 
@@ -235,11 +231,11 @@ Role: `Investigations Editor`
 
 Short bio:
 
-> Reporting on political accountability, public power, and democratic institutions.
+> Seth Sturm reports on power, politics, and public failure.
 
 Full bio:
 
-> Seth Sturm reports on public accountability, institutional power, and the mechanics that shape democracy in West Virginia and nationally.
+> Seth Sturm reports on power, party politics, elections, and the records behind public claims.
 
 ## RSS Guide Page
 
@@ -251,41 +247,23 @@ The RSS guide uses `Follow` as the kicker and `Follow by RSS` as the title.
 
 Its description reads:
 
-> RSS sends new stories straight to your reader.
+> RSS is the cleanest way to follow Democratic Justice.
 
 The primary actions are `Copy feed URL`, `Open feed URL`, and `Browse the archive`.
 
-The setup section uses `Get started` and runs in three steps:
+The body now runs as short prose:
 
-Step 1: `Copy the feed URL`
+> Copy the feed URL and add it to your reader once. New work appears there when it is published.
 
-> Copy the Democratic Justice feed address.
-
-Step 2: `Add it to your reader`
-
-> Use the add-feed or subscribe-by-URL option in your reader.
-
-Step 3: `Read new stories there`
-
-> New stories appear in your reader when they are published.
+> Most readers have an add-feed or subscribe-by-URL field. Paste the address and save it.
 
 The feed URL section says:
 
 > Paste this address into your reader:
 
-The closing section, `Why we offer it`, says:
+The closing section says:
 
-> RSS gives readers a direct line to new stories.
-
-> It keeps the archive easy to follow over time.
-
-The right-side box uses `What you get` and includes:
-
-> New stories in one feed.
-
-> A permanent URL for each story.
-
-> A simple way to follow the archive.
+> This site may go quiet for a while. The feed will too. When something new appears, it is because the reporting is finished.
 
 ## Browser-Rendered Feed View
 
@@ -303,7 +281,7 @@ Actions: `RSS guide` and `Homepage`
 
 Intro:
 
-> This page is the live feed for Democratic Justice. Use the RSS guide if you want setup help.
+> This is the live Democratic Justice feed. Use it if you want new work without the noise.
 
 Note:
 

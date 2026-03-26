@@ -1,8 +1,8 @@
 ---
 name: Seth Sturm
 role: Investigations Editor
-short_bio: Reporting on political accountability, public power, and democratic institutions.
-bio: Seth Sturm reports on public accountability, institutional power, and the mechanics that shape democracy in West Virginia and nationally.
+short_bio: Seth Sturm reports on power, politics, and public failure.
+bio: Seth Sturm reports on power, party politics, elections, and the records behind public claims.
 email: proof@democraticjustice.org
 headshot: /assets/images/uploads/Seth Headshot.jpg
 bluesky: ''
