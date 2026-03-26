@@ -528,35 +528,34 @@
   }
 
   .about-letter-page {
-    @apply mx-auto max-w-5xl space-y-8;
+    @apply mx-auto max-w-5xl pt-6 md:pt-10;
   }
 
   .about-letter {
-    @apply border px-6 py-8 md:px-10 md:py-12;
-    border-color: rgba(var(--rule-strong), 0.9);
-    background: rgba(var(--paper-strong), 0.84);
+    @apply max-w-4xl;
   }
 
   .about-letter__salutation {
-    @apply font-serif text-[1.25rem] leading-none;
-    color: rgb(var(--ink));
-  }
-
-  .about-letter__body {
-    @apply mt-8 space-y-6;
-  }
-
-  .about-letter__body p {
-    @apply max-w-[44rem] font-serif text-[1.14rem] leading-[1.9];
+    @apply font-serif text-[1.18rem] italic leading-none md:text-[1.24rem];
     color: rgb(var(--ink-soft));
   }
 
+  .about-letter__body {
+    @apply mt-8 space-y-8;
+  }
+
+  .about-letter__body p {
+    @apply max-w-[42rem] font-serif text-[1.22rem] leading-[1.9] md:text-[1.34rem];
+    color: rgb(var(--ink));
+    text-wrap: pretty;
+  }
+
   .about-letter__signature-block {
-    @apply mt-12;
+    @apply mt-14;
   }
 
   .about-letter__signature {
-    width: min(14rem, 100%);
+    width: min(15rem, 100%);
     height: auto;
   }
 
@@ -565,12 +564,12 @@
   }
 
   .about-letter__signoff {
-    @apply mt-3 font-serif text-lg leading-relaxed;
+    @apply mt-4 font-serif text-xl leading-relaxed;
     color: rgb(var(--ink));
   }
 
   .about-letter__signoff span {
-    @apply mt-1 block font-ui text-[0.72rem] font-semibold uppercase tracking-[0.18em];
+    @apply mt-1 block font-ui text-[0.7rem] font-semibold uppercase tracking-[0.18em];
     color: rgb(var(--ink-muted));
   }
 

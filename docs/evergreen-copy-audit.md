@@ -122,15 +122,9 @@ It opens with:
 
 And the body reads:
 
-> Democratic Justice exists to publish reporting that readers can inspect from source document to conclusion.
+> Democratic Justice publishes reporting that readers can inspect from source document to conclusion. Each story opens with a Proof Card and carries the source documents behind it. We put the logic first so readers can judge the conclusion as they read.
 
-> Our reporting puts the logic first so readers can judge the conclusion as they read.
-
-> Each story opens with a Proof Card and carries the source documents behind it. The article that follows shows the reporting behind the finding.
-
-> We report on power, elections, parties, and public failure. We follow records, track money and control, and name decisions and decision makers.
-
-> We keep each story in the archive by desk, date, and byline. The site is there for reading, search, citation, and return.
+> We report on power, elections, parties, and public failure. We follow records, track money and control, and name decisions and decision makers. We keep each story in the archive so it can be searched, cited, and revisited.
 
 > If the work is worth publishing, it should also be worth checking.
 
