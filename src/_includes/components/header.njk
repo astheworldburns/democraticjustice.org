@@ -66,6 +66,11 @@
           </a>
         </li>
         <li>
+          <a class="{% if page.url == '/subscribe/' %}text-[rgb(var(--ink))]{% else %}hover:text-[rgb(var(--ink))]{% endif %}" href="/subscribe/" {% if page.url == '/subscribe/' %}aria-current="page"{% endif %}>
+            Subscribe
+          </a>
+        </li>
+        <li>
           <a class="{% if page.url == '/rss/' %}text-[rgb(var(--ink))]{% else %}hover:text-[rgb(var(--ink))]{% endif %}" href="/rss/" {% if page.url == '/rss/' %}aria-current="page"{% endif %}>
             RSS
           </a>

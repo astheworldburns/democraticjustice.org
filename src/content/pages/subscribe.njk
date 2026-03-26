@@ -1,0 +1,33 @@
+---
+layout: layouts/page.njk
+title: Subscribe
+description: Get an email when new Democratic Justice work is ready.
+permalink: /subscribe/index.html
+ogType: website
+kicker: Subscribe
+---
+<p>
+  Democratic Justice may go quiet for a while. Subscribe if you want to know when new work is ready.
+</p>
+
+<form
+  class="subscribe-form"
+  action="https://buttondown.com/api/emails/embed-subscribe/sturm"
+  method="post"
+  target="popupwindow"
+  onsubmit="window.open('https://buttondown.com/sturm', 'popupwindow')"
+>
+  <label class="subscribe-form__label" for="bd-email">Email address</label>
+  <div class="subscribe-form__row">
+    <input class="subscribe-form__input" type="email" name="email" id="bd-email" autocomplete="email" required />
+    <input class="button-link" type="submit" value="Subscribe" />
+  </div>
+</form>
+
+<p>
+  We do not send daily churn. We send new work when it is finished.
+</p>
+
+<p>
+  You can also follow by <a href="/rss/">RSS</a> if you would rather keep the site in your reader than your inbox.
+</p>

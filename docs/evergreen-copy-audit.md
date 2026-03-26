@@ -64,6 +64,8 @@ The footer repeats the brand name and runs this paragraph:
 
 The footer contact block uses `Contact`, `proof@democraticjustice.org`, `Follow by RSS`, `Search the archive`, and `Staff directory`. The legal line closes with `All rights reserved.`
 
+The primary navigation now also includes `Subscribe`.
+
 ## Homepage
 
 Source file:
@@ -92,6 +94,28 @@ The desks rail uses the label `Editorial desks` and, when available, the helper 
 The archive section opens with `Archive`, the title `Reporting archive`, and the action `Open archive`.
 
 The newsroom section uses the title `Newsroom`.
+
+## Subscribe Page
+
+Source file:
+
+`src/content/pages/subscribe.njk`
+
+The page uses `Subscribe` as the kicker and title and this description:
+
+> Get an email when new Democratic Justice work is ready.
+
+The body reads:
+
+> Democratic Justice may go quiet for a while. Subscribe if you want to know when new work is ready.
+
+It uses a Buttondown-backed form with the field label `Email address` and the submit action `Subscribe`.
+
+It closes with:
+
+> We do not send daily churn. We send new work when it is finished.
+
+> You can also follow by RSS if you would rather keep the site in your reader than your inbox.
 
 ## About Page
 
