@@ -124,13 +124,13 @@ It also uses the current build date at the top of the letter.
 
 And the body reads:
 
-> I started Democratic Justice to publish reporting that readers can inspect from source document to conclusion. Every story opens with a Proof Card and carries the source documents behind it.
+> I started Democratic Justice because too much reporting asks readers to trust the finished story before they have seen the case underneath it. I want you to see the case first.
 
-> The Proof Card comes first because I want readers to see the case before they enter the story. You should have the claim, the record, and the reasoning in front of you as you read.
+> That is why every story here opens with a Proof Card and carries the source documents behind it. You should be able to inspect the claim, read the record, and test the reasoning before the narrative takes over.
 
-> You may not see a new story every week. Some months may pass between publications. When Democratic Justice publishes, it should mean the reporting is ready and the work is worth your attention.
+> This publication will not move on a weekly clock. There may be long quiet stretches between stories. I would rather publish rarely than put my name on work that is rushed or thin. When Democratic Justice drops something new, I want it to mean the reporting is ready.
 
-> I want to publish factual reporting and analysis that can stand in public, be checked by readers, and still matter months later. If the work is worth publishing, it should also be worth checking.
+> I built this for readers who want the material in front of them. If I ask for your attention, I should also give you what you need to test what I am saying. That is the standard here.
 
 The page closes with the typed signoff:
 
