@@ -134,6 +134,38 @@ It also uses:
 
 The portrait now sits with the signature at the close of the letter rather than at the top.
 
+## Privacy Page
+
+Source file:
+
+`src/content/pages/privacy.njk`
+
+The page uses `Legal` as the kicker, `Privacy` as the title, and this description:
+
+> What this site collects and why.
+
+The body explains that Democratic Justice does not use the site to build advertising profiles, stores the reader's edition preference locally, handles reader email as correspondence, relies on infrastructure providers including Cloudflare for hosting and security, and will name any analytics provider before privacy-first site analytics go live.
+
+It closes with:
+
+> If you have questions about privacy or want to reach us about your data, email proof@democraticjustice.org.
+
+## Cookies Page
+
+Source file:
+
+`src/content/pages/cookies.njk`
+
+The page uses `Legal` as the kicker, `Cookies` as the title, and this description:
+
+> What this site stores in your browser.
+
+The body explains that the site keeps cookies and browser storage to a minimum, uses local storage to remember the reader's edition preference, may rely on strictly necessary provider-side cookies or similar technologies for hosting and security, and does not use advertising cookies.
+
+It also states:
+
+> If we add analytics or any other non-essential cookie-based tool, we will disclose it here before it goes live and add consent controls where the law requires them.
+
 ## Archives Page
 
 Source file:
