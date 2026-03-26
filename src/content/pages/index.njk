@@ -97,8 +97,11 @@ ogType: website
   {% if stories | length > 1 %}
     <section class="space-y-6">
       <div class="flex items-end justify-between border-b border-[rgb(var(--rule-strong))] pb-3">
-        <h2 class="font-display text-3xl font-black tracking-tight text-[rgb(var(--ink))]">Latest reporting</h2>
-        <p class="section-kicker">From the archive</p>
+        <div>
+          <p class="section-kicker">Archive</p>
+          <h2 class="mt-2 font-display text-3xl font-black tracking-tight text-[rgb(var(--ink))]">Reporting archive</h2>
+        </div>
+        <a class="button-link-muted" href="/archives/">Open archive</a>
       </div>
       <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-6">
         {% for story in stories %}
