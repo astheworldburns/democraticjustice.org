@@ -4,10 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex,nofollow" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; font-src 'self' https: data:; connect-src 'self' https://api.github.com https://sveltia-cms-auth.sethsturm.workers.dev http://localhost:8787 http://127.0.0.1:8787; object-src 'none'; base-uri 'none'; form-action 'self'" />
     <title>Democratic Justice Content Desk</title>
     <link rel="cms-config-url" href="/admin/config.yml" />
   </head>
   <body>
-    <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
+    <noscript>
+      <p style="padding: 1rem; font-family: system-ui, sans-serif;">JavaScript is required to load the Content Desk.</p>
+    </noscript>
+    <script defer src="/admin/cms/vendor/sveltia-cms-0.150.1.js"></script>
   </body>
 </html>

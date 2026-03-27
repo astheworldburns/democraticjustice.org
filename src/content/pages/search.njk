@@ -7,21 +7,8 @@ ogType: website
 extraHead: |
   <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
 pageScripts: |
-  <script src="/pagefind/pagefind-ui.js"></script>
-  <script>
-    window.addEventListener("DOMContentLoaded", () => {
-      new PagefindUI({
-        element: "#news-search",
-        showEmptyFilters: false,
-        showSubResults: true,
-        excerptLength: 24,
-        resetStyles: false,
-        translations: {
-          placeholder: "Search the archive"
-        }
-      });
-    });
-  </script>
+  <script src="/pagefind/pagefind-ui.js" defer></script>
+  <script src="/assets/js/search.js" defer></script>
 ---
 <section class="space-y-8">
   <header class="border-b-2 border-[rgb(var(--rule-strong))] pb-6">

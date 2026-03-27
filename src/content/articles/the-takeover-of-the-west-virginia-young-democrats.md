@@ -53,9 +53,10 @@ The youth volunteers complied.
 
 On January 23, 2025, nearly eleven months later, Pushkin filed an amended form F-4 Statement of Organization for the WVYD with the Secretary of State, naming himself chairperson and a state party staff member as treasurer. The updated mailing address and contact email belonged to the state party.
 
-![Amended January 2025 F-4 filing listing Mike Pushkin as Chairperson of the West Virginia Young Democrats and the state party contact information](/assets/images/uploads/Screenshot%202026-03-23%20at%209.16.29%20PM.png)
-
-_In an amended F-4 filing from January 2025, Delegate Mike Pushkin installed himself as Chairperson of the West Virginia Young Democrats, listing the state party's P.O. Box and email as the primary contact information._
+<figure>
+  {% image "/assets/images/source/wvyd-amended-f4.png", "Amended January 2025 F-4 filing listing Mike Pushkin as Chairperson of the West Virginia Young Democrats and the state party contact information", "(min-width: 1024px) 960px, 100vw" %}
+  <figcaption><em>In an amended F-4 filing from January 2025, Delegate Mike Pushkin installed himself as Chairperson of the West Virginia Young Democrats, listing the state party's P.O. Box and email as the primary contact information.</em></figcaption>
+</figure>
 
 An F-4 Statement of Organization declares who legally controls a political organization.
 
@@ -125,9 +126,17 @@ Jarryd Powell, who filed the grievance that triggered the seizure, was elected v
 
 In public-facing statements, the newly rechartered organization provided a Gmail address as its main contact information. However, when new officers filed an amended F-4 Statement of Organization with the WVSOS on January 21, 2026, they listed the party's email, P.O. Box, and phone number.
 
-![Side-by-side comparison of a November 2025 Inter-Mountain news clipping listing wva.youngdems at gmail.com as the WVYD contact and a January 2026 F-4 filing listing wvyd at wvdemocrats.com](/assets/images/uploads/wvyd-email.jpg "The Inter-Mountain, Nov 29, 2025 and WV Secretary of State F-4 Amendment, Jan 21, 2026")
-
-_While public-facing press materials direct young Democrats to a generic Gmail address, the organization's official government filing routes all correspondence to an email address controlled by the state party infrastructure_
+<figure>
+  <img
+    src="/assets/images/uploads/wvyd-email.jpg"
+    alt="Side-by-side comparison of a November 2025 Inter-Mountain news clipping listing wva.youngdems at gmail.com as the WVYD contact and a January 2026 F-4 filing listing wvyd at wvdemocrats.com"
+    width="5692"
+    height="3200"
+    loading="lazy"
+    decoding="async"
+  />
+  <figcaption><em>While public-facing press materials direct young Democrats to a generic Gmail address, the organization's official government filing routes all correspondence to an email address controlled by the state party infrastructure.</em></figcaption>
+</figure>
 
 The new officers filed an amended F-4 Statement of Organization with the WVSOS on January 21, 2026. The new filing still lists the party's P.O. Box, phone number and an email hosted by the party.
 

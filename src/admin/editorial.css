@@ -38,6 +38,16 @@ a {
   color: inherit;
 }
 
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid rgba(239, 225, 191, 0.6);
+  outline-offset: 2px;
+}
+
 button,
 input,
 textarea,
@@ -94,6 +104,7 @@ select {
   margin: 1rem 0 0;
   color: var(--ink-soft);
   font-size: 1.02rem;
+  overflow-wrap: anywhere;
 }
 
 .editor-grid {
@@ -115,6 +126,7 @@ select {
 .editor-card p,
 .editor-panel p {
   color: var(--ink-soft);
+  overflow-wrap: anywhere;
 }
 
 .editor-actions,
@@ -143,6 +155,39 @@ select {
   flex-wrap: wrap;
   gap: 0.75rem;
   align-items: center;
+}
+
+.editor-toolbar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.editor-toolbar__status {
+  display: grid;
+  gap: 0.1rem;
+  min-width: min(100%, 18rem);
+  padding: 0.75rem 0.95rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--panel);
+}
+
+.editor-toolbar__status strong {
+  color: var(--ink);
+  font-size: 0.95rem;
+}
+
+.editor-toolbar__status span {
+  color: var(--ink-muted);
+  font-size: 0.78rem;
+}
+
+.editor-toolbar__status[data-dirty="true"] {
+  border-color: rgba(239, 225, 191, 0.34);
+  background: rgba(239, 225, 191, 0.08);
 }
 
 .editor-layout {
@@ -233,6 +278,14 @@ select {
   transition: 160ms ease;
 }
 
+.editor-button:disabled,
+.editor-button-secondary:disabled,
+.editor-button-ghost:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .editor-button {
   background: var(--accent);
   color: var(--accent-ink);
@@ -267,6 +320,7 @@ select {
   border: 1px solid var(--border);
   background: var(--panel-strong);
   color: var(--ink-soft);
+  overflow-wrap: anywhere;
 }
 
 .editor-status[data-tone="error"] {
@@ -286,10 +340,15 @@ select {
 }
 
 .editor-list-card {
+  width: 100%;
   padding: 1rem;
   border: 1px solid var(--border);
   border-radius: 1rem;
   background: var(--panel-strong);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  touch-action: manipulation;
 }
 
 .editor-list-card[data-selected="true"] {
@@ -365,6 +424,7 @@ select {
   border: 1px solid var(--border);
   border-radius: 0.9rem;
   background: #202730;
+  overflow-wrap: anywhere;
 }
 
 .editor-details {
@@ -390,6 +450,7 @@ select {
   margin-top: 0.85rem;
   max-height: 18rem;
   overflow: auto;
+  overscroll-behavior: contain;
 }
 
 .editor-empty {
@@ -398,6 +459,7 @@ select {
   border-radius: 1rem;
   color: var(--ink-muted);
   text-align: center;
+  overflow-wrap: anywhere;
 }
 
 .editor-checkbox {
@@ -423,7 +485,46 @@ select {
     padding: 1rem;
   }
 
+  .editor-toolbar__actions {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .editor-toolbar__status {
+    min-width: 0;
+    width: 100%;
+  }
+
   .editor-layout {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .editor-actions,
+  .editor-row,
+  .editor-toolbar__nav,
+  .editor-toolbar__actions,
+  .editor-block__header,
+  .editor-panel__header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .editor-button,
+  .editor-button-secondary,
+  .editor-button-ghost {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }

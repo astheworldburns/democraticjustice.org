@@ -8,9 +8,16 @@ GITHUB_REPO_OWNER = "astheworldburns"
 GITHUB_REPO_NAME = "democraticjustice.org"
 GITHUB_BRANCH = "main"
 ARTICLE_CONTENT_PATH = "src/content/articles/"
+AUTHOR_CONTENT_PATH = "src/content/authors/"
 DOCUMENT_CONTENT_PATH = "src/content/documents/"
 DOCUMENT_ASSET_PATH = "static/documents/"
 ALLOWED_ORIGINS = "https://democraticjustice.org,http://localhost:8080"
+# Writer Desk secrets to set in Cloudflare:
+# - GITHUB_SERVER_TOKEN
+# - EDITOR_BOOTSTRAP_EMAIL
+# - EDITOR_BOOTSTRAP_PASSWORD
+# Optional:
+# - EDITOR_BOOTSTRAP_NAME = "Admin"
 # Optional if you later move Content Desk auth to this same Worker:
 # ALLOWED_DOMAINS = "democraticjustice.org,*.democraticjustice.org"
 # Optional newsroom restrictions:

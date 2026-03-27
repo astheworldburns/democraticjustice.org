@@ -56,6 +56,10 @@ function resolveImageSource(src) {
   return src;
 }
 
+function imageFormatsForSource(src = "") {
+  return /\.png$/i.test(src) ? ["avif", "webp", "png"] : ["avif", "webp", "jpeg"];
+}
+
 function slugifyTag(value = "") {
   return value
     .toString()
@@ -289,9 +293,12 @@ export default async function (eleventyConfig) {
     }
   });
 
-  eleventyConfig.addPassthroughCopy("src/assets");
   eleventyConfig.addPassthroughCopy("src/assets/images/uploads");
+  eleventyConfig.addPassthroughCopy("src/assets/feed.xsl");
+  eleventyConfig.addPassthroughCopy("src/assets/js");
   eleventyConfig.addPassthroughCopy({ "static/documents": "documents" });
+  eleventyConfig.addPassthroughCopy({ "static/_headers": "_headers" });
+  eleventyConfig.addPassthroughCopy({ "static/robots.txt": "robots.txt" });
   eleventyConfig.addPassthroughCopy("src/admin");
 
   eleventyConfig.addWatchTarget("./tailwind.config.js");
@@ -575,7 +582,7 @@ export default async function (eleventyConfig) {
 
       const metadata = await Image(resolveImageSource(src), {
         widths: [480, 800, 1280],
-        formats: ["avif", "webp", "jpeg"],
+        formats: imageFormatsForSource(src),
         outputDir: "./_site/assets/images/optimized",
         urlPath: "/assets/images/optimized/"
       });

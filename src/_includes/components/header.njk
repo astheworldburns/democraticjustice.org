@@ -4,16 +4,22 @@
 {% set proofMarkNightSrc = site.proofMarkNight ~ "?v=" ~ buildVersion %}
 {% set proofMarkPrintSrc = site.proofMarkPrint ~ "?v=" ~ buildVersion %}
 {% set siteTitle = siteSettings.site_title or site.name %}
+{% set siteTagline = siteSettings.tagline or site.tagline %}
 
 {% if isArticlePage %}
   <header class="border-b border-[rgba(var(--rule-strong),0.9)]">
-    <div class="flex items-center justify-between gap-4 px-5 py-4 md:px-10">
-      <a class="masthead-brand masthead-brand--article" href="/" aria-label="{{ siteTitle }}">
-        <img class="proof-mark masthead-brand__mark masthead-brand__mark--article" data-proof-mark data-proof-mark-day="{{ proofMarkDaySrc }}" data-proof-mark-night="{{ proofMarkNightSrc }}" data-proof-mark-print="{{ proofMarkPrintSrc }}" src="{{ proofMarkDaySrc }}" alt="" />
-        <span class="masthead-brand__copy">
-          <span class="masthead-brand__name masthead-brand__name--article">{{ siteTitle }}</span>
-        </span>
-      </a>
+    <div class="flex items-start justify-between gap-4 px-5 py-4 md:px-10">
+      <div class="masthead-lockup masthead-lockup--article">
+        <a class="masthead-brand masthead-brand--article" href="/" aria-label="{{ siteTitle }}">
+          <img class="proof-mark masthead-brand__mark masthead-brand__mark--article" data-proof-mark data-proof-mark-day="{{ proofMarkDaySrc }}" data-proof-mark-night="{{ proofMarkNightSrc }}" data-proof-mark-print="{{ proofMarkPrintSrc }}" src="{{ proofMarkDaySrc }}" alt="" />
+          <span class="masthead-brand__copy">
+            <span class="masthead-brand__name masthead-brand__name--article">{{ siteTitle }}</span>
+          </span>
+        </a>
+        {% if siteTagline %}
+          <p class="masthead-brand__strap masthead-brand__strap--article">{{ siteTagline }}</p>
+        {% endif %}
+      </div>
       <button class="theme-toggle" type="button" data-theme-toggle>
         <span data-theme-label>Night edition</span>
       </button>
@@ -22,12 +28,17 @@
 {% else %}
   <header class="border-b border-[rgb(var(--rule-strong))]">
     <div class="px-5 pt-5 pb-4 md:px-10 md:pt-6 md:pb-4">
-      <a class="masthead-brand {% if isHomePage %}masthead-brand--home{% else %}masthead-brand--section{% endif %}" href="/" aria-label="{{ siteTitle }}">
-        <img class="proof-mark masthead-brand__mark {% if isHomePage %}masthead-brand__mark--home{% else %}masthead-brand__mark--section{% endif %}" data-proof-mark data-proof-mark-day="{{ proofMarkDaySrc }}" data-proof-mark-night="{{ proofMarkNightSrc }}" data-proof-mark-print="{{ proofMarkPrintSrc }}" src="{{ proofMarkDaySrc }}" alt="" />
-        <span class="masthead-brand__copy">
-          <span class="masthead-brand__name {% if isHomePage %}masthead-brand__name--home{% else %}masthead-brand__name--section{% endif %}">{{ siteTitle }}</span>
-        </span>
-      </a>
+      <div class="masthead-lockup {% if isHomePage %}masthead-lockup--home{% else %}masthead-lockup--section{% endif %}">
+        <a class="masthead-brand {% if isHomePage %}masthead-brand--home{% else %}masthead-brand--section{% endif %}" href="/" aria-label="{{ siteTitle }}">
+          <img class="proof-mark masthead-brand__mark {% if isHomePage %}masthead-brand__mark--home{% else %}masthead-brand__mark--section{% endif %}" data-proof-mark data-proof-mark-day="{{ proofMarkDaySrc }}" data-proof-mark-night="{{ proofMarkNightSrc }}" data-proof-mark-print="{{ proofMarkPrintSrc }}" src="{{ proofMarkDaySrc }}" alt="" />
+          <span class="masthead-brand__copy">
+            <span class="masthead-brand__name {% if isHomePage %}masthead-brand__name--home{% else %}masthead-brand__name--section{% endif %}">{{ siteTitle }}</span>
+          </span>
+        </a>
+        {% if siteTagline %}
+          <p class="masthead-brand__strap masthead-brand__strap--masthead">{{ siteTagline }}</p>
+        {% endif %}
+      </div>
       <div class="masthead-meta">
         <p class="masthead-meta__edition">
           Edition <time data-edition-date>{{ buildDate | displayDate }}</time>

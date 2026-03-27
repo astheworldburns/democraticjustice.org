@@ -1,13 +1,10 @@
-import yaml from "https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/+esm";
-
 const root = document.getElementById("proof-desk-root");
-const PROOF_TOKEN_KEY = "dj-proof-desk-token";
+const PROOF_UI_STATE_KEY = "dj-proof-desk-ui";
 
 const state = {
   config: null,
   articles: [],
   documents: [],
-  authMode: "token",
   sessionUser: null,
   articleFilter: "",
   selectedSlug: "",
@@ -15,13 +12,39 @@ const state = {
   selectedArticleLoading: false,
   sourceSearches: {},
   newSourceForms: {},
-  token: "",
-  tokenSource: "",
-  tokenDraft: "",
   status: null,
   loading: true,
-  saving: false
+  saving: false,
+  initialProofSnapshot: ""
 };
+
+function readUiState() {
+  try {
+    return JSON.parse(sessionStorage.getItem(PROOF_UI_STATE_KEY) || "{}");
+  } catch {
+    return {};
+  }
+}
+
+function persistUiState() {
+  try {
+    sessionStorage.setItem(
+      PROOF_UI_STATE_KEY,
+      JSON.stringify({
+        articleFilter: state.articleFilter || "",
+        selectedSlug: state.selectedSlug || ""
+      })
+    );
+  } catch {
+    // Ignore storage failures in restricted browsers.
+  }
+}
+
+function restoreUiState() {
+  const stored = readUiState();
+  state.articleFilter = typeof stored.articleFilter === "string" ? stored.articleFilter : "";
+  state.selectedSlug = typeof stored.selectedSlug === "string" ? stored.selectedSlug : "";
+}
 
 function escapeHtml(value = "") {
   return value
@@ -142,6 +165,26 @@ function serializeProof(proof = {}) {
   }
 
   return next;
+}
+
+function proofSnapshot(article = state.selectedArticle) {
+  return article ? JSON.stringify(serializeProof(article.proof || {})) : "";
+}
+
+function syncProofBaseline(article = state.selectedArticle) {
+  state.initialProofSnapshot = proofSnapshot(article);
+}
+
+function hasUnsavedProofChanges() {
+  return Boolean(state.selectedArticle) && proofSnapshot() !== state.initialProofSnapshot;
+}
+
+function confirmDiscardChanges(actionLabel = "continue") {
+  if (!hasUnsavedProofChanges()) {
+    return true;
+  }
+
+  return window.confirm(`You have unsaved proof changes. Discard them and ${actionLabel}?`);
 }
 
 function dedupeSources(sources = []) {
@@ -270,19 +313,6 @@ function filteredDocumentsForAxiom(index) {
   });
 }
 
-function encodeRepoPath(value = "") {
-  return value
-    .split("/")
-    .map((part) => encodeURIComponent(part))
-    .join("/");
-}
-
-function base64ToUtf8(value = "") {
-  const binary = atob(value.replace(/\n/g, ""));
-  const bytes = Uint8Array.from(binary, (character) => character.charCodeAt(0));
-  return new TextDecoder().decode(bytes);
-}
-
 function bytesToBase64(bytes) {
   let binary = "";
   const chunkSize = 0x8000;
@@ -292,25 +322,6 @@ function bytesToBase64(bytes) {
   }
 
   return btoa(binary);
-}
-
-function utf8ToBase64(value = "") {
-  const bytes = new TextEncoder().encode(value);
-  return bytesToBase64(bytes);
-}
-
-function looksLikeToken(value = "") {
-  const candidate = value.trim();
-
-  if (!candidate || candidate === "light" || candidate === "dark") {
-    return false;
-  }
-
-  return (
-    /^gh[pousr]_/i.test(candidate) ||
-    /^github_pat_/i.test(candidate) ||
-    /^[A-Za-z0-9_]{35,}$/.test(candidate)
-  );
 }
 
 function proofApiBaseUrl() {
@@ -359,92 +370,19 @@ async function loadWorkerSession() {
 
     if (response.status === 401) {
       state.sessionUser = null;
-      state.authMode = "worker";
       return;
     }
 
     if (!response.ok) {
       state.sessionUser = null;
-      state.authMode = "worker";
       return;
     }
 
     const payload = await response.json();
     state.sessionUser = payload.user || null;
-    state.authMode = "worker";
   } catch (error) {
     state.sessionUser = null;
-    state.authMode = "worker";
   }
-}
-
-function detectStoredToken() {
-  const explicit = sessionStorage.getItem(PROOF_TOKEN_KEY);
-  if (looksLikeToken(explicit || "")) {
-    return {
-      token: explicit.trim(),
-      source: "saved-token"
-    };
-  }
-
-  return {
-    token: "",
-    source: ""
-  };
-}
-
-function inferExtension(file) {
-  const fromName = file?.name?.split(".").pop()?.toLowerCase();
-
-  if (fromName && /^[a-z0-9]+$/.test(fromName)) {
-    return fromName;
-  }
-
-  if (file?.type === "application/pdf") {
-    return "pdf";
-  }
-
-  if ((file?.type || "").startsWith("image/")) {
-    return file.type.replace("image/", "").toLowerCase();
-  }
-
-  return "bin";
-}
-
-function ensureUniqueSlug(baseSlug) {
-  const existing = new Set(state.documents.map((document) => document.slug));
-  let candidate = baseSlug || "source-document";
-  let suffix = 2;
-
-  while (existing.has(candidate)) {
-    candidate = `${baseSlug || "source-document"}-${suffix}`;
-    suffix += 1;
-  }
-
-  return candidate;
-}
-
-function parseFrontmatter(rawContent = "") {
-  const match = rawContent.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
-
-  if (!match) {
-    throw new Error("The selected article does not have YAML frontmatter.");
-  }
-
-  return {
-    data: yaml.load(match[1]) || {},
-    body: match[2] || ""
-  };
-}
-
-function stringifyFrontmatter(data = {}, body = "") {
-  const frontmatter = yaml.dump(data, {
-    lineWidth: 1000,
-    noRefs: true,
-    sortKeys: false
-  });
-
-  return `---\n${frontmatter}---\n${body.replace(/^\n*/, "")}`;
 }
 
 async function fetchJson(url) {
@@ -461,14 +399,6 @@ async function fetchJson(url) {
   return response.json();
 }
 
-function pathBasename(repoPath = "") {
-  return repoPath.split("/").pop() || "";
-}
-
-function pathStem(repoPath = "") {
-  return pathBasename(repoPath).replace(/\.[^.]+$/, "");
-}
-
 function sortArticles(items = []) {
   return [...items].sort((left, right) => {
     const leftTime = left.date ? new Date(left.date).getTime() : 0;
@@ -481,100 +411,6 @@ function sortDocuments(items = []) {
   return [...items].sort((left, right) => left.title.localeCompare(right.title));
 }
 
-async function githubRequest(pathname, options = {}) {
-  const token = state.token || "";
-  const headers = {
-    Accept: "application/vnd.github+json",
-    "X-GitHub-Api-Version": "2022-11-28",
-    ...(options.headers || {})
-  };
-
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
-  }
-
-  const response = await fetch(`https://api.github.com${pathname}`, {
-    ...options,
-    headers
-  });
-
-  if (!response.ok) {
-    const message = await response.text();
-    throw new Error(message || `GitHub request failed (${response.status}).`);
-  }
-
-  return response.json();
-}
-
-async function loadRepoTree(prefix) {
-  const { repo_owner: owner, repo_name: repo, branch } = state.config;
-  const response = await githubRequest(
-    `/repos/${owner}/${repo}/git/trees/${encodeURIComponent(branch)}?recursive=1`
-  );
-  const tree = Array.isArray(response.tree) ? response.tree : [];
-
-  return tree.filter(
-    (entry) =>
-      entry?.type === "blob" &&
-      entry?.path?.startsWith(prefix) &&
-      entry.path.endsWith(".md")
-  );
-}
-
-async function readRepoBlob(sha) {
-  const { repo_owner: owner, repo_name: repo } = state.config;
-  const response = await githubRequest(`/repos/${owner}/${repo}/git/blobs/${encodeURIComponent(sha)}`);
-  return base64ToUtf8(response.content || "");
-}
-
-async function loadArticlesFromRepo() {
-  const articleEntries = await loadRepoTree(state.config.article_content_path);
-  const articles = await Promise.all(
-    articleEntries.map(async (entry) => {
-      const raw = await readRepoBlob(entry.sha);
-      const parsed = parseFrontmatter(raw);
-      const slug = pathStem(entry.path);
-
-      return {
-        slug,
-        title: parsed.data?.title || slug,
-        description: parsed.data?.description || "",
-        author: parsed.data?.author || "",
-        date: parsed.data?.date || null,
-        url: `/articles/${slug}/`,
-        repo_path: entry.path,
-        proof: parsed.data?.proof || null
-      };
-    })
-  );
-
-  return sortArticles(articles);
-}
-
-async function loadDocumentsFromRepo() {
-  const documentEntries = await loadRepoTree(state.config.document_content_path);
-  const documents = await Promise.all(
-    documentEntries.map(async (entry) => {
-      const raw = await readRepoBlob(entry.sha);
-      const parsed = parseFrontmatter(raw);
-      const slug = pathStem(entry.path);
-
-      return {
-        slug,
-        title: parsed.data?.title || slug,
-        description: parsed.data?.description || "",
-        obtained: parsed.data?.obtained || "",
-        source_method: parsed.data?.source_method || "",
-        url: `/documents/${slug}/`,
-        file_url: parsed.data?.file || "",
-        repo_path: entry.path
-      };
-    })
-  );
-
-  return sortDocuments(documents);
-}
-
 async function loadArticlesFromWorker() {
   const payload = await workerJson("/api/proof/articles");
   return sortArticles(Array.isArray(payload.articles) ? payload.articles : []);
@@ -585,52 +421,13 @@ async function loadDocumentsFromWorker() {
   return sortDocuments(Array.isArray(payload.documents) ? payload.documents : []);
 }
 
-async function readRepoFile(repoPath) {
-  const { repo_owner: owner, repo_name: repo, branch } = state.config;
-  const response = await githubRequest(
-    `/repos/${owner}/${repo}/contents/${encodeRepoPath(repoPath)}?ref=${encodeURIComponent(branch)}`
-  );
-
-  return {
-    sha: response.sha,
-    content: base64ToUtf8(response.content || "")
-  };
-}
-
-async function writeRepoTextFile(repoPath, text, message, sha) {
-  const { repo_owner: owner, repo_name: repo, branch } = state.config;
-
-  return githubRequest(`/repos/${owner}/${repo}/contents/${encodeRepoPath(repoPath)}`, {
-    method: "PUT",
-    body: JSON.stringify({
-      message,
-      content: utf8ToBase64(text),
-      branch,
-      sha
-    })
-  });
-}
-
-async function writeRepoBinaryFile(repoPath, bytes, message) {
-  const { repo_owner: owner, repo_name: repo, branch } = state.config;
-
-  return githubRequest(`/repos/${owner}/${repo}/contents/${encodeRepoPath(repoPath)}`, {
-    method: "PUT",
-    body: JSON.stringify({
-      message,
-      content: bytesToBase64(bytes),
-      branch
-    })
-  });
-}
-
 function statusMarkup() {
   if (!state.status) {
     return "";
   }
 
   return `
-    <div class="editor-status" data-tone="${escapeHtml(state.status.tone || "info")}">
+    <div class="editor-status" data-tone="${escapeHtml(state.status.tone || "info")}" role="status" aria-live="polite">
       ${escapeHtml(state.status.message || "")}
     </div>
   `;
@@ -912,14 +709,20 @@ function renderSelectedArticle() {
 }
 
 function render() {
-  const detectedLabel =
-    state.authMode === "worker"
-      ? state.sessionUser
-        ? `Signed in as ${state.sessionUser.login || "GitHub user"}.`
-        : "Not signed in to the Proof Desk yet."
-      : state.tokenSource === "saved-token"
-        ? "Using a GitHub token stored for this browser session."
-        : "No GitHub token detected yet.";
+  persistUiState();
+  document.title = "Democratic Justice Proof Desk";
+
+  const detectedLabel = !hasProofApi()
+    ? "The Proof Desk gateway is not configured yet."
+    : state.sessionUser
+      ? `Signed in as ${state.sessionUser.login || "GitHub user"}.`
+      : "Not signed in to the Proof Desk yet.";
+  const toolbarStatus = !state.selectedArticle
+    ? "No article selected"
+    : hasUnsavedProofChanges()
+      ? "Proof changes not saved"
+      : "All changes saved";
+  document.title = `${hasUnsavedProofChanges() ? "* " : ""}Democratic Justice Proof Desk`;
 
   root.innerHTML = `
     <div class="editor-shell">
@@ -929,7 +732,13 @@ function render() {
             <a class="editor-button-ghost" href="/admin/">Back to Editorial Desk</a>
             <a class="editor-button-ghost" href="/admin/cms/">Open Content Desk</a>
           </div>
-          <button class="editor-button-secondary" type="button" data-action="refresh-data">Reload desk data</button>
+          <div class="editor-toolbar__actions">
+            <div class="editor-toolbar__status" data-dirty="${hasUnsavedProofChanges() ? "true" : "false"}" role="status" aria-live="polite">
+              <strong>${escapeHtml(toolbarStatus)}</strong>
+              <span>Press Cmd/Ctrl+S to save</span>
+            </div>
+            <button class="editor-button-secondary" type="button" data-action="refresh-data">Reload desk data</button>
+          </div>
         </div>
 
         ${statusMarkup()}
@@ -944,7 +753,7 @@ function render() {
                 </div>
               </div>
               <p>${escapeHtml(detectedLabel)}</p>
-              <p class="editor-muted">The Proof Desk now loads article and source data directly from GitHub after you authenticate. It no longer publishes draft manifests on the public site.</p>
+              <p class="editor-muted">The Proof Desk now runs only through the session-backed gateway. Browser-pasted GitHub tokens are disabled to keep repo credentials out of local storage and out of the page.</p>
               ${
                 hasProofApi()
                   ? `
@@ -959,14 +768,7 @@ function render() {
                     </div>
                   `
                   : `
-                    <label class="editor-field">
-                      <span class="editor-label">Session token</span>
-                      <input class="editor-input" type="password" value="${escapeHtml(state.tokenDraft || "")}" data-ui="token-draft" placeholder="Paste a GitHub token for this browser session." />
-                    </label>
-                    <div class="editor-actions" style="margin-top: 1rem;">
-                      <button class="editor-button-secondary" type="button" data-action="save-token">Use token</button>
-                      <button class="editor-button-ghost" type="button" data-action="clear-token">Clear token</button>
-                    </div>
+                    <div class="editor-empty">Add <code>proof_api_base_url</code> to the admin config before using the Proof Desk.</div>
                   `
               }
             </section>
@@ -979,15 +781,11 @@ function render() {
                 </div>
                 <span class="editor-muted">${state.articles.length} total</span>
               </div>
-              ${
-                (hasProofApi() ? state.sessionUser : state.token)
-                  ? ""
-                  : `<div class="editor-empty">${
-                      hasProofApi()
-                        ? "Sign in with GitHub to load article and document data."
-                        : "Add a GitHub token to load article and document data."
-                    }</div>`
-              }
+              ${state.sessionUser ? "" : `<div class="editor-empty">${
+                hasProofApi()
+                  ? "Sign in with GitHub to load article and document data."
+                  : "Configure the Proof Desk gateway before loading repository data."
+              }</div>`}
               <label class="editor-field">
                 <span class="editor-label">Search</span>
                 <input class="editor-input" type="search" value="${escapeHtml(state.articleFilter)}" data-ui="article-filter" placeholder="Find an article" />
@@ -1028,24 +826,12 @@ async function loadSelectedArticleContent() {
     return;
   }
 
-  if (state.authMode === "worker") {
-    const payload = await workerJson(`/api/proof/article?slug=${encodeURIComponent(state.selectedArticle.slug)}`);
-    const nextProof = hasMeaningfulValue(payload.article?.proof) ? normalizeProof(payload.article.proof || {}) : normalizeProof({});
-
-    state.selectedArticle = {
-      ...state.selectedArticle,
-      repo_path: payload.article?.repo_path || state.selectedArticle.repo_path,
-      proof: nextProof
-    };
-    return;
-  }
-
-  const { content } = await readRepoFile(state.selectedArticle.repo_path);
-  const parsed = parseFrontmatter(content);
-  const nextProof = hasMeaningfulValue(parsed.data?.proof) ? normalizeProof(parsed.data.proof || {}) : normalizeProof({});
+  const payload = await workerJson(`/api/proof/article?slug=${encodeURIComponent(state.selectedArticle.slug)}`);
+  const nextProof = hasMeaningfulValue(payload.article?.proof) ? normalizeProof(payload.article.proof || {}) : normalizeProof({});
 
   state.selectedArticle = {
     ...state.selectedArticle,
+    repo_path: payload.article?.repo_path || state.selectedArticle.repo_path,
     proof: nextProof
   };
 }
@@ -1066,6 +852,7 @@ async function selectArticle(slug) {
   };
   state.sourceSearches = {};
   state.newSourceForms = {};
+  syncProofBaseline();
   render();
 
   try {
@@ -1078,6 +865,7 @@ async function selectArticle(slug) {
   }
 
   state.selectedArticleLoading = false;
+  syncProofBaseline();
   updateValidationPanel();
   render();
 }
@@ -1097,12 +885,19 @@ async function loadDeskData() {
     state.config = await fetchJson("/admin/proof/data/config.json");
   }
 
-  if (hasProofApi()) {
-    state.authMode = "worker";
-    await loadWorkerSession();
+  if (!hasProofApi()) {
+    state.articles = [];
+    state.documents = [];
+    state.selectedSlug = "";
+    state.selectedArticle = null;
+    state.loading = false;
+    setStatus("The Proof Desk gateway is not configured yet.", "error");
+    return;
   }
 
-  if (hasProofApi() && !state.sessionUser) {
+  await loadWorkerSession();
+
+  if (!state.sessionUser) {
     state.articles = [];
     state.documents = [];
     state.selectedSlug = "";
@@ -1112,21 +907,7 @@ async function loadDeskData() {
     return;
   }
 
-  if (state.authMode !== "worker" && !state.token) {
-    state.articles = [];
-    state.documents = [];
-    state.selectedSlug = "";
-    state.selectedArticle = null;
-    state.loading = false;
-    render();
-    return;
-  }
-
-  const [articles, documents] = await Promise.all(
-    state.authMode === "worker"
-      ? [loadArticlesFromWorker(), loadDocumentsFromWorker()]
-      : [loadArticlesFromRepo(), loadDocumentsFromRepo()]
-  );
+  const [articles, documents] = await Promise.all([loadArticlesFromWorker(), loadDocumentsFromWorker()]);
   state.articles = articles;
   state.documents = documents;
 
@@ -1139,6 +920,12 @@ async function loadDeskData() {
 
     if (stillExists) {
       await selectArticle(state.selectedSlug);
+    } else if (state.articles.length) {
+      state.selectedSlug = state.articles[0].slug;
+      await selectArticle(state.selectedSlug);
+    } else {
+      state.selectedSlug = "";
+      state.selectedArticle = null;
     }
   }
 
@@ -1158,13 +945,8 @@ async function saveProof() {
     return;
   }
 
-  if (state.authMode === "worker" && !state.sessionUser) {
+  if (!state.sessionUser) {
     setStatus("Sign in with GitHub before saving proof changes.", "error");
-    return;
-  }
-
-  if (state.authMode !== "worker" && !state.token) {
-    setStatus("A GitHub token is required to save proof changes.", "error");
     return;
   }
 
@@ -1172,43 +954,22 @@ async function saveProof() {
   render();
 
   try {
-    if (state.authMode === "worker") {
-      await workerJson("/api/proof/save", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          slug: state.selectedArticle.slug,
-          proof: serializeProof(state.selectedArticle.proof)
-        })
-      });
-
-      state.status = {
-        message: `Saved proof for "${state.selectedArticle.title}".`,
-        tone: "success"
-      };
-      state.saving = false;
-      render();
-      return;
-    }
-
-    const { content, sha } = await readRepoFile(state.selectedArticle.repo_path);
-    const parsed = parseFrontmatter(content);
-    parsed.data.proof = serializeProof(state.selectedArticle.proof);
-    const nextContent = stringifyFrontmatter(parsed.data, parsed.body);
-
-    await writeRepoTextFile(
-      state.selectedArticle.repo_path,
-      nextContent,
-      `Update proof for "${state.selectedArticle.title}"`,
-      sha
-    );
+    await workerJson("/api/proof/save", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        slug: state.selectedArticle.slug,
+        proof: serializeProof(state.selectedArticle.proof)
+      })
+    });
 
     state.status = {
       message: `Saved proof for "${state.selectedArticle.title}".`,
       tone: "success"
     };
+    syncProofBaseline();
   } catch (error) {
     state.status = {
       message: `Could not save the proof. ${error.message || error}`,
@@ -1227,13 +988,8 @@ async function createSourceForAxiom(index) {
     return;
   }
 
-  if (state.authMode === "worker" && !state.sessionUser) {
+  if (!state.sessionUser) {
     setStatus("Sign in with GitHub before creating source documents.", "error");
-    return;
-  }
-
-  if (state.authMode !== "worker" && !state.token) {
-    setStatus("A GitHub token is required to create source documents.", "error");
     return;
   }
 
@@ -1248,84 +1004,27 @@ async function createSourceForAxiom(index) {
   }
 
   try {
-    if (state.authMode === "worker") {
-      const file = formState.file;
-      const fileBytes = new Uint8Array(await file.arrayBuffer());
-      const payload = await workerJson("/api/proof/create-document", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          title: formState.title.trim(),
-          description: formState.description.trim(),
-          obtained: formState.obtained,
-          source_method: formState.source_method.trim(),
-          file_name: file.name,
-          mime_type: file.type || "application/octet-stream",
-          file_base64: bytesToBase64(fileBytes)
-        })
-      });
-
-      const documentRecord = payload.document;
-      const documentUrl = documentRecord.url;
-      state.documents = sortDocuments([documentRecord, ...state.documents]);
-
-      const axiom = state.selectedArticle.proof.axioms[index];
-      axiom.sources = dedupeSources([...(axiom.sources || []), { document_url: documentUrl }]);
-      axiom.no_source_needed = false;
-      delete state.newSourceForms[index];
-
-      updateValidationPanel();
-      setStatus(`Created and attached "${formState.title.trim()}".`, "success");
-      return;
-    }
-
-    const baseSlug = slugify(formState.title);
-    const slug = ensureUniqueSlug(baseSlug);
-    const extension = inferExtension(formState.file);
-    const assetPath = `${state.config.document_asset_path}${slug}.${extension}`;
-    const documentPath = `${state.config.document_content_path}${slug}.md`;
-    const fileUrl = `/documents/${slug}.${extension}`;
-    const fileBytes = new Uint8Array(await formState.file.arrayBuffer());
-
-    await writeRepoBinaryFile(assetPath, fileBytes, `Add source file "${formState.title}"`);
-
-    const documentFrontmatter = yaml.dump(
-      {
-        title: formState.title.trim(),
-        file: fileUrl,
-        description: formState.description.trim(),
-        obtained: formState.obtained,
-        source_method: formState.source_method.trim()
+    const file = formState.file;
+    const fileBytes = new Uint8Array(await file.arrayBuffer());
+    const payload = await workerJson("/api/proof/create-document", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
       },
-      {
-        lineWidth: 1000,
-        noRefs: true,
-        sortKeys: false
-      }
-    );
-
-    await writeRepoTextFile(
-      documentPath,
-      `---\n${documentFrontmatter}---\n`,
-      `Add source document "${formState.title}"`,
-      undefined
-    );
-
-    const documentUrl = `/documents/${slug}/`;
-    state.documents = [
-      {
-        slug,
+      body: JSON.stringify({
         title: formState.title.trim(),
         description: formState.description.trim(),
         obtained: formState.obtained,
         source_method: formState.source_method.trim(),
-        url: documentUrl,
-        file_url: fileUrl
-      },
-      ...state.documents
-    ].sort((left, right) => left.title.localeCompare(right.title));
+        file_name: file.name,
+        mime_type: file.type || "application/octet-stream",
+        file_base64: bytesToBase64(fileBytes)
+      })
+    });
+
+    const documentRecord = payload.document;
+    const documentUrl = documentRecord.url;
+    state.documents = sortDocuments([documentRecord, ...state.documents]);
 
     const axiom = state.selectedArticle.proof.axioms[index];
     axiom.sources = dedupeSources([...(axiom.sources || []), { document_url: documentUrl }]);
@@ -1350,11 +1049,6 @@ function handleInput(event) {
   if (articleFilter === "article-filter") {
     state.articleFilter = event.target.value;
     render();
-    return;
-  }
-
-  if (articleFilter === "token-draft") {
-    state.tokenDraft = event.target.value;
     return;
   }
 
@@ -1427,11 +1121,25 @@ function handleClick(event) {
   const { action } = actionTarget.dataset;
 
   if (action === "select-article") {
-    selectArticle(actionTarget.dataset.slug);
+    const slug = actionTarget.dataset.slug;
+
+    if (!slug || slug === state.selectedSlug) {
+      return;
+    }
+
+    if (!confirmDiscardChanges("open another article")) {
+      return;
+    }
+
+    selectArticle(slug);
     return;
   }
 
   if (action === "refresh-data") {
+    if (!confirmDiscardChanges("reload the desk")) {
+      return;
+    }
+
     loadDeskData()
       .then(() => setStatus("Reloaded article and document data.", "success"))
       .catch((error) => setStatus(`Could not reload desk data. ${error.message || error}`, "error"));
@@ -1439,12 +1147,15 @@ function handleClick(event) {
   }
 
   if (action === "worker-logout") {
+    if (!confirmDiscardChanges("sign out")) {
+      return;
+    }
+
     workerRequest("/proof/logout", {
       method: "POST"
     })
       .then(async () => {
         state.sessionUser = null;
-        state.authMode = hasProofApi() ? "worker" : "token";
         state.articles = [];
         state.documents = [];
         state.selectedSlug = "";
@@ -1452,36 +1163,6 @@ function handleClick(event) {
         setStatus("Signed out of the Proof Desk.", "success");
       })
       .catch((error) => setStatus(`Could not sign out. ${error.message || error}`, "error"));
-    return;
-  }
-
-  if (action === "save-token") {
-    if (!looksLikeToken(state.tokenDraft || "")) {
-      setStatus("That does not look like a GitHub token yet.", "error");
-      return;
-    }
-
-    state.token = state.tokenDraft.trim();
-    state.tokenSource = "saved-token";
-    sessionStorage.setItem(PROOF_TOKEN_KEY, state.token);
-    localStorage.removeItem(PROOF_TOKEN_KEY);
-    loadDeskData()
-      .then(() => setStatus("Stored the GitHub token and loaded the Proof Desk.", "success"))
-      .catch((error) => setStatus(`Stored the token, but could not load desk data. ${error.message || error}`, "error"));
-    return;
-  }
-
-  if (action === "clear-token") {
-    state.token = "";
-    state.tokenDraft = "";
-    state.tokenSource = "";
-    sessionStorage.removeItem(PROOF_TOKEN_KEY);
-    localStorage.removeItem(PROOF_TOKEN_KEY);
-    state.articles = [];
-    state.documents = [];
-    state.selectedSlug = "";
-    state.selectedArticle = null;
-    setStatus("Cleared the saved GitHub token.", "success");
     return;
   }
 
@@ -1554,14 +1235,29 @@ function handleClick(event) {
   }
 }
 
+function handleKeydown(event) {
+  if ((event.metaKey || event.ctrlKey) && !event.altKey && !event.shiftKey && event.key.toLowerCase() === "s") {
+    if (!state.selectedArticle || state.saving) {
+      return;
+    }
+
+    event.preventDefault();
+    saveProof();
+  }
+}
+
+function handleBeforeUnload(event) {
+  if (!hasUnsavedProofChanges()) {
+    return;
+  }
+
+  event.preventDefault();
+  event.returnValue = "";
+}
+
 async function init() {
   try {
-    localStorage.removeItem(PROOF_TOKEN_KEY);
-    const detected = detectStoredToken();
-    state.token = detected.token;
-    state.tokenSource = detected.source;
-    state.tokenDraft = detected.token;
-    state.authMode = "token";
+    restoreUiState();
     await loadDeskData();
     render();
   } catch (error) {
@@ -1577,5 +1273,7 @@ async function init() {
 root.addEventListener("click", handleClick);
 root.addEventListener("input", handleInput);
 root.addEventListener("change", handleInput);
+root.addEventListener("keydown", handleKeydown);
+window.addEventListener("beforeunload", handleBeforeUnload);
 
 init();

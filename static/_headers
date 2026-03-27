@@ -1,0 +1,14 @@
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: accelerometer=(), ambient-light-sensor=(), autoplay=(), battery=(), camera=(), display-capture=(), geolocation=(), gyroscope=(), hid=(), microphone=(), midi=(), payment=(), publickey-credentials-get=(), usb=(), xr-spatial-tracking=()
+
+/admin/*
+  Cache-Control: no-store, max-age=0
+  Referrer-Policy: no-referrer
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
+
+/admin/*/data/*
+  Cache-Control: no-store, max-age=0

@@ -1,10 +1,20 @@
 import yaml from "js-yaml";
 
-const SESSION_COOKIE = "dj_proof_session";
-const PROOF_STATE_COOKIE = "dj_proof_state";
+const SESSION_COOKIE = "__Host-dj_proof_session";
+const PROOF_STATE_COOKIE = "__Host-dj_proof_state";
 const SESSION_TTL_SECONDS = 60 * 60 * 12;
+const EDITOR_SESSION_COOKIE = "__Host-dj_editor_session";
+const EDITOR_SESSION_TTL_SECONDS = 60 * 60 * 12;
+const CMS_CSRF_COOKIE = "__Host-dj_cms_csrf";
 const MAX_UPLOAD_BYTES = 25 * 1024 * 1024;
 const ALLOWED_FILE_EXTENSIONS = new Set(["pdf", "png", "jpg", "jpeg", "webp", "gif"]);
+const EDITOR_SESSION_KEY_PREFIX = "editor_session:";
+const EDITOR_USER_KEY_PREFIX = "editor_user:";
+const EDITOR_LOGIN_RATE_KEY_PREFIX = "editor_login_rate:";
+const EDITOR_ROLES = new Set(["writer", "editor", "publisher", "admin"]);
+const EDITOR_LOGIN_WINDOW_SECONDS = 15 * 60;
+const EDITOR_LOGIN_MAX_ATTEMPTS = 5;
+const EDITOR_LOGIN_BLOCK_SECONDS = 15 * 60;
 
 function json(data, init = {}) {
   return new Response(JSON.stringify(data, null, 2), {
@@ -19,6 +29,38 @@ function json(data, init = {}) {
 function text(message, status = 200, headers = {}) {
   return new Response(message, {
     status,
+    headers
+  });
+}
+
+function workerCsp(response) {
+  const contentType = response.headers.get("Content-Type") || "";
+
+  if (contentType.includes("text/html")) {
+    return "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'none'; connect-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'";
+  }
+
+  return "default-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'";
+}
+
+function finalizeWorkerResponse(response) {
+  const headers = new Headers(response.headers);
+
+  headers.set("Cache-Control", "no-store");
+  headers.set("Pragma", "no-cache");
+  headers.set("Expires", "0");
+  headers.set("Content-Security-Policy", workerCsp(response));
+  headers.set("Referrer-Policy", "no-referrer");
+  headers.set("X-Content-Type-Options", "nosniff");
+  headers.set("X-Frame-Options", "DENY");
+  headers.set(
+    "Permissions-Policy",
+    "accelerometer=(), ambient-light-sensor=(), autoplay=(), camera=(), display-capture=(), geolocation=(), gyroscope=(), hid=(), microphone=(), midi=(), payment=(), publickey-credentials-get=(), usb=(), xr-spatial-tracking=()"
+  );
+
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
     headers
   });
 }
@@ -237,6 +279,17 @@ function decodeBase64ToUint8Array(value = "") {
   return Uint8Array.from(binary, (character) => character.charCodeAt(0));
 }
 
+function bytesToBase64(bytes) {
+  let binary = "";
+  const chunkSize = 0x8000;
+
+  for (let index = 0; index < bytes.length; index += chunkSize) {
+    binary += String.fromCharCode(...bytes.subarray(index, index + chunkSize));
+  }
+
+  return btoa(binary);
+}
+
 function utf8ToBase64(value = "") {
   const bytes = new TextEncoder().encode(value);
   let binary = "";
@@ -248,12 +301,14 @@ function utf8ToBase64(value = "") {
   return btoa(binary);
 }
 
-function cmsAuthHtml({ provider = "github", token, error, errorCode }) {
+function cmsAuthHtml({ provider = "github", token, error, errorCode, origin = "*", secure = true }) {
   const state = error ? "error" : "success";
   const content = error ? { provider, error, errorCode } : { provider, token };
   const providerLiteral = JSON.stringify(provider);
   const stateLiteral = JSON.stringify(state);
   const payloadLiteral = JSON.stringify(JSON.stringify(content));
+  const targetOriginLiteral = JSON.stringify(origin || "*");
+  const allowAnyOriginLiteral = JSON.stringify(!origin || origin === "*");
 
   return new Response(
     `<!doctype html>
@@ -261,15 +316,24 @@ function cmsAuthHtml({ provider = "github", token, error, errorCode }) {
   <body>
     <script>
       (function () {
+        const targetOrigin = ${targetOriginLiteral};
+        const allowAnyOrigin = ${allowAnyOriginLiteral};
+
         function receiveMessage(event) {
+          if (!allowAnyOrigin && event.origin !== targetOrigin) {
+            return;
+          }
           if (event.data !== "authorizing:" + ${providerLiteral}) {
             return;
           }
-          window.opener.postMessage("authorization:" + ${providerLiteral} + ":" + ${stateLiteral} + ":" + ${payloadLiteral}, event.origin);
+          window.opener.postMessage(
+            "authorization:" + ${providerLiteral} + ":" + ${stateLiteral} + ":" + ${payloadLiteral},
+            allowAnyOrigin ? event.origin : targetOrigin
+          );
         }
 
         window.addEventListener("message", receiveMessage, false);
-        window.opener.postMessage("authorizing:" + ${providerLiteral}, "*");
+        window.opener.postMessage("authorizing:" + ${providerLiteral}, targetOrigin);
       })();
     </script>
   </body>
@@ -277,10 +341,40 @@ function cmsAuthHtml({ provider = "github", token, error, errorCode }) {
     {
       headers: {
         "Content-Type": "text/html; charset=utf-8",
-        "Set-Cookie": clearCookie("csrf-token")
+        "Set-Cookie": clearCookie(CMS_CSRF_COOKIE, {
+          secure,
+          sameSite: "Lax"
+        })
       }
     }
   );
+}
+
+function requestOrigin(request) {
+  const origin = request.headers.get("Origin") || "";
+
+  if (origin) {
+    return origin;
+  }
+
+  const referer = request.headers.get("Referer") || "";
+
+  try {
+    return new URL(referer).origin;
+  } catch {
+    return "";
+  }
+}
+
+function validatedCmsOrigin(request, env) {
+  const candidate = requestOrigin(request);
+  const allowedOrigins = splitList(env.ALLOWED_ORIGINS || "");
+
+  if (!candidate) {
+    return "";
+  }
+
+  return allowedOrigins.includes(candidate) ? candidate : "";
 }
 
 async function githubTokenExchange(requestUrl, code, env) {
@@ -437,7 +531,8 @@ function proofLoginRedirect(request, env) {
       Location: authUrl.toString(),
       "Set-Cookie": cookie(PROOF_STATE_COOKIE, JSON.stringify({ csrfToken, next }), {
         maxAge: 600,
-        secure
+        secure,
+        sameSite: "Lax"
       })
     }
   });
@@ -450,11 +545,14 @@ function cmsAuthRedirect(request, env) {
   const provider = url.searchParams.get("provider");
   const domain = url.searchParams.get("site_id") || "";
   const allowedDomains = splitList(env.ALLOWED_DOMAINS || "");
+  const cmsOrigin = validatedCmsOrigin(request, env);
 
   if (provider !== "github") {
     return cmsAuthHtml({
       error: "Your Git backend is not supported by the authenticator.",
-      errorCode: "UNSUPPORTED_BACKEND"
+      errorCode: "UNSUPPORTED_BACKEND",
+      origin: cmsOrigin || "*",
+      secure
     });
   }
 
@@ -462,7 +560,9 @@ function cmsAuthRedirect(request, env) {
     return cmsAuthHtml({
       provider,
       error: "Your domain is not allowed to use the authenticator.",
-      errorCode: "UNSUPPORTED_DOMAIN"
+      errorCode: "UNSUPPORTED_DOMAIN",
+      origin: cmsOrigin || "*",
+      secure
     });
   }
 
@@ -470,7 +570,19 @@ function cmsAuthRedirect(request, env) {
     return cmsAuthHtml({
       provider,
       error: "OAuth app client ID or secret is not configured.",
-      errorCode: "MISCONFIGURED_CLIENT"
+      errorCode: "MISCONFIGURED_CLIENT",
+      origin: cmsOrigin || "*",
+      secure
+    });
+  }
+
+  if (!cmsOrigin) {
+    return cmsAuthHtml({
+      provider,
+      error: "Your origin is not allowed to use the authenticator.",
+      errorCode: "UNSUPPORTED_ORIGIN",
+      origin: "*",
+      secure
     });
   }
 
@@ -485,7 +597,19 @@ function cmsAuthRedirect(request, env) {
     status: 302,
     headers: {
       Location: authUrl.toString(),
-      "Set-Cookie": cookie("csrf-token", `github_${csrfToken}`, { maxAge: 600, secure })
+      "Set-Cookie": cookie(
+        CMS_CSRF_COOKIE,
+        JSON.stringify({
+          provider,
+          csrfToken,
+          origin: cmsOrigin
+        }),
+        {
+          maxAge: 600,
+          secure,
+          sameSite: "Lax"
+        }
+      )
     }
   });
 }
@@ -518,12 +642,13 @@ async function handleCallback(request, env) {
             const headers = new Headers({
               Location: next || `${splitList(env.ALLOWED_ORIGINS || "")[0] || ""}/admin/proof/`
             });
-            headers.append("Set-Cookie", clearCookie(PROOF_STATE_COOKIE, { secure }));
+            headers.append("Set-Cookie", clearCookie(PROOF_STATE_COOKIE, { secure, sameSite: "Lax" }));
             headers.append(
               "Set-Cookie",
               cookie(SESSION_COOKIE, sessionId, {
                 maxAge: SESSION_TTL_SECONDS,
-                secure
+                secure,
+                sameSite: "None"
               })
             );
             return headers;
@@ -535,25 +660,39 @@ async function handleCallback(request, env) {
     }
   }
 
-  const cmsState = cookies["csrf-token"] || "";
-  const cmsMatch = cmsState.match(/^github_([0-9a-f]{32})$/);
+  let cmsState = null;
 
-  if (!cmsMatch || cmsMatch[1] !== state) {
+  try {
+    cmsState = cookies[CMS_CSRF_COOKIE] ? JSON.parse(cookies[CMS_CSRF_COOKIE]) : null;
+  } catch {
+    cmsState = null;
+  }
+
+  if (!cmsState || cmsState.provider !== "github" || cmsState.csrfToken !== state) {
     return cmsAuthHtml({
       provider: "github",
       error: "Potential CSRF attack detected. Authentication flow aborted.",
-      errorCode: "CSRF_DETECTED"
+      errorCode: "CSRF_DETECTED",
+      origin: "*",
+      secure
     });
   }
 
   try {
     const token = await githubTokenExchange(url, code, env);
-    return cmsAuthHtml({ provider: "github", token });
+    return cmsAuthHtml({
+      provider: "github",
+      token,
+      origin: cmsState.origin || "*",
+      secure
+    });
   } catch (error) {
     return cmsAuthHtml({
       provider: "github",
       error: error.message || "Failed to request an access token.",
-      errorCode: "TOKEN_REQUEST_FAILED"
+      errorCode: "TOKEN_REQUEST_FAILED",
+      origin: cmsState.origin || "*",
+      secure
     });
   }
 }
@@ -773,12 +912,34 @@ async function loadArticles(token, env) {
         author: parsed.data?.author || "",
         date: parsed.data?.date || null,
         url: `/articles/${slug}/`,
-        repo_path: entry.path
+        repo_path: entry.path,
+        proof: parsed.data?.proof || null
       };
     })
   );
 
   return sortArticles(articles);
+}
+
+async function loadAuthors(token, env) {
+  const entries = await loadRepoTree(env.AUTHOR_CONTENT_PATH || "src/content/authors/", token, env);
+  const authors = await Promise.all(
+    entries.map(async (entry) => {
+      const { content } = await readRepoFile(entry.path, token, env);
+      const parsed = parseFrontmatter(content);
+      const slug = pathStem(entry.path);
+
+      return {
+        slug,
+        name: parsed.data?.name || slug,
+        role: parsed.data?.role || "",
+        email: parsed.data?.email || "",
+        repo_path: entry.path
+      };
+    })
+  );
+
+  return [...authors].sort((left, right) => left.name.localeCompare(right.name));
 }
 
 async function loadDocuments(token, env) {
@@ -803,6 +964,414 @@ async function loadDocuments(token, env) {
   );
 
   return sortDocuments(documents);
+}
+
+function normalizeEmail(value = "") {
+  return normalizeWhitespace(value).toLowerCase();
+}
+
+function normalizeEditorRole(value = "writer") {
+  const role = normalizeWhitespace(value).toLowerCase();
+  return EDITOR_ROLES.has(role) ? role : "writer";
+}
+
+function editorSessionKey(sessionId = "") {
+  return `${EDITOR_SESSION_KEY_PREFIX}${sessionId}`;
+}
+
+function editorUserKey(email = "") {
+  return `${EDITOR_USER_KEY_PREFIX}${normalizeEmail(email)}`;
+}
+
+function editorLoginRateKey(request, email = "") {
+  const forwarded = request.headers.get("CF-Connecting-IP") || request.headers.get("X-Forwarded-For") || "";
+  const ipAddress = normalizeWhitespace(forwarded.split(",")[0] || "").toLowerCase() || "unknown";
+  const normalizedEmail = normalizeEmail(email) || "unknown";
+  return `${EDITOR_LOGIN_RATE_KEY_PREFIX}${ipAddress}:${normalizedEmail}`;
+}
+
+async function readEditorLoginRateState(key, env) {
+  const raw = await env.EDITOR_SESSIONS.get(key);
+
+  if (!raw) {
+    return {
+      attempts: 0,
+      blocked_until: 0
+    };
+  }
+
+  try {
+    const parsed = JSON.parse(raw);
+    return {
+      attempts: Number(parsed.attempts) || 0,
+      blocked_until: Number(parsed.blocked_until) || 0
+    };
+  } catch {
+    return {
+      attempts: 0,
+      blocked_until: 0
+    };
+  }
+}
+
+async function ensureEditorLoginAllowed(request, email, env) {
+  const key = editorLoginRateKey(request, email);
+  const state = await readEditorLoginRateState(key, env);
+  const now = Date.now();
+
+  if (state.blocked_until > now) {
+    const error = new Error("EDITOR_LOGIN_RATE_LIMITED");
+    error.retryAfter = Math.max(1, Math.ceil((state.blocked_until - now) / 1000));
+    throw error;
+  }
+
+  return key;
+}
+
+async function recordEditorLoginFailure(key, env) {
+  const existing = await readEditorLoginRateState(key, env);
+  const now = Date.now();
+  const attempts = existing.blocked_until > now ? existing.attempts : existing.attempts + 1;
+  const next = {
+    attempts
+  };
+  let expirationTtl = EDITOR_LOGIN_WINDOW_SECONDS;
+
+  if (attempts >= EDITOR_LOGIN_MAX_ATTEMPTS) {
+    next.blocked_until = now + EDITOR_LOGIN_BLOCK_SECONDS * 1000;
+    expirationTtl = EDITOR_LOGIN_BLOCK_SECONDS;
+  }
+
+  await env.EDITOR_SESSIONS.put(key, JSON.stringify(next), { expirationTtl });
+  return next;
+}
+
+async function clearEditorLoginFailures(key, env) {
+  if (!key) {
+    return;
+  }
+
+  await env.EDITOR_SESSIONS.delete(key);
+}
+
+function secureEqual(left = "", right = "") {
+  if (left.length !== right.length) {
+    return false;
+  }
+
+  let mismatch = 0;
+
+  for (let index = 0; index < left.length; index += 1) {
+    mismatch |= left.charCodeAt(index) ^ right.charCodeAt(index);
+  }
+
+  return mismatch === 0;
+}
+
+async function hashEditorPassword(password, saltBase64 = "", iterations = 210000) {
+  const candidate = password == null ? "" : password.toString();
+
+  if (!candidate.trim()) {
+    throw new Error("Assigned password is required.");
+  }
+
+  const salt = saltBase64 ? decodeBase64ToUint8Array(saltBase64) : crypto.getRandomValues(new Uint8Array(16));
+  const imported = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(candidate),
+    { name: "PBKDF2" },
+    false,
+    ["deriveBits"]
+  );
+  const derived = await crypto.subtle.deriveBits(
+    {
+      name: "PBKDF2",
+      hash: "SHA-256",
+      salt,
+      iterations
+    },
+    imported,
+    256
+  );
+
+  return {
+    algorithm: "pbkdf2_sha256",
+    iterations,
+    salt: bytesToBase64(salt),
+    hash: bytesToBase64(new Uint8Array(derived))
+  };
+}
+
+async function verifyEditorPassword(password, stored = null) {
+  if (
+    !stored ||
+    stored.algorithm !== "pbkdf2_sha256" ||
+    !stored.salt ||
+    !stored.hash ||
+    !stored.iterations
+  ) {
+    return false;
+  }
+
+  const hashed = await hashEditorPassword(password, stored.salt, stored.iterations);
+  return secureEqual(hashed.hash, stored.hash);
+}
+
+function sanitizeEditorUser(user = {}) {
+  return {
+    email: normalizeEmail(user.email || ""),
+    name: normalizeWhitespace(user.name || ""),
+    role: normalizeEditorRole(user.role || "writer"),
+    active: user.active !== false,
+    bootstrap: Boolean(user.bootstrap),
+    created_at: user.created_at || "",
+    updated_at: user.updated_at || ""
+  };
+}
+
+async function readEditorUser(email, env) {
+  const normalizedEmail = normalizeEmail(email);
+
+  if (!normalizedEmail) {
+    return null;
+  }
+
+  const raw = await env.EDITOR_SESSIONS.get(editorUserKey(normalizedEmail));
+
+  if (!raw) {
+    return null;
+  }
+
+  const parsed = JSON.parse(raw);
+  return {
+    ...sanitizeEditorUser(parsed),
+    password_hash: parsed.password_hash || null
+  };
+}
+
+async function listEditorUsers(env) {
+  const users = [];
+  let cursor;
+
+  do {
+    const page = await env.EDITOR_SESSIONS.list({
+      prefix: EDITOR_USER_KEY_PREFIX,
+      cursor
+    });
+
+    const pageUsers = await Promise.all(
+      (page.keys || []).map(async (entry) => {
+        const raw = await env.EDITOR_SESSIONS.get(entry.name);
+        return raw ? sanitizeEditorUser(JSON.parse(raw)) : null;
+      })
+    );
+
+    users.push(...pageUsers.filter(Boolean));
+    cursor = page.list_complete ? undefined : page.cursor;
+  } while (cursor);
+
+  return users.sort(
+    (left, right) =>
+      left.role.localeCompare(right.role) ||
+      left.name.localeCompare(right.name || right.email) ||
+      left.email.localeCompare(right.email)
+  );
+}
+
+async function writeEditorUser(user, env) {
+  const timestamp = new Date().toISOString();
+  const existing = await readEditorUser(user.email, env);
+  const next = {
+    email: normalizeEmail(user.email),
+    name: normalizeWhitespace(user.name || ""),
+    role: normalizeEditorRole(user.role || existing?.role || "writer"),
+    active: user.active !== false,
+    bootstrap: false,
+    created_at: existing?.created_at || timestamp,
+    updated_at: timestamp,
+    password_hash: user.password_hash || existing?.password_hash || null
+  };
+
+  await env.EDITOR_SESSIONS.put(editorUserKey(next.email), JSON.stringify(next));
+  return sanitizeEditorUser(next);
+}
+
+function resolveBootstrapEditorUser(env, email, password) {
+  const bootstrapEmail = normalizeEmail(env.EDITOR_BOOTSTRAP_EMAIL || "");
+  const bootstrapPassword = env.EDITOR_BOOTSTRAP_PASSWORD || "";
+
+  if (!bootstrapEmail || !bootstrapPassword) {
+    return null;
+  }
+
+  if (!secureEqual(email, bootstrapEmail) || !secureEqual(password, bootstrapPassword)) {
+    return null;
+  }
+
+  return {
+    email: bootstrapEmail,
+    name: normalizeWhitespace(env.EDITOR_BOOTSTRAP_NAME || "") || "Admin",
+    role: "admin",
+    active: true,
+    bootstrap: true,
+    created_at: "",
+    updated_at: ""
+  };
+}
+
+async function authenticateEditorUser(email, password, env) {
+  const normalizedEmail = normalizeEmail(email);
+  const candidatePassword = password == null ? "" : password.toString();
+
+  if (!normalizedEmail || !candidatePassword) {
+    return null;
+  }
+
+  const bootstrapUser = resolveBootstrapEditorUser(env, normalizedEmail, candidatePassword);
+  if (bootstrapUser) {
+    return bootstrapUser;
+  }
+
+  const storedUser = await readEditorUser(normalizedEmail, env);
+
+  if (!storedUser || storedUser.active === false) {
+    return null;
+  }
+
+  const validPassword = await verifyEditorPassword(candidatePassword, storedUser.password_hash);
+  return validPassword ? sanitizeEditorUser(storedUser) : null;
+}
+
+async function createEditorSession(user, env) {
+  const sessionId = crypto.randomUUID().replaceAll("-", "");
+  await env.EDITOR_SESSIONS.put(
+    editorSessionKey(sessionId),
+    JSON.stringify(sanitizeEditorUser(user)),
+    {
+      expirationTtl: EDITOR_SESSION_TTL_SECONDS
+    }
+  );
+  return sessionId;
+}
+
+async function readEditorSession(request, env) {
+  const cookies = parseCookies(request.headers.get("Cookie") || "");
+  const sessionId = cookies[EDITOR_SESSION_COOKIE];
+
+  if (!sessionId) {
+    return null;
+  }
+
+  const raw = await env.EDITOR_SESSIONS.get(editorSessionKey(sessionId));
+
+  if (!raw) {
+    return null;
+  }
+
+  return {
+    id: sessionId,
+    ...sanitizeEditorUser(JSON.parse(raw))
+  };
+}
+
+async function requireEditorSession(request, env, { admin = false } = {}) {
+  const session = await readEditorSession(request, env);
+
+  if (!session || session.active === false) {
+    throw new Error("EDITOR_UNAUTHENTICATED");
+  }
+
+  if (admin && session.role !== "admin") {
+    throw new Error("EDITOR_FORBIDDEN");
+  }
+
+  return session;
+}
+
+function requireEditorRepoToken(env) {
+  const token = normalizeWhitespace(env.GITHUB_SERVER_TOKEN || "");
+
+  if (!token) {
+    throw new Error("EDITOR_REPO_TOKEN_MISSING");
+  }
+
+  return token;
+}
+
+function normalizeTagList(rawTags) {
+  if (Array.isArray(rawTags)) {
+    return rawTags
+      .map((tag) => normalizeWhitespace(tag))
+      .filter(Boolean);
+  }
+
+  return normalizeWhitespace(rawTags || "")
+    .split(",")
+    .map((tag) => tag.trim())
+    .filter(Boolean);
+}
+
+function normalizeEditorArticlePayload(rawArticle = {}) {
+  return {
+    slug: slugify(rawArticle.slug || ""),
+    title: normalizeWhitespace(rawArticle.title || ""),
+    kicker: normalizeWhitespace(rawArticle.kicker || ""),
+    description: normalizeWhitespace(rawArticle.description || ""),
+    author: normalizeWhitespace(rawArticle.author || ""),
+    date: normalizeWhitespace(rawArticle.date || ""),
+    tags: normalizeTagList(rawArticle.tags || []),
+    featured_image: normalizeWhitespace(rawArticle.featured_image || ""),
+    body: rawArticle.body == null ? "" : rawArticle.body.toString()
+  };
+}
+
+function computeEditorArticleErrors(article = {}, { requireSlug = false } = {}) {
+  const errors = [];
+
+  if (requireSlug && !article.slug) {
+    errors.push("Article slug is required.");
+  }
+
+  if (!article.title) {
+    errors.push("Headline is required.");
+  }
+
+  if (!article.description) {
+    errors.push("Lede is required.");
+  }
+
+  if (!article.author) {
+    errors.push("Author is required.");
+  }
+
+  if (!article.date) {
+    errors.push("Publication date is required.");
+  }
+
+  return errors;
+}
+
+function isGitHubMissingError(error) {
+  const message = (error?.message || "").toLowerCase();
+  return message.includes("not found") || message.includes("\"status\":\"404\"") || message.includes(" 404");
+}
+
+function articleResponseFromParsed(slug, repoPath, parsed = {}) {
+  const data = parsed.data || {};
+  return {
+    slug,
+    title: data.title || slug,
+    kicker: data.kicker || "",
+    description: data.description || "",
+    author: data.author || "",
+    date: data.date || "",
+    tags: Array.isArray(data.tags) ? data.tags : data.tags ? [data.tags] : [],
+    featured_image: data.featured_image || "",
+    body: parsed.body || "",
+    url: `/articles/${slug}/`,
+    repo_path: repoPath,
+    proof: data.proof || null
+  };
 }
 
 async function handleSession(request, env) {
@@ -1036,7 +1605,7 @@ async function handleLogout(request, env) {
       new Response("", {
         status: 204,
         headers: {
-          "Set-Cookie": clearCookie(SESSION_COOKIE, { secure })
+          "Set-Cookie": clearCookie(SESSION_COOKIE, { secure, sameSite: "None" })
         }
       }),
       env
@@ -1047,54 +1616,610 @@ async function handleLogout(request, env) {
   }
 }
 
+function editorErrorStatus(error) {
+  if (error.message === "EDITOR_LOGIN_RATE_LIMITED") {
+    return 429;
+  }
+
+  if (error.message === "EDITOR_UNAUTHENTICATED") {
+    return 401;
+  }
+
+  if (error.message === "EDITOR_FORBIDDEN" || error.message === "FORBIDDEN_ORIGIN") {
+    return 403;
+  }
+
+  return 500;
+}
+
+function bootstrapEditorSummary(env) {
+  const email = normalizeEmail(env.EDITOR_BOOTSTRAP_EMAIL || "");
+  const password = env.EDITOR_BOOTSTRAP_PASSWORD || "";
+
+  if (!email || !password) {
+    return null;
+  }
+
+  return {
+    email,
+    name: normalizeWhitespace(env.EDITOR_BOOTSTRAP_NAME || "") || "Admin",
+    role: "admin",
+    active: true,
+    bootstrap: true,
+    created_at: "",
+    updated_at: ""
+  };
+}
+
+async function listAllEditorUsers(env) {
+  const users = await listEditorUsers(env);
+  const bootstrap = bootstrapEditorSummary(env);
+
+  if (!bootstrap) {
+    return users;
+  }
+
+  return [bootstrap, ...users.filter((user) => user.email !== bootstrap.email)];
+}
+
+async function handleEditorSession(request, env) {
+  try {
+    const session = await requireEditorSession(request, env);
+    return withCors(
+      request,
+      json({
+        user: sanitizeEditorUser(session)
+      }),
+      env
+    );
+  } catch (error) {
+    return withCors(request, json({ error: "Not signed in." }, { status: 401 }), env);
+  }
+}
+
+async function handleEditorLogin(request, env) {
+  try {
+    ensureAllowedOrigin(request, env);
+    const payload = await request.json();
+    const email = normalizeEmail(payload.email || "");
+    const password = payload.password == null ? "" : payload.password.toString();
+    const rateLimitKey = await ensureEditorLoginAllowed(request, email, env);
+    const user = await authenticateEditorUser(email, password, env);
+
+    if (!user) {
+      const failureState = await recordEditorLoginFailure(rateLimitKey, env);
+
+      if (failureState.blocked_until) {
+        return withCors(
+          request,
+          json(
+            { error: "Too many login attempts. Try again in a few minutes." },
+            {
+              status: 429,
+              headers: {
+                "Retry-After": String(EDITOR_LOGIN_BLOCK_SECONDS)
+              }
+            }
+          ),
+          env
+        );
+      }
+
+      return withCors(request, json({ error: "Invalid editor login." }, { status: 401 }), env);
+    }
+
+    await clearEditorLoginFailures(rateLimitKey, env);
+    const sessionId = await createEditorSession(user, env);
+    const secure = isSecureRequest(request);
+
+    return withCors(
+      request,
+      new Response(
+        JSON.stringify(
+          {
+            user: sanitizeEditorUser(user)
+          },
+          null,
+          2
+        ),
+        {
+          status: 200,
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "Set-Cookie": cookie(EDITOR_SESSION_COOKIE, sessionId, {
+              maxAge: EDITOR_SESSION_TTL_SECONDS,
+              secure,
+              sameSite: "None"
+            })
+          }
+        }
+      ),
+      env
+    );
+  } catch (error) {
+    if (error.message === "EDITOR_LOGIN_RATE_LIMITED") {
+      return withCors(
+        request,
+        json(
+          { error: "Too many login attempts. Try again in a few minutes." },
+          {
+            status: 429,
+            headers: {
+              "Retry-After": String(error.retryAfter || EDITOR_LOGIN_BLOCK_SECONDS)
+            }
+          }
+        ),
+        env
+      );
+    }
+
+    return withCors(request, json({ error: error.message }, { status: editorErrorStatus(error) }), env);
+  }
+}
+
+async function handleEditorLogout(request, env) {
+  try {
+    ensureAllowedOrigin(request, env);
+    const cookies = parseCookies(request.headers.get("Cookie") || "");
+    const sessionId = cookies[EDITOR_SESSION_COOKIE];
+    const secure = isSecureRequest(request);
+
+    if (sessionId) {
+      await env.EDITOR_SESSIONS.delete(editorSessionKey(sessionId));
+    }
+
+    return withCors(
+      request,
+      new Response("", {
+        status: 204,
+        headers: {
+          "Set-Cookie": clearCookie(EDITOR_SESSION_COOKIE, { secure, sameSite: "None" })
+        }
+      }),
+      env
+    );
+  } catch (error) {
+    return withCors(request, json({ error: error.message }, { status: editorErrorStatus(error) }), env);
+  }
+}
+
+async function handleEditorArticles(request, env) {
+  try {
+    await requireEditorSession(request, env);
+    const token = requireEditorRepoToken(env);
+    const articles = await loadArticles(token, env);
+    return withCors(request, json({ articles }), env);
+  } catch (error) {
+    return withCors(request, json({ error: error.message }, { status: editorErrorStatus(error) }), env);
+  }
+}
+
+async function handleEditorAuthors(request, env) {
+  try {
+    await requireEditorSession(request, env);
+    const token = requireEditorRepoToken(env);
+    const authors = await loadAuthors(token, env);
+    return withCors(request, json({ authors }), env);
+  } catch (error) {
+    return withCors(request, json({ error: error.message }, { status: editorErrorStatus(error) }), env);
+  }
+}
+
+async function handleEditorDocuments(request, env) {
+  try {
+    await requireEditorSession(request, env);
+    const token = requireEditorRepoToken(env);
+    const documents = await loadDocuments(token, env);
+    return withCors(request, json({ documents }), env);
+  } catch (error) {
+    return withCors(request, json({ error: error.message }, { status: editorErrorStatus(error) }), env);
+  }
+}
+
+async function handleEditorArticle(request, env) {
+  try {
+    await requireEditorSession(request, env);
+    const slug = normalizeWhitespace(new URL(request.url).searchParams.get("slug") || "");
+
+    if (!slug) {
+      return withCors(request, json({ error: "Missing article slug." }, { status: 400 }), env);
+    }
+
+    const token = requireEditorRepoToken(env);
+    const repoPath = `${env.ARTICLE_CONTENT_PATH || "src/content/articles/"}${slug}.md`;
+    const { content } = await readRepoFile(repoPath, token, env);
+    const parsed = parseFrontmatter(content);
+
+    return withCors(
+      request,
+      json({
+        article: articleResponseFromParsed(slug, repoPath, parsed)
+      }),
+      env
+    );
+  } catch (error) {
+    return withCors(request, json({ error: error.message }, { status: editorErrorStatus(error) }), env);
+  }
+}
+
+async function handleEditorSaveArticle(request, env) {
+  try {
+    ensureAllowedOrigin(request, env);
+    await requireEditorSession(request, env);
+    const token = requireEditorRepoToken(env);
+    const payload = await request.json();
+    const article = normalizeEditorArticlePayload(payload.article || {});
+    const repoPathInput = normalizeWhitespace(payload.repo_path || "");
+    const currentSlug = repoPathInput ? pathStem(repoPathInput) : "";
+    const slug = article.slug || slugify(payload.slug || currentSlug || article.title);
+    const errors = computeEditorArticleErrors(
+      {
+        ...article,
+        slug
+      },
+      { requireSlug: true }
+    );
+
+    if (errors.length) {
+      return withCors(request, json({ error: "Article validation failed.", details: errors }, { status: 400 }), env);
+    }
+
+    if (repoPathInput && currentSlug && currentSlug !== slug) {
+      return withCors(
+        request,
+        json({ error: "Renaming existing article slugs is not supported in the editor yet." }, { status: 400 }),
+        env
+      );
+    }
+
+    const repoPath = repoPathInput || `${env.ARTICLE_CONTENT_PATH || "src/content/articles/"}${slug}.md`;
+    let sha;
+    let parsed = {
+      data: {},
+      body: ""
+    };
+
+    try {
+      const current = await readRepoFile(repoPath, token, env);
+
+      if (!repoPathInput) {
+        return withCors(request, json({ error: "That article slug already exists." }, { status: 409 }), env);
+      }
+
+      sha = current.sha;
+      parsed = parseFrontmatter(current.content);
+    } catch (error) {
+      if (repoPathInput || !isGitHubMissingError(error)) {
+        throw error;
+      }
+    }
+
+    const nextData = {
+      ...(parsed.data || {}),
+      kicker: article.kicker,
+      title: article.title,
+      description: article.description,
+      author: article.author,
+      date: article.date,
+      tags: article.tags,
+      featured_image: article.featured_image || ""
+    };
+    const nextContent = stringifyFrontmatter(nextData, article.body);
+
+    await writeRepoTextFile(
+      repoPath,
+      nextContent,
+      `${sha ? "Update" : "Create"} article "${article.title}"`,
+      sha,
+      token,
+      env
+    );
+
+    return withCors(
+      request,
+      json({
+        article: articleResponseFromParsed(slug, repoPath, {
+          data: nextData,
+          body: article.body
+        })
+      }),
+      env
+    );
+  } catch (error) {
+    return withCors(request, json({ error: error.message }, { status: editorErrorStatus(error) }), env);
+  }
+}
+
+async function handleEditorSaveProof(request, env) {
+  try {
+    ensureAllowedOrigin(request, env);
+    await requireEditorSession(request, env);
+    const token = requireEditorRepoToken(env);
+    const payload = await request.json();
+    const slug = normalizeWhitespace(payload.slug || "");
+
+    if (!slug || !payload.proof || typeof payload.proof !== "object") {
+      return withCors(request, json({ error: "Missing proof payload." }, { status: 400 }), env);
+    }
+
+    const normalizedProof = normalizeProofPayload(payload.proof);
+    const documents = await loadDocuments(token, env);
+    const errors = computeProofValidationErrors(normalizedProof, documents);
+
+    if (errors.length) {
+      return withCors(request, json({ error: "Proof validation failed.", details: errors }, { status: 400 }), env);
+    }
+
+    const repoPath = `${env.ARTICLE_CONTENT_PATH || "src/content/articles/"}${slug}.md`;
+    const { content, sha } = await readRepoFile(repoPath, token, env);
+    const parsed = parseFrontmatter(content);
+    parsed.data.proof = normalizedProof;
+    const nextContent = stringifyFrontmatter(parsed.data, parsed.body);
+
+    await writeRepoTextFile(
+      repoPath,
+      nextContent,
+      `Update proof for "${parsed.data?.title || slug}"`,
+      sha,
+      token,
+      env
+    );
+
+    return withCors(request, json({ ok: true }), env);
+  } catch (error) {
+    return withCors(request, json({ error: error.message }, { status: editorErrorStatus(error) }), env);
+  }
+}
+
+async function handleEditorCreateDocument(request, env) {
+  try {
+    ensureAllowedOrigin(request, env);
+    await requireEditorSession(request, env);
+    const token = requireEditorRepoToken(env);
+    const payload = await request.json();
+
+    const title = normalizeWhitespace(payload.title || "");
+    const description = normalizeWhitespace(payload.description || "");
+    const obtained = normalizeWhitespace(payload.obtained || "");
+    const sourceMethod = normalizeWhitespace(payload.source_method || "");
+    const fileName = normalizeWhitespace(payload.file_name || "");
+    const mimeType = normalizeWhitespace(payload.mime_type || "");
+    const fileBase64 = payload.file_base64 || "";
+
+    if (!title || !description || !obtained || !sourceMethod || !fileName || !fileBase64) {
+      return withCors(request, json({ error: "Missing document fields." }, { status: 400 }), env);
+    }
+
+    let baseSlug = slugify(title) || "source-document";
+    let slug = baseSlug;
+    let suffix = 2;
+
+    while (true) {
+      try {
+        await readRepoFile(`${env.DOCUMENT_CONTENT_PATH || "src/content/documents/"}${slug}.md`, token, env);
+        slug = `${baseSlug}-${suffix}`;
+        suffix += 1;
+      } catch {
+        break;
+      }
+    }
+
+    const extension = fileName.split(".").pop()?.toLowerCase() || (mimeType === "application/pdf" ? "pdf" : "bin");
+    if (!ALLOWED_FILE_EXTENSIONS.has(extension)) {
+      return withCors(request, json({ error: "Unsupported file type." }, { status: 400 }), env);
+    }
+
+    const fileUrl = `/documents/${slug}.${extension}`;
+    const assetPath = `${env.DOCUMENT_ASSET_PATH || "static/documents/"}${slug}.${extension}`;
+    const repoPath = `${env.DOCUMENT_CONTENT_PATH || "src/content/documents/"}${slug}.md`;
+    const bytes = decodeBase64ToUint8Array(fileBase64);
+
+    if (bytes.byteLength > MAX_UPLOAD_BYTES) {
+      return withCors(request, json({ error: "Source files must be 25 MB or smaller." }, { status: 400 }), env);
+    }
+
+    await writeRepoBinaryFile(assetPath, bytes, `Add source file "${title}"`, token, env);
+
+    const frontmatter = yaml.dump(
+      {
+        title,
+        file: fileUrl,
+        description,
+        obtained,
+        source_method: sourceMethod
+      },
+      {
+        lineWidth: 1000,
+        noRefs: true,
+        sortKeys: false
+      }
+    );
+
+    await writeRepoTextFile(
+      repoPath,
+      `---\n${frontmatter}---\n`,
+      `Add source document "${title}"`,
+      undefined,
+      token,
+      env
+    );
+
+    return withCors(
+      request,
+      json({
+        document: {
+          slug,
+          title,
+          description,
+          obtained,
+          source_method: sourceMethod,
+          url: `/documents/${slug}/`,
+          file_url: fileUrl,
+          repo_path: repoPath
+        }
+      }),
+      env
+    );
+  } catch (error) {
+    return withCors(request, json({ error: error.message }, { status: editorErrorStatus(error) }), env);
+  }
+}
+
+async function handleEditorAdminUsers(request, env) {
+  try {
+    await requireEditorSession(request, env, { admin: true });
+    const users = await listAllEditorUsers(env);
+    return withCors(request, json({ users }), env);
+  } catch (error) {
+    return withCors(request, json({ error: error.message }, { status: editorErrorStatus(error) }), env);
+  }
+}
+
+async function handleEditorAdminCreateUser(request, env) {
+  try {
+    ensureAllowedOrigin(request, env);
+    await requireEditorSession(request, env, { admin: true });
+    const payload = await request.json();
+    const email = normalizeEmail(payload.email || "");
+    const name = normalizeWhitespace(payload.name || "");
+    const role = normalizeEditorRole(payload.role || "writer");
+    const active = payload.active !== false;
+    const password = payload.password == null ? "" : payload.password.toString();
+
+    if (!email || !name || !password) {
+      return withCors(
+        request,
+        json({ error: "Name, email, role, and assigned password are required." }, { status: 400 }),
+        env
+      );
+    }
+
+    const existing = await readEditorUser(email, env);
+
+    if (existing) {
+      return withCors(request, json({ error: "That editor login already exists." }, { status: 409 }), env);
+    }
+
+    const password_hash = await hashEditorPassword(password);
+    const user = await writeEditorUser(
+      {
+        email,
+        name,
+        role,
+        active,
+        password_hash
+      },
+      env
+    );
+
+    return withCors(request, json({ user }), env);
+  } catch (error) {
+    return withCors(request, json({ error: error.message }, { status: editorErrorStatus(error) }), env);
+  }
+}
+
+async function handleEditorAdminUpdateUser(request, env) {
+  try {
+    ensureAllowedOrigin(request, env);
+    await requireEditorSession(request, env, { admin: true });
+    const payload = await request.json();
+    const email = normalizeEmail(payload.email || "");
+    const bootstrap = bootstrapEditorSummary(env);
+
+    if (!email) {
+      return withCors(request, json({ error: "Editor email is required." }, { status: 400 }), env);
+    }
+
+    if (bootstrap && email === bootstrap.email) {
+      return withCors(
+        request,
+        json({ error: "The bootstrap admin login can only be changed through Worker secrets." }, { status: 400 }),
+        env
+      );
+    }
+
+    const existing = await readEditorUser(email, env);
+
+    if (!existing) {
+      return withCors(request, json({ error: "That editor login does not exist." }, { status: 404 }), env);
+    }
+
+    const password = payload.password == null ? "" : payload.password.toString();
+    const password_hash = password ? await hashEditorPassword(password) : existing.password_hash;
+    const user = await writeEditorUser(
+      {
+        ...existing,
+        name: payload.name != null ? payload.name : existing.name,
+        role: payload.role != null ? payload.role : existing.role,
+        active: payload.active != null ? Boolean(payload.active) : existing.active,
+        password_hash
+      },
+      env
+    );
+
+    return withCors(request, json({ user }), env);
+  } catch (error) {
+    return withCors(request, json({ error: error.message }, { status: editorErrorStatus(error) }), env);
+  }
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    let response;
 
     if (request.method === "OPTIONS") {
-      return handleOptions(request, env);
+      response = handleOptions(request, env);
+    } else if (request.method === "GET" && url.pathname === "/auth") {
+      response = cmsAuthRedirect(request, env);
+    } else if (request.method === "GET" && url.pathname === "/proof/login") {
+      response = proofLoginRedirect(request, env);
+    } else if (request.method === "GET" && url.pathname === "/callback") {
+      response = handleCallback(request, env);
+    } else if (request.method === "POST" && url.pathname === "/proof/logout") {
+      response = handleLogout(request, env);
+    } else if (request.method === "POST" && url.pathname === "/api/editor/login") {
+      response = handleEditorLogin(request, env);
+    } else if (request.method === "POST" && url.pathname === "/api/editor/logout") {
+      response = handleEditorLogout(request, env);
+    } else if (request.method === "GET" && url.pathname === "/api/editor/session") {
+      response = handleEditorSession(request, env);
+    } else if (request.method === "GET" && url.pathname === "/api/editor/articles") {
+      response = handleEditorArticles(request, env);
+    } else if (request.method === "GET" && url.pathname === "/api/editor/article") {
+      response = handleEditorArticle(request, env);
+    } else if (request.method === "POST" && url.pathname === "/api/editor/article/save") {
+      response = handleEditorSaveArticle(request, env);
+    } else if (request.method === "POST" && url.pathname === "/api/editor/proof/save") {
+      response = handleEditorSaveProof(request, env);
+    } else if (request.method === "GET" && url.pathname === "/api/editor/authors") {
+      response = handleEditorAuthors(request, env);
+    } else if (request.method === "GET" && url.pathname === "/api/editor/documents") {
+      response = handleEditorDocuments(request, env);
+    } else if (request.method === "POST" && url.pathname === "/api/editor/create-document") {
+      response = handleEditorCreateDocument(request, env);
+    } else if (request.method === "GET" && url.pathname === "/api/editor/admin/users") {
+      response = handleEditorAdminUsers(request, env);
+    } else if (request.method === "POST" && url.pathname === "/api/editor/admin/users") {
+      response = handleEditorAdminCreateUser(request, env);
+    } else if (request.method === "POST" && url.pathname === "/api/editor/admin/users/update") {
+      response = handleEditorAdminUpdateUser(request, env);
+    } else if (request.method === "GET" && url.pathname === "/api/session") {
+      response = handleSession(request, env);
+    } else if (request.method === "GET" && url.pathname === "/api/proof/articles") {
+      response = handleArticles(request, env);
+    } else if (request.method === "GET" && url.pathname === "/api/proof/article") {
+      response = handleArticle(request, env);
+    } else if (request.method === "GET" && url.pathname === "/api/proof/documents") {
+      response = handleDocuments(request, env);
+    } else if (request.method === "POST" && url.pathname === "/api/proof/save") {
+      response = handleSaveProof(request, env);
+    } else if (request.method === "POST" && url.pathname === "/api/proof/create-document") {
+      response = handleCreateDocument(request, env);
+    } else {
+      response = text("Not found", 404);
     }
 
-    if (request.method === "GET" && url.pathname === "/auth") {
-      return cmsAuthRedirect(request, env);
-    }
-
-    if (request.method === "GET" && url.pathname === "/proof/login") {
-      return proofLoginRedirect(request, env);
-    }
-
-    if (request.method === "GET" && url.pathname === "/callback") {
-      return handleCallback(request, env);
-    }
-
-    if (request.method === "POST" && url.pathname === "/proof/logout") {
-      return handleLogout(request, env);
-    }
-
-    if (request.method === "GET" && url.pathname === "/api/session") {
-      return handleSession(request, env);
-    }
-
-    if (request.method === "GET" && url.pathname === "/api/proof/articles") {
-      return handleArticles(request, env);
-    }
-
-    if (request.method === "GET" && url.pathname === "/api/proof/article") {
-      return handleArticle(request, env);
-    }
-
-    if (request.method === "GET" && url.pathname === "/api/proof/documents") {
-      return handleDocuments(request, env);
-    }
-
-    if (request.method === "POST" && url.pathname === "/api/proof/save") {
-      return handleSaveProof(request, env);
-    }
-
-    if (request.method === "POST" && url.pathname === "/api/proof/create-document") {
-      return handleCreateDocument(request, env);
-    }
-
-    return text("Not found", 404);
+    return finalizeWorkerResponse(await response);
   }
 };
