@@ -6,9 +6,11 @@
   "type": "module",
   "scripts": {
     "start": "npx @11ty/eleventy --serve",
-    "build": "rm -rf _site && npx @11ty/eleventy && npm run audit:assets",
+    "build": "rm -rf _site && npx @11ty/eleventy && npm run audit:assets && npm run audit:public",
     "audit:assets": "node ./scripts/asset-audit.mjs",
     "audit:assets:strict": "node ./scripts/asset-audit.mjs --strict",
+    "audit:public": "node ./scripts/public-surface-audit.mjs",
+    "audit:public:strict": "node ./scripts/public-surface-audit.mjs --strict",
     "newsletter:draft": "node ./scripts/buttondown-draft.mjs",
     "proof-gateway:install": "npm --prefix ./workers/proof-desk-gateway install",
     "proof-gateway:dev": "npm --prefix ./workers/proof-desk-gateway run dev",

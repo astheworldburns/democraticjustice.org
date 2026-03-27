@@ -299,7 +299,15 @@ export default async function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "static/documents": "documents" });
   eleventyConfig.addPassthroughCopy({ "static/_headers": "_headers" });
   eleventyConfig.addPassthroughCopy({ "static/robots.txt": "robots.txt" });
-  eleventyConfig.addPassthroughCopy("src/admin");
+  eleventyConfig.addPassthroughCopy({ "src/admin/index.html": "admin/index.html" });
+  eleventyConfig.addPassthroughCopy({ "src/admin/config.yml": "admin/config.yml" });
+  eleventyConfig.addPassthroughCopy({ "src/admin/editorial.css": "admin/editorial.css" });
+  eleventyConfig.addPassthroughCopy({ "src/admin/cms/index.html": "admin/cms/index.html" });
+  eleventyConfig.addPassthroughCopy({ "src/admin/cms/vendor": "admin/cms/vendor" });
+  eleventyConfig.addPassthroughCopy({ "src/admin/proof/index.html": "admin/proof/index.html" });
+  eleventyConfig.addPassthroughCopy({ "src/admin/proof/app.js": "admin/proof/app.js" });
+  eleventyConfig.addPassthroughCopy({ "src/admin/editor/index.html": "admin/editor/index.html" });
+  eleventyConfig.addPassthroughCopy({ "src/admin/editor/app.js": "admin/editor/app.js" });
 
   eleventyConfig.addWatchTarget("./tailwind.config.js");
   eleventyConfig.addWatchTarget("./src/assets/css/tailwind.css");
