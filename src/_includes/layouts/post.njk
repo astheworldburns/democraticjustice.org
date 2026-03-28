@@ -1,164 +1,88 @@
-{# Token migration: arbitrary values replaced — Phase 1B #}
 ---
 layout: layouts/base.njk
 ogType: article
 ---
 {% set authorProfile = author | getAuthor(collections.authorProfiles) %}
-{% set articleHtml = content | withHeadingIds %}
-{% set tocItems = articleHtml | extractHeadings %}
+{% set articleHtml = content | withHeadingIds | safe %}
+{% set tocItems = content | withHeadingIds | extractHeadings %}
 {% set relatedStories = collections.article | relatedArticles(page, tags, 3) %}
 
-<article class="story-layout story-layout--bento">
-  <div class="story-main space-y-8 math-rank-major" data-math-rank="major">
-    <header class="story-header">
-      <div class="sr-only" aria-hidden="true">
-        <span data-pagefind-meta="type">Article</span>
-        {% if authorProfile %}
-          <span data-pagefind-meta="author">{{ authorProfile.data.name }}</span>
-          <span data-pagefind-filter="author">{{ authorProfile.data.name }}</span>
-        {% endif %}
-        <span data-pagefind-filter="year">{{ date | displayYear }}</span>
-        {% for tag in tags %}
-          {% if tag != "article" %}
-            <span data-pagefind-filter="desk">{{ tag | tagLabel }}</span>
-          {% endif %}
-        {% endfor %}
-      </div>
-      <p class="section-kicker">{{ kicker or "Investigative Report" }}</p>
-      <h1 class="story-title">{{ title }}</h1>
-      {% if description %}
-        <p class="story-description" data-pagefind-weight="2">{{ description }}</p>
-      {% endif %}
-      <div class="meta-row mt-4">
-        <span>By {% if authorProfile %}<a class="headline-link" href="{{ authorProfile.url }}">{{ authorProfile.data.name }}</a>{% else %}{{ author or site.author }}{% endif %}</span>
-        <span class="meta-divider">{{ date | displayDate }}</span>
-        <span class="meta-divider">{{ articleHtml | readingMinutes }} min read</span>
-      </div>
-    </header>
-
-    {% if proofCard %}
-      <section class="proof-shell" data-pagefind-body data-pagefind-meta="type: Proof-backed article">
-        {% include "components/proof-card.njk" %}
-      </section>
+<div class="sr-only" aria-hidden="true">
+  <span data-pagefind-meta="type">Article</span>
+  {% if authorProfile %}
+    <span data-pagefind-meta="author">{{ authorProfile.data.name }}</span>
+    <span data-pagefind-filter="author">{{ authorProfile.data.name }}</span>
+  {% endif %}
+  <span data-pagefind-filter="year">{{ date | displayYear }}</span>
+  {% for tag in tags %}
+    {% if tag != "article" %}
+      <span data-pagefind-filter="desk">{{ tag | tagLabel }}</span>
     {% endif %}
+  {% endfor %}
+</div>
 
-    {% if proofCard %}
-      <p class="story-transition" data-pagefind-ignore>Reported narrative</p>
-    {% endif %}
+{# Sticky proof navigator #}
+{% if proofCard %}
+<nav class="proof-nav" aria-label="Investigation sections">
+  <ol class="proof-nav__list">
+    <li><a href="#proof-card" class="proof-nav__link" data-section="proof-card" aria-current="true">Proof Card</a></li>
+    <li><a href="#source-documents" class="proof-nav__link" data-section="source-documents">Source Documents</a></li>
+    <li><a href="#narrative" class="proof-nav__link" data-section="narrative">Narrative</a></li>
+  </ol>
+</nav>
+{% endif %}
 
-    {% if featured_image %}
-      <figure class="my-4 border border-border-subtle bg-surface-overlay p-2 rounded-squircle-sm">
-        {% image featured_image, title, "(min-width: 1024px) 1200px, 100vw", "w-full" %}
-      </figure>
-    {% endif %}
+<main id="main-content" data-pagefind-body>
 
-    <div class="story-prose" data-pagefind-body data-reading-root>
-      {{ articleHtml | safe }}
+  {# Section 1: Proof Card #}
+  {% if proofCard %}
+    {% include "components/proof-card.njk" %}
+  {% endif %}
+
+  {# Section 2: Source Documents #}
+  {% if proofCard and proofCard.sourceDocuments.length %}
+  <section id="source-documents" aria-labelledby="source-docs-heading" class="mb-16">
+    {% set sectionKicker = "02" %}{% set sectionTitle = "Source Documents" %}{% set sectionId = "source-docs-heading" %}
+    {% include "components/section-header.njk" %}
+    <div class="bento-grid">
+      {% for doc in proofCard.sourceDocuments %}
+        {% set docTitle = doc.data.title %}{% set docDescription = doc.data.description %}{% set docUrl = doc.url %}{% set docFile = doc.data.file %}{% set docFileType = doc.data.file_type %}{% set docObtained = doc.data.obtained %}{% set docSourceMethod = doc.data.source_method %}
+        <div class="bento-6">{% include "components/document-card.njk" %}</div>
+      {% endfor %}
     </div>
+  </section>
+  {% endif %}
 
-    {% if authorProfile %}
-      <section class="author-card grid gap-4 p-5 md:grid-cols-[auto_1fr]" data-pagefind-ignore>
-        {% if authorProfile.data.headshot %}
-          {% image authorProfile.data.headshot, authorProfile.data.name, "96px", "h-20 w-20 rounded-full object-cover" %}
-        {% else %}
-          <div class="author-avatar h-20 w-20 text-lg">{{ authorProfile.data.name | initials }}</div>
-        {% endif %}
-        <div>
-          <p class="section-kicker">About the reporter</p>
-          <h2 class="mt-2 font-display text-3xl font-semibold tracking-tight text-ink">
-            <a class="headline-link" href="{{ authorProfile.url }}">{{ authorProfile.data.name }}</a>
-          </h2>
-          <p class="mt-1 font-mono text-2xs uppercase tracking-wide text-ink-muted">
-            {{ authorProfile.data.role }}
-          </p>
-          <p class="mt-3 font-serif text-base leading-relaxed text-ink-secondary">
-            {{ authorProfile.data.bio or authorProfile.data.short_bio }}
-          </p>
-        </div>
-      </section>
+  {# Section 3: Reported Narrative #}
+  <section id="narrative" aria-labelledby="narrative-heading" class="mb-16">
+    <h2 id="narrative-heading" class="sr-only">Reported Narrative</h2>
+    {% if tocItems.length > 2 %}
+      <aside class="mb-8 p-4 border border-border-subtle rounded-squircle max-w-2xl mx-auto" aria-label="Table of contents">
+        <h3 class="font-mono text-xs uppercase tracking-widest text-ink-muted mb-3">Contents</h3>
+        <ol class="space-y-1">{% for item in tocItems %}<li class="{{ 'ml-4' if item.level === 3 }}"><a href="#{{ item.id }}" class="text-sm text-ink-secondary hover:text-accent">{{ item.text }}</a></li>{% endfor %}</ol>
+      </aside>
     {% endif %}
+    <div class="prose prose-lg">{{ articleHtml }}</div>
+  </section>
 
-    {% if relatedStories | length %}
-      <section class="space-y-4" data-pagefind-ignore>
-        <div class="flex items-end justify-between border-b border-border pb-3">
-          <h2 class="font-display text-3xl font-semibold tracking-tight text-ink">Continue reading</h2>
-          <p class="section-kicker">Related desks</p>
-        </div>
-        <div class="story-bento-grid">
-          {% for story in relatedStories %}
-            {% set storyAuthor = story.data.author | getAuthor(collections.authorProfiles) %}
-            {% set relatedRankClass = "math-rank-major" if loop.first else "math-rank-medium" %}
-            {% set relatedRank = "major" if loop.first else "medium" %}
-            <article class="listing-card card-lift story-bento-card p-4 {{ relatedRankClass }}" data-math-rank="{{ relatedRank }}">
-              <p class="meta-row">
-                <span>{{ story.date | displayDate }}</span>
-                {% if storyAuthor %}
-                  <span class="meta-divider">{{ storyAuthor.data.name }}</span>
-                {% endif %}
-              </p>
-              <h3 class="mt-2 font-serif text-2xl font-semibold leading-tight text-ink">
-                <a class="headline-link" href="{{ story.url }}">{{ story.data.title }}</a>
-              </h3>
-              <p class="mt-2 font-serif text-base leading-relaxed text-ink-secondary">
-                {{ story.data.description }}
-              </p>
-            </article>
-          {% endfor %}
-        </div>
-      </section>
-    {% endif %}
-  </div>
-
-  <aside class="story-sidebar story-sidebar--bento math-rank-small" data-math-rank="small" data-pagefind-ignore>
-    <div class="story-rail">
-      <p class="section-kicker">Reading tools</p>
-      <div class="mt-3 flex flex-wrap gap-2">
-        <button class="toolbar-button" type="button" data-copy-link data-copy-label-default="Copy link" data-copy-label-success="Link copied">
-          Copy link
-        </button>
-        <button class="toolbar-button" type="button" data-share-page data-share-title="{{ title }}" hidden>
-          Share
-        </button>
-        <button class="toolbar-button" type="button" data-print-page>
-          Print
-        </button>
-      </div>
+  {# Related Stories #}
+  {% if relatedStories.length %}
+  <section aria-labelledby="related-heading" class="mb-16" data-pagefind-ignore>
+    {% set sectionKicker = "Related" %}{% set sectionTitle = "More Investigations" %}{% set sectionId = "related-heading" %}
+    {% include "components/section-header.njk" %}
+    <div class="bento-grid">
+      {% for story in relatedStories %}
+        {% set storyAuthor = story.data.author | getAuthor(collections.authorProfiles) %}
+        <article class="card bento-4">
+          <span class="card__tag">{{ story.data.kicker }}</span>
+          <h3 class="font-serif text-lg mt-1"><a href="{{ story.url }}" class="text-ink hover:text-accent">{{ story.data.title }}</a></h3>
+          <p class="text-sm text-ink-secondary mt-2">{{ story.data.description }}</p>
+          {% set metaDate = story.date %}{% set metaAuthor = storyAuthor.data.name if storyAuthor else null %}{% set metaAuthorUrl = storyAuthor.url if storyAuthor else null %}{% set metaDesk = null %}{% set metaReadTime = null %}
+          <div class="mt-3">{% include "components/meta-row.njk" %}</div>
+        </article>
+      {% endfor %}
     </div>
+  </section>
+  {% endif %}
 
-    {% if tocItems | length %}
-      <div class="story-rail">
-        <p class="section-kicker">On this page</p>
-        <nav aria-label="Article sections">
-          <ul class="toc-list">
-            {% for item in tocItems %}
-              <li class="{% if item.level > 2 %}ml-4{% endif %}">
-                <a class="toc-link" href="#{{ item.id }}">{{ item.text }}</a>
-              </li>
-            {% endfor %}
-          </ul>
-        </nav>
-      </div>
-    {% endif %}
-
-    {% if authorProfile %}
-      <div class="story-rail">
-        <p class="section-kicker">Byline</p>
-        <p class="mt-3 font-serif text-xl font-semibold leading-tight text-ink">
-          <a class="headline-link" href="{{ authorProfile.url }}">{{ authorProfile.data.name }}</a>
-        </p>
-        <p class="mt-2 font-serif text-sm leading-relaxed text-ink-secondary">
-          {{ authorProfile.data.short_bio }}
-        </p>
-      </div>
-    {% endif %}
-
-    <div class="story-rail">
-      <p class="section-kicker">Elsewhere</p>
-      <div class="mt-3 flex flex-wrap gap-2">
-        <a class="button-link-muted" href="/search/">Search</a>
-        <a class="button-link-muted" href="/rss/">RSS</a>
-        <a class="button-link-muted" href="/archives/">Archive</a>
-      </div>
-    </div>
-  </aside>
-</article>
+</main>

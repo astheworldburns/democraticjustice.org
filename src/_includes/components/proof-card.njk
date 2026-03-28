@@ -2,103 +2,67 @@
 {% set proofMarkNightSrc = site.proofMarkNight ~ "?v=" ~ buildVersion %}
 {% set proofMarkPrintSrc = site.proofMarkPrint ~ "?v=" ~ buildVersion %}
 
-<section class="proof-card" aria-labelledby="proof-card-issue-{{ proofCard.slug }}">
-  <div class="proof-card__top">
-    <div class="proof-card__identity">
-      <img class="proof-mark proof-card__mark" src="{{ proofMarkPrintSrc }}" alt="" />
-      <p class="proof-card__eyebrow">Proof card</p>
+<section id="proof-card" aria-labelledby="proof-heading" class="mb-16">
+  <div class="bento-grid">
+    <div class="card card--featured bento-8 bento-rows-2">
+      <span class="card__tag">{{ kicker }}</span>
+      <h1 id="proof-heading" class="font-serif text-display-lg">{{ title }}</h1>
+      <p class="font-serif text-lg text-ink-secondary italic mt-4">{{ proofCard.issue }}</p>
+      {% set metaDesk = kicker %}{% set metaAuthor = authorProfile.data.name if authorProfile else author %}{% set metaAuthorUrl = authorProfile.url if authorProfile else null %}{% set metaDate = date %}{% set metaReadTime = content | readingMinutes %}
+      <div class="mt-6">{% include "components/meta-row.njk" %}</div>
     </div>
-    <p class="proof-card__counts">{{ proofCard.axiomCount }} axioms · {{ proofCard.logicCount }} inferences · {{ proofCard.sourceDocumentCount }} documents</p>
+
+    <div class="card bento-4" id="proof-axioms">
+      <h2 class="section-header__kicker">Axioms <span class="text-ink-muted">({{ proofCard.axiomCount }})</span></h2>
+      <ol class="space-y-3 mt-3">
+        {% for axiom in proofCard.axioms %}
+          <li class="text-sm leading-relaxed">
+            <span class="font-mono text-xs text-ink-muted mr-1">{{ axiom.index }}.</span>
+            {{ axiom.premise }}
+            {% if axiom.sources.length %}
+              <span class="inline-flex gap-1 ml-1">
+                {% for source in axiom.sources %}
+                  {% set sourceRecord = source.documentUrl | getSourceDocument(collections.sourceDocument) %}
+                  <a href="{{ source.documentUrl }}" class="proof-doc-link text-accent text-xs font-mono hover:underline" data-doc-url="{{ source.documentUrl }}" title="{{ sourceRecord.data.title if sourceRecord else source.label }}">[{{ loop.index }}]</a>
+                {% endfor %}
+              </span>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ol>
+    </div>
+
+    <div class="card bento-4" id="proof-logic">
+      <h2 class="section-header__kicker">Logic <span class="text-ink-muted">({{ proofCard.logicCount }})</span></h2>
+      <ol class="space-y-3 mt-3">
+        {% for entry in proofCard.logic %}
+          <li class="text-sm leading-relaxed">
+            <span class="font-mono text-xs text-ink-muted mr-1">{{ entry.index }}.</span>
+            {{ entry.step }}
+          </li>
+        {% endfor %}
+      </ol>
+    </div>
+
+    <div class="card bento-8" id="proof-conclusion">
+      <h2 class="section-header__kicker">Conclusion</h2>
+      <p class="font-serif text-lg leading-relaxed mt-2">{{ proofCard.conclusion }}</p>
+    </div>
+
+    <div class="card bento-4" id="proof-documents">
+      <h2 class="section-header__kicker">Documents <span class="text-ink-muted">({{ proofCard.sourceDocumentCount }})</span></h2>
+      <ul class="space-y-3 mt-3">
+        {% for doc in proofCard.sourceDocuments %}
+          <li>
+            <a href="{{ doc.url }}" class="proof-doc-link group flex items-start gap-2 text-sm" data-doc-url="{{ doc.url }}">
+              <span class="text-accent flex-shrink-0">📄</span>
+              <span class="group-hover:text-accent transition-colors">{{ doc.data.title if doc.data else "Document " + loop.index }}</span>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
   </div>
 
-  <section class="proof-card__issue-wrap math-rank-major" data-math-rank="major" aria-label="Issue under proof">
-    <p class="section-kicker">Issue under proof</p>
-    <p id="proof-card-issue-{{ proofCard.slug }}" class="proof-card__issue">{{ proofCard.issue }}</p>
-  </section>
-
-  <div class="proof-grid">
-    <details class="proof-disclosure proof-disclosure--axioms math-rank-medium" data-math-rank="medium" aria-label="Axioms">
-      <summary>
-        <p class="proof-disclosure__label">Axioms</p>
-        <p class="proof-disclosure__count">{{ proofCard.axiomCount }} total</p>
-      </summary>
-      <div class="proof-disclosure__body">
-        <ol class="proof-list">
-          {% for axiom in proofCard.axioms %}
-            <li class="proof-list__item">
-              <span class="proof-list__marker">A{{ axiom.index }}</span>
-              <div>
-                <p class="proof-list__text">{{ axiom.premise }}</p>
-                {% if axiom.sources | length %}
-                  <div class="proof-source-list">
-                    {% for source in axiom.sources %}
-                      {% set sourceRecord = source.documentUrl | getSourceDocument(collections.sourceDocument) %}
-                      <a class="proof-source-link" href="{{ source.documentUrl }}">{{ sourceRecord.data.title if sourceRecord else source.label }}</a>
-                    {% endfor %}
-                  </div>
-                {% endif %}
-              </div>
-            </li>
-          {% endfor %}
-        </ol>
-      </div>
-    </details>
-
-    <details class="proof-disclosure proof-disclosure--inferences math-rank-medium" data-math-rank="medium" aria-label="Inferences">
-      <summary>
-        <p class="proof-disclosure__label">Inferences</p>
-        <p class="proof-disclosure__count">{{ proofCard.logicCount }} total</p>
-      </summary>
-      <div class="proof-disclosure__body">
-        <ol class="proof-list">
-          {% for entry in proofCard.logic %}
-            <li class="proof-list__item">
-              <span class="proof-list__marker">I{{ entry.index }}</span>
-              <p class="proof-list__text">{{ entry.step }}</p>
-            </li>
-          {% endfor %}
-        </ol>
-      </div>
-    </details>
-
-    <section class="proof-card__conclusion proof-card__conclusion--tile math-rank-medium" data-math-rank="medium" aria-label="Conclusion">
-      <p class="section-kicker">Conclusion</p>
-      <p>{{ proofCard.conclusion }}</p>
-    </section>
-
-    {% if proofCard.sourceDocuments | length %}
-      <details class="proof-disclosure proof-disclosure--documents math-rank-small" data-math-rank="small" aria-label="Source documents">
-        <summary>
-          <p class="proof-disclosure__label">Source documents</p>
-          <p class="proof-disclosure__count">{{ proofCard.sourceDocumentCount }} linked</p>
-        </summary>
-        <div class="proof-disclosure__body">
-          <ul class="proof-list" aria-label="Source documents used in this proof">
-            {% for source in proofCard.sourceDocuments %}
-              {% set sourceRecord = source.documentUrl | getSourceDocument(collections.sourceDocument) %}
-              <li class="proof-list__item">
-                <span class="proof-list__marker">D{{ loop.index }}</span>
-                <a class="proof-source-link" href="{{ source.documentUrl }}">{{ sourceRecord.data.title if sourceRecord else source.label }}</a>
-              </li>
-            {% endfor %}
-          </ul>
-        </div>
-      </details>
-    {% endif %}
-  </div>
-
-  <div class="proof-card__actions">
-    <p class="proof-card__footnote">Check the proof, inspect sources, then move into the full reporting.</p>
-    <button
-      class="toolbar-button"
-      type="button"
-      data-share-page
-      data-share-title="{{ proofCard.articleTitle }} proof card"
-      data-share-url="{{ proofCard.shareImagePath | absoluteUrl(site.url) }}"
-      hidden
-    >
-      Share proof card
-    </button>
-    <a class="proof-link" href="{{ proofCard.shareImagePath }}" data-haptic data-haptic="medium">Open proof image</a>
-  </div>
+  <img class="proof-mark proof-card__mark" src="{{ proofMarkPrintSrc }}" alt="" aria-hidden="true" />
 </section>
