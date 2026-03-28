@@ -470,6 +470,79 @@
   }
 
   /* ══════════════════════════════════════════
+     CARD PRIMITIVES
+     ══════════════════════════════════════════ */
+
+  /* Shared card primitive — Phase 2A */
+  .card {
+    background: var(--color-surface-elevated);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: theme('borderRadius.squircle');
+    padding: theme('spacing.6');
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .card:hover {
+    box-shadow: theme('boxShadow.elevated-hover');
+    transform: translateY(-2px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card {
+      transition: none;
+    }
+
+    .card:hover {
+      transform: none;
+    }
+  }
+
+  .card--featured {
+    padding: theme('spacing.8') theme('spacing.10');
+  }
+
+  .card--compact {
+    padding: theme('spacing.4');
+  }
+
+  .card__tag {
+    display: inline-block;
+    font-family: theme('fontFamily.mono');
+    font-size: theme('fontSize.xs');
+    letter-spacing: theme('letterSpacing.wide');
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    margin-bottom: theme('spacing.2');
+  }
+
+  /* Meta row — Phase 2A */
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: theme('spacing.1') theme('spacing.3');
+    font-family: theme('fontFamily.mono');
+    font-size: theme('fontSize.xs');
+    color: var(--color-ink-muted);
+    letter-spacing: theme('letterSpacing.wide');
+    text-transform: uppercase;
+  }
+
+  .meta-row__desk {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  .meta-row__author {
+    color: var(--color-ink-secondary);
+    text-decoration: none;
+  }
+
+  .meta-row__author:hover {
+    text-decoration: underline;
+  }
+
+  /* ══════════════════════════════════════════
      TYPOGRAPHY UTILITIES
      ══════════════════════════════════════════ */
 
@@ -482,13 +555,23 @@
     color: rgb(var(--ink-muted));
   }
 
-  .meta-row {
-    @apply flex flex-wrap items-center gap-x-3 gap-y-1;
-    font-family: "IBM Plex Mono";
-    font-size: 0.63rem;
-    letter-spacing: 0.1em;
+  /* Section header — Phase 2A */
+  .section-header {
+    margin-bottom: theme('spacing.6');
+  }
+
+  .section-header__kicker {
+    display: block;
+    font-family: theme('fontFamily.mono');
+    font-size: theme('fontSize.xs');
+    letter-spacing: theme('letterSpacing.widest');
     text-transform: uppercase;
-    color: rgb(var(--ink-muted));
+    color: var(--color-ink-muted);
+    margin-bottom: theme('spacing.2');
+  }
+
+  .section-header__title {
+    font-family: theme('fontFamily.serif');
   }
 
   .meta-divider::before {
