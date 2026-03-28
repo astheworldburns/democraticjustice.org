@@ -8,7 +8,7 @@ ogType: article
 {% set relatedStories = collections.article | relatedArticles(page, tags, 3) %}
 
 <article class="story-layout story-layout--bento">
-  <div class="story-main space-y-8">
+  <div class="story-main space-y-8 math-rank-major" data-math-rank="major">
     <header class="story-header">
       <div class="sr-only" aria-hidden="true">
         <span data-pagefind-meta="type">Article</span>
@@ -86,7 +86,9 @@ ogType: article
         <div class="story-bento-grid">
           {% for story in relatedStories %}
             {% set storyAuthor = story.data.author | getAuthor(collections.authorProfiles) %}
-            <article class="listing-card card-lift story-bento-card p-4">
+            {% set relatedRankClass = "math-rank-major" if loop.first else "math-rank-medium" %}
+            {% set relatedRank = "major" if loop.first else "medium" %}
+            <article class="listing-card card-lift story-bento-card p-4 {{ relatedRankClass }}" data-math-rank="{{ relatedRank }}">
               <p class="meta-row">
                 <span>{{ story.date | displayDate }}</span>
                 {% if storyAuthor %}
@@ -106,7 +108,7 @@ ogType: article
     {% endif %}
   </div>
 
-  <aside class="story-sidebar story-sidebar--bento" data-pagefind-ignore>
+  <aside class="story-sidebar story-sidebar--bento math-rank-small" data-math-rank="small" data-pagefind-ignore>
     <div class="story-rail">
       <p class="section-kicker">Reading tools</p>
       <div class="mt-3 flex flex-wrap gap-2">

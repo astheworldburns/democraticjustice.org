@@ -13,8 +13,8 @@ ogType: website
 
 <div class="home-shell home-shell--news" data-pagefind-body>
   {% if featuredArticle and featuredProof %}
-    <section class="home-news-lead">
-      <article class="home-news-lead__main">
+    <section class="home-news-lead math-grid-front">
+      <article class="home-news-lead__main math-rank-major" data-math-rank="major">
         <p class="section-kicker">Latest investigation</p>
         <h1 class="home-news-lead__title">
           <a class="headline-link" href="{{ featuredArticle.url }}">{{ featuredArticle.data.title }}</a>
@@ -51,7 +51,7 @@ ogType: website
       </article>
 
       <aside class="home-news-lead__side">
-        <section class="home-news-card">
+        <section class="home-news-card math-rank-medium" data-math-rank="medium">
           <p class="section-kicker">Proof-first method</p>
           <h2 class="home-news-card__title">Read the case before the narrative.</h2>
           <ol class="home-news-order">
@@ -62,7 +62,7 @@ ogType: website
         </section>
 
         {% if collections.editorialDesks | length %}
-          <section class="home-news-card">
+          <section class="home-news-card math-rank-small" data-math-rank="small">
             <p class="section-kicker">Desks</p>
             <h2 class="home-news-card__title">Browse by desk.</h2>
             <div class="home-news-list">
@@ -95,7 +95,9 @@ ogType: website
             {% set story = entry.article %}
             {% set proof = entry.proofCard %}
             {% set storyAuthor = story.data.author | getAuthor(collections.authorProfiles) %}
-            <article class="home-story-card home-story-card--bento">
+            {% set storyRankClass = "math-rank-major" if loop.index == 2 else ("math-rank-medium" if loop.index < 5 else "math-rank-small") %}
+            {% set storyRank = "major" if loop.index == 2 else ("medium" if loop.index < 5 else "small") %}
+            <article class="home-story-card home-story-card--bento {{ storyRankClass }}" data-math-rank="{{ storyRank }}">
               <p class="section-kicker">{{ story.data.kicker or "Investigation" }}</p>
               <h3 class="home-story-card__title"><a class="headline-link" href="{{ story.url }}">{{ story.data.title }}</a></h3>
               <div class="meta-row">
@@ -130,7 +132,9 @@ ogType: website
       <div class="staff-bento-grid">
         {% for reporter in collections.authorProfiles %}
           {% set reporterStories = collections.article | articlesByAuthor(reporter.fileSlug) %}
-          <article class="author-card card-lift staff-bento-card p-4">
+          {% set staffRankClass = "math-rank-major" if loop.first else ("math-rank-medium" if loop.index <= 3 else "math-rank-small") %}
+          {% set staffRank = "major" if loop.first else ("medium" if loop.index <= 3 else "small") %}
+          <article class="author-card card-lift staff-bento-card p-4 {{ staffRankClass }}" data-math-rank="{{ staffRank }}">
             <div class="flex items-start gap-3">
               {% if reporter.data.headshot %}
                 {% image reporter.data.headshot, reporter.data.name, "72px", "h-16 w-16 rounded-full object-cover" %}

@@ -34,7 +34,9 @@ ogType: website
 
         <div class="archive-month-grid">
           {% for monthBucket in yearBucket.months %}
-            <section class="listing-card archive-month-card p-4 md:p-5">
+            {% set monthRankClass = "math-rank-major" if loop.first else "math-rank-medium" %}
+            {% set monthRank = "major" if loop.first else "medium" %}
+            <section class="listing-card archive-month-card p-4 md:p-5 {{ monthRankClass }}" data-math-rank="{{ monthRank }}">
               <div class="grid gap-4 lg:grid-cols-[13rem_minmax(0,1fr)]">
                 <div>
                   <p class="section-kicker">{{ monthBucket.year }}</p>

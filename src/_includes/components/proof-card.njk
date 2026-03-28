@@ -11,13 +11,13 @@
     <p class="proof-card__counts">{{ proofCard.axiomCount }} axioms · {{ proofCard.logicCount }} inferences · {{ proofCard.sourceDocumentCount }} documents</p>
   </div>
 
-  <section class="proof-card__issue-wrap" aria-label="Issue under proof">
+  <section class="proof-card__issue-wrap math-rank-major" data-math-rank="major" aria-label="Issue under proof">
     <p class="section-kicker">Issue under proof</p>
     <p id="proof-card-issue-{{ proofCard.slug }}" class="proof-card__issue">{{ proofCard.issue }}</p>
   </section>
 
   <div class="proof-grid">
-    <details class="proof-disclosure proof-disclosure--axioms" aria-label="Axioms">
+    <details class="proof-disclosure proof-disclosure--axioms math-rank-medium" data-math-rank="medium" aria-label="Axioms">
       <summary>
         <p class="proof-disclosure__label">Axioms</p>
         <p class="proof-disclosure__count">{{ proofCard.axiomCount }} total</p>
@@ -44,7 +44,7 @@
       </div>
     </details>
 
-    <details class="proof-disclosure proof-disclosure--inferences" aria-label="Inferences">
+    <details class="proof-disclosure proof-disclosure--inferences math-rank-medium" data-math-rank="medium" aria-label="Inferences">
       <summary>
         <p class="proof-disclosure__label">Inferences</p>
         <p class="proof-disclosure__count">{{ proofCard.logicCount }} total</p>
@@ -61,13 +61,13 @@
       </div>
     </details>
 
-    <section class="proof-card__conclusion proof-card__conclusion--tile" aria-label="Conclusion">
+    <section class="proof-card__conclusion proof-card__conclusion--tile math-rank-medium" data-math-rank="medium" aria-label="Conclusion">
       <p class="section-kicker">Conclusion</p>
       <p>{{ proofCard.conclusion }}</p>
     </section>
 
     {% if proofCard.sourceDocuments | length %}
-      <details class="proof-disclosure proof-disclosure--documents" aria-label="Source documents">
+      <details class="proof-disclosure proof-disclosure--documents math-rank-small" data-math-rank="small" aria-label="Source documents">
         <summary>
           <p class="proof-disclosure__label">Source documents</p>
           <p class="proof-disclosure__count">{{ proofCard.sourceDocumentCount }} linked</p>

@@ -21,7 +21,9 @@ ogType: website
 
   <div class="document-index-grid">
     {% for document in collections.sourceDocument %}
-      <article class="listing-card document-index-card p-4 md:p-5">
+      {% set docRankClass = "math-rank-major" if loop.first else ("math-rank-medium" if loop.index <= 3 else "math-rank-small") %}
+      {% set docRank = "major" if loop.first else ("medium" if loop.index <= 3 else "small") %}
+      <article class="listing-card document-index-card p-4 md:p-5 {{ docRankClass }}" data-math-rank="{{ docRank }}">
         <div class="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto] md:items-start">
           <div>
             <p class="section-kicker">{{ document.data.obtained | displayDate }}</p>

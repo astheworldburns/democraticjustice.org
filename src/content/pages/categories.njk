@@ -43,7 +43,7 @@ eleventyExcludeFromCollections: true
   </header>
 
   {% if lead %}
-    <article class="lead-card news-grid-accent category-lead p-5 md:p-6">
+    <article class="lead-card news-grid-accent category-lead p-5 md:p-6 math-rank-major" data-math-rank="major">
       <div class="ml-2">
         <p class="section-kicker">{{ lead.data.kicker or "Lead report" }}</p>
         <h2 class="mt-2 max-w-5xl font-display text-[clamp(2rem,3.8vw,3.5rem)] font-semibold leading-[0.96] tracking-tight text-[rgb(var(--ink))]">
@@ -67,7 +67,9 @@ eleventyExcludeFromCollections: true
       {% for story in stories %}
         {% if not loop.first %}
           {% set storyAuthor = story.data.author | getAuthor(collections.authorProfiles) %}
-          <article class="listing-card card-lift story-bento-card p-4 md:p-5">
+          {% set deskRankClass = "math-rank-medium" if loop.index <= 3 else "math-rank-small" %}
+          {% set deskRank = "medium" if loop.index <= 3 else "small" %}
+          <article class="listing-card card-lift story-bento-card p-4 md:p-5 {{ deskRankClass }}" data-math-rank="{{ deskRank }}">
             <div class="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
               <div class="max-w-4xl">
                 <p class="meta-row">

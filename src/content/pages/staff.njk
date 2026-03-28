@@ -15,7 +15,9 @@ ogType: website
   <div class="staff-bento-grid">
     {% for reporter in collections.authorProfiles %}
       {% set reporterStories = collections.article | articlesByAuthor(reporter.fileSlug) %}
-      <article class="author-card card-lift staff-bento-card p-4">
+      {% set staffRankClass = "math-rank-major" if loop.first else ("math-rank-medium" if loop.index <= 3 else "math-rank-small") %}
+      {% set staffRank = "major" if loop.first else ("medium" if loop.index <= 3 else "small") %}
+      <article class="author-card card-lift staff-bento-card p-4 {{ staffRankClass }}" data-math-rank="{{ staffRank }}">
         <div class="sr-only" aria-hidden="true">
           <span data-pagefind-filter="author">{{ reporter.data.name }}</span>
           <span data-pagefind-meta="type">Staff directory</span>
