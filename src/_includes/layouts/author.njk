@@ -3,6 +3,10 @@
 layout: layouts/base.njk
 ---
 {% set reporterStories = collections.article | articlesByAuthor(page.fileSlug) %}
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Person","name":"{{ name }}","jobTitle":"{{ role }}","url":"{{ site.url }}{{ page.url }}"{% if email %},"email":"{{ email }}"{% endif %}{% if headshot %},"image":"{{ site.url }}{{ headshot }}"{% endif %},"worksFor":{"@type":"NewsMediaOrganization","name":"{{ site.name }}","url":"{{ site.url }}"}}
+</script>
 <section class="page-shell page-shell--bento author-shell" data-pagefind-body>
   <header class="page-header">
     <p class="section-kicker">Newsroom</p>

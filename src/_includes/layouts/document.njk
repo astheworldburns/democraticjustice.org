@@ -3,6 +3,10 @@ layout: layouts/base.njk
 ogType: website
 ---
 <article class="document-shell document-shell--bento" data-pagefind-body>
+
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"{{ site.url }}"},{"@type":"ListItem","position":2,"name":"Documents","item":"{{ site.url }}/documents/"},{"@type":"ListItem","position":3,"name":"{{ title }}"}]}
+  </script>
   <div class="sr-only" aria-hidden="true">
     <span data-pagefind-meta="type">Source document</span>
     <span data-pagefind-meta="source_method">{{ source_method }}</span>

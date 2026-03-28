@@ -1,5 +1,5 @@
 (() => {
-  const storageKey = "dj-theme";
+  const storageKey = "theme";
   const hapticsStorageKey = "dj-haptics";
   const root = document.documentElement;
   const labelNodes = document.querySelectorAll("[data-theme-label]");
@@ -201,6 +201,89 @@
       if (popupUrl) {
         window.open(popupUrl, popupName, "noopener");
       }
+    });
+  });
+})();
+
+
+// ── Proof Section Navigator ──
+(function(){
+  var nav=document.querySelector('.proof-nav');
+  if(!nav)return;
+  var links=nav.querySelectorAll('.proof-nav__link');
+  var sections=[];
+  links.forEach(function(l){
+    var id=l.getAttribute('href');
+    if(id&&id.startsWith('#')){var el=document.querySelector(id);if(el)sections.push({id:id.slice(1),el:el,link:l});}
+  });
+  if(!sections.length)return;
+  function setActive(id){
+    links.forEach(function(l){l.getAttribute('data-section')===id?l.setAttribute('aria-current','true'):l.removeAttribute('aria-current');});
+  }
+  if('IntersectionObserver' in window){
+    var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)setActive(e.target.id);});},{rootMargin:'-20% 0px -60% 0px',threshold:0});
+    sections.forEach(function(s){obs.observe(s.el);});
+  }
+  var reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  links.forEach(function(l){
+    l.addEventListener('click',function(e){
+      e.preventDefault();
+      var t=document.querySelector(l.getAttribute('href'));
+      if(t){t.scrollIntoView({behavior:reducedMotion?'auto':'smooth',block:'start'});history.pushState(null,'',l.getAttribute('href'));}
+    });
+  });
+  setActive(sections[0].id);
+})();
+
+// ── Document Preview Overlay ──
+(function(){
+  var proofSection=document.getElementById('proof-card');
+  if(!proofSection)return;
+  var docLinks=proofSection.querySelectorAll('a.proof-doc-link');
+  if(!docLinks.length)return;
+  var overlay=document.createElement('div');
+  overlay.className='doc-overlay';
+  overlay.setAttribute('role','dialog');
+  overlay.setAttribute('aria-modal','true');
+  overlay.setAttribute('aria-label','Document preview');
+  overlay.innerHTML='<div class="doc-overlay__backdrop"></div><div class="doc-overlay__panel"><button class="doc-overlay__close" aria-label="Close document preview">&times;</button><h3 class="doc-overlay__title font-serif text-xl"></h3><div class="doc-overlay__body mt-4"></div><a class="doc-overlay__link mt-4 inline-block font-mono text-sm text-accent hover:underline" target="_blank" rel="noopener">View Full Document →</a></div>';
+  document.body.appendChild(overlay);
+  var backdrop=overlay.querySelector('.doc-overlay__backdrop');
+  var closeBtn=overlay.querySelector('.doc-overlay__close');
+  var titleEl=overlay.querySelector('.doc-overlay__title');
+  var bodyEl=overlay.querySelector('.doc-overlay__body');
+  var fullLink=overlay.querySelector('.doc-overlay__link');
+  var triggerEl=null;
+  function openOverlay(href,title){
+    triggerEl=document.activeElement;
+    titleEl.textContent=title||'Source Document';
+    bodyEl.innerHTML='<p class="text-sm text-ink-muted">Loading…</p>';
+    fullLink.href=href;
+    overlay.setAttribute('data-open','true');
+    document.body.style.overflow='hidden';
+    closeBtn.focus();
+    fetch(href).then(function(r){return r.ok?r.text():Promise.reject();}).then(function(html){
+      var doc=new DOMParser().parseFromString(html,'text/html');
+      var desc=doc.querySelector('meta[name="description"]');
+      var fileLink=doc.querySelector('a[download],a[href$=".pdf"]');
+      var out='';
+      if(desc&&desc.content)out+='<p class="text-sm text-ink-secondary">'+desc.content+'</p>';
+      if(fileLink){var fh=fileLink.getAttribute('href');if(fh&&fh.endsWith('.pdf'))out+='<iframe src="'+fh+'" class="w-full h-96 mt-4 rounded-squircle-sm border border-border-subtle" title="PDF preview"></iframe>';else if(fh&&/\.(png|jpg|jpeg|webp)$/i.test(fh))out+='<img src="'+fh+'" alt="'+(title||'Document')+'" class="w-full mt-4 rounded-squircle-sm"/>';}
+      bodyEl.innerHTML=out||'<p class="text-sm text-ink-muted">Preview not available.</p>';
+    }).catch(function(){bodyEl.innerHTML='<p class="text-sm text-ink-muted">Could not load preview. <a href="'+href+'" class="text-accent underline">Open document</a>.</p>';});
+  }
+  function closeOverlay(){
+    overlay.removeAttribute('data-open');
+    document.body.style.overflow='';
+    if(triggerEl)triggerEl.focus();
+  }
+  backdrop.addEventListener('click',closeOverlay);
+  closeBtn.addEventListener('click',closeOverlay);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&overlay.hasAttribute('data-open'))closeOverlay();});
+  docLinks.forEach(function(link){
+    link.addEventListener('click',function(e){
+      e.preventDefault();
+      openOverlay(link.getAttribute('href')||link.getAttribute('data-doc-url'),link.getAttribute('title')||link.textContent.trim());
     });
   });
 })();

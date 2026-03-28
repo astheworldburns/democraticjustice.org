@@ -7,6 +7,15 @@ ogType: article
 {% set tocItems = content | withHeadingIds | extractHeadings %}
 {% set relatedStories = collections.article | relatedArticles(page, tags, 3) %}
 
+{% if proofCard %}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"{{ site.url }}"},{"@type":"ListItem","position":2,"name":"{{ kicker | default('Investigations') }}","item":"{{ site.url }}/categories/{{ kicker | slugifyTag }}/"},{"@type":"ListItem","position":3,"name":"{{ title }}"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"ClaimReview","url":"{{ site.url }}{{ page.url }}","claimReviewed":"{{ proofCard.issue | replace('"', '\\"') }}","author":{"@type":"NewsMediaOrganization","name":"{{ site.name }}","url":"{{ site.url }}"},"reviewRating":{"@type":"Rating","ratingValue":"{{ proofCard.axiomCount }}","bestRating":"{{ proofCard.axiomCount }}","ratingExplanation":"Supported by {{ proofCard.axiomCount }} documented axioms and {{ proofCard.sourceDocumentCount }} source documents"},"itemReviewed":{"@type":"Claim","appearance":[{% for doc in proofCard.sourceDocuments %}{"@type":"CreativeWork","url":"{{ site.url }}{{ doc.url }}","name":"{{ doc.data.title | replace('"', '\\"') }}"}{% if not loop.last %},{% endif %}{% endfor %}]}}
+</script>
+{% endif %}
+
 <div class="sr-only" aria-hidden="true">
   <span data-pagefind-meta="type">Article</span>
   {% if authorProfile %}
