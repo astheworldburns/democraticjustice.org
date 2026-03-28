@@ -1,9 +1,38 @@
 (() => {
   const storageKey = "dj-theme";
+  const hapticsStorageKey = "dj-haptics";
   const root = document.documentElement;
   const labelNodes = document.querySelectorAll("[data-theme-label]");
   const themeColorMeta = document.querySelector("[data-theme-color]");
   const systemQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
+
+  function canUseHaptics() {
+    if (typeof navigator.vibrate !== "function") {
+      return false;
+    }
+
+    if (reduceMotionQuery.matches || !coarsePointerQuery.matches) {
+      return false;
+    }
+
+    return localStorage.getItem(hapticsStorageKey) !== "off";
+  }
+
+  function triggerHaptic(kind = "light") {
+    if (!canUseHaptics()) {
+      return;
+    }
+
+    const patterns = {
+      light: 8,
+      medium: 12,
+      confirm: 18
+    };
+
+    navigator.vibrate(patterns[kind] || patterns.light);
+  }
 
   function preferredTheme() {
     const storedTheme = localStorage.getItem(storageKey);
@@ -120,6 +149,7 @@
 
       try {
         await navigator.clipboard.writeText(copyValue);
+        triggerHaptic("confirm");
         button.textContent = successLabel;
         window.setTimeout(() => {
           button.textContent = defaultLabel;
@@ -150,9 +180,16 @@
           title: shareTitle,
           url: shareUrl
         });
+        triggerHaptic("confirm");
       } catch {
         // Ignore cancelled shares.
       }
+    });
+  });
+
+  document.querySelectorAll("[data-haptic]").forEach((element) => {
+    element.addEventListener("click", () => {
+      triggerHaptic(element.dataset.haptic || "light");
     });
   });
 

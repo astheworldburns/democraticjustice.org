@@ -44,9 +44,9 @@ ogType: website
         </div>
 
         <div class="home-actions mt-5">
-          <a class="button-link" href="{{ featuredArticle.url }}">Read investigation</a>
-          <a class="button-link-muted" href="{{ featuredArticle.url }}">Open proof card</a>
-          <a class="button-link-muted" href="/documents/">Source documents</a>
+          <a class="button-link" href="{{ featuredArticle.url }}" data-haptic data-haptic="confirm">Read investigation</a>
+          <a class="button-link-muted" href="{{ featuredArticle.url }}" data-haptic data-haptic="medium">Open proof card</a>
+          <a class="button-link-muted" href="/documents/" data-haptic>Source documents</a>
         </div>
       </article>
 
@@ -111,7 +111,7 @@ ogType: website
                 <span>{{ proof.sourceDocumentCount }} docs</span>
               </div>
               <div class="home-actions mt-2">
-                <a class="button-link" href="{{ story.url }}">Read</a>
+                <a class="button-link" href="{{ story.url }}" data-haptic>Read</a>
               </div>
             </article>
           {% endif %}
