@@ -1,0 +1,44 @@
+---
+permalink: podcast/feed.xml
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+  xmlns:atom="http://www.w3.org/2005/Atom"
+  xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+  xmlns:podcast="https://podcastindex.org/namespace/1.0">
+  {% set episodes = collections.podcast | reverse %}
+  {% set latestEpisode = episodes | first %}
+  {% set channelImage = latestEpisode.data.image if latestEpisode and latestEpisode.data.image else '/assets/images/uploads/default-social-card.png' | absoluteUrl(site.url) %}
+  <channel>
+    <title>{{ site.name }} Podcast</title>
+    <link>{{ site.url }}/podcast/</link>
+    <atom:link href="{{ '/podcast/feed.xml' | absoluteUrl(site.url) }}" rel="self" type="application/rss+xml" />
+    <description>{{ site.description }}</description>
+    <language>en-US</language>
+    <itunes:author>{{ site.author }}</itunes:author>
+    <itunes:summary>{{ site.description }}</itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+    <itunes:image href="{{ channelImage | escape }}" />
+    <itunes:category text="News" />
+    {%- for episode in episodes %}
+    {% set enclosureUrl = episode.data.audio_file %}
+    {% set transcriptUrl = episode.data.transcript_file %}
+    {% set episodeImage = episode.data.image or channelImage %}
+    <item>
+      <title>{{ episode.data.title | escape }}</title>
+      <description>{{ episode.data.description | default('', true) | escape }}</description>
+      <pubDate>{{ episode.date | dateToRfc822 }}</pubDate>
+      <link>{{ episode.url | absoluteUrl(site.url) }}</link>
+      <guid isPermaLink="false">{{ episode.data.guid | default(episode.url | absoluteUrl(site.url), true) }}</guid>
+      <enclosure url="{{ enclosureUrl | escape }}" length="{{ episode.data.file_size | default(0, true) }}" type="audio/mpeg" />
+      {% if transcriptUrl %}
+      <podcast:transcript type="text/vtt" url="{{ transcriptUrl | escape }}" />
+      {% endif %}
+      <itunes:duration>{{ episode.data.duration | default('00:00:00', true) }}</itunes:duration>
+      <itunes:image href="{{ episodeImage | escape }}" />
+      <itunes:episodeType>full</itunes:episodeType>
+    </item>
+    {%- endfor %}
+  </channel>
+</rss>

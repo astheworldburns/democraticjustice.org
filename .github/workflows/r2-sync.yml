@@ -1,0 +1,26 @@
+name: Sync Podcast Media to Cloudflare R2
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'static/media/podcast/**'
+
+jobs:
+  deploy-media:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Sync Media to R2
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          # This prevents the CLI from hanging while looking for AWS servers
+          AWS_EC2_METADATA_DISABLED: true
+        run: |
+          aws s3 sync ./static/media/podcast/ s3://democraticjustice-media/podcast/ \
+            --endpoint-url "${{ secrets.R2_ENDPOINT }}" \
+            --region auto

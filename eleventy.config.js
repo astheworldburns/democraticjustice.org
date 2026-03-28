@@ -387,6 +387,12 @@ export default async function (eleventyConfig) {
     }, []);
   });
 
+  eleventyConfig.addCollection("podcast", (collectionApi) =>
+    collectionApi
+      .getFilteredByGlob("./src/content/podcast/**/*.md")
+      .sort((left, right) => new Date(left.data.publish_date || left.date) - new Date(right.data.publish_date || right.date))
+  );
+
   eleventyConfig.addCollection("sourceDocument", (collectionApi) =>
     collectionApi
       .getFilteredByGlob("./src/content/documents/**/*.md")
