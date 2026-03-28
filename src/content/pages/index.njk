@@ -15,38 +15,41 @@ ogType: website
   {% if featuredArticle and featuredProof %}
     <section class="home-news-lead math-grid-front">
       <article class="home-news-lead__main math-rank-major" data-math-rank="major">
-        <p class="section-kicker">Latest investigation</p>
-        <h1 class="home-news-lead__title">
-          <a class="headline-link" href="{{ featuredArticle.url }}">{{ featuredArticle.data.title }}</a>
-        </h1>
-        <div class="meta-row mt-3">
-          <span>{{ featuredArticle.date | displayDate }}</span>
-          <span class="meta-divider">By {% if featuredAuthor %}<a class="headline-link" href="{{ featuredAuthor.url }}">{{ featuredAuthor.data.name }}</a>{% else %}{{ site.name }}{% endif %}</span>
-          <span class="meta-divider">{{ featuredArticle.templateContent | readingMinutes }} min read</span>
-        </div>
-        <p class="home-news-lead__description">{{ featuredArticle.data.description }}</p>
+        <div class="home-news-lead__editorial">
+          <p class="section-kicker">Latest investigation</p>
+          <h1 class="home-news-lead__title">
+            <a class="headline-link" href="{{ featuredArticle.url }}">{{ featuredArticle.data.title }}</a>
+          </h1>
+          <div class="meta-row mt-3">
+            <span>{{ featuredArticle.date | displayDate }}</span>
+            <span class="meta-divider">By {% if featuredAuthor %}<a class="headline-link" href="{{ featuredAuthor.url }}">{{ featuredAuthor.data.name }}</a>{% else %}{{ site.name }}{% endif %}</span>
+            <span class="meta-divider">{{ featuredArticle.templateContent | readingMinutes }} min read</span>
+          </div>
+          <p class="home-news-lead__description">{{ featuredArticle.data.description }}</p>
 
-        <div class="home-proof-metrics mt-4">
-          <span>{{ featuredProof.axiomCount }} axioms</span>
-          <span>{{ featuredProof.logicCount }} inferences</span>
-          <span>{{ featuredProof.sourceDocumentCount }} documents</span>
-        </div>
-
-        <div class="home-news-lead__proof">
-          <section class="home-news-lead__proof-tile">
-            <p class="home-proof-block__label">Issue under proof</p>
-            <p class="home-proof-block__text">{{ featuredProof.issueShort }}</p>
-          </section>
-          <section class="home-news-lead__proof-tile">
-            <p class="home-proof-block__label">Where the reporting lands</p>
-            <p class="home-proof-block__text">{{ featuredProof.conclusionShort }}</p>
-          </section>
+          <div class="home-actions mt-5">
+            <a class="button-link" href="{{ featuredArticle.url }}" data-haptic data-haptic="confirm">Read investigation</a>
+            <a class="button-link-muted" href="{{ featuredArticle.url }}" data-haptic data-haptic="medium">Open proof card</a>
+            <a class="button-link-muted" href="/documents/" data-haptic>Source documents</a>
+          </div>
         </div>
 
-        <div class="home-actions mt-5">
-          <a class="button-link" href="{{ featuredArticle.url }}" data-haptic data-haptic="confirm">Read investigation</a>
-          <a class="button-link-muted" href="{{ featuredArticle.url }}" data-haptic data-haptic="medium">Open proof card</a>
-          <a class="button-link-muted" href="/documents/" data-haptic>Source documents</a>
+        <div class="home-news-lead__evidence">
+          <div class="home-proof-metrics">
+            <span>{{ featuredProof.axiomCount }} axioms</span>
+            <span>{{ featuredProof.logicCount }} inferences</span>
+            <span>{{ featuredProof.sourceDocumentCount }} documents</span>
+          </div>
+          <div class="home-news-lead__proof">
+            <section class="home-news-lead__proof-tile">
+              <p class="home-proof-block__label">Issue under proof</p>
+              <p class="home-proof-block__text">{{ featuredProof.issueShort }}</p>
+            </section>
+            <section class="home-news-lead__proof-tile">
+              <p class="home-proof-block__label">Where the reporting lands</p>
+              <p class="home-proof-block__text">{{ featuredProof.conclusionShort }}</p>
+            </section>
+          </div>
         </div>
       </article>
 
