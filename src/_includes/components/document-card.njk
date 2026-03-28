@@ -21,7 +21,7 @@
     {% endif %}
   </dl>
   <div class="mt-4 flex gap-3">
-    <a href="{{ docUrl }}" class="font-mono text-sm text-accent hover:underline">View Document →</a>
+    <a href="{{ docUrl }}" class="font-mono text-sm text-accent hover:underline">View {{ docTitle }} →</a>
     {% if docFile %}
       <a href="{{ docFile }}" class="font-mono text-sm text-ink-muted hover:underline" download>
         Download {{ docFileType | default("file") | upper }}

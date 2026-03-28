@@ -10,7 +10,7 @@
   <div class="site-header__top">
     <div class="brand">
       <a class="brand__link" href="/" aria-label="{{ siteTitle }}">
-        <img class="proof-mark brand__mark" data-proof-mark data-proof-mark-day="{{ proofMarkDaySrc }}" data-proof-mark-night="{{ proofMarkNightSrc }}" data-proof-mark-print="{{ proofMarkPrintSrc }}" src="{{ proofMarkDaySrc }}" alt="" />
+        <img class="proof-mark brand__mark" data-proof-mark data-proof-mark-day="{{ proofMarkDaySrc }}" data-proof-mark-night="{{ proofMarkNightSrc }}" data-proof-mark-print="{{ proofMarkPrintSrc }}" src="{{ proofMarkDaySrc }}" alt="" aria-hidden="true" width="27" height="27" decoding="async" />
         <span class="brand__title">{{ siteTitle }}</span>
       </a>
       {% if siteTagline %}
@@ -30,7 +30,7 @@
     </div>
   </div>
 
-  <nav aria-label="Primary" class="primary-nav">
+  <nav aria-label="Main navigation" class="primary-nav">
     <ul class="primary-nav__list">
       <li><a class="primary-nav__link" href="/" {% if page.url == '/' %}aria-current="page"{% endif %}>Home</a></li>
       <li><a class="primary-nav__link" href="/archives/" {% if page.url == '/archives/' %}aria-current="page"{% endif %}>Archives</a></li>
