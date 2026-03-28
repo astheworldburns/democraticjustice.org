@@ -154,7 +154,7 @@
       radial-gradient(circle at 85% 8%, rgba(var(--surface-muted), 0.38), transparent 42%),
       linear-gradient(180deg, rgba(var(--page), 0.99), rgb(var(--page)) 82%);
     color: rgb(var(--ink));
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     text-rendering: optimizeLegibility;
   }
 
@@ -337,7 +337,7 @@
   .brand__tagline {
     margin-top: 0.3rem;
     margin-left: 2.35rem;
-    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+    font-family: "IBM Plex Mono";
     font-size: 0.62rem;
     font-weight: 500;
     letter-spacing: 0.14em;
@@ -350,12 +350,16 @@
   }
 
   .edition-line {
-    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+    font-family: "IBM Plex Mono";
     font-size: 0.65rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: rgb(var(--ink-muted));
   }
+
+  /* ══════════════════════════════════════════
+     INTERACTIVE / STATE
+     ══════════════════════════════════════════ */
 
   .theme-toggle,
   .toolbar-button,
@@ -374,6 +378,10 @@
     border-color: rgb(var(--rule-strong));
     color: rgb(var(--ink));
   }
+
+  /* ══════════════════════════════════════════
+     NAVIGATION
+     ══════════════════════════════════════════ */
 
   .primary-nav {
     border-top: 1px solid rgba(var(--rule), 0.72);
@@ -417,7 +425,7 @@
   }
 
   .site-footer__title {
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: clamp(1.35rem, 1.55vw, 1.7rem);
     font-weight: 700;
     line-height: 1;
@@ -427,7 +435,7 @@
 
   .site-footer__description {
     @apply mt-3 max-w-2xl;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: 0.98rem;
     line-height: 1.62;
     color: rgb(var(--ink-soft));
@@ -438,7 +446,7 @@
   }
 
   .footer-link {
-    font-family: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+    font-family: "Space Grotesk";
     font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.12em;
@@ -454,15 +462,19 @@
   .footer-note {
     @apply mt-7 border-t pt-4;
     border-color: rgba(var(--rule), 0.78);
-    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+    font-family: "IBM Plex Mono";
     font-size: 0.64rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: rgb(var(--ink-muted));
   }
 
+  /* ══════════════════════════════════════════
+     TYPOGRAPHY UTILITIES
+     ══════════════════════════════════════════ */
+
   .section-kicker {
-    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+    font-family: "IBM Plex Mono";
     font-size: 0.63rem;
     font-weight: 500;
     letter-spacing: 0.12em;
@@ -472,7 +484,7 @@
 
   .meta-row {
     @apply flex flex-wrap items-center gap-x-3 gap-y-1;
-    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+    font-family: "IBM Plex Mono";
     font-size: 0.63rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -501,7 +513,7 @@
     @apply inline-flex items-center justify-center px-3 py-2;
     min-height: 2.15rem;
     border-radius: var(--radius-sm);
-    font-family: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+    font-family: "Space Grotesk";
     font-size: 0.68rem;
     font-weight: 600;
     letter-spacing: 0.12em;
@@ -558,6 +570,7 @@
     background: rgba(var(--surface-strong), 0.86);
   }
 
+
   .lead-card {
     border: 1px solid rgba(var(--rule-strong), 0.86);
     border-radius: var(--radius-md);
@@ -591,7 +604,7 @@
 
   .page-title {
     margin-top: 0.65rem;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: clamp(2rem, 4vw, 3.2rem);
     font-weight: 700;
     line-height: 0.98;
@@ -602,7 +615,7 @@
   .page-description {
     margin-top: 0.9rem;
     max-width: 52rem;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: clamp(1rem, 0.97rem + 0.2vw, 1.13rem);
     line-height: 1.65;
     color: rgb(var(--ink-soft));
@@ -613,7 +626,6 @@
   }
 
   .page-prose,
-  .article-prose,
   .story-prose {
     @apply prose prose-lg max-w-none;
     --tw-prose-body: rgb(var(--ink-soft));
@@ -628,11 +640,27 @@
     --tw-prose-captions: rgb(var(--ink-muted));
   }
 
+  /* ── UNUSED (not referenced in any .njk or .md template) ──
+  .article-prose {
+    @apply prose prose-lg max-w-none;
+    --tw-prose-body: rgb(var(--ink-soft));
+    --tw-prose-headings: rgb(var(--ink));
+    --tw-prose-links: rgb(var(--ink));
+    --tw-prose-bold: rgb(var(--ink));
+    --tw-prose-counters: rgb(var(--ink-muted));
+    --tw-prose-bullets: rgb(var(--ink-muted));
+    --tw-prose-hr: rgba(var(--rule), 0.9);
+    --tw-prose-quotes: rgb(var(--ink-soft));
+    --tw-prose-quote-borders: rgb(var(--rule-strong));
+    --tw-prose-captions: rgb(var(--ink-muted));
+  }
+  ── end UNUSED ── */
+
   .story-prose > p:first-of-type::first-letter {
     float: left;
     margin-right: 0.3rem;
     margin-top: 0.22rem;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: clamp(2.8rem, 3.8vw, 4rem);
     font-weight: 700;
     line-height: 0.72;
@@ -667,7 +695,7 @@
   .home-hero__headline {
     margin-top: 0.75rem;
     max-width: 12ch;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: clamp(2rem, 4vw, 3.5rem);
     font-weight: 700;
     line-height: 0.94;
@@ -678,7 +706,7 @@
   .home-hero__lede {
     margin-top: 0.9rem;
     max-width: 54rem;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: clamp(1.02rem, 0.95rem + 0.25vw, 1.2rem);
     line-height: 1.66;
     color: rgb(var(--ink-soft));
@@ -687,7 +715,7 @@
   .home-hero__support {
     margin-top: 0.75rem;
     max-width: 46rem;
-    font-family: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+    font-family: "Space Grotesk";
     font-size: 0.92rem;
     line-height: 1.62;
     color: rgb(var(--ink-muted));
@@ -713,7 +741,7 @@
   }
 
   .home-hero__index {
-    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+    font-family: "IBM Plex Mono";
     font-size: 0.63rem;
     letter-spacing: 0.11em;
     text-transform: uppercase;
@@ -723,7 +751,7 @@
 
   .home-hero__step h3 {
     margin: 0;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: 1.02rem;
     font-weight: 700;
     letter-spacing: -0.012em;
@@ -733,7 +761,7 @@
 
   .home-hero__step p {
     margin: 0.35rem 0 0;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: 0.95rem;
     line-height: 1.52;
     color: rgb(var(--ink-soft));
@@ -752,7 +780,7 @@
   .home-bento__title {
     margin-top: 0.8rem;
     max-width: 18ch;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: clamp(1.8rem, 2.9vw, 2.85rem);
     font-weight: 700;
     line-height: 0.96;
@@ -769,7 +797,7 @@
   .homepage-proof-counts span {
     @apply inline-flex items-center rounded-[var(--radius-xs)] border px-2 py-[0.36rem];
     border-color: rgba(var(--rule), 0.85);
-    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+    font-family: "IBM Plex Mono";
     font-size: 0.58rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -786,7 +814,7 @@
   .home-proof-block__label,
   .homepage-proof-preview__label {
     margin: 0;
-    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+    font-family: "IBM Plex Mono";
     font-size: 0.58rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -796,7 +824,7 @@
   .home-proof-block__text,
   .homepage-proof-preview__text {
     margin: 0.4rem 0 0;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: 0.98rem;
     line-height: 1.57;
     color: rgb(var(--ink-soft));
@@ -817,7 +845,7 @@
   .homepage-section-heading {
     margin-top: 0.55rem;
     max-width: 19ch;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: clamp(1.2rem, 1.1rem + 0.5vw, 1.6rem);
     font-weight: 600;
     line-height: 1.08;
@@ -843,7 +871,7 @@
   .home-list__item strong,
   .homepage-link-list__item strong,
   .homepage-desk-item strong {
-    font-family: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+    font-family: "Space Grotesk";
     font-size: 0.78rem;
     font-weight: 600;
     letter-spacing: 0.08em;
@@ -854,7 +882,7 @@
   .home-list__item span,
   .homepage-link-list__item span,
   .homepage-desk-item span {
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: 0.92rem;
     line-height: 1.5;
     color: rgb(var(--ink-soft));
@@ -885,7 +913,7 @@
   .home-story-card__title,
   .homepage-story-card__title {
     margin: 0;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: clamp(1.35rem, 1.25rem + 0.45vw, 1.72rem);
     font-weight: 600;
     line-height: 1.06;
@@ -896,7 +924,7 @@
   .home-story-card__description,
   .homepage-story-card__description {
     margin: 0;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: 0.96rem;
     line-height: 1.58;
     color: rgb(var(--ink-soft));
@@ -920,7 +948,7 @@
   .story-title {
     margin-top: 0.65rem;
     max-width: 22ch;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: clamp(1.95rem, 2.8vw, 2.65rem);
     font-weight: 700;
     line-height: 0.98;
@@ -931,7 +959,7 @@
   .story-description {
     margin-top: 0.85rem;
     max-width: 54rem;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: 1.03rem;
     line-height: 1.65;
     color: rgb(var(--ink-soft));
@@ -940,7 +968,7 @@
   .story-transition {
     margin-bottom: 0.95rem;
     @apply max-w-3xl;
-    font-family: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+    font-family: "Space Grotesk";
     font-size: 0.78rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -963,7 +991,7 @@
   }
 
   .toc-link {
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: 0.94rem;
     line-height: 1.45;
     color: rgb(var(--ink-soft));
@@ -999,7 +1027,7 @@
 
   .proof-card__eyebrow {
     margin: 0;
-    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+    font-family: "IBM Plex Mono";
     font-size: 0.63rem;
     font-weight: 500;
     letter-spacing: 0.1em;
@@ -1009,7 +1037,7 @@
 
   .proof-card__counts {
     margin: 0;
-    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+    font-family: "IBM Plex Mono";
     font-size: 0.62rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -1025,7 +1053,7 @@
   .proof-card__issue {
     margin: 0.35rem 0 0;
     max-width: 60rem;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: clamp(1.4rem, 2.2vw, 2rem);
     font-weight: 600;
     line-height: 1.05;
@@ -1057,7 +1085,7 @@
 
   .proof-disclosure__label {
     margin: 0;
-    font-family: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+    font-family: "Space Grotesk";
     font-size: 0.86rem;
     font-weight: 600;
     letter-spacing: 0.08em;
@@ -1067,7 +1095,7 @@
 
   .proof-disclosure__count {
     margin: 0;
-    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+    font-family: "IBM Plex Mono";
     font-size: 0.6rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -1097,14 +1125,14 @@
     @apply inline-flex h-7 w-7 items-center justify-center rounded-full;
     background: rgb(var(--ink));
     color: rgb(var(--surface-strong));
-    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+    font-family: "IBM Plex Mono";
     font-size: 0.6rem;
     letter-spacing: 0.05em;
   }
 
   .proof-list__text {
     margin: 0;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: 0.98rem;
     line-height: 1.52;
     color: rgb(var(--ink-soft));
@@ -1118,7 +1146,7 @@
     @apply inline-flex items-center rounded-[var(--radius-xs)] border px-2 py-1;
     border-color: rgba(var(--rule), 0.82);
     background: rgba(var(--surface), 0.8);
-    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+    font-family: "IBM Plex Mono";
     font-size: 0.56rem;
     letter-spacing: 0.09em;
     text-transform: uppercase;
@@ -1140,7 +1168,7 @@
   .proof-card__conclusion p {
     margin: 0.35rem 0 0;
     max-width: 58rem;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: clamp(1.05rem, 0.95rem + 0.4vw, 1.3rem);
     line-height: 1.45;
     color: rgb(var(--ink));
@@ -1153,7 +1181,7 @@
 
   .proof-card__footnote {
     margin: 0;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: 0.84rem;
     line-height: 1.5;
     color: rgb(var(--ink-muted));
@@ -1170,7 +1198,7 @@
 
   .document-shell__title {
     margin-top: 0.65rem;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: clamp(2rem, 4vw, 3.2rem);
     font-weight: 700;
     line-height: 0.98;
@@ -1180,7 +1208,7 @@
 
   .document-shell__description {
     @apply mt-3 max-w-4xl;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: 1.02rem;
     line-height: 1.62;
     color: rgb(var(--ink-soft));
@@ -1240,7 +1268,7 @@
   }
 
   .document-meta__item dt {
-    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+    font-family: "IBM Plex Mono";
     font-size: 0.58rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -1249,7 +1277,7 @@
 
   .document-meta__item dd {
     margin-top: 0.35rem;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: 0.96rem;
     line-height: 1.5;
     color: rgb(var(--ink));
@@ -1259,7 +1287,7 @@
     @apply mt-4 rounded-[var(--radius-xs)] border px-3 py-3;
     border-color: rgba(var(--rule), 0.78);
     background: rgba(var(--surface-muted), 0.5);
-    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+    font-family: "IBM Plex Mono";
     font-size: 0.58rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -1272,7 +1300,7 @@
 
   .about-letter__salutation {
     margin: 0;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-style: italic;
     font-size: 1.08rem;
     color: rgb(var(--ink-soft));
@@ -1280,7 +1308,7 @@
 
   .about-letter__dateline {
     @apply mt-3;
-    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+    font-family: "IBM Plex Mono";
     font-size: 0.61rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -1294,7 +1322,7 @@
   .about-letter__body p {
     @apply max-w-measure;
     margin: 0;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: 1.06rem;
     line-height: 1.78;
     color: rgb(var(--ink));
@@ -1321,7 +1349,7 @@
 
   .about-letter__signoff {
     margin: 0.75rem 0 0;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: 0.98rem;
     line-height: 1.6;
     color: rgb(var(--ink));
@@ -1330,7 +1358,7 @@
   .about-letter__signoff span {
     display: block;
     margin-top: 0.1rem;
-    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+    font-family: "IBM Plex Mono";
     font-size: 0.58rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -1342,7 +1370,7 @@
   }
 
   .subscribe-form__label {
-    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+    font-family: "IBM Plex Mono";
     font-size: 0.61rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -1372,7 +1400,7 @@
     height: 3rem;
     background: rgba(var(--accent), 0.15);
     color: rgb(var(--accent));
-    font-family: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+    font-family: "Space Grotesk";
     font-size: 0.88rem;
     font-weight: 600;
     letter-spacing: 0.06em;
@@ -1381,7 +1409,7 @@
 
   .stat-card__value {
     margin-top: 0.45rem;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: 2rem;
     font-weight: 700;
     line-height: 1;
@@ -1390,7 +1418,7 @@
 
   .stat-card__caption {
     margin-top: 0.45rem;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: 0.88rem;
     line-height: 1.5;
     color: rgb(var(--ink-soft));
@@ -1398,7 +1426,7 @@
 
   .pagefind-ui {
     @apply space-y-5;
-    font-family: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+    font-family: "Space Grotesk";
     color: rgb(var(--ink));
   }
 
@@ -1421,7 +1449,7 @@
   }
 
   .pagefind-ui__result-link {
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: 1.45rem;
     font-weight: 600;
     line-height: 1.2;
@@ -1436,7 +1464,7 @@
   .pagefind-ui__result-excerpt,
   .pagefind-ui__message {
     margin-top: 0.6rem;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: 0.95rem;
     line-height: 1.55;
     color: rgb(var(--ink-soft));
@@ -1457,7 +1485,7 @@
   .pagefind-ui__filter-group-label,
   .pagefind-ui__filter-panel-label,
   .pagefind-ui__filter-name {
-    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+    font-family: "IBM Plex Mono";
     font-size: 0.56rem;
     letter-spacing: 0.09em;
     text-transform: uppercase;
@@ -1466,7 +1494,7 @@
 
   .pagefind-ui__filter-label,
   .pagefind-ui__filter-value {
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: 0.88rem;
     color: rgb(var(--ink-soft));
   }
@@ -1480,7 +1508,7 @@
   .pagefind-ui__result-tag {
     @apply inline-flex rounded-[var(--radius-xs)] border px-2 py-1;
     border-color: rgba(var(--rule), 0.84);
-    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+    font-family: "IBM Plex Mono";
     font-size: 0.54rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -1585,6 +1613,10 @@
       @apply flex-col items-start;
     }
   }
+
+  /* ══════════════════════════════════════════
+     LAYOUT GRIDS
+     ══════════════════════════════════════════ */
 
   /* 2026 archival bento cutover */
   .site-frame {
@@ -1714,9 +1746,14 @@
     gap: 0.88rem;
   }
 
+  /* Grid pattern: single-column base; 12 columns at >=860px with main span-8 and side span-4.
+     Gap: var(--grid-gap).
+     Breakpoints: base, 620px-859px, >=860px, >=1200px.
+     Template refs: src/content/pages/index.njk.
+     MIGRATION NOTE: compatible with .bento-grid — can be replaced in template refactor (Phase 3). */
   .home-news-lead {
     display: grid;
-    gap: 0.72rem;
+    gap: var(--grid-gap);
     grid-template-columns: minmax(0, 1fr);
   }
 
@@ -1735,7 +1772,7 @@
   .home-news-lead__title {
     margin-top: 0.38rem;
     max-width: 17ch;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: clamp(2rem, 3.3vw, 3.35rem);
     line-height: 0.94;
     letter-spacing: -0.03em;
@@ -1796,7 +1833,7 @@
 
   .home-news-card__title {
     margin-top: 0.4rem;
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: clamp(1.2rem, 1.08rem + 0.55vw, 1.62rem);
     line-height: 1.06;
     letter-spacing: -0.015em;
@@ -1859,14 +1896,14 @@
   }
 
   .home-news-order strong {
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: 1.02rem;
     line-height: 1.2;
     color: rgb(var(--ink));
   }
 
   .home-news-order span {
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: 0.92rem;
     line-height: 1.46;
     color: rgb(var(--ink-soft));
@@ -1893,14 +1930,14 @@
   }
 
   .home-news-list__item strong {
-    font-family: "Source Serif 4", Georgia, serif;
+    font-family: "Source Serif 4";
     font-size: 1rem;
     line-height: 1.2;
     color: rgb(var(--ink));
   }
 
   .home-news-list__item span {
-    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+    font-family: "IBM Plex Mono";
     font-size: 0.56rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -2045,7 +2082,7 @@
   }
 
   .story-layout--bento {
-    gap: 0.72rem;
+    gap: var(--grid-gap);
   }
 
   .story-header {
@@ -2108,7 +2145,7 @@
   .proof-disclosure > summary::after {
     content: "+";
     margin-left: auto;
-    font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+    font-family: "IBM Plex Mono";
     font-size: 0.86rem;
     letter-spacing: 0.02em;
     color: rgb(var(--ink-muted));
@@ -2166,7 +2203,7 @@
 
   @media (min-width: 620px) and (max-width: 859px) {
     .home-news-lead {
-      gap: 0.86rem;
+      gap: var(--grid-gap);
     }
 
     .home-news-lead__main {
@@ -2196,10 +2233,15 @@
   }
 
   @media (min-width: 860px) {
+    /* Grid pattern: 12-column front-page ranking grid with auto rows.
+       Gap: var(--grid-gap).
+       Breakpoints: >=860px.
+       Template refs: src/content/pages/index.njk.
+       MIGRATION NOTE: compatible with .bento-grid — can be replaced in template refactor (Phase 3). */
     .math-grid-front {
       grid-template-columns: repeat(12, minmax(0, 1fr));
       grid-auto-rows: minmax(5.5rem, auto);
-      gap: var(--math-gap);
+      gap: var(--grid-gap);
     }
 
     .math-grid-front > .math-rank-major {
@@ -2210,7 +2252,7 @@
     .math-grid-front > .home-news-lead__side {
       grid-column: span 4;
       display: grid;
-      gap: var(--math-gap);
+      gap: var(--grid-gap);
     }
 
     .home-news-lead {
@@ -2349,9 +2391,14 @@
       grid-column: span 12;
     }
 
+    /* Grid pattern: 12-column story layout; main/sidebar spans shift 8/4 to 9/3 at >=1200px.
+       Gap: var(--grid-gap).
+       Breakpoints: >=860px and >=1200px.
+       Template refs: src/_includes/layouts/post.njk, src/_includes/layouts/podcast-episode.njk.
+       MIGRATION NOTE: compatible with .bento-grid — can be replaced in template refactor (Phase 3). */
     .story-layout--bento {
       grid-template-columns: repeat(12, minmax(0, 1fr));
-      gap: 0.72rem;
+      gap: var(--grid-gap);
     }
 
     .story-layout--bento .story-main {
