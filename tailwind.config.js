@@ -1,18 +1,71 @@
+/* Design Token System — see docs/CONTENT-MODEL.md for architecture */
 import typography from "@tailwindcss/typography";
 
 export default {
   darkMode: ["class", '[data-theme="dark"]'],
-  content: ["./src/**/*.{njk,md,html,js}"],
+  content: ["./src/**/*.njk", "./src/**/*.md", "./src/**/*.js", "./src/**/*.11ty.js", "./src/**/*.html"],
   theme: {
     extend: {
+      fontSize: {
+        "2xs": ["0.625rem", { lineHeight: "1.5" }],
+        xs: ["0.75rem", { lineHeight: "1.5" }],
+        sm: ["0.875rem", { lineHeight: "1.55" }],
+        base: ["1rem", { lineHeight: "1.65" }],
+        lg: ["1.125rem", { lineHeight: "1.55" }],
+        xl: ["1.25rem", { lineHeight: "1.4" }],
+        "2xl": ["1.5rem", { lineHeight: "1.3" }],
+        "3xl": ["1.875rem", { lineHeight: "1.2" }],
+        "4xl": ["2.25rem", { lineHeight: "1.1" }],
+        "5xl": ["3rem", { lineHeight: "1.05" }],
+        "6xl": ["3.75rem", { lineHeight: "1" }],
+        "display-sm": ["clamp(1.875rem, 1.5rem + 1vw, 2.25rem)", { lineHeight: "1.15" }],
+        "display-md": ["clamp(2.25rem, 1.8rem + 1.5vw, 3rem)", { lineHeight: "1.1" }],
+        "display-lg": ["clamp(3rem, 2rem + 2.5vw, 3.75rem)", { lineHeight: "1.05" }]
+      },
       boxShadow: {
-        panel: "0 1px 0 rgba(20, 21, 24, 0.06), 0 14px 40px rgba(20, 21, 24, 0.08)"
+        panel: "0 1px 0 rgba(20, 21, 24, 0.06), 0 14px 40px rgba(20, 21, 24, 0.08)",
+        elevated: "0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)",
+        "elevated-hover": "0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04)",
+        glass: "0 2px 16px rgba(0,0,0,0.06)"
       },
       fontFamily: {
         ui: ["\"Space Grotesk\"", "\"Helvetica Neue\"", "Arial", "sans-serif"],
+        sans: ["\"Space Grotesk\"", "\"Helvetica Neue\"", "Arial", "sans-serif"],
         serif: ["\"Source Serif 4\"", "Georgia", "serif"],
         display: ["\"Source Serif 4\"", "Georgia", "serif"],
-        mono: ["\"IBM Plex Mono\"", "\"SFMono-Regular\"", "Menlo", "Monaco", "monospace"]
+        mono: ["\"IBM Plex Mono\"", "\"SFMono-Regular\"", "Menlo", "monospace"]
+      },
+      borderRadius: {
+        squircle: "1rem",
+        "squircle-lg": "1.5rem",
+        "squircle-sm": "0.625rem"
+      },
+      backdropBlur: {
+        glass: "12px"
+      },
+      colors: {
+        surface: {
+          DEFAULT: "var(--color-surface)",
+          elevated: "var(--color-surface-elevated)",
+          overlay: "var(--color-surface-overlay)"
+        },
+        ink: {
+          DEFAULT: "var(--color-ink)",
+          secondary: "var(--color-ink-secondary)",
+          muted: "var(--color-ink-muted)"
+        },
+        accent: {
+          DEFAULT: "var(--color-accent)",
+          subtle: "var(--color-accent-subtle)"
+        },
+        border: {
+          DEFAULT: "var(--color-border)",
+          subtle: "var(--color-border-subtle)"
+        },
+        glass: {
+          bg: "var(--color-glass-bg)",
+          border: "var(--color-glass-border)"
+        }
       },
       keyframes: {
         rise: {

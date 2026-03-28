@@ -98,6 +98,20 @@
     --type-ui: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
     --type-mono: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
     --type-masthead: "Century Schoolbook", "New Century Schoolbook", "Bookman Old Style", Georgia, serif;
+    /* Legacy color tokens remain in use; semantic aliases are added for consolidation. */
+    --color-surface: #f7f2e8;
+    --color-surface-elevated: #ffffff;
+    --color-surface-overlay: rgba(255, 255, 255, 0.8);
+    --color-ink: #0f0d0b;
+    --color-ink-secondary: #5a5046;
+    --color-ink-muted: #6b7280;
+    --color-accent: #0078a8;
+    --color-accent-subtle: rgba(0, 120, 168, 0.08);
+    --color-border: #e8e0d4;
+    --color-border-subtle: rgba(69, 60, 52, 0.1);
+    --color-glass-bg: rgba(247, 242, 232, 0.72);
+    --color-glass-border: rgba(255, 255, 255, 0.5);
+    --grid-gap: 1.25rem;
   }
 
   html[data-theme="dark"] {
@@ -114,6 +128,19 @@
     --rule-strong: 218 225 236;
     --accent: 228 150 137;
     --accent-soft: 72 52 50;
+    /* Legacy dark tokens remain; semantic aliases mirror the design token system. */
+    --color-surface: #0f0d0b;
+    --color-surface-elevated: #1a1612;
+    --color-surface-overlay: rgba(26, 22, 18, 0.85);
+    --color-ink: #f1eee8;
+    --color-ink-secondary: #cdbfad;
+    --color-ink-muted: #6b7280;
+    --color-accent: #67cdcc;
+    --color-accent-subtle: rgba(103, 205, 204, 0.1);
+    --color-border: #2a231e;
+    --color-border-subtle: rgba(239, 225, 191, 0.12);
+    --color-glass-bg: rgba(15, 13, 11, 0.72);
+    --color-glass-border: rgba(239, 225, 191, 0.08);
   }
 
   html {
