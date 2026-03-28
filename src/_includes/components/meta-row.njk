@@ -1,0 +1,18 @@
+<div class="meta-row">
+  {% if metaDesk %}
+    <span class="meta-row__desk">{{ metaDesk }}</span>
+  {% endif %}
+  {% if metaAuthor %}
+    {% if metaAuthorUrl %}
+      <a href="{{ metaAuthorUrl }}" class="meta-row__author">{{ metaAuthor }}</a>
+    {% else %}
+      <span class="meta-row__author">{{ metaAuthor }}</span>
+    {% endif %}
+  {% endif %}
+  {% if metaDate %}
+    <time class="meta-row__date" datetime="{{ metaDate | machineDate }}">{{ metaDate | displayDate }}</time>
+  {% endif %}
+  {% if metaReadTime %}
+    <span class="meta-row__time">{{ metaReadTime }} min read</span>
+  {% endif %}
+</div>

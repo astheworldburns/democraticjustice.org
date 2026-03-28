@@ -1,0 +1,8 @@
+<header class="section-header">
+  {% if sectionKicker %}
+    <span class="section-header__kicker">{{ sectionKicker }}</span>
+  {% endif %}
+  <{{ sectionLevel | default("h2") }}{% if sectionId %} id="{{ sectionId }}"{% endif %} class="section-header__title">
+    {{ sectionTitle }}
+  </{{ sectionLevel | default("h2") }}>
+</header>
