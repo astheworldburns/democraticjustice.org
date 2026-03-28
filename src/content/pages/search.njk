@@ -10,21 +10,15 @@ pageScripts: |
   <script src="/pagefind/pagefind-ui.js" defer></script>
   <script src="/assets/js/search.js" defer></script>
 ---
-<section class="space-y-8">
-  <header class="border-b-2 border-[rgb(var(--rule-strong))] pb-6">
+<section class="page-shell page-shell--bento">
+  <header class="page-header">
     <p class="section-kicker">Archive search</p>
-    <h1 class="mt-3 font-display text-[clamp(2.7rem,5vw,4.4rem)] font-black tracking-tight text-[rgb(var(--ink))]">
-      Search the archive
-    </h1>
-    <p class="mt-4 max-w-3xl font-serif text-lg leading-relaxed text-[rgb(var(--ink-soft))]">
-      Search by name, subject, document title, desk, or date.
-    </p>
+    <h1 class="page-title">Search the archive</h1>
+    <p class="page-description">Search by name, subject, document title, desk, or date.</p>
   </header>
 
-  <div class="search-shell p-5 md:p-7">
-    <p class="max-w-3xl font-serif text-base leading-relaxed text-[rgb(var(--ink-soft))]">
-      Start with a name, subject, organization, document title, or desk. Search reaches both reporting and source records.
-    </p>
-    <div class="mt-6" id="news-search"></div>
+  <div class="search-shell search-shell--bento p-4 md:p-5">
+    <p class="font-serif text-[0.96rem] leading-relaxed text-[rgb(var(--ink-soft))]">Start with a name, subject, organization, document title, or desk. Search reaches both reporting and source records.</p>
+    <div class="mt-4" id="news-search"></div>
   </div>
 </section>

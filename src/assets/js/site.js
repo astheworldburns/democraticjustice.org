@@ -20,7 +20,7 @@
       return;
     }
 
-    themeColorMeta.setAttribute("content", theme === "dark" ? "#111827" : "#f6f3ee");
+    themeColorMeta.setAttribute("content", theme === "dark" ? "#161a20" : "#f1eee8");
   }
 
   function syncProofMarks(theme) {

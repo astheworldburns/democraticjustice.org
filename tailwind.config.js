@@ -1,27 +1,18 @@
-import colors from "tailwindcss/colors";
 import typography from "@tailwindcss/typography";
 
 export default {
   darkMode: ["class", '[data-theme="dark"]'],
   content: ["./src/**/*.{njk,md,html,js}"],
   theme: {
-    colors: {
-      transparent: "transparent",
-      current: "currentColor",
-      black: colors.black,
-      white: colors.white,
-      stone: colors.stone,
-      zinc: colors.zinc,
-      slate: colors.slate
-    },
     extend: {
       boxShadow: {
-        page: "0 0 0 1px rgba(28, 25, 23, 0.06), 0 24px 90px rgba(12, 10, 9, 0.12)"
+        panel: "0 1px 0 rgba(20, 21, 24, 0.06), 0 14px 40px rgba(20, 21, 24, 0.08)"
       },
       fontFamily: {
-        ui: ["Inter", "\"Helvetica Neue\"", "Arial", "sans-serif"],
-        serif: ["Lora", "\"Century Schoolbook\"", "Georgia", "serif"],
-        display: ["Lora", "\"Century Schoolbook\"", "Georgia", "serif"]
+        ui: ["\"Space Grotesk\"", "\"Helvetica Neue\"", "Arial", "sans-serif"],
+        serif: ["\"Source Serif 4\"", "Georgia", "serif"],
+        display: ["\"Source Serif 4\"", "Georgia", "serif"],
+        mono: ["\"IBM Plex Mono\"", "\"SFMono-Regular\"", "Menlo", "Monaco", "monospace"]
       },
       keyframes: {
         rise: {
@@ -39,68 +30,67 @@ export default {
         rise: "rise 500ms cubic-bezier(0.2, 0.65, 0.2, 1) both"
       },
       letterSpacing: {
-        masthead: "-0.05em",
-        kicker: "0.18em"
+        kicker: "0.16em"
       },
       maxWidth: {
-        paper: "82rem",
-        measure: "72ch"
+        paper: "88rem",
+        measure: "68ch"
       },
       typography: {
         DEFAULT: {
           css: {
             color: "rgb(var(--ink-soft))",
-            maxWidth: "72ch",
-            lineHeight: "1.82",
+            maxWidth: "68ch",
+            lineHeight: "1.75",
             p: {
-              marginTop: "1.15em",
-              marginBottom: "1.15em"
+              marginTop: "1em",
+              marginBottom: "1em"
             },
             h1: {
               color: "rgb(var(--ink))",
-              fontFamily: "Lora, \"Century Schoolbook\", Georgia, serif",
-              fontWeight: "800",
-              fontSize: "clamp(2.2rem, 1.55rem + 1.8vw, 3.35rem)",
-              letterSpacing: "-0.04em",
-              lineHeight: "0.98",
-              marginTop: "1.25em",
-              marginBottom: "0.72em"
+              fontFamily: "\"Source Serif 4\", Georgia, serif",
+              fontWeight: "700",
+              fontSize: "clamp(2rem, 1.5rem + 1.7vw, 3.05rem)",
+              letterSpacing: "-0.03em",
+              lineHeight: "1",
+              marginTop: "1.2em",
+              marginBottom: "0.65em"
             },
             h2: {
               color: "rgb(var(--ink))",
-              fontFamily: "Lora, \"Century Schoolbook\", Georgia, serif",
-              fontWeight: "800",
-              fontSize: "clamp(1.75rem, 1.15rem + 1.4vw, 2.4rem)",
+              fontFamily: "\"Source Serif 4\", Georgia, serif",
+              fontWeight: "700",
+              fontSize: "clamp(1.55rem, 1.15rem + 1.2vw, 2.1rem)",
               letterSpacing: "-0.03em",
-              lineHeight: "1.08",
-              marginTop: "1.7em",
-              marginBottom: "0.7em"
+              lineHeight: "1.1",
+              marginTop: "1.5em",
+              marginBottom: "0.6em"
             },
             h3: {
               color: "rgb(var(--ink))",
-              fontFamily: "Lora, \"Century Schoolbook\", Georgia, serif",
+              fontFamily: "\"Source Serif 4\", Georgia, serif",
               fontWeight: "700",
-              fontSize: "clamp(1.35rem, 1rem + 0.8vw, 1.75rem)",
+              fontSize: "clamp(1.15rem, 1rem + 0.6vw, 1.45rem)",
               letterSpacing: "-0.02em",
-              lineHeight: "1.18"
+              lineHeight: "1.16"
             },
             strong: {
               color: "rgb(var(--ink))"
             },
             a: {
               color: "rgb(var(--ink))",
-              fontWeight: "700",
+              fontWeight: "600",
               textDecorationThickness: "1px",
               textUnderlineOffset: "0.18em"
             },
             blockquote: {
               borderLeftColor: "rgb(var(--rule-strong))",
-              borderLeftWidth: "4px",
+              borderLeftWidth: "2px",
               color: "rgb(var(--ink-soft))",
-              fontFamily: "Lora, \"Century Schoolbook\", Georgia, serif",
+              fontFamily: "\"Source Serif 4\", Georgia, serif",
               fontStyle: "italic",
               fontWeight: "400",
-              paddingLeft: "1.35rem"
+              paddingLeft: "1rem"
             },
             "blockquote p:first-of-type::before": {
               content: "none"
@@ -115,13 +105,12 @@ export default {
               margin: "0"
             },
             figcaption: {
-              borderTopColor: colors.gray[300],
+              borderTopColor: "rgb(var(--rule))",
               borderTopStyle: "solid",
               borderTopWidth: "1px",
-              color: colors.gray[500],
-              fontFamily: "Lora, \"Century Schoolbook\", Georgia, serif",
-              fontSize: "0.78rem",
-              fontStyle: "italic",
+              color: "rgb(var(--ink-muted))",
+              fontFamily: "\"IBM Plex Mono\", \"SFMono-Regular\", Menlo, monospace",
+              fontSize: "0.75rem",
               lineHeight: "1.5",
               marginTop: "0.5rem",
               paddingTop: "0.45rem"

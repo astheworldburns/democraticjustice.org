@@ -294,6 +294,7 @@ export default async function (eleventyConfig) {
   });
 
   eleventyConfig.addPassthroughCopy("src/assets/images/uploads");
+  eleventyConfig.addPassthroughCopy({ "src/assets/fonts": "assets/fonts" });
   eleventyConfig.addPassthroughCopy("src/assets/feed.xsl");
   eleventyConfig.addPassthroughCopy("src/assets/js");
   eleventyConfig.addPassthroughCopy({ "static/documents": "documents" });

@@ -2,76 +2,49 @@
 layout: layouts/base.njk
 ---
 {% set reporterStories = collections.article | articlesByAuthor(page.fileSlug) %}
-<section class="space-y-10" data-pagefind-body>
-  <header class="border-b-2 border-[rgb(var(--rule-strong))] pb-8">
+<section class="page-shell page-shell--bento author-shell" data-pagefind-body>
+  <header class="page-header">
     <p class="section-kicker">Newsroom</p>
-    <div class="mt-5 grid gap-8 xl:grid-cols-[minmax(0,1.2fr)_18rem]">
-      <div class="grid gap-5 md:grid-cols-[auto_1fr] md:items-end">
-        {% if headshot %}
-          {% image headshot, name, "128px", "h-24 w-24 rounded-full object-cover" %}
-        {% else %}
-          <div class="author-avatar h-24 w-24 text-xl">{{ name | initials }}</div>
-        {% endif %}
-        <div>
-          <div class="sr-only" aria-hidden="true">
-            <span data-pagefind-filter="author">{{ name }}</span>
-            <span data-pagefind-meta="type">Staff profile</span>
-          </div>
-          <h1 class="font-display text-[clamp(2.8rem,5vw,4.5rem)] font-black leading-[0.95] tracking-tight text-[rgb(var(--ink))]">
-            {{ name }}
-          </h1>
-          <p class="mt-3 font-ui text-[0.78rem] font-semibold uppercase tracking-[0.18em] text-[rgb(var(--ink-muted))]">
-            {{ role }}
-          </p>
-          <p class="mt-4 max-w-4xl font-serif text-lg leading-relaxed text-[rgb(var(--ink-soft))]">
-            {{ bio or short_bio }}
-          </p>
+    <div class="mt-4 grid gap-5 md:grid-cols-[auto_1fr] md:items-end">
+      {% if headshot %}
+        {% image headshot, name, "128px", "h-24 w-24 rounded-full object-cover" %}
+      {% else %}
+        <div class="author-avatar h-24 w-24 text-xl">{{ name | initials }}</div>
+      {% endif %}
+      <div>
+        <div class="sr-only" aria-hidden="true">
+          <span data-pagefind-filter="author">{{ name }}</span>
+          <span data-pagefind-meta="type">Staff profile</span>
         </div>
+        <h1 class="page-title mt-0">{{ name }}</h1>
+        <p class="mt-2 font-mono text-[0.65rem] uppercase tracking-[0.1em] text-[rgb(var(--ink-muted))]">{{ role }}</p>
+        <p class="mt-3 max-w-4xl font-serif text-[1.02rem] leading-relaxed text-[rgb(var(--ink-soft))]">{{ bio or short_bio }}</p>
       </div>
-      <aside class="space-y-4">
-        <div class="tool-card p-5">
-          <p class="section-kicker">Published</p>
-          <p class="stat-card__value">{{ reporterStories | length }}</p>
-          <p class="stat-card__caption">Stories under this byline.</p>
-        </div>
-        {% if email or bluesky or twitter %}
-          <div class="tool-card p-5">
-            <p class="section-kicker">Contact</p>
-            <div class="social-list mt-4">
-              {% if email %}
-                <a class="social-link" href="mailto:{{ email }}">Email</a>
-              {% endif %}
-              {% if bluesky %}
-                <a class="social-link" href="{{ bluesky }}">Bluesky</a>
-              {% endif %}
-              {% if twitter %}
-                <a class="social-link" href="{{ twitter }}">X</a>
-              {% endif %}
-            </div>
-          </div>
-        {% endif %}
-      </aside>
+    </div>
+    <div class="mt-4 flex flex-wrap items-center gap-2">
+      <span class="story-chip">{{ reporterStories | length }} published</span>
+      {% if email %}<a class="button-link-muted" href="mailto:{{ email }}">Email</a>{% endif %}
+      {% if bluesky %}<a class="button-link-muted" href="{{ bluesky }}">Bluesky</a>{% endif %}
+      {% if twitter %}<a class="button-link-muted" href="{{ twitter }}">X</a>{% endif %}
     </div>
   </header>
 
-  <section class="space-y-5">
-    <div class="flex items-end justify-between border-b border-[rgb(var(--rule-strong))] pb-3">
-      <h2 class="font-display text-3xl font-black tracking-tight text-[rgb(var(--ink))]">Recent reporting</h2>
+  <section class="space-y-4">
+    <div class="flex items-end justify-between border-b border-[rgba(var(--rule-strong),0.82)] pb-3">
+      <h2 class="font-display text-3xl font-semibold tracking-tight text-[rgb(var(--ink))]">Recent reporting</h2>
       <p class="section-kicker">By {{ name }}</p>
     </div>
-    <div class="grid gap-4">
+    <div class="author-story-grid">
       {% for story in reporterStories %}
-        <article class="listing-card card-lift p-5 md:p-6">
+        <article class="listing-card card-lift author-story-card p-4">
           <p class="meta-row">
             <span>{{ story.date | displayDate }}</span>
             <span class="meta-divider">{{ story.templateContent | readingMinutes }} min read</span>
           </p>
-          <h3 class="mt-3 font-serif text-3xl font-black leading-tight text-[rgb(var(--ink))]">
+          <h3 class="mt-2 font-serif text-2xl font-semibold leading-tight text-[rgb(var(--ink))]">
             <a class="headline-link" href="{{ story.url }}">{{ story.data.title }}</a>
           </h3>
-          <p class="mt-3 max-w-3xl font-serif text-base leading-relaxed text-[rgb(var(--ink-soft))]">
-            {{ story.data.description }}
-          </p>
+          <p class="mt-2 max-w-3xl font-serif text-[0.95rem] leading-relaxed text-[rgb(var(--ink-soft))]">{{ story.data.description }}</p>
         </article>
       {% endfor %}
     </div>

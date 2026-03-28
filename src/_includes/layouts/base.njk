@@ -14,9 +14,11 @@
     {% set appleTouchHref = site.appleTouchIcon ~ "?v=" ~ assetVersion %}
     {% set authorProfile = author | getAuthor(collections.authorProfiles) if ogType == "article" and author else null %}
     {% set articleAuthorName = authorProfile.data.name if authorProfile else author or siteTitle %}
+    {% set articleAuthorUrl = authorProfile.url | absoluteUrl(site.url) if authorProfile else "" %}
+    {% set modifiedDate = (updated if updated else date) | machineDate %}
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-mFKxomxJ8jNbUBwEDNt+v6edzZSj8Ek8yGNWUnDbwh4=' 'wasm-unsafe-eval'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'self' https://buttondown.com; frame-src 'self'; upgrade-insecure-requests" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'self' https://buttondown.com; frame-src 'self'; upgrade-insecure-requests" />
     <script>
       (() => {
         const storageKey = "dj-theme";
@@ -28,7 +30,7 @@
     <title>{{ browserTitle }}</title>
     <meta name="description" content="{{ socialDescription }}" />
     <meta name="generator" content="Eleventy v3" />
-    <meta name="theme-color" content="#f6f3ee" data-theme-color />
+    <meta name="theme-color" content="#f1eee8" data-theme-color />
     <meta property="og:title" content="{{ socialTitle }}" />
     <meta property="og:description" content="{{ socialDescription }}" />
     <meta property="og:type" content="{{ ogType or 'website' }}" />
@@ -42,6 +44,7 @@
     {% if ogType == "article" %}
       <meta property="article:author" content="{{ articleAuthorName }}" />
       <meta property="article:published_time" content="{{ date | machineDate }}" />
+      <meta property="article:modified_time" content="{{ modifiedDate }}" />
     {% endif %}
     <link rel="canonical" href="{{ canonicalUrl }}" />
     <link rel="icon" type="image/svg+xml" sizes="any" href="{{ faviconHref }}" />
@@ -49,17 +52,79 @@
     <link rel="apple-touch-icon" href="{{ appleTouchHref }}" />
     <link rel="alternate" type="application/rss+xml" title="{{ siteTitle }} RSS Feed" href="/feed.xml" />
     <link rel="stylesheet" href="/assets/css/style.css?v={{ assetVersion }}" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "{{ site.url }}/#organization",
+            "name": "{{ siteTitle | replace('"', '\\"') }}",
+            "url": "{{ site.url }}",
+            "logo": "{{ site.proofMarkDay | absoluteUrl(site.url) }}"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "{{ site.url }}/#website",
+            "url": "{{ site.url }}",
+            "name": "{{ siteTitle | replace('"', '\\"') }}",
+            "publisher": { "@id": "{{ site.url }}/#organization" },
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "{{ '/search/?q={search_term_string}' | absoluteUrl(site.url) }}",
+              "query-input": "required name=search_term_string"
+            }
+          }
+        ]
+      }
+    </script>
+
+    {% if ogType == "article" %}
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "NewsArticle",
+          "@id": "{{ canonicalUrl }}#article",
+          "mainEntityOfPage": "{{ canonicalUrl }}",
+          "headline": "{{ title | replace('"', '\\"') }}",
+          "description": "{{ socialDescription | replace('"', '\\"') }}",
+          "datePublished": "{{ date | machineDate }}",
+          "dateModified": "{{ modifiedDate }}",
+          "author": {
+            "@type": "Person",
+            "name": "{{ articleAuthorName | replace('"', '\\"') }}"{% if articleAuthorUrl %},
+            "url": "{{ articleAuthorUrl }}"{% endif %}
+          },
+          "publisher": { "@id": "{{ site.url }}/#organization" },
+          "image": ["{{ socialImageUrl }}"]{% if proofCard and proofCard.sourceDocuments | length %},
+          "isBasedOn": [
+            {% for source in proofCard.sourceDocuments %}"{{ source.documentUrl | absoluteUrl(site.url) }}"{% if not loop.last %},{% endif %}{% endfor %}
+          ]{% endif %}{% if tags %},
+          "articleSection": [
+            {% set firstSection = true %}
+            {% for tag in tags %}
+              {% if tag != "article" %}
+                {% if not firstSection %},{% endif %}"{{ tag | tagLabel | replace('"', '\\"') }}"
+                {% set firstSection = false %}
+              {% endif %}
+            {% endfor %}
+          ]{% endif %}
+        }
+      </script>
+    {% endif %}
+
     {% if extraHead %}{{ extraHead | safe }}{% endif %}
   </head>
-  <body class="bg-[rgb(var(--page))] text-[rgb(var(--ink))] antialiased">
+  <body class="antialiased">
     <div class="reading-progress" aria-hidden="true">
       <span class="reading-progress__bar" data-reading-progress></span>
     </div>
     <a class="skip-link" href="#main-content">Skip to content</a>
     <div class="site-frame">
-      <div class="paper-panel">
+      <div class="site-panel">
         {% include "components/header.njk" %}
-        <main id="main-content" class="px-5 pb-16 pt-8 md:px-10 md:pb-20 md:pt-10 lg:px-14">
+        <main id="main-content" class="main-shell">
           {{ content | safe }}
         </main>
         {% include "components/footer.njk" %}

@@ -6,92 +6,42 @@
 {% set siteTitle = siteSettings.site_title or site.name %}
 {% set siteTagline = siteSettings.tagline or site.tagline %}
 
-{% if isArticlePage %}
-  <header class="border-b border-[rgba(var(--rule-strong),0.9)]">
-    <div class="flex items-start justify-between gap-4 px-5 py-4 md:px-10">
-      <div class="masthead-lockup masthead-lockup--article">
-        <a class="masthead-brand masthead-brand--article" href="/" aria-label="{{ siteTitle }}">
-          <img class="proof-mark masthead-brand__mark masthead-brand__mark--article" data-proof-mark data-proof-mark-day="{{ proofMarkDaySrc }}" data-proof-mark-night="{{ proofMarkNightSrc }}" data-proof-mark-print="{{ proofMarkPrintSrc }}" src="{{ proofMarkDaySrc }}" alt="" />
-          <span class="masthead-brand__copy">
-            <span class="masthead-brand__name masthead-brand__name--article">{{ siteTitle }}</span>
-          </span>
-        </a>
-        {% if siteTagline %}
-          <p class="masthead-brand__strap masthead-brand__strap--article">{{ siteTagline }}</p>
-        {% endif %}
-      </div>
+<header class="site-header">
+  <div class="site-header__top">
+    <div class="brand">
+      <a class="brand__link" href="/" aria-label="{{ siteTitle }}">
+        <img class="proof-mark brand__mark" data-proof-mark data-proof-mark-day="{{ proofMarkDaySrc }}" data-proof-mark-night="{{ proofMarkNightSrc }}" data-proof-mark-print="{{ proofMarkPrintSrc }}" src="{{ proofMarkDaySrc }}" alt="" />
+        <span class="brand__title">{{ siteTitle }}</span>
+      </a>
+      {% if siteTagline %}
+        <p class="brand__tagline">{{ siteTagline }}</p>
+      {% endif %}
+    </div>
+
+    <div class="site-header__meta">
+      {% if not isArticlePage %}
+        <p class="edition-line">Edition <time data-edition-date>{{ buildDate | displayDate }}</time></p>
+      {% else %}
+        <p class="edition-line">Proof-backed report</p>
+      {% endif %}
       <button class="theme-toggle" type="button" data-theme-toggle>
         <span data-theme-label>Night edition</span>
       </button>
     </div>
-  </header>
-{% else %}
-  <header class="border-b border-[rgb(var(--rule-strong))]">
-    <div class="px-5 pt-5 pb-4 md:px-10 md:pt-6 md:pb-4">
-      <div class="masthead-lockup {% if isHomePage %}masthead-lockup--home{% else %}masthead-lockup--section{% endif %}">
-        <a class="masthead-brand {% if isHomePage %}masthead-brand--home{% else %}masthead-brand--section{% endif %}" href="/" aria-label="{{ siteTitle }}">
-          <img class="proof-mark masthead-brand__mark {% if isHomePage %}masthead-brand__mark--home{% else %}masthead-brand__mark--section{% endif %}" data-proof-mark data-proof-mark-day="{{ proofMarkDaySrc }}" data-proof-mark-night="{{ proofMarkNightSrc }}" data-proof-mark-print="{{ proofMarkPrintSrc }}" src="{{ proofMarkDaySrc }}" alt="" />
-          <span class="masthead-brand__copy">
-            <span class="masthead-brand__name {% if isHomePage %}masthead-brand__name--home{% else %}masthead-brand__name--section{% endif %}">{{ siteTitle }}</span>
-          </span>
-        </a>
-        {% if siteTagline %}
-          <p class="masthead-brand__strap masthead-brand__strap--masthead">{{ siteTagline }}</p>
-        {% endif %}
-      </div>
-      <div class="masthead-meta">
-        <p class="masthead-meta__edition">
-          Edition <time data-edition-date>{{ buildDate | displayDate }}</time>
-        </p>
-        <button class="theme-toggle" type="button" data-theme-toggle>
-          <span data-theme-label>Night edition</span>
-        </button>
-      </div>
-    </div>
+  </div>
 
-    <nav aria-label="Primary" class="border-y border-[rgb(var(--rule-strong))] bg-[rgba(var(--paper-strong),0.92)]">
-      <ul class="flex flex-wrap items-center gap-x-5 gap-y-2 px-5 py-3 font-ui text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[rgb(var(--ink-soft))] md:px-10">
-        <li>
-          <a class="{% if page.url == '/' %}text-[rgb(var(--ink))]{% else %}hover:text-[rgb(var(--ink))]{% endif %}" href="/" {% if page.url == '/' %}aria-current="page"{% endif %}>
-            Home
-          </a>
-        </li>
-        <li>
-          <a class="{% if page.url == '/about/' %}text-[rgb(var(--ink))]{% else %}hover:text-[rgb(var(--ink))]{% endif %}" href="/about/" {% if page.url == '/about/' %}aria-current="page"{% endif %}>
-            About
-          </a>
-        </li>
-        <li>
-          <a class="{% if page.url == '/archives/' %}text-[rgb(var(--ink))]{% else %}hover:text-[rgb(var(--ink))]{% endif %}" href="/archives/" {% if page.url == '/archives/' %}aria-current="page"{% endif %}>
-            Archives
-          </a>
-        </li>
-        <li>
-          <a class="{% if page.url == '/documents/' %}text-[rgb(var(--ink))]{% else %}hover:text-[rgb(var(--ink))]{% endif %}" href="/documents/" {% if page.url == '/documents/' %}aria-current="page"{% endif %}>
-            Documents
-          </a>
-        </li>
-        <li>
-          <a class="{% if page.url == '/staff/' %}text-[rgb(var(--ink))]{% else %}hover:text-[rgb(var(--ink))]{% endif %}" href="/staff/" {% if page.url == '/staff/' %}aria-current="page"{% endif %}>
-            Staff
-          </a>
-        </li>
-        <li>
-          <a class="{% if page.url == '/search/' %}text-[rgb(var(--ink))]{% else %}hover:text-[rgb(var(--ink))]{% endif %}" href="/search/" {% if page.url == '/search/' %}aria-current="page"{% endif %}>
-            Search
-          </a>
-        </li>
-        <li>
-          <a class="{% if page.url == '/subscribe/' %}text-[rgb(var(--ink))]{% else %}hover:text-[rgb(var(--ink))]{% endif %}" href="/subscribe/" {% if page.url == '/subscribe/' %}aria-current="page"{% endif %}>
-            Subscribe
-          </a>
-        </li>
-        <li>
-          <a class="{% if page.url == '/rss/' %}text-[rgb(var(--ink))]{% else %}hover:text-[rgb(var(--ink))]{% endif %}" href="/rss/" {% if page.url == '/rss/' %}aria-current="page"{% endif %}>
-            RSS
-          </a>
-        </li>
-      </ul>
-    </nav>
-  </header>
-{% endif %}
+  <nav aria-label="Primary" class="primary-nav">
+    <ul class="primary-nav__list">
+      <li><a class="primary-nav__link" href="/" {% if page.url == '/' %}aria-current="page"{% endif %}>Home</a></li>
+      <li><a class="primary-nav__link" href="/archives/" {% if page.url == '/archives/' %}aria-current="page"{% endif %}>Archives</a></li>
+      <li><a class="primary-nav__link" href="/documents/" {% if page.url == '/documents/' %}aria-current="page"{% endif %}>Documents</a></li>
+      <li><a class="primary-nav__link" href="/search/" {% if page.url == '/search/' %}aria-current="page"{% endif %}>Search</a></li>
+      {% if not isArticlePage %}
+        <li><a class="primary-nav__link" href="/staff/" {% if page.url == '/staff/' %}aria-current="page"{% endif %}>Staff</a></li>
+        <li><a class="primary-nav__link" href="/about/" {% if page.url == '/about/' %}aria-current="page"{% endif %}>About</a></li>
+        <li><a class="primary-nav__link" href="/subscribe/" {% if page.url == '/subscribe/' %}aria-current="page"{% endif %}>Subscribe</a></li>
+        <li><a class="primary-nav__link" href="/rss/" {% if page.url == '/rss/' %}aria-current="page"{% endif %}>RSS</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+</header>

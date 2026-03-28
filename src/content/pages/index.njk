@@ -1,214 +1,115 @@
 ---
 layout: layouts/base.njk
 title: Democratic Justice
-description: Check the proof first. Proof Cards, source documents, and reporting built to be explored.
+description: Latest investigative reporting with proof cards and source documents.
 permalink: /
 ogType: website
 ---
-{% set proofMarkDaySrc = site.proofMarkDay ~ "?v=" ~ buildVersion %}
-{% set proofMarkNightSrc = site.proofMarkNight ~ "?v=" ~ buildVersion %}
-{% set proofMarkPrintSrc = site.proofMarkPrint ~ "?v=" ~ buildVersion %}
-{% set stories = collections.publishedArticle | sortByDateDesc %}
 {% set proofEntries = collections.proofArticle %}
 {% set featuredEntry = proofEntries[0] if proofEntries | length else null %}
 {% set featuredArticle = featuredEntry.article if featuredEntry else null %}
 {% set featuredProof = featuredEntry.proofCard if featuredEntry else null %}
 {% set featuredAuthor = featuredArticle.data.author | getAuthor(collections.authorProfiles) if featuredArticle else null %}
-{% set missionStatement = siteSettings.mission_statement or "Every story opens with a Proof Card and the source documents behind it. Readers get the proof, the reasoning, and the narrative in that order." %}
-{% set siteTagline = siteSettings.tagline or site.tagline %}
-<div class="homepage-shell" data-pagefind-body>
-  <section class="homepage-hero">
-    <div class="homepage-hero__main">
-      <p class="section-kicker">Proof-first journalism</p>
-      <h1 class="homepage-hero__headline">{{ siteTagline }}</h1>
-      <p class="homepage-hero__lede">
-        {{ missionStatement }}
-      </p>
-      <p class="homepage-hero__support">
-        Browse proof previews first, then open the full reporting once you know what is being argued and which documents support it.
-      </p>
-      <div class="homepage-actions">
-        {% if featuredArticle %}
-          <a class="button-link" href="{{ featuredArticle.url }}">Check the latest proof</a>
-        {% endif %}
-        <a class="button-link-muted" href="/archives/">Browse proofs</a>
-        <a class="button-link-muted" href="/about/">How it works</a>
-      </div>
-    </div>
 
-    <aside class="homepage-guide rail-card p-5 md:p-6">
-      <p class="section-kicker">What to expect</p>
-      <h2 class="homepage-section-heading">Every story opens with a proof preview.</h2>
-      <ol class="homepage-guide__steps">
-        <li class="homepage-guide__step">
-          <span class="homepage-guide__index">01</span>
-          <div>
-            <h3>Proof card</h3>
-            <p>The core issue, documented axioms, and inference chain come first.</p>
-          </div>
-        </li>
-        <li class="homepage-guide__step">
-          <span class="homepage-guide__index">02</span>
-          <div>
-            <h3>Source documents</h3>
-            <p>Each proof points back to the underlying material so readers can inspect it directly.</p>
-          </div>
-        </li>
-        <li class="homepage-guide__step">
-          <span class="homepage-guide__index">03</span>
-          <div>
-            <h3>Reported narrative</h3>
-            <p>The full article comes after the proof, not in place of it.</p>
-          </div>
-        </li>
-      </ol>
-    </aside>
-  </section>
-
+<div class="home-shell home-shell--news" data-pagefind-body>
   {% if featuredArticle and featuredProof %}
-    <section class="space-y-6">
-      <div class="flex items-end justify-between border-b border-[rgb(var(--rule-strong))] pb-3">
-        <div>
-          <p class="section-kicker">Featured proof</p>
-          <h2 class="homepage-section-heading">Start with the proof, then decide whether to keep reading.</h2>
+    <section class="home-news-lead">
+      <article class="home-news-lead__main">
+        <p class="section-kicker">Latest investigation</p>
+        <h1 class="home-news-lead__title">
+          <a class="headline-link" href="{{ featuredArticle.url }}">{{ featuredArticle.data.title }}</a>
+        </h1>
+        <div class="meta-row mt-3">
+          <span>{{ featuredArticle.date | displayDate }}</span>
+          <span class="meta-divider">By {% if featuredAuthor %}<a class="headline-link" href="{{ featuredAuthor.url }}">{{ featuredAuthor.data.name }}</a>{% else %}{{ site.name }}{% endif %}</span>
+          <span class="meta-divider">{{ featuredArticle.templateContent | readingMinutes }} min read</span>
         </div>
-        <a class="button-link-muted" href="/archives/">Open archive</a>
-      </div>
+        <p class="home-news-lead__description">{{ featuredArticle.data.description }}</p>
 
-      <div class="homepage-feature-grid">
-        <article class="homepage-feature-card lead-card news-grid-accent overflow-hidden p-6 md:p-7">
-          <div class="homepage-feature-card__top">
-            <p class="section-kicker">Proof preview</p>
-            <div class="homepage-proof-counts">
-              <span>{{ featuredProof.axiomCount }} axioms</span>
-              <span>{{ featuredProof.logicCount }} inferences</span>
-              <span>{{ featuredProof.sourceDocumentCount }} documents</span>
-            </div>
-          </div>
+        <div class="home-proof-metrics mt-4">
+          <span>{{ featuredProof.axiomCount }} axioms</span>
+          <span>{{ featuredProof.logicCount }} inferences</span>
+          <span>{{ featuredProof.sourceDocumentCount }} documents</span>
+        </div>
 
-          {% if featuredArticle.data.tags %}
-            <div class="mt-4 flex flex-wrap gap-2">
-              {% for tag in featuredArticle.data.tags %}
-                {% if tag != "article" %}
-                  <a class="story-chip" href="/category/{{ tag | slugifyTag }}/">{{ tag | tagLabel }}</a>
-                {% endif %}
-              {% endfor %}
-            </div>
-          {% endif %}
-
-          <h3 class="homepage-feature-card__title">
-            <a class="headline-link" href="{{ featuredArticle.url }}">{{ featuredArticle.data.title }}</a>
-          </h3>
-
-          <div class="meta-row mt-3">
-            <span>{{ featuredArticle.date | displayDate }}</span>
-            <span class="meta-divider">By {% if featuredAuthor %}<a class="hover:text-[rgb(var(--ink))]" href="{{ featuredAuthor.url }}">{{ featuredAuthor.data.name }}</a>{% else %}{{ site.name }}{% endif %}</span>
-            <span class="meta-divider">{{ featuredArticle.templateContent | readingMinutes }} min read</span>
-          </div>
-
-          <p class="homepage-feature-card__description">
-            {{ featuredArticle.data.description }}
-          </p>
-
-          <div class="homepage-proof-preview">
-            <p class="homepage-proof-preview__label">Issue under proof</p>
-            <p class="homepage-proof-preview__text">{{ featuredProof.issueShort }}</p>
-          </div>
-
-          <div class="homepage-proof-preview homepage-proof-preview--secondary">
-            <p class="homepage-proof-preview__label">Where the proof lands</p>
-            <p class="homepage-proof-preview__text">{{ featuredProof.conclusionShort }}</p>
-          </div>
-
-          <div class="homepage-actions mt-7">
-            <a class="button-link" href="{{ featuredArticle.url }}">Check the proof</a>
-            <a class="button-link-muted" href="{{ featuredArticle.url }}">Read the reporting</a>
-          </div>
-        </article>
-
-        <div class="homepage-side-stack">
-          {% if collections.editorialDesks | length %}
-            <section class="homepage-browse-card rail-card">
-              <p class="section-kicker">Editorial desks</p>
-              <h3 class="homepage-browse-card__title">Browse the site by desk.</h3>
-              <div class="homepage-desk-list">
-                {% for desk in collections.editorialDesks %}
-                  <a class="homepage-desk-item" href="/category/{{ desk.slug }}/">
-                    <strong>{{ desk.label }}</strong>
-                    <span>{{ desk.count }} proof{% if desk.count != 1 %}s{% endif %}</span>
-                  </a>
-                {% endfor %}
-              </div>
-            </section>
-          {% endif %}
-
-          <section class="homepage-browse-card rail-card">
-            <p class="section-kicker">Explore</p>
-            <h3 class="homepage-browse-card__title">Find your way in without getting dropped into a story.</h3>
-            <div class="homepage-link-list">
-              <a class="homepage-link-list__item" href="/documents/">
-                <strong>Source documents</strong>
-                <span>Open the files behind the proofs.</span>
-              </a>
-              <a class="homepage-link-list__item" href="/search/">
-                <strong>Search the site</strong>
-                <span>Look up people, subjects, and document titles.</span>
-              </a>
-              <a class="homepage-link-list__item" href="/about/">
-                <strong>About the method</strong>
-                <span>See why the proof comes before the prose.</span>
-              </a>
-              <a class="homepage-link-list__item" href="/subscribe/">
-                <strong>Subscribe</strong>
-                <span>Get the next finished proof-backed story.</span>
-              </a>
-            </div>
+        <div class="home-news-lead__proof">
+          <section class="home-news-lead__proof-tile">
+            <p class="home-proof-block__label">Issue under proof</p>
+            <p class="home-proof-block__text">{{ featuredProof.issueShort }}</p>
+          </section>
+          <section class="home-news-lead__proof-tile">
+            <p class="home-proof-block__label">Where the reporting lands</p>
+            <p class="home-proof-block__text">{{ featuredProof.conclusionShort }}</p>
           </section>
         </div>
-      </div>
+
+        <div class="home-actions mt-5">
+          <a class="button-link" href="{{ featuredArticle.url }}">Read investigation</a>
+          <a class="button-link-muted" href="{{ featuredArticle.url }}">Open proof card</a>
+          <a class="button-link-muted" href="/documents/">Source documents</a>
+        </div>
+      </article>
+
+      <aside class="home-news-lead__side">
+        <section class="home-news-card">
+          <p class="section-kicker">Proof-first method</p>
+          <h2 class="home-news-card__title">Read the case before the narrative.</h2>
+          <ol class="home-news-order">
+            <li><strong>Proof card</strong><span>Issue, axioms, and inferences first.</span></li>
+            <li><strong>Source records</strong><span>Every claim links to a document page.</span></li>
+            <li><strong>Reported story</strong><span>Context follows evidence.</span></li>
+          </ol>
+        </section>
+
+        {% if collections.editorialDesks | length %}
+          <section class="home-news-card">
+            <p class="section-kicker">Desks</p>
+            <h2 class="home-news-card__title">Browse by desk.</h2>
+            <div class="home-news-list">
+              {% for desk in collections.editorialDesks %}
+                <a class="home-news-list__item" href="/category/{{ desk.slug }}/">
+                  <strong>{{ desk.label }}</strong>
+                  <span>{{ desk.count }} report{% if desk.count != 1 %}s{% endif %}</span>
+                </a>
+              {% endfor %}
+            </div>
+          </section>
+        {% endif %}
+      </aside>
     </section>
   {% endif %}
 
   {% if proofEntries | length > 1 %}
-    <section class="space-y-6">
-      <div class="flex items-end justify-between border-b border-[rgb(var(--rule-strong))] pb-3">
+    <section class="space-y-4 home-section-latest">
+      <div class="flex items-end justify-between border-b border-[rgba(var(--rule-strong),0.82)] pb-3">
         <div>
-          <p class="section-kicker">Latest proofs</p>
-          <h2 class="homepage-section-heading">Browse proof previews before you commit to a full article.</h2>
+          <p class="section-kicker">More reporting</p>
+          <h2 class="homepage-section-heading">Recent investigations</h2>
         </div>
-        <a class="button-link-muted" href="/search/">Search the site</a>
+        <a class="button-link-muted" href="/archives/">Open archive</a>
       </div>
-      <div class="homepage-story-grid">
+
+      <div class="home-story-grid">
         {% for entry in proofEntries %}
           {% if not loop.first and loop.index <= 7 %}
             {% set story = entry.article %}
             {% set proof = entry.proofCard %}
             {% set storyAuthor = story.data.author | getAuthor(collections.authorProfiles) %}
-            <article class="story-card homepage-story-card card-lift p-5 md:p-6">
-              <div class="homepage-proof-counts">
+            <article class="home-story-card home-story-card--bento">
+              <p class="section-kicker">{{ story.data.kicker or "Investigation" }}</p>
+              <h3 class="home-story-card__title"><a class="headline-link" href="{{ story.url }}">{{ story.data.title }}</a></h3>
+              <div class="meta-row">
+                <span>{{ story.date | displayDate }}</span>
+                {% if storyAuthor %}<span class="meta-divider"><a class="headline-link" href="{{ storyAuthor.url }}">{{ storyAuthor.data.name }}</a></span>{% endif %}
+              </div>
+              <p class="home-story-card__description">{{ story.data.description }}</p>
+              <div class="home-proof-metrics">
                 <span>{{ proof.axiomCount }} axioms</span>
                 <span>{{ proof.logicCount }} inferences</span>
                 <span>{{ proof.sourceDocumentCount }} docs</span>
               </div>
-              <p class="section-kicker mt-2">{{ story.data.kicker or "Proof-backed report" }}</p>
-              <h3 class="homepage-story-card__title">
-                <a class="headline-link" href="{{ story.url }}">{{ story.data.title }}</a>
-              </h3>
-              <div class="meta-row">
-                <span>{{ story.date | displayDate }}</span>
-                {% if storyAuthor %}
-                  <span class="meta-divider"><a class="hover:text-[rgb(var(--ink))]" href="{{ storyAuthor.url }}">{{ storyAuthor.data.name }}</a></span>
-                {% endif %}
-              </div>
-              <p class="homepage-story-card__description">
-                {{ story.data.description }}
-              </p>
-              <div class="homepage-proof-preview">
-                <p class="homepage-proof-preview__label">Proof preview</p>
-                <p class="homepage-proof-preview__text">{{ proof.issueShort }}</p>
-              </div>
-              <div class="homepage-actions mt-5">
-                <a class="button-link" href="{{ story.url }}">Check the proof</a>
+              <div class="home-actions mt-2">
+                <a class="button-link" href="{{ story.url }}">Read</a>
               </div>
             </article>
           {% endif %}
@@ -218,39 +119,33 @@ ogType: website
   {% endif %}
 
   {% if collections.authorProfiles | length %}
-    <section class="space-y-6">
-      <div class="flex items-end justify-between border-b border-[rgb(var(--rule-strong))] pb-3">
+    <section class="space-y-4">
+      <div class="flex items-end justify-between border-b border-[rgba(var(--rule-strong),0.82)] pb-3">
         <div>
           <p class="section-kicker">Newsroom</p>
-          <h2 class="homepage-section-heading">Who is doing the proving</h2>
+          <h2 class="homepage-section-heading">Bylines</h2>
         </div>
-        <a class="button-link-muted" href="/staff/">Open staff directory</a>
+        <a class="button-link-muted" href="/staff/">Open staff</a>
       </div>
-      <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <div class="staff-bento-grid">
         {% for reporter in collections.authorProfiles %}
           {% set reporterStories = collections.article | articlesByAuthor(reporter.fileSlug) %}
-          <article class="author-card card-lift p-5">
-            <div class="flex items-start gap-4">
+          <article class="author-card card-lift staff-bento-card p-4">
+            <div class="flex items-start gap-3">
               {% if reporter.data.headshot %}
                 {% image reporter.data.headshot, reporter.data.name, "72px", "h-16 w-16 rounded-full object-cover" %}
               {% else %}
                 <div class="author-avatar">{{ reporter.data.name | initials }}</div>
               {% endif %}
               <div>
-                <h3 class="font-serif text-[1.45rem] font-black leading-tight text-[rgb(var(--ink))]">
+                <h3 class="font-serif text-[1.4rem] font-semibold leading-tight text-[rgb(var(--ink))]">
                   <a class="headline-link" href="{{ reporter.url }}">{{ reporter.data.name }}</a>
                 </h3>
-                <p class="mt-1 font-ui text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-[rgb(var(--ink-muted))]">
-                  {{ reporter.data.role }}
-                </p>
+                <p class="mt-1 font-mono text-[0.58rem] uppercase tracking-[0.1em] text-[rgb(var(--ink-muted))]">{{ reporter.data.role }}</p>
               </div>
             </div>
-            <p class="mt-4 font-serif text-sm leading-relaxed text-[rgb(var(--ink-soft))]">
-              {{ reporter.data.short_bio }}
-            </p>
-            <div class="meta-row mt-5">
-              <span>{{ reporterStories | length }} published</span>
-            </div>
+            <p class="mt-3 font-serif text-[0.92rem] leading-relaxed text-[rgb(var(--ink-soft))]">{{ reporter.data.short_bio }}</p>
+            <div class="meta-row mt-4"><span>{{ reporterStories | length }} published</span></div>
           </article>
         {% endfor %}
       </div>

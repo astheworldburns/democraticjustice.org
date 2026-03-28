@@ -2,14 +2,32 @@
 layout: layouts/base.njk
 ogType: website
 ---
-<article class="document-shell" data-pagefind-body>
+<article class="document-shell document-shell--bento" data-pagefind-body>
   <div class="sr-only" aria-hidden="true">
     <span data-pagefind-meta="type">Source document</span>
     <span data-pagefind-meta="source_method">{{ source_method }}</span>
     <span data-pagefind-meta="obtained">{{ obtained }}</span>
   </div>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Dataset",
+      "name": "{{ title | replace('"', '\\"') }}",
+      "description": "{{ description | replace('"', '\\"') }}",
+      "url": "{{ page.url | absoluteUrl(site.url) }}",
+      "datePublished": "{{ obtained | machineDate }}",
+      "creator": { "@id": "{{ site.url }}/#organization" },
+      "distribution": {
+        "@type": "DataDownload",
+        "contentUrl": "{{ file_url | absoluteUrl(site.url) }}",
+        "encodingFormat": "{{ file_type }}"
+      }
+    }
+  </script>
+
   <header class="document-shell__header">
-    <p class="section-kicker">Source Document</p>
+    <p class="section-kicker">Source document</p>
     <h1 class="document-shell__title">{{ title }}</h1>
     {% if description %}
       <p class="document-shell__description">{{ description }}</p>
@@ -30,9 +48,7 @@ ogType: website
         {% else %}
           <div class="document-preview__fallback">
             <p class="section-kicker">Preview unavailable</p>
-            <p class="mt-3 font-serif text-lg leading-relaxed text-[rgb(var(--ink-soft))]">
-              Open the file directly from the link above.
-            </p>
+            <p class="mt-3 font-serif text-base leading-relaxed text-[rgb(var(--ink-soft))]">Open the file directly from the link above.</p>
           </div>
         {% endif %}
       </div>
@@ -55,6 +71,7 @@ ogType: website
             <dd><a class="headline-link break-all" href="{{ file_url }}">{{ file_url }}</a></dd>
           </div>
         </dl>
+        <p class="provenance-note">C2PA: no manifest attached to this source file.</p>
       </section>
     </aside>
   </div>
