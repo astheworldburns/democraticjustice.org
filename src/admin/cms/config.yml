@@ -265,9 +265,26 @@ collections:
       - label: Publish Date
         name: publish_date
         widget: datetime
+      - label: Description
+        name: description
+        widget: markdown
       - label: Audio File
         name: audio_file
         widget: file
+      - label: Audio File Size (bytes)
+        name: file_size
+        widget: number
+        value_type: int
+        min: 1
+      - label: Duration (HH:MM:SS)
+        name: duration
+        widget: string
+        pattern:
+          - '^\\d{2}:\\d{2}:\\d{2}$'
+          - Duration must use HH:MM:SS format.
+      - label: Episode Artwork
+        name: image
+        widget: image
       - label: VTT Transcript
         name: transcript_file
         widget: file
@@ -280,8 +297,8 @@ collections:
         collection: source_documents
         multiple: true
         search_fields:
-          - slug
           - title
+          - description
         value_field: "{{slug}}"
         display_fields:
           - title

@@ -19,8 +19,8 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           # This prevents the CLI from hanging while looking for AWS servers
-          AWS_EC2_METADATA_DISABLED: true 
+          AWS_EC2_METADATA_DISABLED: true
         run: |
-          aws s3 sync./static/media/podcast/ s3://democraticjustice-media/podcast/ \
-            --endpoint-url ${{ secrets.R2_ENDPOINT }} \
+          aws s3 sync ./static/media/podcast/ s3://democraticjustice-media/podcast/ \
+            --endpoint-url "${{ secrets.R2_ENDPOINT }}" \
             --region auto

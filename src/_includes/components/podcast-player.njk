@@ -1,6 +1,5 @@
-{% set mediaHost = "https://media.democraticjustice.org" %}
-{% set audioSrc = audio_file if audio_file and audio_file.startswith('http') else (mediaHost ~ audio_file if audio_file else "") %}
-{% set transcriptSrc = transcript_file if transcript_file and transcript_file.startswith('http') else (mediaHost ~ transcript_file if transcript_file else "") %}
+{% set audioSrc = audio_file %}
+{% set transcriptSrc = transcript_file %}
 <section class="space-y-3 rounded-[var(--radius-sm)] border border-[rgba(var(--rule),0.75)] bg-[rgba(var(--surface-muted),0.4)] p-4" data-podcast-player data-auth-endpoint="https://auth.democraticjustice.org" data-source-output-id="podcast-source-document">
   <script type="module" src="https://cdn.jsdelivr.net/npm/media-chrome@4/+esm"></script>
   <media-controller audio class="w-full">
