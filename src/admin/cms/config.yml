@@ -240,3 +240,48 @@ collections:
         name: source_method
         widget: string
         hint: "How obtained: FOIA, public database, provided by source, etc."
+
+  - name: podcast
+    label: Podcast Episodes
+    label_singular: Podcast Episode
+    icon: mic
+    description: Manage Democratic Justice podcast episodes and transcript metadata.
+    folder: src/content/podcast
+    slug: "{{slug}}"
+    extension: md
+    format: yaml-frontmatter
+    media_folder: /static/media/podcast
+    public_folder: https://media.democraticjustice.org/podcast
+    summary: "{{title}} - {{publish_date | date('DD MMM YYYY')}}"
+    preview_path: "/podcast/{{slug}}/"
+    sortable_fields:
+      - title
+      - publish_date
+      - guid
+    fields:
+      - label: Title
+        name: title
+        widget: string
+      - label: Publish Date
+        name: publish_date
+        widget: datetime
+      - label: Audio File
+        name: audio_file
+        widget: file
+      - label: VTT Transcript
+        name: transcript_file
+        widget: file
+      - label: GUID
+        name: guid
+        widget: string
+      - label: Source Documents
+        name: source_documents
+        widget: relation
+        collection: source_documents
+        multiple: true
+        search_fields:
+          - slug
+          - title
+        value_field: "{{slug}}"
+        display_fields:
+          - title

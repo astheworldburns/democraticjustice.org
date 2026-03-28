@@ -1,0 +1,89 @@
+{% set mediaHost = "https://media.democraticjustice.org" %}
+{% set audioSrc = audio_file if audio_file and audio_file.startswith('http') else (mediaHost ~ audio_file if audio_file else "") %}
+{% set transcriptSrc = transcript_file if transcript_file and transcript_file.startswith('http') else (mediaHost ~ transcript_file if transcript_file else "") %}
+<section class="space-y-3 rounded-[var(--radius-sm)] border border-[rgba(var(--rule),0.75)] bg-[rgba(var(--surface-muted),0.4)] p-4" data-podcast-player data-auth-endpoint="https://auth.democraticjustice.org" data-source-output-id="podcast-source-document">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/media-chrome@4/+esm"></script>
+  <media-controller audio class="w-full">
+    <audio slot="media" src="{{ audioSrc }}" crossorigin="anonymous" controls preload="metadata">
+      {% if transcriptSrc %}
+        <track kind="metadata" label="Proof Desk Metadata" src="{{ transcriptSrc }}" default />
+      {% endif %}
+    </audio>
+    <media-control-bar>
+      <media-play-button></media-play-button>
+      <media-seek-backward-button seek-offset="10"></media-seek-backward-button>
+      <media-seek-forward-button seek-offset="30"></media-seek-forward-button>
+      <media-time-range></media-time-range>
+      <media-time-display show-duration></media-time-display>
+      <media-mute-button></media-mute-button>
+      <media-volume-range></media-volume-range>
+    </media-control-bar>
+  </media-controller>
+  <div id="podcast-source-document" class="rounded-[var(--radius-xs)] border border-[rgba(var(--rule),0.6)] bg-white/70 p-3 text-sm text-[rgb(var(--ink-soft))]">
+    Source document context will appear as transcript metadata cues fire.
+  </div>
+</section>
+<script>
+  (() => {
+    const playerRoot = document.querySelector("[data-podcast-player]");
+    if (!playerRoot) {
+      return;
+    }
+
+    const audio = playerRoot.querySelector("audio");
+    const sourceOutput = document.getElementById(playerRoot.dataset.sourceOutputId);
+    const authEndpoint = playerRoot.dataset.authEndpoint;
+
+    if (!audio || !sourceOutput) {
+      return;
+    }
+
+    const metadataTrack = Array.from(audio.textTracks || []).find((track) => track.kind === "metadata");
+    if (!metadataTrack) {
+      return;
+    }
+
+    metadataTrack.mode = "hidden";
+
+    metadataTrack.addEventListener("cuechange", async () => {
+      const cue = metadataTrack.activeCues && metadataTrack.activeCues[0];
+      if (!cue) {
+        return;
+      }
+
+      let payload;
+      try {
+        payload = JSON.parse(cue.text || "{}");
+      } catch (error) {
+        sourceOutput.textContent = "Metadata cue JSON could not be parsed.";
+        return;
+      }
+
+      const documentSlug = payload.document_slug;
+      if (!documentSlug) {
+        sourceOutput.textContent = "Metadata cue did not include a document_slug.";
+        return;
+      }
+
+      sourceOutput.textContent = `Loading source for ${documentSlug}…`;
+
+      try {
+        const response = await fetch(`${authEndpoint}/?slug=${encodeURIComponent(documentSlug)}`);
+        if (!response.ok) {
+          throw new Error(`Auth service responded with ${response.status}`);
+        }
+
+        const data = await response.json();
+        const title = data.title || documentSlug;
+        const summary = data.summary || data.description || "No summary returned.";
+        const url = data.url;
+
+        sourceOutput.innerHTML = url
+          ? `<p class=\"font-semibold text-[rgb(var(--ink))]\">${title}</p><p class=\"mt-1\">${summary}</p><p class=\"mt-2\"><a class=\"headline-link\" href=\"${url}\" target=\"_blank\" rel=\"noreferrer\">Open source document</a></p>`
+          : `<p class=\"font-semibold text-[rgb(var(--ink))]\">${title}</p><p class=\"mt-1\">${summary}</p>`;
+      } catch (error) {
+        sourceOutput.textContent = `Unable to load source document for ${documentSlug}.`;
+      }
+    });
+  })();
+</script>

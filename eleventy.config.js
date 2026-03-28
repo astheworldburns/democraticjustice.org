@@ -298,6 +298,7 @@ export default async function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/assets/feed.xsl");
   eleventyConfig.addPassthroughCopy("src/assets/js");
   eleventyConfig.addPassthroughCopy({ "static/documents": "documents" });
+  eleventyConfig.addPassthroughCopy({ "static/media/podcast": "media/podcast" });
   eleventyConfig.addPassthroughCopy({ "static/_headers": "_headers" });
   eleventyConfig.addPassthroughCopy({ "static/robots.txt": "robots.txt" });
   eleventyConfig.addPassthroughCopy({ "src/admin/index.html": "admin/index.html" });
@@ -386,6 +387,12 @@ export default async function (eleventyConfig) {
       return entries;
     }, []);
   });
+
+  eleventyConfig.addCollection("podcast", (collectionApi) =>
+    collectionApi
+      .getFilteredByGlob("./src/content/podcast/**/*.md")
+      .sort((left, right) => new Date(right.data.publish_date || right.date) - new Date(left.data.publish_date || left.date))
+  );
 
   eleventyConfig.addCollection("sourceDocument", (collectionApi) =>
     collectionApi

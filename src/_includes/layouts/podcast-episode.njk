@@ -1,0 +1,27 @@
+---
+layout: layouts/base.njk
+ogType: article
+---
+<article class="story-layout story-layout--bento">
+  <div class="story-main space-y-8 math-rank-major" data-math-rank="major">
+    <header class="story-header">
+      <p class="section-kicker">Podcast Episode</p>
+      <h1 class="story-title">{{ title }}</h1>
+      {% if description %}
+        <p class="story-description">{{ description }}</p>
+      {% endif %}
+      <div class="meta-row mt-4">
+        <span>{{ publish_date | displayDate }}</span>
+        {% if guid %}
+          <span class="meta-divider">GUID: {{ guid }}</span>
+        {% endif %}
+      </div>
+    </header>
+
+    {% include "components/podcast-player.njk" %}
+
+    <div class="story-prose" data-pagefind-body>
+      {{ content | safe }}
+    </div>
+  </div>
+</article>
