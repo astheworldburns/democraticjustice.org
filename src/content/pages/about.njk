@@ -5,44 +5,48 @@ description: A letter from Seth Sturm to readers.
 permalink: /about/index.html
 ogType: website
 ---
-<section class="about-letter-page" data-pagefind-body>
-  <article class="about-letter about-letter--bento">
-    <p class="about-letter__salutation">To readers,</p>
-    <p class="about-letter__dateline">{{ buildDate | displayDate }}</p>
+<main id="main-content" data-pagefind-body>
+  <section aria-labelledby="about-heading" class="max-w-4xl mx-auto">
+    {% set sectionKicker = "Letter" %}{% set sectionTitle = "About Democratic Justice" %}{% set sectionId = "about-heading" %}
+    {% include "components/section-header.njk" %}
+    <article class="card about-letter about-letter--bento">
+      <p class="about-letter__salutation">To readers,</p>
+      <p class="about-letter__dateline">{{ buildDate | displayDate }}</p>
 
-    <div class="about-letter__body">
-      <p>
-        Imagine a world where every journalist were confident enough to put their reasoning and source documents before their work.
-      </p>
-      <p>
-        Right now, the internet is drowning in clickbait noise. Thousands of articles are churned out every hour just to pad ad revenue. The noise is becoming impossible to separate from reality, and it trains people to react emotionally rather than logically.
-      </p>
-      <p>
-        Democratic Justice exists to fight that trend with proof-based journalism.
-      </p>
-      <p>
-        Every story we publish opens with a Proof Card. Before you read a single line of narrative prose, we hand you the foundation of facts, our exact reasoning, and the conclusion we reached. You get to test the case yourself before our writing ever has a chance to influence you.
-      </p>
-      <p>
-        Because we refuse to churn out content just to feed an algorithm, months might pass between stories. But when an email from Democratic Justice hits your inbox, you will know that it has been rigorously sourced and tested.
-      </p>
-      <p>
-        Misinformation spreads in darkness, so we're betting everything on radical transparency.
-      </p>
-    </div>
-
-    <div class="about-letter__signature-block">
-      <div class="about-letter__portrait-wrap">
-        {% image "/assets/images/uploads/Seth Headshot.jpg", "Seth Sturm", "176px", "about-letter__portrait" %}
-      </div>
-      <div class="about-letter__signature-copy">
-        <img class="about-letter__signature about-letter__signature--light" src="/assets/images/uploads/signature-seth.svg" alt="Seth Sturm signature" loading="lazy" />
-        <img class="about-letter__signature about-letter__signature--dark" src="/assets/images/uploads/signature-seth-white.svg" alt="Seth Sturm signature" loading="lazy" />
-        <p class="about-letter__signoff">
-          Seth Sturm
-          <span>Founder and editor</span>
+      <div class="about-letter__body prose prose-lg max-w-none">
+        <p>
+          Imagine a world where every journalist were confident enough to put their reasoning and source documents before their work.
+        </p>
+        <p>
+          Right now, the internet is drowning in clickbait noise. Thousands of articles are churned out every hour just to pad ad revenue. The noise is becoming impossible to separate from reality, and it trains people to react emotionally rather than logically.
+        </p>
+        <p>
+          Democratic Justice exists to fight that trend with proof-based journalism.
+        </p>
+        <p>
+          Every story we publish opens with a Proof Card. Before you read a single line of narrative prose, we hand you the foundation of facts, our exact reasoning, and the conclusion we reached. You get to test the case yourself before our writing ever has a chance to influence you.
+        </p>
+        <p>
+          Because we refuse to churn out content just to feed an algorithm, months might pass between stories. But when an email from Democratic Justice hits your inbox, you will know that it has been rigorously sourced and tested.
+        </p>
+        <p>
+          Misinformation spreads in darkness, so we're betting everything on radical transparency.
         </p>
       </div>
-    </div>
-  </article>
-</section>
+
+      <div class="about-letter__signature-block">
+        <div class="about-letter__portrait-wrap">
+          {% image "/assets/images/uploads/Seth Headshot.jpg", "Seth Sturm", "11rem", "about-letter__portrait" %}
+        </div>
+        <div class="about-letter__signature-copy">
+          <img class="about-letter__signature about-letter__signature--light" src="/assets/images/uploads/signature-seth.svg" alt="Seth Sturm signature" loading="lazy" />
+          <img class="about-letter__signature about-letter__signature--dark" src="/assets/images/uploads/signature-seth-white.svg" alt="Seth Sturm signature" loading="lazy" />
+          <p class="about-letter__signoff">
+            Seth Sturm
+            <span>Founder and editor</span>
+          </p>
+        </div>
+      </div>
+    </article>
+  </section>
+</main>
