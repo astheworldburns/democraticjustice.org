@@ -2,7 +2,7 @@
 {% set audioSrc = audio_file %}
 {% set transcriptSrc = transcript_file %}
 <section class="space-y-3 rounded-squircle-sm border border-border-subtle bg-surface-overlay p-4" data-podcast-player data-auth-endpoint="https://auth.democraticjustice.org" data-source-output-id="podcast-source-document">
-  <script type="module" src="https://cdn.jsdelivr.net/npm/media-chrome@4/+esm"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/media-chrome@4/+esm" async crossorigin="anonymous"></script>
   <media-controller audio class="w-full">
     <audio slot="media" src="{{ audioSrc }}" crossorigin="anonymous" controls preload="metadata">
       {% if transcriptSrc %}

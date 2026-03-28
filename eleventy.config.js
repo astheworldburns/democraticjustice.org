@@ -632,6 +632,11 @@ export default async function (eleventyConfig) {
       <guid>{{ absolutePostUrl }}</guid>
       <description>{{ post.data.description | escape }}</description>
       <author>{{ postAuthor.data.name if postAuthor else site.author }}</author>
+      {%- for tag in post.data.tags or [] %}
+      {%- if tag != "article" %}
+      <category>{{ tag }}</category>
+      {%- endif %}
+      {%- endfor %}
       <content:encoded>{{ post.templateContent | htmlToAbsoluteUrls(site.url) }}</content:encoded>
       <pubDate>{{ post.date | dateToRfc822 }}</pubDate>
     </item>

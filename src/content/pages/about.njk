@@ -36,11 +36,11 @@ ogType: website
 
       <div class="about-letter__signature-block">
         <div class="about-letter__portrait-wrap">
-          {% image "/assets/images/uploads/Seth Headshot.jpg", "Seth Sturm", "11rem", "about-letter__portrait" %}
+          {% image "/assets/images/uploads/Seth Headshot.jpg", "Seth Sturm", "11rem", "about-letter__portrait" %} {# TODO: convert to WebP #}
         </div>
         <div class="about-letter__signature-copy">
-          <img class="about-letter__signature about-letter__signature--light" src="/assets/images/uploads/signature-seth.svg" alt="Seth Sturm signature" loading="lazy" />
-          <img class="about-letter__signature about-letter__signature--dark" src="/assets/images/uploads/signature-seth-white.svg" alt="Seth Sturm signature" loading="lazy" />
+          <img class="about-letter__signature about-letter__signature--light" src="/assets/images/uploads/signature-seth.svg" alt="Seth Sturm signature" loading="lazy" decoding="async" width="192" height="64" />
+          <img class="about-letter__signature about-letter__signature--dark" src="/assets/images/uploads/signature-seth-white.svg" alt="Seth Sturm signature" loading="lazy" decoding="async" width="192" height="64" />
           <p class="about-letter__signoff">
             Seth Sturm
             <span>Founder and editor</span>

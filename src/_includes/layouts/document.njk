@@ -47,7 +47,7 @@ ogType: website
       <h2 id="document-preview-heading" class="sr-only">Document preview</h2>
       <div class="document-preview">
         {% if file_type == "image" %}
-          <img class="document-preview__image" src="{{ file_url }}" alt="{{ title }}" loading="lazy" />
+          <img class="document-preview__image" src="{{ file_url }}" alt="{{ title }}" loading="lazy" decoding="async" width="1200" height="1600" />
         {% elseif file_type == "pdf" %}
           <iframe class="document-preview__frame" src="{{ file_url }}#view=FitH" title="{{ title }}"></iframe>
         {% else %}
