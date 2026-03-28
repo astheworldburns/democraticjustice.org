@@ -1,6 +1,7 @@
+{# Token migration: arbitrary values replaced — Phase 1B #}
 {% set audioSrc = audio_file %}
 {% set transcriptSrc = transcript_file %}
-<section class="space-y-3 rounded-[var(--radius-sm)] border border-[rgba(var(--rule),0.75)] bg-[rgba(var(--surface-muted),0.4)] p-4" data-podcast-player data-auth-endpoint="https://auth.democraticjustice.org" data-source-output-id="podcast-source-document">
+<section class="space-y-3 rounded-squircle-sm border border-border-subtle bg-surface-overlay p-4" data-podcast-player data-auth-endpoint="https://auth.democraticjustice.org" data-source-output-id="podcast-source-document">
   <script type="module" src="https://cdn.jsdelivr.net/npm/media-chrome@4/+esm"></script>
   <media-controller audio class="w-full">
     <audio slot="media" src="{{ audioSrc }}" crossorigin="anonymous" controls preload="metadata">
@@ -18,7 +19,7 @@
       <media-volume-range></media-volume-range>
     </media-control-bar>
   </media-controller>
-  <div id="podcast-source-document" class="rounded-[var(--radius-xs)] border border-[rgba(var(--rule),0.6)] bg-white/70 p-3 text-sm text-[rgb(var(--ink-soft))]">
+  <div id="podcast-source-document" class="rounded-squircle-sm border border-border-subtle bg-white/70 p-3 text-sm text-ink-secondary">
     Source document context will appear as transcript metadata cues fire.
   </div>
 </section>
@@ -78,8 +79,8 @@
         const url = data.url;
 
         sourceOutput.innerHTML = url
-          ? `<p class=\"font-semibold text-[rgb(var(--ink))]\">${title}</p><p class=\"mt-1\">${summary}</p><p class=\"mt-2\"><a class=\"headline-link\" href=\"${url}\" target=\"_blank\" rel=\"noreferrer\">Open source document</a></p>`
-          : `<p class=\"font-semibold text-[rgb(var(--ink))]\">${title}</p><p class=\"mt-1\">${summary}</p>`;
+          ? `<p class=\"font-semibold text-ink\">${title}</p><p class=\"mt-1\">${summary}</p><p class=\"mt-2\"><a class=\"headline-link\" href=\"${url}\" target=\"_blank\" rel=\"noreferrer\">Open source document</a></p>`
+          : `<p class=\"font-semibold text-ink\">${title}</p><p class=\"mt-1\">${summary}</p>`;
       } catch (error) {
         sourceOutput.textContent = `Unable to load source document for ${documentSlug}.`;
       }

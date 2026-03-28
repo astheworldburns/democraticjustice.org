@@ -1,3 +1,4 @@
+{# Token migration: arbitrary values replaced — Phase 1B #}
 ---
 layout: layouts/base.njk
 title: Archives
@@ -27,8 +28,8 @@ ogType: website
   <div class="space-y-8">
     {% for yearBucket in collections.articleArchiveYears %}
       <section id="year-{{ yearBucket.year }}" class="space-y-4">
-        <div class="flex items-end justify-between border-b border-[rgba(var(--rule-strong),0.82)] pb-3">
-          <h2 class="font-display text-3xl font-semibold tracking-tight text-[rgb(var(--ink))]">{{ yearBucket.year }}</h2>
+        <div class="flex items-end justify-between border-b border-border pb-3">
+          <h2 class="font-display text-3xl font-semibold tracking-tight text-ink">{{ yearBucket.year }}</h2>
           <p class="section-kicker">{{ yearBucket.months | length }} {% if yearBucket.months | length == 1 %}month{% else %}months{% endif %}</p>
         </div>
 
@@ -40,7 +41,7 @@ ogType: website
               <div class="grid gap-4 lg:grid-cols-[13rem_minmax(0,1fr)]">
                 <div>
                   <p class="section-kicker">{{ monthBucket.year }}</p>
-                  <h3 class="mt-2 font-display text-3xl font-semibold tracking-tight text-[rgb(var(--ink))]">{{ monthBucket.label }}</h3>
+                  <h3 class="mt-2 font-display text-3xl font-semibold tracking-tight text-ink">{{ monthBucket.label }}</h3>
                 </div>
 
                 <div class="divide-y divide-[rgba(var(--rule),0.82)]">
@@ -48,10 +49,10 @@ ogType: website
                     {% set storyAuthor = story.data.author | getAuthor(collections.authorProfiles) %}
                     <article class="archive-story-row grid gap-3 py-3 md:grid-cols-[minmax(0,1fr)_auto] md:items-start">
                       <div>
-                        <h4 class="font-serif text-2xl font-semibold leading-tight text-[rgb(var(--ink))]">
+                        <h4 class="font-serif text-2xl font-semibold leading-tight text-ink">
                           <a class="headline-link" href="{{ story.url }}">{{ story.data.title }}</a>
                         </h4>
-                        <p class="mt-2 max-w-3xl font-serif text-[0.94rem] leading-relaxed text-[rgb(var(--ink-soft))]">{{ story.data.description }}</p>
+                        <p class="mt-2 max-w-3xl font-serif text-base leading-relaxed text-ink-secondary">{{ story.data.description }}</p>
                       </div>
                       <div class="meta-row md:text-right">
                         <span>{{ story.date | displayDate }}</span>
