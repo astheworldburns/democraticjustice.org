@@ -1,3 +1,4 @@
+{# Token migration: arbitrary values replaced — Phase 1B #}
 ---
 pagination:
   data: collections.editorialTagList
@@ -46,7 +47,7 @@ eleventyExcludeFromCollections: true
     <article class="lead-card news-grid-accent category-lead p-5 md:p-6 math-rank-major" data-math-rank="major">
       <div class="ml-2">
         <p class="section-kicker">{{ lead.data.kicker or "Lead report" }}</p>
-        <h2 class="mt-2 max-w-5xl font-display text-[clamp(2rem,3.8vw,3.5rem)] font-semibold leading-[0.96] tracking-tight text-[rgb(var(--ink))]">
+        <h2 class="mt-2 max-w-5xl font-display text-display-md font-semibold leading-none tracking-tight text-ink">
           <a class="headline-link" href="{{ lead.url }}">{{ lead.data.title }}</a>
         </h2>
         <div class="meta-row mt-3">
@@ -54,7 +55,7 @@ eleventyExcludeFromCollections: true
           {% if leadAuthor %}<span class="meta-divider"><a class="headline-link" href="{{ leadAuthor.url }}">{{ leadAuthor.data.name }}</a></span>{% endif %}
           <span class="meta-divider">{{ lead.templateContent | readingMinutes }} min read</span>
         </div>
-        <p class="mt-4 max-w-4xl font-serif text-[1.02rem] leading-relaxed text-[rgb(var(--ink-soft))]">{{ lead.data.description }}</p>
+        <p class="mt-4 max-w-4xl font-serif text-base leading-relaxed text-ink-secondary">{{ lead.data.description }}</p>
         <div class="mt-4">
           <a class="button-link" href="{{ lead.url }}" data-haptic data-haptic="confirm">Read lead report</a>
         </div>
@@ -76,10 +77,10 @@ eleventyExcludeFromCollections: true
                   <span>{{ story.date | displayDate }}</span>
                   <span class="meta-divider">{{ story.templateContent | readingMinutes }} min read</span>
                 </p>
-                <h2 class="mt-2 font-serif text-[clamp(1.75rem,1.5rem+0.6vw,2.35rem)] font-semibold leading-tight text-[rgb(var(--ink))]">
+                <h2 class="mt-2 font-serif text-display-sm font-semibold leading-tight text-ink">
                   <a class="headline-link" href="{{ story.url }}">{{ story.data.title }}</a>
                 </h2>
-                <p class="mt-2 font-serif text-[0.95rem] leading-relaxed text-[rgb(var(--ink-soft))]">{{ story.data.description }}</p>
+                <p class="mt-2 font-serif text-base leading-relaxed text-ink-secondary">{{ story.data.description }}</p>
               </div>
               <div class="meta-row md:text-right">
                 <span>{% if storyAuthor %}<a class="headline-link" href="{{ storyAuthor.url }}">{{ storyAuthor.data.name }}</a>{% else %}{{ site.author }}{% endif %}</span>
