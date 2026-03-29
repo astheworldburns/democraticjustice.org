@@ -78,18 +78,15 @@ function redirectToLogin(url) {
 }
 
 async function sessionExists(context, sessionId) {
-  const keyCandidates = [`${SESSION_PREFIX}${sessionId}`, sessionId];
+  const key = `${SESSION_PREFIX}${sessionId}`;
+  const storedSession = await context.env.ADMIN_SESSIONS.get(key, "json");
 
-  for (const key of keyCandidates) {
-    const storedSession = await context.env.ADMIN_SESSIONS.get(key, { type: "json" });
+  if (storedSession && isSessionRecordValid(storedSession)) {
+    return true;
+  }
 
-    if (storedSession && isSessionRecordValid(storedSession)) {
-      return true;
-    }
-
-    if (storedSession && typeof storedSession !== "object") {
-      return true;
-    }
+  if (storedSession && typeof storedSession !== "object") {
+    return true;
   }
 
   return false;

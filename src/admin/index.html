@@ -193,6 +193,10 @@
 
         if (params.get('error') === 'not_provisioned') {
           showNotice('Your GitHub account has not been provisioned for access.', 'error');
+        } else if (params.get('error') === 'invalid_state') {
+          showNotice('Your sign-in session expired before GitHub returned. Please try again.', 'error');
+        } else if (params.get('error') === 'oauth_failed') {
+          showNotice('GitHub sign-in failed. Please try again.', 'error');
         } else if (params.get('expired') === '1') {
           showNotice('Your session has expired. Please sign in again.', 'info');
         }

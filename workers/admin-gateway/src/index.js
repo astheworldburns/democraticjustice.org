@@ -16,34 +16,61 @@ function unauthorized() {
   return json({ error: "Unauthorized" }, { status: 401 });
 }
 
+function getPasswordFields(user) {
+  const passwordHash = user.passwordHash || user.password_hash || "";
+  const passwordSalt = user.passwordSalt || user.password_salt || "";
+  const passwordIterations = Number.parseInt(
+    String(user.passwordIterations || user.password_iterations || user.pbkdf2Iterations || ""),
+    10
+  );
+
+  return {
+    passwordHash,
+    passwordSalt,
+    passwordIterations: Number.isFinite(passwordIterations) && passwordIterations > 0 ? passwordIterations : null
+  };
+}
+
 async function authenticateWithPassword(env, email, password) {
   const normalized = String(email || "").trim().toLowerCase();
   if (!normalized || !password) {
+    console.info("auth.login.invalid_input", { hasEmail: Boolean(normalized), hasPassword: Boolean(password) });
     return null;
   }
 
   const user = await env.ADMIN_USERS.get(`user:${normalized}`, "json");
   if (!user || typeof user !== "object") {
+    console.info("auth.login.user_missing", { email: normalized });
     return null;
   }
 
-  const salt = decodeStoredHash(user.passwordSalt || "");
-  const expectedHash = decodeStoredHash(user.passwordHash || "");
+  const passwordFields = getPasswordFields(user);
+  const salt = decodeStoredHash(passwordFields.passwordSalt);
+  const expectedHash = decodeStoredHash(passwordFields.passwordHash);
 
   if (!salt.length || !expectedHash.length) {
+    console.info("auth.login.password_record_invalid", { email: normalized });
     return null;
   }
 
-  const derived = await pbkdf2Sha256(password, salt, 210000, 256);
-  if (!constantTimeEquals(derived, expectedHash)) {
-    return null;
+  const iterationCandidates = Array.from(
+    new Set([passwordFields.passwordIterations, 210000, 100000].filter(Boolean))
+  );
+
+  for (const iterations of iterationCandidates) {
+    const derived = await pbkdf2Sha256(password, salt, iterations, 256);
+    if (constantTimeEquals(derived, expectedHash)) {
+      console.info("auth.login.password_verified", { email: normalized, iterations });
+      return {
+        email: normalized,
+        displayName: user.displayName || user.name || "",
+        roles: Array.isArray(user.roles) ? user.roles : user.role ? [user.role] : []
+      };
+    }
   }
 
-  return {
-    email: normalized,
-    displayName: user.displayName || "",
-    roles: Array.isArray(user.roles) ? user.roles : []
-  };
+  console.info("auth.login.password_mismatch", { email: normalized, triedIterations: iterationCandidates.length });
+  return null;
 }
 
 function sessionUser(session) {
@@ -54,6 +81,15 @@ function sessionUser(session) {
   };
 }
 
+function oauthErrorRedirect(nextPath, errorCode) {
+  const params = new URLSearchParams();
+  params.set("error", errorCode);
+  if (nextPath) {
+    params.set("next", sanitizeNextPath(nextPath));
+  }
+  return redirect(`/admin/?${params.toString()}`);
+}
+
 async function handleLogin(request, env) {
   const body = await request.json().catch(() => null);
   if (!body || typeof body !== "object") {
@@ -62,10 +98,12 @@ async function handleLogin(request, env) {
 
   const user = await authenticateWithPassword(env, body.email, body.password);
   if (!user) {
+    console.info("auth.login.failed", { email: String(body.email || "").trim().toLowerCase() });
     return unauthorized();
   }
 
   const { sessionId, ttl } = await createSession(env, user);
+  console.info("auth.login.session_created", { email: user.email, sessionIdPrefix: sessionId.slice(0, 8), ttl });
   return json(
     { ok: true, user },
     {
@@ -82,6 +120,7 @@ async function handleGithubStart(request, env) {
   const state = randomId(18);
 
   await putOauthState(env, state, nextPath);
+  console.info("auth.github.start", { nextPath, statePrefix: state.slice(0, 8) });
   return redirect(createGithubAuthorizeUrl(env, state));
 }
 
@@ -90,29 +129,42 @@ async function handleGithubCallback(request, env) {
   const state = url.searchParams.get("state") || "";
   const code = url.searchParams.get("code") || "";
 
+  console.info("auth.github.callback_reached", {
+    hasState: Boolean(state),
+    hasCode: Boolean(code)
+  });
+
   if (!state || !code) {
-    return redirect("/admin/?error=oauth_failed");
+    return oauthErrorRedirect("", "oauth_failed");
   }
 
   const storedState = await consumeOauthState(env, state);
   if (!storedState || typeof storedState !== "object") {
-    return redirect("/admin/?error=invalid_state");
+    console.info("auth.github.invalid_state", { statePrefix: state.slice(0, 8) });
+    return oauthErrorRedirect("", "invalid_state");
   }
+  const nextPath = sanitizeNextPath(storedState.nextPath || "/admin/");
+  console.info("auth.github.state_validated", { nextPath, statePrefix: state.slice(0, 8) });
 
   const token = await exchangeCodeForToken(env, code);
   if (!token) {
-    return redirect("/admin/?error=oauth_failed");
+    console.info("auth.github.token_exchange_failed", { nextPath });
+    return oauthErrorRedirect(nextPath, "oauth_failed");
   }
 
   const profile = await fetchGithubUser(token);
   if (!profile || !profile.id) {
-    return redirect("/admin/?error=oauth_failed");
+    console.info("auth.github.user_fetch_failed", { nextPath });
+    return oauthErrorRedirect(nextPath, "oauth_failed");
   }
+  console.info("auth.github.user_found", { githubId: String(profile.id) });
 
   const mappedUser = await env.ADMIN_USERS.get(`user:github:${profile.id}`, "json");
   if (!mappedUser || typeof mappedUser !== "object" || !mappedUser.email) {
-    return redirect("/admin/?error=not_provisioned");
+    console.info("auth.github.user_not_provisioned", { githubId: String(profile.id) });
+    return oauthErrorRedirect(nextPath, "not_provisioned");
   }
+  console.info("auth.github.user_provisioned", { githubId: String(profile.id), email: String(mappedUser.email).toLowerCase() });
 
   const user = {
     email: String(mappedUser.email).toLowerCase(),
@@ -121,7 +173,14 @@ async function handleGithubCallback(request, env) {
   };
 
   const { sessionId, ttl } = await createSession(env, user, { githubToken: token });
-  return redirect(sanitizeNextPath(storedState.nextPath || "/admin/"), 302, {
+  console.info("auth.github.session_created", {
+    email: user.email,
+    githubId: String(profile.id),
+    sessionIdPrefix: sessionId.slice(0, 8),
+    nextPath
+  });
+
+  return redirect(nextPath, 302, {
     "Set-Cookie": createSessionCookie(sessionId, ttl)
   });
 }
