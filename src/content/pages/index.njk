@@ -101,9 +101,9 @@ ogType: website
                 <a href="{{ doc.url }}" class="group block no-underline rounded-squircle-sm border border-border-subtle overflow-hidden hover:border-accent transition-colors">
 
                   {# Thumbnail or type badge #}
-                  {% if doc.data.file_type == "image" and doc.data.file %}
+                  {% if doc.data.preview_image %}
                     <div class="hp-doc-thumb">
-                      <img src="{{ doc.data.file }}"
+                      <img src="{{ doc.data.preview_image }}"
                            alt="Preview of {{ doc.data.title }}"
                            loading="lazy" decoding="async">
                     </div>
@@ -114,7 +114,7 @@ ogType: website
                       </div>
                       <div class="min-w-0">
                         <span class="font-mono text-xs text-ink-muted block">Portable Document</span>
-                        <span class="font-mono text-xs text-ink-muted block mt-0.5">Click to preview</span>
+                        <span class="font-mono text-xs text-ink-muted block mt-0.5">Preview processing</span>
                       </div>
                     </div>
                   {% else %}
