@@ -228,6 +228,16 @@ collections:
         widget: file
         accept: application/pdf,.pdf,image/*
         choose_url: false
+      - label: Preview Image URL
+        name: preview_image
+        widget: string
+        required: false
+        hint: Optional thumbnail URL (PNG/WebP). If omitted, Eleventy checks src/_data/document-previews.json using the file path.
+      - label: Social Card Image URL
+        name: og_image
+        widget: string
+        required: false
+        hint: Optional override for og:image / twitter:image on this document page.
       - label: Primary Source
         name: primary_source
         widget: boolean
@@ -256,8 +266,8 @@ collections:
     slug: "{{slug}}"
     extension: md
     format: yaml-frontmatter
-    media_folder: /static/media/podcast
-    public_folder: https://media.democraticjustice.org/podcast
+    media_folder: static/media/podcast
+    public_folder: /media/podcast
     summary: "{{title}} - {{publish_date | date('DD MMM YYYY')}}"
     preview_path: "/podcast/{{slug}}/"
     sortable_fields:

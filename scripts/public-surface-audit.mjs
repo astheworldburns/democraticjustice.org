@@ -12,6 +12,8 @@ const allowedAdminFiles = new Set([
   "admin/index.html",
   "admin/editorial.css",
   "admin/cms/index.html",
+  "admin/cms/init.js",
+  "admin/cms/data/config.json",
   "admin/cms/vendor/sveltia-cms-0.150.1.js",
   "admin/editor/index.html",
   "admin/editor/app.js",
@@ -22,7 +24,7 @@ const allowedAdminFiles = new Set([
 ]);
 
 const docLikeNamePattern = /(guide|manual|workflow|setup|audit|readme|owners?)/i;
-const ignoredDotfiles = new Set(["_headers"]);
+const ignoredDotfiles = new Set(["_headers", ".gitkeep"]);
 
 async function collectFiles(entryPath, baseDir = entryPath) {
   const entries = await readdir(entryPath, { withFileTypes: true });
@@ -48,7 +50,17 @@ async function main() {
   const docLikeFiles = publicFiles.filter((filePath) => docLikeNamePattern.test(path.basename(filePath)));
   const hiddenFiles = publicFiles.filter((filePath) => {
     const parts = filePath.split("/");
-    return parts.some((part, index) => part.startsWith(".") && !(index === 0 && ignoredDotfiles.has(part)));
+    return parts.some((part, index) => {
+      if (!part.startsWith(".")) {
+        return false;
+      }
+
+      if (ignoredDotfiles.has(part)) {
+        return false;
+      }
+
+      return index !== 0 || !ignoredDotfiles.has(part);
+    });
   });
   const docsRoutes = publicFiles.filter((filePath) => filePath.startsWith("docs/"));
 

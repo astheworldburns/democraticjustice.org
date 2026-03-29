@@ -266,8 +266,8 @@ collections:
     slug: "{{slug}}"
     extension: md
     format: yaml-frontmatter
-    media_folder: /static/media/podcast
-    public_folder: https://media.democraticjustice.org/podcast
+    media_folder: static/media/podcast
+    public_folder: /media/podcast
     summary: "{{title}} - {{publish_date | date('DD MMM YYYY')}}"
     preview_path: "/podcast/{{slug}}/"
     sortable_fields:

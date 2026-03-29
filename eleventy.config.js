@@ -298,6 +298,7 @@ export default async function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/assets/feed.xsl");
   eleventyConfig.addPassthroughCopy("src/assets/js");
   eleventyConfig.addPassthroughCopy({ "static/documents": "documents" });
+  eleventyConfig.addPassthroughCopy({ "static/media": "media" });
   eleventyConfig.addPassthroughCopy({ ".generated/document-previews": "assets/document-previews" });
   eleventyConfig.addPassthroughCopy({ "static/_headers": "_headers" });
   eleventyConfig.addPassthroughCopy({ "static/robots.txt": "robots.txt" });
@@ -305,6 +306,7 @@ export default async function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "src/admin/config.yml": "admin/config.yml" });
   eleventyConfig.addPassthroughCopy({ "src/admin/editorial.css": "admin/editorial.css" });
   eleventyConfig.addPassthroughCopy({ "src/admin/cms/index.html": "admin/cms/index.html" });
+  eleventyConfig.addPassthroughCopy({ "src/admin/cms/init.js": "admin/cms/init.js" });
   eleventyConfig.addPassthroughCopy({ "src/admin/cms/vendor": "admin/cms/vendor" });
   eleventyConfig.addPassthroughCopy({ "src/admin/proof/index.html": "admin/proof/index.html" });
   eleventyConfig.addPassthroughCopy({ "src/admin/proof/app.js": "admin/proof/app.js" });

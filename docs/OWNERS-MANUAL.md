@@ -89,14 +89,15 @@ Status: working for the Content Desk, but still separate from the new Proof Desk
 What exists now:
 
 - `/admin/` is in the project
-- `src/admin/config.yml` points to GitHub as the backend
+- `src/admin/cms/config.yml` is the Content Desk schema source
+- `/admin/cms/data/config.json` is generated from that schema at build time
 - content schema for authors and articles is already in place
 
 What still needs owner action:
 
 1. Deploy the Sveltia auth helper to Cloudflare Workers.
 2. Create a GitHub OAuth App.
-3. Add the Worker URL as `base_url` under the `backend:` section in `src/admin/config.yml`.
+3. Add the Worker URL as `base_url` under the `backend:` section in both `src/admin/cms/config.yml` and `src/admin/config.yml`.
 4. Invite contributors to the GitHub repo as collaborators if they need publishing access.
 
 Without this, the CMS is not ready for non-technical multi-author use.
