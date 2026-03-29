@@ -129,12 +129,8 @@ window.addEventListener(
         return;
       }
 
-      let token = sessionUser?.githubToken;
-
-      if (!token) {
-        const identityPayload = await fetchJson("/api/cms/identity/auto-token");
-        token = identityPayload?.access_token || identityPayload?.token || identityPayload?.jwt;
-      }
+      const tokenPayload = await fetchJson("/api/cms/github-token");
+      const token = tokenPayload?.token;
 
       if (!token) {
         window.location.assign("/admin/");
