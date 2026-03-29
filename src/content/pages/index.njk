@@ -15,8 +15,8 @@ ogType: website
 <main id="main-content">
 
   {# ── Featured Investigation ── #}
-  <section aria-labelledby="featured-heading" class="bento-grid mb-16">
-    <article class="card card--featured bento-8 bento-rows-2">
+  <section aria-labelledby="featured-heading" class="home-main-bento mb-16">
+    <article class="card card--featured bento-8 bento-rows-2 home-main-bento__hero">
       <span class="card__tag">{{ featuredArticle.data.kicker | default("Investigation") }}</span>
       <h2 id="featured-heading" class="font-serif text-display-lg">
         <a href="{{ featuredArticle.url }}" class="text-ink hover:text-accent transition-colors">{{ featuredArticle.data.title }}</a>
@@ -30,7 +30,7 @@ ogType: website
       <div class="mt-6">{% include "components/meta-row.njk" %}</div>
     </article>
 
-    <div class="card bento-4">
+    <div class="card bento-4 home-main-bento__proof">
       <h3 class="section-header__kicker">Proof Summary</h3>
       <dl class="space-y-2 font-mono text-sm mt-3">
         <div class="flex justify-between"><dt class="text-ink-muted">Axioms</dt><dd class="font-semibold">{{ featuredProof.axiomCount }}</dd></div>
@@ -40,9 +40,10 @@ ogType: website
       {% if featuredProof.conclusionShort %}
         <p class="mt-4 text-sm text-ink-secondary font-serif italic">{{ featuredProof.conclusionShort }}</p>
       {% endif %}
+      <a href="{{ featuredArticle.url }}#proof-card" class="button-link-muted mt-5 w-full">Inspect proof chain</a>
     </div>
 
-    <div class="card bento-4">
+    <div class="card bento-4 home-main-bento__desks">
       <h3 class="section-header__kicker">Desks</h3>
       <ul class="space-y-2 mt-3">
         {% for desk in collections.editorialDesks %}
@@ -66,12 +67,12 @@ ogType: website
         {% set story = entry.article %}
         {% set proof = entry.proofCard %}
         {% set storyAuthor = story.data.author | getAuthor(collections.authorProfiles) %}
-        <article class="card bento-4">
+        <article class="card bento-4 {% if loop.index0 == 0 %}bento-8 bento-rows-2{% endif %}">
           <span class="card__tag">{{ story.data.kicker }}</span>
-          <h3 class="font-serif text-xl mt-1">
+          <h3 class="font-serif {% if loop.index0 == 0 %}text-3xl{% else %}text-xl{% endif %} mt-1">
             <a href="{{ story.url }}" class="text-ink hover:text-accent transition-colors">{{ story.data.title }}</a>
           </h3>
-          <p class="text-sm text-ink-secondary mt-2 line-clamp-2">{{ story.data.description }}</p>
+          <p class="text-sm text-ink-secondary mt-2 {% if loop.index0 > 0 %}line-clamp-2{% endif %}">{{ story.data.description }}</p>
           <div class="mt-3 flex flex-wrap gap-3 font-mono text-xs text-ink-muted">
             <span>{{ proof.axiomCount }} axioms</span>
             <span>{{ proof.logicCount }} logic</span>
