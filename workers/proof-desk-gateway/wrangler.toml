@@ -14,6 +14,7 @@ DOCUMENT_ASSET_PATH = "static/documents/"
 ALLOWED_ORIGINS = "https://democraticjustice.org,http://localhost:8080"
 # Writer Desk secrets to set in Cloudflare:
 # - GITHUB_SERVER_TOKEN
+# Secret: INTERNAL_SECRET — shared with admin-gateway
 # - EDITOR_BOOTSTRAP_EMAIL
 # - EDITOR_BOOTSTRAP_PASSWORD
 # Optional:

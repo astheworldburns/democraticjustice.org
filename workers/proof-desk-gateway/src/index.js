@@ -15,6 +15,8 @@ const EDITOR_ROLES = new Set(["writer", "editor", "publisher", "admin"]);
 const EDITOR_LOGIN_WINDOW_SECONDS = 15 * 60;
 const EDITOR_LOGIN_MAX_ATTEMPTS = 5;
 const EDITOR_LOGIN_BLOCK_SECONDS = 15 * 60;
+const internalProofSessions = new WeakMap();
+const internalEditorSessions = new WeakMap();
 
 function json(data, init = {}) {
   return new Response(JSON.stringify(data, null, 2), {
@@ -479,6 +481,11 @@ async function createSession(user, token, env) {
 }
 
 async function readSession(request, env) {
+  const internalSession = internalProofSessions.get(request);
+  if (internalSession) {
+    return internalSession;
+  }
+
   const cookies = parseCookies(request.headers.get("Cookie") || "");
   const sessionId = cookies[SESSION_COOKIE];
 
@@ -1256,6 +1263,11 @@ async function createEditorSession(user, env) {
 }
 
 async function readEditorSession(request, env) {
+  const internalSession = internalEditorSessions.get(request);
+  if (internalSession) {
+    return internalSession;
+  }
+
   const cookies = parseCookies(request.headers.get("Cookie") || "");
   const sessionId = cookies[EDITOR_SESSION_COOKIE];
 
@@ -2166,12 +2178,111 @@ async function handleEditorAdminUpdateUser(request, env) {
   }
 }
 
+function parseInternalRoles(value = "") {
+  try {
+    const parsed = JSON.parse(value || "[]");
+    if (!Array.isArray(parsed)) {
+      return [];
+    }
+
+    return parsed
+      .map((role) => normalizeEditorRole(role))
+      .filter(Boolean);
+  } catch {
+    return [];
+  }
+}
+
+function buildInternalSessions(request, env) {
+  const providedSecret = request.headers.get("X-Internal-Secret");
+  if (!providedSecret) {
+    return null;
+  }
+
+  const expectedSecret = normalizeWhitespace(env.INTERNAL_SECRET || "");
+  if (!expectedSecret || !secureEqual(providedSecret, expectedSecret)) {
+    return { error: "INTERNAL_FORBIDDEN" };
+  }
+
+  const email = normalizeEmail(request.headers.get("X-User-Email") || "");
+  const githubToken = normalizeWhitespace(request.headers.get("X-GitHub-Token") || "");
+  const roles = parseInternalRoles(request.headers.get("X-User-Roles") || "[]");
+  const isAdmin = roles.includes("admin");
+  const role = isAdmin ? "admin" : roles[0] || "writer";
+  const name = email ? email.split("@")[0] || "internal" : "internal";
+  const syntheticId = `internal:${crypto.randomUUID()}`;
+
+  return {
+    proof: {
+      id: syntheticId,
+      login: email || "internal",
+      name,
+      avatar_url: "",
+      email,
+      role,
+      active: true,
+      github_token: githubToken
+    },
+    editor: {
+      id: syntheticId,
+      email,
+      name,
+      role,
+      active: true
+    }
+  };
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     let response;
 
-    if (request.method === "OPTIONS") {
+    const internalSessions = buildInternalSessions(request, env);
+    if (internalSessions?.error) {
+      response = withCors(request, json({ error: internalSessions.error }, { status: 403 }), env);
+    } else if (internalSessions && (url.pathname.startsWith("/api/editor/") || url.pathname.startsWith("/api/proof/"))) {
+      internalProofSessions.set(request, internalSessions.proof);
+      internalEditorSessions.set(request, internalSessions.editor);
+
+      if (url.pathname.startsWith("/api/proof/") && !internalSessions.proof.github_token) {
+        response = withCors(request, json({ error: "INTERNAL_GITHUB_TOKEN_REQUIRED" }, { status: 403 }), env);
+      } else if (request.method === "GET" && url.pathname === "/api/editor/session") {
+        response = handleEditorSession(request, env);
+      } else if (request.method === "GET" && url.pathname === "/api/editor/articles") {
+        response = handleEditorArticles(request, env);
+      } else if (request.method === "GET" && url.pathname === "/api/editor/article") {
+        response = handleEditorArticle(request, env);
+      } else if (request.method === "POST" && url.pathname === "/api/editor/article/save") {
+        response = handleEditorSaveArticle(request, env);
+      } else if (request.method === "POST" && url.pathname === "/api/editor/proof/save") {
+        response = handleEditorSaveProof(request, env);
+      } else if (request.method === "GET" && url.pathname === "/api/editor/authors") {
+        response = handleEditorAuthors(request, env);
+      } else if (request.method === "GET" && url.pathname === "/api/editor/documents") {
+        response = handleEditorDocuments(request, env);
+      } else if (request.method === "POST" && url.pathname === "/api/editor/create-document") {
+        response = handleEditorCreateDocument(request, env);
+      } else if (request.method === "GET" && url.pathname === "/api/editor/admin/users") {
+        response = handleEditorAdminUsers(request, env);
+      } else if (request.method === "POST" && url.pathname === "/api/editor/admin/users") {
+        response = handleEditorAdminCreateUser(request, env);
+      } else if (request.method === "POST" && url.pathname === "/api/editor/admin/users/update") {
+        response = handleEditorAdminUpdateUser(request, env);
+      } else if (request.method === "GET" && url.pathname === "/api/proof/articles") {
+        response = handleArticles(request, env);
+      } else if (request.method === "GET" && url.pathname === "/api/proof/article") {
+        response = handleArticle(request, env);
+      } else if (request.method === "GET" && url.pathname === "/api/proof/documents") {
+        response = handleDocuments(request, env);
+      } else if (request.method === "POST" && url.pathname === "/api/proof/save") {
+        response = handleSaveProof(request, env);
+      } else if (request.method === "POST" && url.pathname === "/api/proof/create-document") {
+        response = handleCreateDocument(request, env);
+      } else {
+        response = text("Not found", 404);
+      }
+    } else if (request.method === "OPTIONS") {
       response = handleOptions(request, env);
     } else if (request.method === "GET" && url.pathname === "/auth") {
       response = cmsAuthRedirect(request, env);
@@ -2219,6 +2330,8 @@ export default {
       response = handleSaveProof(request, env);
     } else if (request.method === "POST" && url.pathname === "/api/proof/create-document") {
       response = handleCreateDocument(request, env);
+    } else if (internalSessions) {
+      response = withCors(request, json({ error: "INTERNAL_FORBIDDEN" }, { status: 403 }), env);
     } else {
       response = text("Not found", 404);
     }
