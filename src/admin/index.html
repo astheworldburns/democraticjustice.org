@@ -4,54 +4,237 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex,nofollow" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'" />
-    <title>Democratic Justice Editorial Desk</title>
-    <link rel="stylesheet" href="/admin/editorial.css" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'"
+    />
+    <title>Democratic Justice — Admin Login</title>
+    <style>
+      :root {
+        color-scheme: light;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
+        color: #0f172a;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+      }
+
+      .card {
+        width: 100%;
+        max-width: 420px;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        box-shadow: 0 20px 40px -24px rgba(15, 23, 42, 0.45);
+        padding: 28px;
+      }
+
+      .brand {
+        margin: 0;
+        font-size: 0.9rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #334155;
+      }
+
+      h1 {
+        margin: 8px 0 20px;
+        font-size: 1.65rem;
+        line-height: 1.25;
+      }
+
+      .notice {
+        margin: 0 0 16px;
+        border-radius: 10px;
+        padding: 12px 14px;
+        font-size: 0.94rem;
+        line-height: 1.4;
+      }
+
+      .notice.error {
+        background: #fef2f2;
+        color: #991b1b;
+        border: 1px solid #fecaca;
+      }
+
+      .notice.info {
+        background: #eff6ff;
+        color: #1e3a8a;
+        border: 1px solid #bfdbfe;
+      }
+
+      form {
+        display: grid;
+        gap: 14px;
+      }
+
+      label {
+        display: grid;
+        gap: 6px;
+        font-size: 0.9rem;
+        color: #334155;
+      }
+
+      input {
+        width: 100%;
+        border: 1px solid #cbd5e1;
+        border-radius: 10px;
+        padding: 10px 12px;
+        font-size: 1rem;
+        color: #0f172a;
+        background: #fff;
+      }
+
+      input:focus {
+        outline: 2px solid #2563eb;
+        outline-offset: 1px;
+        border-color: #2563eb;
+      }
+
+      .button {
+        border: 0;
+        border-radius: 10px;
+        padding: 11px 14px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        width: 100%;
+      }
+
+      .button.primary {
+        background: #0f172a;
+        color: #f8fafc;
+      }
+
+      .button.primary:hover {
+        background: #1e293b;
+      }
+
+      .divider {
+        margin: 16px 0 14px;
+        text-align: center;
+        color: #64748b;
+        font-size: 0.85rem;
+      }
+
+      .button.github {
+        background: #f1f5f9;
+        color: #0f172a;
+        border: 1px solid #cbd5e1;
+      }
+
+      .button.github:hover {
+        background: #e2e8f0;
+      }
+
+      .status {
+        margin: 14px 0 0;
+        font-size: 0.9rem;
+        min-height: 1.2em;
+        color: #991b1b;
+      }
+    </style>
   </head>
   <body>
-    <div class="editor-shell">
-      <div class="editor-frame editor-home">
-        <section class="editor-hero">
-          <p class="editor-kicker">Editorial desk</p>
-          <h1 class="editor-title">Proof-first publishing.</h1>
-          <p class="editor-copy">
-            Use the Content Desk for article body and metadata. Use the Proof Desk to build the case, link documents,
-            and keep the source record tied to the proof.
-          </p>
-        </section>
+    <main class="card" aria-labelledby="title">
+      <p class="brand">Democratic Justice</p>
+      <h1 id="title">Admin Login</h1>
+      <div id="message"></div>
 
-        <section class="editor-grid">
-          <article class="editor-card">
-            <p class="editor-kicker">Writer desk</p>
-            <h2>Email login, story editing, and proof editing</h2>
-            <p>Use the new publication-managed editor for writers who should not need GitHub accounts.</p>
-            <div class="editor-actions">
-              <a class="editor-button" href="/admin/editor/">Open Writer Desk</a>
-            </div>
-          </article>
+      <form id="login-form" novalidate>
+        <label>
+          Email
+          <input id="email" name="email" type="email" autocomplete="username" required />
+        </label>
 
-          <article class="editor-card">
-            <p class="editor-kicker">Content desk</p>
-            <h2>Articles, authors, and source records</h2>
-            <p>Open the existing CMS for story body, metadata, bylines, and standalone source-document entries.</p>
-            <div class="editor-actions">
-              <a class="editor-button" href="/admin/cms/">Open Content Desk</a>
-            </div>
-          </article>
+        <label>
+          Password
+          <input id="password" name="password" type="password" autocomplete="current-password" required />
+        </label>
 
-          <article class="editor-card">
-            <p class="editor-kicker">Proof desk</p>
-            <h2>Axioms, linked sources, and proof integrity</h2>
-            <p>
-              Build the proof inside the article workflow. Attach one or more documents to each axiom, or mark it as
-              source-free when needed.
-            </p>
-            <div class="editor-actions">
-              <a class="editor-button" href="/admin/proof/">Open Proof Desk</a>
-            </div>
-          </article>
-        </section>
-      </div>
-    </div>
+        <button class="button primary" type="submit">Sign in</button>
+      </form>
+
+      <p class="divider">or</p>
+      <button id="github-button" class="button github" type="button">Sign in with GitHub</button>
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+    </main>
+
+    <script>
+      (function () {
+        const DEFAULT_NEXT = '/admin/cms/';
+        const params = new URLSearchParams(window.location.search);
+        const rawNext = params.get('next') || DEFAULT_NEXT;
+        const next = rawNext.startsWith('/admin/') ? rawNext : DEFAULT_NEXT;
+
+        const messageContainer = document.getElementById('message');
+        const status = document.getElementById('status');
+        const form = document.getElementById('login-form');
+        const githubButton = document.getElementById('github-button');
+
+        function showNotice(text, type) {
+          const notice = document.createElement('p');
+          notice.className = 'notice ' + type;
+          notice.textContent = text;
+          messageContainer.innerHTML = '';
+          messageContainer.appendChild(notice);
+        }
+
+        if (params.get('error') === 'not_provisioned') {
+          showNotice('Your GitHub account has not been provisioned for access.', 'error');
+        } else if (params.get('expired') === '1') {
+          showNotice('Your session has expired. Please sign in again.', 'info');
+        }
+
+        githubButton.addEventListener('click', function () {
+          const destination = '/api/auth/github?next=' + encodeURIComponent(next);
+          window.location.assign(destination);
+        });
+
+        form.addEventListener('submit', async function (event) {
+          event.preventDefault();
+          status.textContent = '';
+
+          const email = document.getElementById('email').value.trim();
+          const password = document.getElementById('password').value;
+
+          if (!email || !password) {
+            status.textContent = 'Please provide both email and password.';
+            return;
+          }
+
+          try {
+            const response = await fetch('/api/auth/login', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              credentials: 'include',
+              body: JSON.stringify({ email, password })
+            });
+
+            if (!response.ok) {
+              status.textContent = 'Invalid email or password.';
+              return;
+            }
+
+            window.location.assign(next);
+          } catch (error) {
+            status.textContent = 'Unable to sign in right now. Please try again.';
+          }
+        });
+      })();
+    </script>
   </body>
 </html>
