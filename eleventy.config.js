@@ -303,7 +303,6 @@ export default async function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "static/_headers": "_headers" });
   eleventyConfig.addPassthroughCopy({ "static/robots.txt": "robots.txt" });
   eleventyConfig.addPassthroughCopy({ "src/admin/index.html": "admin/index.html" });
-  eleventyConfig.addPassthroughCopy({ "src/admin/config.yml": "admin/config.yml" });
   eleventyConfig.addPassthroughCopy({ "src/admin/editorial.css": "admin/editorial.css" });
   eleventyConfig.addPassthroughCopy({ "src/admin/cms/index.html": "admin/cms/index.html" });
   eleventyConfig.addPassthroughCopy({ "src/admin/cms/init.js": "admin/cms/init.js" });
