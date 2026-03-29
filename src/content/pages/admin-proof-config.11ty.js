@@ -10,7 +10,7 @@ export default class AdminProofConfig {
   }
 
   async render() {
-    const rawConfig = await readFile("./src/admin/config.yml", "utf8");
+    const rawConfig = await readFile("./src/admin/cms/config.yml", "utf8");
     const parsed = yaml.load(rawConfig) || {};
     const repoValue = parsed.backend?.repo || "";
     const [repoOwner = "", repoName = ""] = repoValue.split("/");
