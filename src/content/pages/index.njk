@@ -11,6 +11,49 @@ ogType: website
 {% set featuredProof = featuredEntry.proofCard if featuredEntry else null %}
 {% set featuredAuthor = featuredArticle.data.author | getAuthor(collections.authorProfiles) if featuredArticle else null %}
 
+<style>
+  .hp-doc-thumb {
+    width: 100% !important;
+    height: 5.5rem !important;
+    overflow: hidden !important;
+    background: var(--color-surface, #f7f2e8) !important;
+  }
+  .hp-doc-thumb img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: top !important;
+    opacity: 0.85;
+    transition: opacity 0.15s ease;
+  }
+  a:hover .hp-doc-thumb img {
+    opacity: 1;
+  }
+  .hp-pdf-badge {
+    background: #fef2f2 !important;
+    border: 1px solid #fecaca !important;
+    width: 3rem !important;
+    height: 3.5rem !important;
+    border-radius: 0.375rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+  }
+  .hp-pdf-badge-label {
+    color: #dc2626 !important;
+    font-weight: 700 !important;
+  }
+  [data-theme="dark"] .hp-pdf-badge {
+    background: #2a1616 !important;
+    border-color: #5c2020 !important;
+  }
+  [data-theme="dark"] .hp-pdf-badge-label {
+    color: #f87171 !important;
+  }
+</style>
+
 <div class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
 
   {# ═══ HERO ROW ═══ #}
@@ -45,43 +88,60 @@ ogType: website
 
     <div class="card hp-card bento-4 hp-span-4 bento-rows-2 hp-rows-2" style="display:flex;flex-direction:column">
 
-      {# ── Evidence Room ── #}
+      {# ── Evidence Room: global document archive ── #}
       <div>
         <span class="font-mono text-xs uppercase tracking-wide text-accent">The Evidence Room</span>
-        <p class="text-sm text-ink-muted mt-1">Primary source documents behind the investigation.</p>
+        <p class="text-sm text-ink-muted mt-1">{{ collections.sourceDocument.length }} source {{ "document" if collections.sourceDocument.length == 1 else "documents" }} on file.</p>
 
-        {% if featuredProof and featuredProof.sourceDocuments %}
+        {% if collections.sourceDocument.length %}
           <ul class="mt-4 space-y-3">
-            {% for doc in featuredProof.sourceDocuments %}
+            {% for doc in collections.sourceDocument %}
               <li>
-                <a href="{{ doc.url }}" class="group flex items-start gap-3 no-underline">
-                  <div class="flex-shrink-0 w-10 h-12 rounded-squircle-sm bg-surface border border-border-subtle flex items-center justify-center">
-                    <span class="font-mono text-xs text-ink-muted uppercase">
-                      {{ doc.data.file_type | default("doc") | upper }}
-                    </span>
-                  </div>
-                  <div class="min-w-0">
-                    <span class="text-sm text-ink font-semibold group-hover:text-accent transition-colors block leading-snug">
+                <a href="{{ doc.url }}" class="group block no-underline rounded-squircle-sm border border-border-subtle overflow-hidden hover:border-accent transition-colors">
+
+                  {# Thumbnail or type badge #}
+                  {% if doc.data.file_type == "image" and doc.data.file %}
+                    <div class="hp-doc-thumb">
+                      <img src="{{ doc.data.file }}"
+                           alt="Preview of {{ doc.data.title }}"
+                           loading="lazy" decoding="async">
+                    </div>
+                  {% elif doc.data.file_type == "pdf" %}
+                    <div class="w-full h-24 bg-surface flex items-center gap-3 px-4">
+                      <div class="hp-pdf-badge">
+                        <span class="hp-pdf-badge-label font-mono text-xs uppercase">PDF</span>
+                      </div>
+                      <div class="min-w-0">
+                        <span class="font-mono text-xs text-ink-muted block">Portable Document</span>
+                        <span class="font-mono text-xs text-ink-muted block mt-0.5">Click to preview</span>
+                      </div>
+                    </div>
+                  {% else %}
+                    <div class="w-full h-12 bg-surface flex items-center justify-center">
+                      <span class="font-mono text-xs text-ink-muted uppercase tracking-wide">{{ doc.data.file_type | default("doc") | upper }}</span>
+                    </div>
+                  {% endif %}
+
+                  {# Document info #}
+                  <div class="px-3 py-2">
+                    <span class="text-sm text-ink font-semibold leading-snug block group-hover:text-accent transition-colors">
                       {{ doc.data.title }}
                     </span>
-                    {% if doc.data.obtained %}
-                      <span class="font-mono text-xs text-ink-muted mt-0.5 block">
-                        Obtained <time datetime="{{ doc.data.obtained | machineDate }}">{{ doc.data.obtained | displayDate }}</time>
-                      </span>
-                    {% endif %}
-                    {% if doc.data.source_method %}
-                      <span class="font-mono text-xs text-ink-muted">
-                        via {{ doc.data.source_method }}
-                      </span>
-                    {% endif %}
+                    <div class="flex items-center gap-2 mt-1 flex-wrap">
+                      {% if doc.data.obtained %}
+                        <span class="font-mono text-xs text-ink-muted">{{ doc.data.obtained | displayDate }}</span>
+                      {% endif %}
+                      {% if doc.data.source_method %}
+                        <span class="font-mono text-xs text-ink-muted">· {{ doc.data.source_method }}</span>
+                      {% endif %}
+                    </div>
                   </div>
+
                 </a>
               </li>
             {% endfor %}
           </ul>
-          <a href="/documents/" class="inline-block mt-4 font-mono text-xs text-accent hover:underline uppercase tracking-wide">
-            Full Document Archive →
-          </a>
+          <a href="/documents/" class="inline-block mt-4 font-mono text-xs text-accent hover:underline uppercase tracking-wide">Full Document Archive →</a>
         {% else %}
           <p class="text-sm text-ink-muted mt-4 italic">Documents published with each investigation.</p>
         {% endif %}
