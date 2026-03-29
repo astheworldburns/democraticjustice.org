@@ -1,0 +1,16 @@
+name = "cms-gateway"
+main = "src/index.js"
+compatibility_date = "2024-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+GITHUB_REPO = "astheworldburns/democraticjustice.org"
+GITHUB_BRANCH = "main"
+ALLOWED_ORIGINS = "https://democraticjustice.org,http://localhost:8080,http://localhost:8081"
+
+[[kv_namespaces]]
+binding = "CMS_USERS"
+id = "PLACEHOLDER_REPLACE_AFTER_CREATION"
+
+# Secrets to set via: wrangler secret put JWT_SECRET
+#                      wrangler secret put GITHUB_PAT
