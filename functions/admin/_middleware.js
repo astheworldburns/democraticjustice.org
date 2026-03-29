@@ -77,16 +77,50 @@ function redirectToLogin(url) {
   return Response.redirect(`${url.origin}/admin/?next=${encodeURIComponent(next)}`, 302);
 }
 
-async function sessionExists(context, sessionId) {
-  const key = `${SESSION_PREFIX}${sessionId}`;
-  const storedSession = await context.env.ADMIN_SESSIONS.get(key, "json");
-
-  if (storedSession && isSessionRecordValid(storedSession)) {
-    return true;
+function normalizeSessionCookieValue(cookieValue) {
+  const trimmed = String(cookieValue || "").trim();
+  if (!trimmed) {
+    return "";
   }
 
-  if (storedSession && typeof storedSession !== "object") {
-    return true;
+  // Cookies can be quoted by some clients/proxies.
+  if (trimmed.startsWith('"') && trimmed.endsWith('"') && trimmed.length >= 2) {
+    return trimmed.slice(1, -1);
+  }
+
+  return trimmed;
+}
+
+function sessionLookupKeys(sessionCookieValue) {
+  const normalized = normalizeSessionCookieValue(sessionCookieValue);
+  if (!normalized) {
+    return [];
+  }
+
+  const keys = [normalized];
+
+  if (normalized.startsWith(SESSION_PREFIX)) {
+    keys.push(normalized.slice(SESSION_PREFIX.length));
+  } else {
+    keys.push(`${SESSION_PREFIX}${normalized}`);
+  }
+
+  return Array.from(new Set(keys.filter(Boolean)));
+}
+
+async function sessionExists(context, sessionCookieValue) {
+  const keys = sessionLookupKeys(sessionCookieValue);
+
+  for (const key of keys) {
+    const storedSession = await context.env.ADMIN_SESSIONS.get(key, "json");
+
+    if (storedSession && typeof storedSession === "object" && isSessionRecordValid(storedSession)) {
+      return true;
+    }
+
+    if (storedSession && typeof storedSession !== "object") {
+      return true;
+    }
   }
 
   return false;
@@ -104,13 +138,13 @@ export async function onRequest(context) {
   }
 
   const cookies = parseCookies(context.request.headers.get("Cookie") || "");
-  const sessionId = cookies[SESSION_COOKIE];
+  const sessionCookieValue = cookies[SESSION_COOKIE];
 
-  if (!sessionId) {
+  if (!sessionCookieValue) {
     return redirectToLogin(url);
   }
 
-  const isValidSession = await sessionExists(context, sessionId);
+  const isValidSession = await sessionExists(context, sessionCookieValue);
 
   if (!isValidSession) {
     return redirectToLogin(url);
