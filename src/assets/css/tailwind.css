@@ -605,7 +605,7 @@
   @media (min-width: 860px) {
     .bento-grid,
     .home-main-bento {
-      grid-template-columns: repeat(12, minmax(0, 1fr));
+      grid-template-columns: repeat(12, 1fr);
     }
 
     .bento-8 {
