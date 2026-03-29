@@ -12,5 +12,5 @@ ALLOWED_ORIGINS = "https://democraticjustice.org,http://localhost:8080,http://lo
 binding = "CMS_USERS"
 id = "PLACEHOLDER_REPLACE_AFTER_CREATION"
 
-# Secrets to set via: wrangler secret put JWT_SECRET
-#                      wrangler secret put GITHUB_PAT
+# Secrets to set via dashboard or wrangler:
+#   JWT_SECRET, GITHUB_PAT, SETUP_SECRET

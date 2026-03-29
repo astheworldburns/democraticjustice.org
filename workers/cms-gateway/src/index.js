@@ -362,6 +362,48 @@ async function handleGitProxy(request, env, corsHeaders, pathname) {
   });
 }
 
+async function handleAdminCreateUser(request, env, corsHeaders) {
+  const token = getBearerToken(request);
+  if (!token || token !== env.SETUP_SECRET) {
+    return jsonResponse(401, { error: "unauthorized" }, corsHeaders);
+  }
+
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return jsonResponse(400, { error: "invalid_request", message: "Body must be valid JSON" }, corsHeaders);
+  }
+
+  const { email, name, password, role } = body || {};
+  if (!email || !name || !password || !role) {
+    return jsonResponse(
+      400,
+      { error: "invalid_request", message: "Missing required fields: email, name, password, role" },
+      corsHeaders
+    );
+  }
+
+  const normalizedEmail = String(email).trim().toLowerCase();
+  const salt = new Uint8Array(16);
+  crypto.getRandomValues(salt);
+  const passwordHash = await hashPassword(password, salt);
+  const id = crypto.randomUUID();
+
+  await env.CMS_USERS.put(
+    `user:${normalizedEmail}`,
+    JSON.stringify({
+      id,
+      name,
+      role,
+      password_hash: passwordHash,
+      password_salt: toBase64(salt),
+    })
+  );
+
+  return jsonResponse(201, { ok: true, email: normalizedEmail, id }, corsHeaders);
+}
+
 export default {
   async fetch(request, env) {
     const origin = request.headers.get("Origin");
@@ -389,6 +431,10 @@ export default {
     try {
       if (path === "/health" && request.method === "GET") {
         return jsonResponse(200, { status: "ok", service: "cms-gateway" }, corsHeaders);
+      }
+
+      if (path === "/admin/create-user" && request.method === "POST") {
+        return await handleAdminCreateUser(request, env, corsHeaders);
       }
 
       if (path === "/identity/token" && request.method === "POST") {
