@@ -956,6 +956,7 @@ async function loadDocuments(token, env) {
         description: parsed.data?.description || "",
         obtained: parsed.data?.obtained || "",
         source_method: parsed.data?.source_method || "",
+        primary_source: parsed.data?.primary_source !== false,
         url: `/documents/${slug}/`,
         file_url: parsed.data?.file || "",
         repo_path: entry.path
@@ -1542,6 +1543,7 @@ async function handleCreateDocument(request, env) {
       {
         title,
         file: fileUrl,
+        primary_source: true,
         description,
         obtained,
         source_method: sourceMethod
@@ -2024,6 +2026,7 @@ async function handleEditorCreateDocument(request, env) {
       {
         title,
         file: fileUrl,
+        primary_source: true,
         description,
         obtained,
         source_method: sourceMethod

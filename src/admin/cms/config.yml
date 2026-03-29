@@ -228,6 +228,12 @@ collections:
         widget: file
         accept: application/pdf,.pdf,image/*
         choose_url: false
+      - label: Primary Source
+        name: primary_source
+        widget: boolean
+        required: false
+        default: true
+        hint: Enable for official filings, court records, and government documents. Disable for illustrative exhibits.
       - label: Description
         name: description
         widget: text

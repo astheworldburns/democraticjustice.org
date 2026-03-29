@@ -399,6 +399,13 @@ export default async function (eleventyConfig) {
       .sort((left, right) => left.data.title.localeCompare(right.data.title))
   );
 
+  eleventyConfig.addCollection("primarySourceDocument", (collectionApi) =>
+    collectionApi
+      .getFilteredByGlob("./src/content/documents/**/*.md")
+      .filter((item) => item.data?.primary_source !== false)
+      .sort((left, right) => left.data.title.localeCompare(right.data.title))
+  );
+
   eleventyConfig.addCollection("authorProfiles", (collectionApi) =>
     collectionApi
       .getFilteredByGlob("./src/content/authors/**/*.md")
