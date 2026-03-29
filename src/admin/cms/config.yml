@@ -1,8 +1,8 @@
 backend:
-  name: github
-  repo: astheworldburns/democraticjustice.org
+  name: git-gateway
   branch: main
-  base_url: https://sveltia-cms-auth.sethsturm.workers.dev
+  identity_url: https://cms-gateway.democraticjustice.workers.dev/identity
+  gateway_url: https://cms-gateway.democraticjustice.workers.dev/git
 
 site_url: https://democraticjustice.org
 display_url: https://democraticjustice.org
