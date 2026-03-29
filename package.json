@@ -14,7 +14,11 @@
     "newsletter:draft": "node ./scripts/buttondown-draft.mjs",
     "proof-gateway:install": "npm --prefix ./workers/proof-desk-gateway install",
     "proof-gateway:dev": "npm --prefix ./workers/proof-desk-gateway run dev",
-    "proof-gateway:deploy": "npm --prefix ./workers/proof-desk-gateway run deploy"
+    "proof-gateway:deploy": "npm --prefix ./workers/proof-desk-gateway run deploy",
+    "preview:sync": "node ./scripts/sync-document-previews.mjs",
+    "preview-worker:install": "npm --prefix ./workers/document-preview-pipeline install",
+    "preview-worker:dev": "npm --prefix ./workers/document-preview-pipeline run dev",
+    "preview-worker:deploy": "npm --prefix ./workers/document-preview-pipeline run deploy"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.2",
