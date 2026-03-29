@@ -125,6 +125,21 @@ Primary setup guide:
 
 - `workers/proof-desk-gateway/README.md`
 
+### Cloudflare Worker observability config format
+
+Use the `wrangler.toml` format in this repository.  
+The JSON object form is equivalent in meaning, but this codebase stores Worker config in TOML files such as:
+
+- `workers/admin-gateway/wrangler.toml`
+- `workers/cms-gateway/wrangler.toml`
+- `workers/proof-desk-gateway/wrangler.toml`
+- `workers/document-preview-pipeline/wrangler.toml`
+
+Current default policy in this project:
+
+- enable invocation logs
+- keep traces disabled unless actively debugging
+
 #### Contact email
 
 Status: placeholder present in site data.
