@@ -14,3 +14,4 @@ id = "PLACEHOLDER_REPLACE_AFTER_CREATION"
 
 # Secrets to set via dashboard or wrangler:
 #   JWT_SECRET, GITHUB_PAT, SETUP_SECRET
+# Secret: INTERNAL_SECRET — shared with admin-gateway
