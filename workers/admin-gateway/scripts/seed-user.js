@@ -6,7 +6,7 @@ const USER_RECORD = {
   roles: ["admin"]
 };
 
-const ITERATIONS = 210000;
+const ITERATIONS = 100000;
 const SALT_BYTES = 16;
 const KEY_LENGTH_BITS = 256;
 
