@@ -1,0 +1,22 @@
+name = "document-preview-pipeline"
+main = "src/index.js"
+compatibility_date = "2026-03-29"
+
+[observability.logs]
+enabled = true
+
+[[r2_buckets]]
+binding = "DOCS_BUCKET"
+bucket_name = "democraticjustice-documents"
+
+[[queues.consumers]]
+queue = "document-preview-jobs"
+max_batch_size = 5
+max_batch_timeout = 10
+
+[[queues.producers]]
+binding = "PREVIEW_QUEUE"
+queue = "document-preview-jobs"
+
+[browser]
+binding = "BROWSER"
