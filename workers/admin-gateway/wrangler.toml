@@ -1,0 +1,32 @@
+name = "admin-gateway"
+main = "src/index.js"
+compatibility_date = "2024-09-01"
+
+routes = [
+  { pattern = "democraticjustice.org/api/*", zone_name = "democraticjustice.org" }
+]
+
+[[kv_namespaces]]
+binding = "ADMIN_SESSIONS"
+id = "c2173ade1d58445b81efc3e5e2f120ba"
+
+[[kv_namespaces]]
+binding = "ADMIN_USERS"
+id = "f0c452a193f94142ae6307354c29f72a"
+
+[[services]]
+binding = "PROOF_GATEWAY"
+service = "proof-desk-gateway"
+
+[[services]]
+binding = "CMS_GATEWAY"
+service = "cms-gateway"
+
+[vars]
+SESSION_TTL = "43200"
+JWT_TTL = "3600"
+GITHUB_REPO = "astheworldburns/democraticjustice.org"
+GITHUB_BRANCH = "main"
+GITHUB_CLIENT_ID = "Ov23licyzBY5sj6DkCOr"
+SITE_URL = "https://democraticjustice.org"
+ALLOWED_ORIGINS = "https://democraticjustice.org"
