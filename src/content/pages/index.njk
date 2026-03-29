@@ -35,26 +35,83 @@ ogType: website
         <a href="{{ featuredArticle.url }}#proof-card" class="inline-block border border-border text-ink-secondary font-mono text-sm uppercase tracking-wide px-5 py-2.5 rounded-squircle-sm hover:border-accent hover:text-accent transition-colors no-underline">Open Proof Card</a>
         <a href="{{ featuredArticle.url }}#source-documents" class="inline-block border border-border text-ink-secondary font-mono text-sm uppercase tracking-wide px-5 py-2.5 rounded-squircle-sm hover:border-accent hover:text-accent transition-colors no-underline">Source Documents</a>
       </div>
+      <div class="mt-8 pt-6 border-t border-border-subtle">
+        <span class="font-mono text-xs uppercase tracking-wide text-ink-muted block mb-3">Preview</span>
+        <p class="font-serif text-base text-ink-secondary leading-relaxed">
+          {{ featuredArticle.templateContent | excerptText(350) }}
+        </p>
+      </div>
     </article>
 
-    <div class="card bento-4">
-      <span class="font-mono text-xs uppercase tracking-wide text-ink-muted">Proof Summary</span>
-      <dl class="mt-4 space-y-4">
-        <div class="flex items-center justify-between"><dt class="font-mono text-sm text-ink-muted">Axioms</dt><dd class="font-serif text-3xl font-bold text-ink">{{ featuredProof.axiomCount }}</dd></div>
-        <div class="flex items-center justify-between"><dt class="font-mono text-sm text-ink-muted">Logic Steps</dt><dd class="font-serif text-3xl font-bold text-ink">{{ featuredProof.logicCount }}</dd></div>
-        <div class="flex items-center justify-between"><dt class="font-mono text-sm text-ink-muted">Documents</dt><dd class="font-serif text-3xl font-bold text-ink">{{ featuredProof.sourceDocumentCount }}</dd></div>
-      </dl>
-    </div>
+    <div class="card hp-card bento-4 hp-span-4 bento-rows-2 hp-rows-2" style="display:flex;flex-direction:column">
 
-    <div class="card bento-4">
-      <span class="font-mono text-xs uppercase tracking-wide text-ink-muted">Issue Under Proof</span>
-      <p class="font-serif text-base text-ink leading-relaxed mt-3">{{ featuredProof.issueShort | default("—") }}</p>
-      {% if featuredProof.conclusionShort %}
-        <div class="mt-4 pt-4 border-t border-border-subtle">
-          <span class="font-mono text-xs text-ink-muted uppercase tracking-wide">Where the Reporting Lands</span>
-          <p class="font-serif text-sm text-ink-secondary italic mt-2 leading-relaxed">{{ featuredProof.conclusionShort }}</p>
-        </div>
-      {% endif %}
+      {# ── Evidence Room ── #}
+      <div>
+        <span class="font-mono text-xs uppercase tracking-wide text-accent">The Evidence Room</span>
+        <p class="text-sm text-ink-muted mt-1">Primary source documents behind the investigation.</p>
+
+        {% if featuredProof and featuredProof.sourceDocuments %}
+          <ul class="mt-4 space-y-3">
+            {% for doc in featuredProof.sourceDocuments %}
+              <li>
+                <a href="{{ doc.url }}" class="group flex items-start gap-3 no-underline">
+                  <div class="flex-shrink-0 w-10 h-12 rounded-squircle-sm bg-surface border border-border-subtle flex items-center justify-center">
+                    <span class="font-mono text-xs text-ink-muted uppercase">
+                      {{ doc.data.file_type | default("doc") | upper }}
+                    </span>
+                  </div>
+                  <div class="min-w-0">
+                    <span class="text-sm text-ink font-semibold group-hover:text-accent transition-colors block leading-snug">
+                      {{ doc.data.title }}
+                    </span>
+                    {% if doc.data.obtained %}
+                      <span class="font-mono text-xs text-ink-muted mt-0.5 block">
+                        Obtained <time datetime="{{ doc.data.obtained | machineDate }}">{{ doc.data.obtained | displayDate }}</time>
+                      </span>
+                    {% endif %}
+                    {% if doc.data.source_method %}
+                      <span class="font-mono text-xs text-ink-muted">
+                        via {{ doc.data.source_method }}
+                      </span>
+                    {% endif %}
+                  </div>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+          <a href="/documents/" class="inline-block mt-4 font-mono text-xs text-accent hover:underline uppercase tracking-wide">
+            Full Document Archive →
+          </a>
+        {% else %}
+          <p class="text-sm text-ink-muted mt-4 italic">Documents published with each investigation.</p>
+        {% endif %}
+      </div>
+
+      {# Spacer #}
+      <div class="flex-1 min-h-4"></div>
+
+      {# ── Subscribe CTA ── #}
+      <div class="pt-5 mt-5 border-t border-border-subtle">
+        <span class="font-mono text-xs uppercase tracking-wide text-accent">Stay on the Case</span>
+        <p class="text-sm text-ink-secondary mt-2 leading-relaxed">
+          Get investigations delivered. No algorithms. No feeds. Just proof.
+        </p>
+        <form
+          action="https://buttondown.com/api/emails/embed-subscribe/democraticjustice"
+          method="post"
+          class="embeddable-buttondown-form mt-4"
+        >
+          <label for="bd-email" class="sr-only">Enter your email</label>
+          <input type="email" name="email" id="bd-email" required placeholder="Enter your email" class="w-full border border-border rounded-squircle-sm px-3 py-2 text-sm text-ink bg-surface" />
+          <input type="submit" value="Subscribe" class="mt-3 inline-flex items-center justify-center w-full bg-ink text-surface font-mono text-sm uppercase tracking-wide px-5 py-2.5 rounded-squircle-sm hover:bg-accent transition-colors cursor-pointer" />
+          <p class="mt-2 text-xs text-ink-muted">
+            <a href="https://buttondown.com/refer/democraticjustice" target="_blank" rel="noopener noreferrer" class="text-ink-muted hover:text-accent">
+              Powered by Buttondown.
+            </a>
+          </p>
+        </form>
+      </div>
+
     </div>
 
   </div>
