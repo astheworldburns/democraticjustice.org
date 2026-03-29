@@ -1,8 +1,7 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: astheworldburns/democraticjustice.org
   branch: main
-  identity_url: /api/cms/identity
-  gateway_url: /api/cms/git
 
 site_url: https://democraticjustice.org
 display_url: https://democraticjustice.org

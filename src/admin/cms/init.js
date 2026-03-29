@@ -117,16 +117,26 @@ window.addEventListener(
   "DOMContentLoaded",
   async () => {
     try {
-      const [config, identityPayload, sessionPayload] = await Promise.all([
+      const [config, sessionPayload] = await Promise.all([
         cmsConfigPromise,
-        fetchJson("/api/cms/identity/auto-token"),
         fetchJson("/api/auth/session")
       ]);
 
-      const token = identityPayload?.access_token || identityPayload?.token || identityPayload?.jwt;
       const sessionUser = sessionPayload?.user;
 
-      if (!token || !sessionUser) {
+      if (!sessionUser) {
+        window.location.assign("/admin/");
+        return;
+      }
+
+      let token = sessionUser?.githubToken;
+
+      if (!token) {
+        const identityPayload = await fetchJson("/api/cms/identity/auto-token");
+        token = identityPayload?.access_token || identityPayload?.token || identityPayload?.jwt;
+      }
+
+      if (!token) {
         window.location.assign("/admin/");
         return;
       }
