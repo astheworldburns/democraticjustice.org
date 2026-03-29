@@ -30,6 +30,29 @@ Bindings are declared in `wrangler.toml`:
 - `BROWSER` (Cloudflare Browser Rendering)
 - `nodejs_compat` compatibility flag (required by `@cloudflare/puppeteer`)
 
+## If you do not have Workers Paid (no R2 event notifications)
+
+You can still generate previews manually or from a CMS webhook:
+
+1. Deploy the worker normally.
+2. Call `POST /render-now` with JSON body:
+
+```json
+{ "keys": ["wvyd-january-2026-amended-f4.pdf"], "mode": "direct" }
+```
+
+This bypasses Queues and processes the PDF immediately in the request handler.
+
+You can also process files in bulk without listing keys manually:
+
+- `POST /render-missing` with optional JSON body:
+
+```json
+{ "mode": "missing", "prefix": "", "max_items": 50, "force": false }
+```
+
+This scans R2 for PDFs, skips files that already have a generated `*.preview.webp`, and renders only missing previews by default.
+
 ## Manual enqueue endpoint
 
 `POST /` body:

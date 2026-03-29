@@ -78,6 +78,63 @@ async function processPdfObject(key, env) {
   };
 }
 
+async function collectPdfKeys(env, { prefix = "", maxItems = 100 } = {}) {
+  const keys = [];
+  let cursor;
+
+  while (keys.length < maxItems) {
+    const response = await env.DOCS_BUCKET.list({
+      prefix,
+      cursor,
+      limit: Math.min(100, maxItems - keys.length)
+    });
+
+    for (const object of response.objects || []) {
+      if (isPdfKey(object.key)) {
+        keys.push(object.key);
+      }
+    }
+
+    if (!response.truncated || !response.cursor) {
+      break;
+    }
+
+    cursor = response.cursor;
+  }
+
+  return keys;
+}
+
+async function processMissingPreviews(env, { prefix = "", maxItems = 50, force = false } = {}) {
+  const keys = await collectPdfKeys(env, { prefix, maxItems });
+  const results = [];
+
+  for (const key of keys) {
+    const previewKey = previewKeyFor(key);
+    const existingPreview = await env.DOCS_BUCKET.head(previewKey);
+
+    if (existingPreview && !force) {
+      results.push({ key, skipped: true, reason: "preview_exists", previewKey });
+      continue;
+    }
+
+    try {
+      const processed = await processPdfObject(key, env);
+      results.push(processed);
+    } catch (error) {
+      results.push({ key, error: error instanceof Error ? error.message : String(error) });
+    }
+  }
+
+  return {
+    scanned: keys.length,
+    processed: results.filter((item) => !item.skipped && !item.error).length,
+    skipped: results.filter((item) => item.skipped).length,
+    failed: results.filter((item) => item.error).length,
+    results
+  };
+}
+
 export default {
   async fetch(request, env) {
     if (request.method !== "POST") {
@@ -85,10 +142,36 @@ export default {
     }
 
     const payload = await request.json().catch(() => ({}));
+    const url = new URL(request.url);
     const keys = Array.isArray(payload.keys) ? payload.keys : [];
+    const directMode = url.pathname === "/render-now" || payload.mode === "direct";
+
+    if (url.pathname === "/render-missing" || payload.mode === "missing") {
+      const summary = await processMissingPreviews(env, {
+        prefix: payload.prefix || "",
+        maxItems: Number(payload.max_items || payload.maxItems || 50),
+        force: payload.force === true
+      });
+
+      return Response.json(summary);
+    }
 
     if (!keys.length) {
       return Response.json({ enqueued: 0, message: "No keys provided." }, { status: 400 });
+    }
+
+    if (directMode) {
+      const results = [];
+
+      for (const key of keys) {
+        try {
+          results.push(await processPdfObject(key, env));
+        } catch (error) {
+          results.push({ key, error: error instanceof Error ? error.message : String(error) });
+        }
+      }
+
+      return Response.json({ processed: results.length, results });
     }
 
     await env.PREVIEW_QUEUE.sendBatch(keys.map((key) => ({ body: { key } })));
