@@ -2,6 +2,10 @@ name = "admin-gateway"
 main = "src/index.js"
 compatibility_date = "2024-09-01"
 
+[observability.logs]
+enabled = true
+invocation_logs = true
+
 routes = [
   { pattern = "democraticjustice.org/api/*", zone_name = "democraticjustice.org" }
 ]
