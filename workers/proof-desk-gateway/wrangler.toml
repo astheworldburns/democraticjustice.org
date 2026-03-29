@@ -2,6 +2,10 @@ name = "proof-desk-gateway"
 main = "src/index.js"
 compatibility_date = "2026-03-26"
 
+[observability.logs]
+enabled = true
+invocation_logs = true
+
 [vars]
 GITHUB_HOSTNAME = "github.com"
 GITHUB_REPO_OWNER = "astheworldburns"
