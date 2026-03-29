@@ -123,7 +123,7 @@ window.addEventListener(
         fetchJson("/api/auth/session")
       ]);
 
-      const token = identityPayload?.token || identityPayload?.jwt;
+      const token = identityPayload?.access_token || identityPayload?.token || identityPayload?.jwt;
       const sessionUser = sessionPayload?.user;
 
       if (!token || !sessionUser) {
