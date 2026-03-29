@@ -53,10 +53,18 @@
       <h2 class="section-header__kicker">Documents <span class="text-ink-muted">({{ proofCard.sourceDocumentCount }})</span></h2>
       <ul class="space-y-3 mt-3">
         {% for doc in proofCard.sourceDocuments %}
+          {% set docRecord = doc.documentUrl | getSourceDocument(collections.sourceDocument) %}
           <li>
-            <a href="{{ doc.url }}" class="proof-doc-link group flex items-start gap-2 text-sm" data-doc-url="{{ doc.url }}">
-              <span class="text-accent flex-shrink-0">📄</span>
-              <span class="group-hover:text-accent transition-colors">{{ doc.data.title if doc.data else "Document " + loop.index }}</span>
+            <a href="{{ doc.documentUrl }}" class="proof-doc-link group flex items-start gap-2 text-sm" data-doc-url="{{ doc.documentUrl }}">
+              <span class="text-accent flex-shrink-0 mt-0.5">📄</span>
+              <div class="min-w-0">
+                <span class="group-hover:text-accent transition-colors block">
+                  {{ docRecord.data.title if docRecord else doc.label }}
+                </span>
+                {% if docRecord and docRecord.data.file_type %}
+                  <span class="font-mono text-xs text-ink-muted uppercase">{{ docRecord.data.file_type }}</span>
+                {% endif %}
+              </div>
             </a>
           </li>
         {% endfor %}
