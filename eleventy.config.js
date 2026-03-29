@@ -298,6 +298,7 @@ export default async function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/assets/feed.xsl");
   eleventyConfig.addPassthroughCopy("src/assets/js");
   eleventyConfig.addPassthroughCopy({ "static/documents": "documents" });
+  eleventyConfig.addPassthroughCopy({ ".generated/document-previews": "assets/document-previews" });
   eleventyConfig.addPassthroughCopy({ "static/_headers": "_headers" });
   eleventyConfig.addPassthroughCopy({ "static/robots.txt": "robots.txt" });
   eleventyConfig.addPassthroughCopy({ "src/admin/index.html": "admin/index.html" });

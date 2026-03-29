@@ -340,8 +340,9 @@ Fields:
 11. Save the proof.
 12. Publish.
 13. Wait for Cloudflare deploy to finish.
-14. Verify the article on the live site.
-15. Confirm it appears in:
+14. If you published a new source-document PDF, confirm the Cloudflare build generated its preview image.
+15. Verify the article on the live site.
+16. Confirm it appears in:
    - homepage
    - desk page
    - archive

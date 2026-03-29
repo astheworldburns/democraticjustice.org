@@ -1,5 +1,8 @@
 node_modules/
 _site/
+.generated/
+static/documents/*.preview.webp
+static/documents/*.preview.png
 .DS_Store
 .env
 .env.local

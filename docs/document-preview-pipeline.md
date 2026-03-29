@@ -1,74 +1,60 @@
-# Document preview pipeline (R2 + Worker + Eleventy)
+# Document Preview Pipeline
 
-This project can render PDF thumbnails to WebP and feed them back into Eleventy so document cards and social previews use a real document image.
+This site now generates PDF thumbnails during the normal Eleventy build.
 
-## What this adds
+## Desired workflow
 
-1. **Upload PDF to R2** (`democraticjustice-documents`).
-2. **Queue job** (`document-preview-jobs`) with the R2 object key.
-3. **Worker consumer** (`workers/document-preview-pipeline`) renders page 1 to WebP using Cloudflare Browser Rendering.
-4. Worker stores `<original-name>.preview.webp` in R2 and updates original PDF **custom metadata** with:
-   - `preview_image`
-   - `preview_generated_at`
-5. A manifest endpoint (JSON) maps PDF paths/slugs to preview image URLs.
-6. `scripts/sync-document-previews.mjs` pulls this JSON before Eleventy build and writes `src/_data/document-previews.json`.
-7. Eleventy uses this to populate `preview_image` automatically for document cards and OG/Twitter metadata.
+1. Upload a PDF in the CMS as a source document.
+2. Publish the entry so the CMS commits the Markdown file and PDF into GitHub.
+3. Cloudflare Pages pulls `main` and runs `npm run build`.
+4. The build generates a first-page WebP preview automatically.
+5. The finished document page, document cards, and social metadata use that preview.
 
-## Worker deployment
+There is no separate preview command in the publishing workflow.
 
-```bash
-cd workers/document-preview-pipeline
-npm install
-npm run deploy
-```
+## How the backend build works
 
-Bindings are declared in `wrangler.toml`:
+- PDFs live in `static/documents/`.
+- `npm run build` now runs `npm run preview:sync` before Eleventy.
+- `scripts/sync-document-previews.mjs` renders page 1 from each PDF using `pdfjs-dist` plus `@napi-rs/canvas`.
+- The script writes generated previews to `.generated/document-previews/`.
+- The script writes the build-time manifest to `.generated/document-previews.json`.
+- Eleventy copies `.generated/document-previews/` into the public `/assets/document-previews/` output.
+- `src/_data/documentPreviewManifest.js` reads the generated manifest during the build.
 
-- `DOCS_BUCKET` (R2)
-- `PREVIEW_QUEUE` (Queue producer)
-- Queue consumer for `document-preview-jobs`
-- `BROWSER` (Cloudflare Browser Rendering)
-- `nodejs_compat` compatibility flag (required by `@cloudflare/puppeteer`)
+## Files involved
 
-## If you do not have Workers Paid (no R2 event notifications)
+- `static/documents/*.pdf`
+- `scripts/sync-document-previews.mjs`
+- `.generated/document-previews/*.preview.webp`
+- `.generated/document-previews.json`
+- `src/_data/documentPreviewManifest.js`
+- `eleventy.config.js`
 
-You can still generate previews manually or from a CMS webhook:
+## What you need to do
 
-1. Deploy the worker normally.
-2. Call `POST /render-now` with JSON body:
+For normal publishing:
 
-```json
-{ "keys": ["wvyd-january-2026-amended-f4.pdf"], "mode": "direct" }
-```
+1. Create or edit the source document in `/admin/`.
+2. Upload the PDF.
+3. Publish.
+4. Wait for the Cloudflare Pages deploy to finish.
+5. Open the document page and confirm the preview image appears.
 
-This bypasses Queues and processes the PDF immediately in the request handler.
+For setup:
 
-You can also process files in bulk without listing keys manually:
+1. Keep Cloudflare Pages build command set to `npm run build`.
+2. Keep Node version set to `22.16.0`.
+3. Make sure the updated `package-lock.json` is committed so Pages installs the PDF rendering dependencies.
 
-- `POST /render-missing` with optional JSON body:
+## If a preview does not appear
 
-```json
-{ "mode": "missing", "prefix": "", "max_items": 50, "force": false }
-```
+1. Open the Cloudflare Pages build logs.
+2. Look for the `preview:sync` step before Eleventy starts.
+3. Check whether the uploaded file in `static/documents/` is really a PDF.
+4. Confirm the source document frontmatter points `file:` at `/documents/your-file.pdf`.
 
-This scans R2 for PDFs, skips files that already have a generated `*.preview.webp`, and renders only missing previews by default.
+## Notes
 
-## Manual enqueue endpoint
-
-`POST /` body:
-
-```json
-{ "keys": ["wvyd-january-2026-amended-f4.pdf"] }
-```
-
-This is useful as a fallback if you do not yet have automatic R2 event notifications wired.
-
-## Eleventy integration
-
-The site now checks previews in this order:
-
-1. Front matter `preview_image`
-2. If the file itself is an image, use `file`
-3. `src/_data/document-previews.json` mapping by file path or slug
-
-That computed `preview_image` is also used for `socialImage` on document pages.
+- The older Worker/R2 preview path can remain as an optional experiment, but it is no longer required for the CMS publishing workflow.
+- Generated preview artifacts live under `.generated/` and are ignored by Git.

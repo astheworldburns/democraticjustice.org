@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "npx @11ty/eleventy --serve",
-    "build": "rm -rf _site && npx @11ty/eleventy && npm run audit:assets && npm run audit:public",
+    "build": "rm -rf _site && npm run preview:sync && npx @11ty/eleventy && npm run audit:assets && npm run audit:public",
     "audit:assets": "node ./scripts/asset-audit.mjs",
     "audit:assets:strict": "node ./scripts/asset-audit.mjs --strict",
     "audit:public": "node ./scripts/public-surface-audit.mjs",
@@ -16,6 +16,7 @@
     "proof-gateway:dev": "npm --prefix ./workers/proof-desk-gateway run dev",
     "proof-gateway:deploy": "npm --prefix ./workers/proof-desk-gateway run deploy",
     "preview:sync": "node ./scripts/sync-document-previews.mjs",
+    "preview:sync:force": "node ./scripts/sync-document-previews.mjs --force",
     "preview-worker:install": "npm --prefix ./workers/document-preview-pipeline install",
     "preview-worker:dev": "npm --prefix ./workers/document-preview-pipeline run dev",
     "preview-worker:deploy": "npm --prefix ./workers/document-preview-pipeline run deploy"
@@ -31,9 +32,12 @@
   },
   "dependencies": {
     "@fontsource/ibm-plex-mono": "^5.2.7",
+    "@napi-rs/canvas": "^0.1.80",
     "@fontsource/source-serif-4": "^5.2.9",
     "@fontsource/space-grotesk": "^5.2.10",
     "@resvg/resvg-js": "^2.6.2",
+    "pdfjs-dist": "^5.4.296",
+    "sharp": "^0.34.4",
     "satori": "^0.26.0",
     "satori-html": "^0.3.2"
   }

@@ -1,26 +1,237 @@
-import { writeFile } from "node:fs/promises";
+import { mkdir, readdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
+import sharp from "sharp";
+import { createCanvas, DOMMatrix, ImageData, Path2D } from "@napi-rs/canvas";
 
-const manifestUrl = process.env.DOCUMENT_PREVIEW_MANIFEST_URL;
-const outputPath = path.join(process.cwd(), "src", "_data", "document-previews.json");
+const ROOT = process.cwd();
+const SOURCE_DIR = path.join(ROOT, "static", "documents");
+const GENERATED_DIR = path.join(ROOT, ".generated", "document-previews");
+const MANIFEST_PATH = path.join(ROOT, ".generated", "document-previews.json");
+const STANDARD_FONT_URL = `${pathToFileURL(path.join(ROOT, "node_modules", "pdfjs-dist", "standard_fonts")).href}/`;
+const WASM_URL = `${pathToFileURL(path.join(ROOT, "node_modules", "pdfjs-dist", "wasm")).href}/`;
 
-if (!manifestUrl) {
-  console.error("DOCUMENT_PREVIEW_MANIFEST_URL is required");
-  process.exit(1);
+const TARGET_WIDTH = 1200;
+const TARGET_HEIGHT = 1600;
+const RENDER_SCALE = 2;
+
+function isPdf(filename = "") {
+  return filename.toLowerCase().endsWith(".pdf");
 }
 
-const response = await fetch(manifestUrl, {
-  headers: {
-    Accept: "application/json"
+function previewFilenameFor(filename = "") {
+  return `${filename.replace(/\.pdf$/i, "")}.preview.webp`;
+}
+
+function previewUrlFor(filename = "") {
+  return `/assets/document-previews/${previewFilenameFor(filename)}`;
+}
+
+function slugFor(filename = "") {
+  return path.parse(filename).name;
+}
+
+function parseArgs(argv) {
+  return {
+    force: argv.includes("--force")
+  };
+}
+
+async function loadPdfJs() {
+  if (!globalThis.DOMMatrix) {
+    globalThis.DOMMatrix = DOMMatrix;
   }
-});
 
-if (!response.ok) {
-  console.error(`Failed to fetch manifest (${response.status})`);
-  process.exit(1);
+  if (!globalThis.ImageData) {
+    globalThis.ImageData = ImageData;
+  }
+
+  if (!globalThis.Path2D) {
+    globalThis.Path2D = Path2D;
+  }
+
+  return import("pdfjs-dist/legacy/build/pdf.mjs");
 }
 
-const manifest = await response.json();
-await writeFile(outputPath, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
+class NodeCanvasFactory {
+  create(width, height) {
+    const canvas = createCanvas(width, height);
+    const context = canvas.getContext("2d");
+    return { canvas, context };
+  }
 
-console.log(`Wrote ${outputPath}`);
+  reset(canvasAndContext, width, height) {
+    canvasAndContext.canvas.width = width;
+    canvasAndContext.canvas.height = height;
+  }
+
+  destroy(canvasAndContext) {
+    canvasAndContext.canvas.width = 0;
+    canvasAndContext.canvas.height = 0;
+    canvasAndContext.canvas = null;
+    canvasAndContext.context = null;
+  }
+}
+
+async function ensureOutputPaths() {
+  await mkdir(GENERATED_DIR, { recursive: true });
+}
+
+async function clearGeneratedPreviews() {
+  await rm(GENERATED_DIR, { recursive: true, force: true });
+  await mkdir(GENERATED_DIR, { recursive: true });
+}
+
+async function listSourcePdfs() {
+  const entries = await readdir(SOURCE_DIR, { withFileTypes: true });
+
+  return entries
+    .filter((entry) => entry.isFile() && isPdf(entry.name))
+    .map((entry) => entry.name)
+    .sort((left, right) => left.localeCompare(right));
+}
+
+async function fileExists(filePath) {
+  try {
+    await stat(filePath);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function renderFirstPageToWebp(pdfFilename, pdfjs) {
+  const pdfPath = path.join(SOURCE_DIR, pdfFilename);
+  const pdfBytes = new Uint8Array(await readFile(pdfPath));
+  const loadingTask = pdfjs.getDocument({
+    data: pdfBytes,
+    disableWorker: true,
+    standardFontDataUrl: STANDARD_FONT_URL,
+    wasmUrl: WASM_URL,
+    verbosity: pdfjs.VerbosityLevel.ERRORS,
+    useSystemFonts: true
+  });
+
+  const document = await loadingTask.promise;
+
+  try {
+    const page = await document.getPage(1);
+
+    try {
+      const baseViewport = page.getViewport({ scale: 1 });
+      const fitScale = Math.min(TARGET_WIDTH / baseViewport.width, TARGET_HEIGHT / baseViewport.height);
+      const renderViewport = page.getViewport({ scale: fitScale * RENDER_SCALE });
+      const canvasFactory = new NodeCanvasFactory();
+      const canvasAndContext = canvasFactory.create(
+        Math.ceil(renderViewport.width),
+        Math.ceil(renderViewport.height)
+      );
+
+      try {
+        canvasAndContext.context.fillStyle = "#ffffff";
+        canvasAndContext.context.fillRect(0, 0, canvasAndContext.canvas.width, canvasAndContext.canvas.height);
+
+        await page.render({
+          canvasContext: canvasAndContext.context,
+          viewport: renderViewport,
+          canvasFactory
+        }).promise;
+
+        const pngBuffer = canvasAndContext.canvas.toBuffer("image/png");
+        const previewPath = path.join(GENERATED_DIR, previewFilenameFor(pdfFilename));
+
+        await sharp(pngBuffer)
+          .resize(TARGET_WIDTH, TARGET_HEIGHT, {
+            fit: "contain",
+            background: "#ffffff"
+          })
+          .webp({ quality: 86 })
+          .toFile(previewPath);
+
+        return previewPath;
+      } finally {
+        canvasFactory.destroy(canvasAndContext);
+      }
+    } finally {
+      page.cleanup();
+    }
+  } finally {
+    await document.destroy();
+  }
+}
+
+async function isPreviewCurrent(pdfFilename) {
+  const previewPath = path.join(GENERATED_DIR, previewFilenameFor(pdfFilename));
+
+  if (!(await fileExists(previewPath))) {
+    return false;
+  }
+
+  const [pdfStats, previewStats] = await Promise.all([
+    stat(path.join(SOURCE_DIR, pdfFilename)),
+    stat(previewPath)
+  ]);
+
+  return previewStats.mtimeMs >= pdfStats.mtimeMs;
+}
+
+async function writeManifest(pdfFiles) {
+  const manifest = {};
+
+  for (const pdfFilename of pdfFiles) {
+    const previewFilename = previewFilenameFor(pdfFilename);
+    const previewPath = path.join(GENERATED_DIR, previewFilename);
+
+    if (!(await fileExists(previewPath))) {
+      continue;
+    }
+
+    const previewUrl = previewUrlFor(pdfFilename);
+    manifest[`/documents/${pdfFilename}`] = previewUrl;
+    manifest[slugFor(pdfFilename)] = previewUrl;
+  }
+
+  await mkdir(path.dirname(MANIFEST_PATH), { recursive: true });
+  await writeFile(MANIFEST_PATH, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
+  return manifest;
+}
+
+async function main() {
+  const { force } = parseArgs(process.argv.slice(2));
+  await ensureOutputPaths();
+
+  const pdfFiles = await listSourcePdfs();
+
+  if (!pdfFiles.length) {
+    await writeManifest([]);
+    console.log("No PDF source documents found. Wrote empty generated preview manifest.");
+    return;
+  }
+
+  const pdfjs = await loadPdfJs();
+
+  if (force) {
+    await clearGeneratedPreviews();
+  }
+
+  console.log(`Generating previews for ${pdfFiles.length} PDF source document(s)...`);
+
+  for (const pdfFilename of pdfFiles) {
+    if (!force && (await isPreviewCurrent(pdfFilename))) {
+      console.log(`Preview already current for ${pdfFilename}.`);
+      continue;
+    }
+
+    console.log(`Rendering ${pdfFilename}...`);
+    await renderFirstPageToWebp(pdfFilename, pdfjs);
+  }
+
+  const manifest = await writeManifest(pdfFiles);
+  console.log(`Wrote ${MANIFEST_PATH}`);
+  console.log(`Generated ${Object.keys(manifest).length / 2} preview image(s).`);
+}
+
+main().catch((error) => {
+  console.error(error instanceof Error ? error.stack || error.message : String(error));
+  process.exit(1);
+});
