@@ -127,7 +127,7 @@
     <div class="site-frame">
       <div class="site-panel">
         {% include "components/header.njk" %}
-        <main id="main-content" class="main-shell">
+        <main id="main-content"{% if page.url != "/" %} class="main-shell"{% endif %}>
           {{ content | safe }}
         </main>
         {% include "components/footer.njk" %}
