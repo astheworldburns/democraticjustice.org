@@ -28,6 +28,7 @@ Bindings are declared in `wrangler.toml`:
 - `PREVIEW_QUEUE` (Queue producer)
 - Queue consumer for `document-preview-jobs`
 - `BROWSER` (Cloudflare Browser Rendering)
+- `nodejs_compat` compatibility flag (required by `@cloudflare/puppeteer`)
 
 ## Manual enqueue endpoint
 
