@@ -1,9 +1,9 @@
-import { SESSION_COOKIE, getJwtTtl, sanitizeNextPath } from "./config.js";
+import { SESSION_COOKIE, sanitizeNextPath } from "./config.js";
 import { clearSessionCookie, createSessionCookie, parseCookies } from "./cookies.js";
 import { constantTimeEquals, decodeStoredHash, pbkdf2Sha256, randomId } from "./crypto.js";
 import { createGithubAuthorizeUrl, exchangeCodeForToken, fetchGithubUser } from "./github.js";
 import { handleOptions, json, redirect, withCors } from "./http.js";
-import { signHs256 } from "./jwt.js";
+import { handleCmsGithubToken } from "./cms-bridge.js";
 import {
   consumeOauthState,
   createSession,
@@ -207,30 +207,6 @@ async function handleLogout(request, env) {
   );
 }
 
-async function handleCmsAutoToken(request, env) {
-  const loaded = await loadSessionFromRequest(request, env);
-  if (!loaded) {
-    return unauthorized();
-  }
-
-  const ttl = getJwtTtl(env);
-  const now = Math.floor(Date.now() / 1000);
-  const payload = {
-    sub: loaded.session.email,
-    email: loaded.session.email,
-    roles: Array.isArray(loaded.session.roles) ? loaded.session.roles : [],
-    iat: now,
-    exp: now + ttl
-  };
-
-  const accessToken = await signHs256(payload, env.JWT_SECRET);
-  return json({
-    access_token: accessToken,
-    token_type: "Bearer",
-    expires_in: ttl
-  });
-}
-
 function forwardToService(request, service, pathname, mutateHeaders) {
   const url = new URL(request.url);
   url.pathname = pathname;
@@ -299,8 +275,8 @@ async function route(request, env) {
     return handleLogout(request, env);
   }
 
-  if (pathname === "/api/cms/identity/auto-token") {
-    return handleCmsAutoToken(request, env);
+  if (pathname === "/api/cms/github-token" && request.method === "GET") {
+    return handleCmsGithubToken(request, env);
   }
 
   if (pathname.startsWith("/api/editor/") || pathname.startsWith("/api/proof/")) {
