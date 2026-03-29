@@ -1,3 +1,26 @@
+function normalizeFilePath(value = "") {
+  return value
+    .toString()
+    .trim()
+    .replace(/^https?:\/\/[^/]+/i, "")
+    .replace(/\/+/g, "/");
+}
+
+function getManifestPreview(manifest = {}, fileUrl = "", slug = "") {
+  if (!manifest || typeof manifest !== "object") {
+    return "";
+  }
+
+  const normalizedFileUrl = normalizeFilePath(fileUrl);
+
+  return (
+    manifest[normalizedFileUrl] ||
+    manifest[fileUrl] ||
+    (slug ? manifest[slug] : "") ||
+    ""
+  );
+}
+
 export default {
   layout: "layouts/document.njk",
   permalink: ({ page }) => `/documents/${page.fileSlug}/index.html`,
@@ -24,6 +47,19 @@ export default {
       }
 
       return "file";
-    }
+    },
+    preview_image: (data) => {
+      if (data.preview_image) {
+        return data.preview_image;
+      }
+
+      if (data.file_type === "image") {
+        return data.file_url;
+      }
+
+      const manifestPreview = getManifestPreview(data.documentPreviewManifest, data.file_url, data.page?.fileSlug);
+      return manifestPreview || "";
+    },
+    socialImage: (data) => data.preview_image || data.og_image || ""
   }
 };
