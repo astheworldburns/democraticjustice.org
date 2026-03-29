@@ -536,16 +536,8 @@ function bytesToBase64(bytes) {
   return btoa(binary);
 }
 
-function editorApiBaseUrl() {
-  return (state.config?.editor_api_base_url || "").replace(/\/+$/, "");
-}
-
-function editorApiUrl(pathname = "") {
-  return `${editorApiBaseUrl()}${pathname}`;
-}
-
 async function workerRequest(pathname, options = {}) {
-  const response = await fetch(editorApiUrl(pathname), {
+  const response = await fetch(pathname, {
     credentials: "include",
     ...options,
     headers: {
@@ -581,9 +573,14 @@ async function fetchJson(url) {
   return response.json();
 }
 
+function redirectToAdminLogin() {
+  const next = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+  window.location.assign(`/admin/?next=${encodeURIComponent(next)}`);
+}
+
 async function loadSession() {
   try {
-    const response = await fetch(editorApiUrl("/api/editor/session"), {
+    const response = await fetch("/api/auth/session", {
       credentials: "include",
       headers: {
         Accept: "application/json"
@@ -592,6 +589,7 @@ async function loadSession() {
 
     if (response.status === 401) {
       state.sessionUser = null;
+      redirectToAdminLogin();
       return;
     }
 
@@ -607,22 +605,22 @@ async function loadSession() {
 }
 
 async function loadArticles() {
-  const payload = await workerJson("/api/editor/articles");
+  const payload = await workerJson("/api/articles");
   return sortArticles(Array.isArray(payload.articles) ? payload.articles : []);
 }
 
 async function loadAuthors() {
-  const payload = await workerJson("/api/editor/authors");
+  const payload = await workerJson("/api/authors");
   return sortAuthors(Array.isArray(payload.authors) ? payload.authors : []);
 }
 
 async function loadDocuments() {
-  const payload = await workerJson("/api/editor/documents");
+  const payload = await workerJson("/api/documents");
   return sortDocuments(Array.isArray(payload.documents) ? payload.documents : []);
 }
 
 async function loadUsers() {
-  const payload = await workerJson("/api/editor/admin/users");
+  const payload = await workerJson("/api/admin/users");
   return Array.isArray(payload.users) ? payload.users : [];
 }
 
@@ -631,7 +629,7 @@ async function loadSelectedArticleContent() {
     return;
   }
 
-  const payload = await workerJson(`/api/editor/article?slug=${encodeURIComponent(state.selectedArticle.slug)}`);
+  const payload = await workerJson(`/api/article?slug=${encodeURIComponent(state.selectedArticle.slug)}`);
   state.selectedArticle = normalizeArticle(payload.article || {});
 }
 
@@ -649,42 +647,6 @@ function mergeArticleIntoList(article) {
   const next = state.articles.filter((entry) => entry.slug !== summary.slug);
   next.push(summary);
   state.articles = sortArticles(next);
-}
-
-function renderLoginView() {
-  root.innerHTML = `
-    <div class="editor-shell">
-      <div class="editor-frame editor-home">
-        <section class="editor-hero">
-          <p class="editor-kicker">Writer desk</p>
-          <h1 class="editor-title">Proof-first editing without GitHub accounts.</h1>
-          <p class="editor-copy">
-            Sign in with the publication login the admin assigned you. The desk saves the same article files, proof
-            records, and source documents already used by the site.
-          </p>
-        </section>
-
-        <section class="editor-card" style="max-width: 34rem;">
-          <p class="editor-kicker">Editorial login</p>
-          <h2>Assigned writer account</h2>
-          <p>Use the email and password created for you by the publication admin.</p>
-          ${statusMarkup()}
-          <label class="editor-field">
-            <span class="editor-label">Email</span>
-            <input class="editor-input" type="email" value="${escapeHtml(state.loginDraft.email || "")}" data-ui="login-email" inputmode="email" autocomplete="username" autocapitalize="none" spellcheck="false" />
-          </label>
-          <label class="editor-field">
-            <span class="editor-label">Password</span>
-            <input class="editor-input" type="password" value="${escapeHtml(state.loginDraft.password || "")}" data-ui="login-password" autocomplete="current-password" />
-          </label>
-          <div class="editor-actions" style="margin-top: 1rem;">
-            <button class="editor-button" type="button" data-action="login">Sign in</button>
-            <a class="editor-button-ghost" href="/admin/">Back to Editorial Desk</a>
-          </div>
-        </section>
-      </div>
-    </div>
-  `;
 }
 
 function renderArticleCard(article) {
@@ -1216,7 +1178,7 @@ function render() {
   }
 
   if (!state.sessionUser) {
-    renderLoginView();
+    redirectToAdminLogin();
     return;
   }
 
@@ -1384,49 +1346,12 @@ function startNewArticle() {
   render();
 }
 
-async function login() {
-  const email = normalizeWhitespace(state.loginDraft.email || "").toLowerCase();
-  const password = state.loginDraft.password || "";
-
-  if (!email || !password) {
-    setStatus("Email and password are required.", "error");
-    return;
-  }
-
-  try {
-    await workerJson("/api/editor/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        email,
-        password
-      })
-    });
-
-    state.loginDraft.password = "";
-    await loadSession();
-    await loadDeskData();
-    setStatus("Signed in to the Writer Desk.", "success");
-  } catch (error) {
-    setStatus(`Could not sign in. ${error.message || error}`, "error");
-  }
-}
-
 async function logout() {
   try {
-    await workerRequest("/api/editor/logout", {
+    await workerRequest("/api/auth/logout", {
       method: "POST"
     });
-    state.sessionUser = null;
-    state.articles = [];
-    state.authors = [];
-    state.documents = [];
-    state.users = [];
-    state.selectedSlug = "";
-    state.selectedArticle = null;
-    setStatus("Signed out of the Writer Desk.", "success");
+    window.location.assign("/admin/");
   } catch (error) {
     setStatus(`Could not sign out. ${error.message || error}`, "error");
   }
@@ -1449,7 +1374,7 @@ async function saveArticle() {
   render();
 
   try {
-    const payload = await workerJson("/api/editor/article/save", {
+    const payload = await workerJson("/api/article/save", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -1499,7 +1424,7 @@ async function saveProof() {
   render();
 
   try {
-    await workerJson("/api/editor/proof/save", {
+    await workerJson("/api/proof/save", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -1544,7 +1469,7 @@ async function createSourceForAxiom(index) {
   try {
     const file = formState.file;
     const fileBytes = new Uint8Array(await file.arrayBuffer());
-    const payload = await workerJson("/api/editor/create-document", {
+    const payload = await workerJson("/api/create-document", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -1594,7 +1519,7 @@ async function createUser() {
   }
 
   try {
-    const response = await workerJson("/api/editor/admin/users", {
+    const response = await workerJson("/api/admin/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -1630,7 +1555,7 @@ async function saveUser(email) {
   }
 
   try {
-    const response = await workerJson("/api/editor/admin/users/update", {
+    const response = await workerJson("/api/admin/users/update", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -1668,16 +1593,6 @@ function handleInput(event) {
   if (uiField === "article-filter") {
     state.articleFilter = event.target.value;
     render();
-    return;
-  }
-
-  if (uiField === "login-email") {
-    state.loginDraft.email = event.target.value;
-    return;
-  }
-
-  if (uiField === "login-password") {
-    state.loginDraft.password = event.target.value;
     return;
   }
 
@@ -1777,11 +1692,6 @@ function handleClick(event) {
   }
 
   const { action } = actionTarget.dataset;
-
-  if (action === "login") {
-    login();
-    return;
-  }
 
   if (action === "logout") {
     if (!confirmDiscardChanges("sign out")) {
@@ -1944,16 +1854,6 @@ function handleKeydown(event) {
     saveArticle();
   }
 
-  if (!state.sessionUser && event.key === "Enter" && !event.shiftKey) {
-    const loginTarget = event.target.closest("[data-ui=\"login-email\"], [data-ui=\"login-password\"]");
-
-    if (!loginTarget) {
-      return;
-    }
-
-    event.preventDefault();
-    login();
-  }
 }
 
 function handleBeforeUnload(event) {
@@ -1968,17 +1868,14 @@ function handleBeforeUnload(event) {
 async function init() {
   try {
     restoreUiState();
-    state.config = await fetchJson("/admin/editor/data/config.json");
-
-    if (!editorApiBaseUrl()) {
-      throw new Error("Missing editor_api_base_url for the Writer Desk.");
-    }
-
     await loadSession();
 
-    if (state.sessionUser) {
-      await loadDeskData();
+    if (!state.sessionUser) {
+      redirectToAdminLogin();
+      return;
     }
+
+    await loadDeskData();
 
     state.loading = false;
     render();

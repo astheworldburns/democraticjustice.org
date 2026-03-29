@@ -8,6 +8,101 @@ function setStatus(message) {
   }
 }
 
+function createNetlifyIdentityShim({ token, sessionUser }) {
+  const listeners = new Map();
+
+  const cmsUser = {
+    id: sessionUser?.id || sessionUser?.email || "admin-user",
+    email: sessionUser?.email || "",
+    full_name: sessionUser?.name || sessionUser?.email || "Admin User",
+    user_metadata: {
+      full_name: sessionUser?.name || ""
+    },
+    token: {
+      access_token: token,
+      token_type: "Bearer"
+    },
+    jwt: () => Promise.resolve(token)
+  };
+
+  const emit = (event, payload = cmsUser) => {
+    const handlers = listeners.get(event);
+
+    if (!handlers) {
+      return;
+    }
+
+    for (const handler of handlers) {
+      try {
+        handler(payload);
+      } catch (error) {
+        console.error("netlifyIdentity listener error", error);
+      }
+    }
+  };
+
+  const shim = {
+    init() {
+      queueMicrotask(() => {
+        emit("init", cmsUser);
+        emit("login", cmsUser);
+      });
+      return shim;
+    },
+    on(event, callback) {
+      if (!listeners.has(event)) {
+        listeners.set(event, new Set());
+      }
+      listeners.get(event).add(callback);
+
+      if ((event === "init" || event === "login") && callback) {
+        queueMicrotask(() => callback(cmsUser));
+      }
+    },
+    off(event, callback) {
+      listeners.get(event)?.delete(callback);
+    },
+    open() {
+      emit("login", cmsUser);
+    },
+    close() {},
+    currentUser() {
+      return cmsUser;
+    },
+    refresh() {
+      return Promise.resolve(cmsUser);
+    },
+    logout() {
+      return fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "include"
+      }).finally(() => {
+        emit("logout", null);
+        window.location.assign("/admin/");
+      });
+    }
+  };
+
+  return shim;
+}
+
+async function fetchJson(url, options = {}) {
+  const response = await fetch(url, {
+    credentials: "include",
+    headers: {
+      Accept: "application/json",
+      ...(options.headers || {})
+    },
+    ...options
+  });
+
+  if (!response.ok) {
+    throw new Error(`${url} failed with ${response.status}`);
+  }
+
+  return response.json();
+}
+
 const cmsConfigPromise = fetch("/admin/cms/data/config.json", {
   credentials: "same-origin"
 }).then(async (response) => {
@@ -22,7 +117,22 @@ window.addEventListener(
   "DOMContentLoaded",
   async () => {
     try {
-      const config = await cmsConfigPromise;
+      const [config, identityPayload, sessionPayload] = await Promise.all([
+        cmsConfigPromise,
+        fetchJson("/api/cms/identity/auto-token"),
+        fetchJson("/api/auth/session")
+      ]);
+
+      const token = identityPayload?.token || identityPayload?.jwt;
+      const sessionUser = sessionPayload?.user;
+
+      if (!token || !sessionUser) {
+        window.location.assign("/admin/");
+        return;
+      }
+
+      window.netlifyIdentity = createNetlifyIdentityShim({ token, sessionUser });
+      window.netlifyIdentity.init();
 
       if (typeof window.initCMS !== "function") {
         throw new Error("Sveltia CMS did not finish loading.");
