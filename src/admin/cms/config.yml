@@ -1,8 +1,8 @@
 backend:
   name: git-gateway
   branch: main
-  identity_url: https://cms-gateway.sethsturm.workers.dev/identity
-  gateway_url: https://cms-gateway.sethsturm.workers.dev/git
+  identity_url: /api/cms/identity
+  gateway_url: /api/cms/git
 
 site_url: https://democraticjustice.org
 display_url: https://democraticjustice.org

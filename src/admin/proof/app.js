@@ -324,20 +324,12 @@ function bytesToBase64(bytes) {
   return btoa(binary);
 }
 
-function proofApiBaseUrl() {
-  return (state.config?.proof_api_base_url || "").replace(/\/+$/, "");
-}
-
-function hasProofApi() {
-  return Boolean(proofApiBaseUrl());
-}
-
-function proofApiUrl(pathname = "") {
-  return `${proofApiBaseUrl()}${pathname}`;
+function redirectToAdmin() {
+  window.location.assign("/admin/");
 }
 
 async function workerRequest(pathname, options = {}) {
-  const response = await fetch(proofApiUrl(pathname), {
+  const response = await fetch(pathname, {
     credentials: "include",
     ...options,
     headers: {
@@ -361,7 +353,7 @@ async function workerJson(pathname, options = {}) {
 
 async function loadWorkerSession() {
   try {
-    const response = await fetch(proofApiUrl("/api/session"), {
+    const response = await fetch("/api/auth/session", {
       credentials: "include",
       headers: {
         Accept: "application/json"
@@ -370,6 +362,7 @@ async function loadWorkerSession() {
 
     if (response.status === 401) {
       state.sessionUser = null;
+      redirectToAdmin();
       return;
     }
 
@@ -412,12 +405,12 @@ function sortDocuments(items = []) {
 }
 
 async function loadArticlesFromWorker() {
-  const payload = await workerJson("/api/proof/articles");
+  const payload = await workerJson("/api/articles");
   return sortArticles(Array.isArray(payload.articles) ? payload.articles : []);
 }
 
 async function loadDocumentsFromWorker() {
-  const payload = await workerJson("/api/proof/documents");
+  const payload = await workerJson("/api/documents");
   return sortDocuments(Array.isArray(payload.documents) ? payload.documents : []);
 }
 
@@ -712,11 +705,9 @@ function render() {
   persistUiState();
   document.title = "Democratic Justice Proof Desk";
 
-  const detectedLabel = !hasProofApi()
-    ? "The Proof Desk gateway is not configured yet."
-    : state.sessionUser
-      ? `Signed in as ${state.sessionUser.login || "GitHub user"}.`
-      : "Not signed in to the Proof Desk yet.";
+  const detectedLabel = state.sessionUser
+    ? `Signed in as ${state.sessionUser.name || state.sessionUser.email || "staff user"}.`
+    : "Not signed in to the Proof Desk.";
   const toolbarStatus = !state.selectedArticle
     ? "No article selected"
     : hasUnsavedProofChanges()
@@ -748,29 +739,15 @@ function render() {
             <section class="editor-panel">
               <div class="editor-panel__header">
                 <div>
-                  <p class="editor-kicker">GitHub session</p>
-                  <h2>Authentication</h2>
+                  <p class="editor-kicker">Publication session</p>
+                  <h2>Access</h2>
                 </div>
               </div>
               <p>${escapeHtml(detectedLabel)}</p>
-              <p class="editor-muted">The Proof Desk now runs only through the session-backed gateway. Browser-pasted GitHub tokens are disabled to keep repo credentials out of local storage and out of the page.</p>
-              ${
-                hasProofApi()
-                  ? `
-                    <div class="editor-actions" style="margin-top: 1rem;">
-                      ${
-                        state.sessionUser
-                          ? `<button class="editor-button-ghost" type="button" data-action="worker-logout">Sign out</button>`
-                          : `<a class="editor-button-secondary" href="${escapeHtml(
-                              `${proofApiUrl("/proof/login")}?next=${encodeURIComponent(window.location.href)}`
-                            )}">Sign in with GitHub</a>`
-                      }
-                    </div>
-                  `
-                  : `
-                    <div class="editor-empty">Add <code>proof_api_base_url</code> to the admin config before using the Proof Desk.</div>
-                  `
-              }
+              <p class="editor-muted">The Proof Desk runs through the same authenticated admin session used across the newsroom tools.</p>
+              <div class="editor-actions" style="margin-top: 1rem;">
+                <button class="editor-button-ghost" type="button" data-action="worker-logout">Sign out</button>
+              </div>
             </section>
 
             <section class="editor-panel">
@@ -781,11 +758,7 @@ function render() {
                 </div>
                 <span class="editor-muted">${state.articles.length} total</span>
               </div>
-              ${state.sessionUser ? "" : `<div class="editor-empty">${
-                hasProofApi()
-                  ? "Sign in with GitHub to load article and document data."
-                  : "Configure the Proof Desk gateway before loading repository data."
-              }</div>`}
+
               <label class="editor-field">
                 <span class="editor-label">Search</span>
                 <input class="editor-input" type="search" value="${escapeHtml(state.articleFilter)}" data-ui="article-filter" placeholder="Find an article" />
@@ -826,7 +799,7 @@ async function loadSelectedArticleContent() {
     return;
   }
 
-  const payload = await workerJson(`/api/proof/article?slug=${encodeURIComponent(state.selectedArticle.slug)}`);
+  const payload = await workerJson(`/api/article?slug=${encodeURIComponent(state.selectedArticle.slug)}`);
   const nextProof = hasMeaningfulValue(payload.article?.proof) ? normalizeProof(payload.article.proof || {}) : normalizeProof({});
 
   state.selectedArticle = {
@@ -881,29 +854,10 @@ function setStatus(message, tone = "info") {
 async function loadDeskData() {
   state.loading = true;
 
-  if (!state.config) {
-    state.config = await fetchJson("/admin/proof/data/config.json");
-  }
-
-  if (!hasProofApi()) {
-    state.articles = [];
-    state.documents = [];
-    state.selectedSlug = "";
-    state.selectedArticle = null;
-    state.loading = false;
-    setStatus("The Proof Desk gateway is not configured yet.", "error");
-    return;
-  }
-
   await loadWorkerSession();
 
   if (!state.sessionUser) {
-    state.articles = [];
-    state.documents = [];
-    state.selectedSlug = "";
-    state.selectedArticle = null;
-    state.loading = false;
-    render();
+    redirectToAdmin();
     return;
   }
 
@@ -946,7 +900,7 @@ async function saveProof() {
   }
 
   if (!state.sessionUser) {
-    setStatus("Sign in with GitHub before saving proof changes.", "error");
+    setStatus("You must be signed in before saving proof changes.", "error");
     return;
   }
 
@@ -989,7 +943,7 @@ async function createSourceForAxiom(index) {
   }
 
   if (!state.sessionUser) {
-    setStatus("Sign in with GitHub before creating source documents.", "error");
+    setStatus("You must be signed in before creating source documents.", "error");
     return;
   }
 
@@ -1006,7 +960,7 @@ async function createSourceForAxiom(index) {
   try {
     const file = formState.file;
     const fileBytes = new Uint8Array(await file.arrayBuffer());
-    const payload = await workerJson("/api/proof/create-document", {
+    const payload = await workerJson("/api/create-document", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -1151,16 +1105,11 @@ function handleClick(event) {
       return;
     }
 
-    workerRequest("/proof/logout", {
+    workerRequest("/api/auth/logout", {
       method: "POST"
     })
       .then(async () => {
-        state.sessionUser = null;
-        state.articles = [];
-        state.documents = [];
-        state.selectedSlug = "";
-        state.selectedArticle = null;
-        setStatus("Signed out of the Proof Desk.", "success");
+        redirectToAdmin();
       })
       .catch((error) => setStatus(`Could not sign out. ${error.message || error}`, "error"));
     return;
