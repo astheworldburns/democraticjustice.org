@@ -41,7 +41,7 @@ export function decodeStoredHash(hash) {
   return base64ToBytes(hash);
 }
 
-export async function pbkdf2Sha256(password, saltBytes, iterations = 210000, keyLengthBits = 256) {
+export async function pbkdf2Sha256(password, saltBytes, iterations = 100000, keyLengthBits = 256) {
   const baseKey = await crypto.subtle.importKey(
     "raw",
     encoder.encode(password),

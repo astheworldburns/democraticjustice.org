@@ -54,7 +54,7 @@ async function authenticateWithPassword(env, email, password) {
   }
 
   const iterationCandidates = Array.from(
-    new Set([passwordFields.passwordIterations, 210000, 100000].filter(Boolean))
+    new Set([passwordFields.passwordIterations, 100000, 100000].filter(Boolean))
   );
 
   for (const iterations of iterationCandidates) {

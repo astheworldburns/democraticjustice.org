@@ -1076,7 +1076,7 @@ function secureEqual(left = "", right = "") {
   return mismatch === 0;
 }
 
-async function hashEditorPassword(password, saltBase64 = "", iterations = 210000) {
+async function hashEditorPassword(password, saltBase64 = "", iterations = 100000) {
   const candidate = password == null ? "" : password.toString();
 
   if (!candidate.trim()) {
