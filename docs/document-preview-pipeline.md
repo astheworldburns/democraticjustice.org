@@ -30,6 +30,19 @@ Bindings are declared in `wrangler.toml`:
 - `BROWSER` (Cloudflare Browser Rendering)
 - `nodejs_compat` compatibility flag (required by `@cloudflare/puppeteer`)
 
+## If you do not have Workers Paid (no R2 event notifications)
+
+You can still generate previews manually or from a CMS webhook:
+
+1. Deploy the worker normally.
+2. Call `POST /render-now` with JSON body:
+
+```json
+{ "keys": ["wvyd-january-2026-amended-f4.pdf"], "mode": "direct" }
+```
+
+This bypasses Queues and processes the PDF immediately in the request handler.
+
 ## Manual enqueue endpoint
 
 `POST /` body:

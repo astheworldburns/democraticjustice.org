@@ -91,6 +91,23 @@ export default {
       return Response.json({ enqueued: 0, message: "No keys provided." }, { status: 400 });
     }
 
+    const url = new URL(request.url);
+    const directMode = url.pathname === "/render-now" || payload.mode === "direct";
+
+    if (directMode) {
+      const results = [];
+
+      for (const key of keys) {
+        try {
+          results.push(await processPdfObject(key, env));
+        } catch (error) {
+          results.push({ key, error: error instanceof Error ? error.message : String(error) });
+        }
+      }
+
+      return Response.json({ processed: results.length, results });
+    }
+
     await env.PREVIEW_QUEUE.sendBatch(keys.map((key) => ({ body: { key } })));
     return Response.json({ enqueued: keys.length });
   },
