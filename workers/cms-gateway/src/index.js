@@ -291,6 +291,26 @@ async function handleIdentityToken(request, env, corsHeaders) {
 }
 
 async function handleIdentityUser(request, env, corsHeaders) {
+  const internalSecret = request.headers.get("X-Internal-Secret");
+  if (internalSecret && internalSecret === env.INTERNAL_SECRET) {
+    const email = (request.headers.get("X-User-Email") || "").trim().toLowerCase();
+    if (!email) {
+      return jsonResponse(401, { error: "unauthorized" }, corsHeaders);
+    }
+
+    const user = await loadUserByEmail(env, email);
+    return jsonResponse(
+      200,
+      {
+        id: user?.id || email,
+        email,
+        app_metadata: { provider: "email", roles: [user?.role || "user"] },
+        user_metadata: { full_name: user?.name || "" },
+      },
+      corsHeaders
+    );
+  }
+
   const token = getBearerToken(request);
   if (!token) {
     return jsonResponse(401, { error: "unauthorized" }, corsHeaders);
