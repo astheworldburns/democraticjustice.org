@@ -16,10 +16,6 @@ const state = {
   selectedArticleLoading: false,
   savingArticle: false,
   savingProof: false,
-  loginDraft: {
-    email: "",
-    password: ""
-  },
   newUserForm: {
     name: "",
     email: "",
@@ -545,6 +541,11 @@ async function workerRequest(pathname, options = {}) {
       ...(options.headers || {})
     }
   });
+
+  if (response.status === 401) {
+    redirectToAdminLogin();
+    throw new Error("Session expired.");
+  }
 
   if (!response.ok) {
     const message = await response.text();

@@ -325,7 +325,8 @@ function bytesToBase64(bytes) {
 }
 
 function redirectToAdmin() {
-  window.location.assign("/admin/");
+  const next = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+  window.location.assign(`/admin/?next=${encodeURIComponent(next)}`);
 }
 
 async function workerRequest(pathname, options = {}) {
@@ -337,6 +338,11 @@ async function workerRequest(pathname, options = {}) {
       ...(options.headers || {})
     }
   });
+
+  if (response.status === 401) {
+    redirectToAdmin();
+    throw new Error("Session expired.");
+  }
 
   if (!response.ok) {
     const message = await response.text();
