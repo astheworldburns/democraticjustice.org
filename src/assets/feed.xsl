@@ -19,40 +19,41 @@
             document.documentElement.dataset.theme = storedTheme || systemTheme;
           })();
         </script>
-        <style>
+                <style>
+          /* Colors match design tokens in tailwind.css — update both if palette changes */
           :root {
-            --page: #e8e0d4;
-            --panel: #f3ede3;
-            --paper: #f3ede3;
-            --ink: #1f1a16;
-            --ink-soft: #5a5046;
-            --ink-reverse: #f5eee4;
-            --rule: rgba(69, 60, 52, 0.2);
-            --rule-strong: #2a231e;
+            --page: #f4f7fc;
+            --panel: #ffffff;
+            --paper: #ffffff;
+            --ink: #141b26;
+            --ink-soft: #414c5c;
+            --ink-reverse: #f4f7fc;
+            --rule: rgba(20, 27, 38, 0.2);
+            --rule-strong: #cfd9e8;
           }
 
           html[data-theme="light"] {
             color-scheme: light;
-            --page: #e8e0d4;
-            --panel: #f3ede3;
-            --paper: #f3ede3;
-            --ink: #1f1a16;
-            --ink-soft: #5a5046;
-            --ink-reverse: #f5eee4;
-            --rule: rgba(69, 60, 52, 0.2);
-            --rule-strong: #2a231e;
+            --page: #f4f7fc;
+            --panel: #ffffff;
+            --paper: #ffffff;
+            --ink: #141b26;
+            --ink-soft: #414c5c;
+            --ink-reverse: #f4f7fc;
+            --rule: rgba(20, 27, 38, 0.2);
+            --rule-strong: #cfd9e8;
           }
 
           html[data-theme="dark"] {
             color-scheme: dark;
-            --page: #0f0d0b;
-            --panel: #171311;
-            --paper: #201a17;
-            --ink: #f2e8da;
-            --ink-soft: #cdbfad;
-            --ink-reverse: #f5eee4;
-            --rule: rgba(242, 232, 218, 0.12);
-            --rule-strong: rgba(242, 232, 218, 0.28);
+            --page: #0f151f;
+            --panel: #182130;
+            --paper: #182130;
+            --ink: #ecf0f7;
+            --ink-soft: #c6cfdd;
+            --ink-reverse: #f4f7fc;
+            --rule: rgba(236, 240, 247, 0.12);
+            --rule-strong: rgba(236, 240, 247, 0.28);
           }
 
           * { box-sizing: border-box; }
