@@ -1,7 +1,7 @@
-<section id="proof-card" aria-labelledby="proof-heading" class="mb-16">
+<section id="proof-card" aria-labelledby="proof-heading" class="proof-card-shell mb-12 max-w-3xl">
   <div class="proof-card proof-card--unified">
     <header class="proof-card__header">
-      <p class="proof-card__eyebrow" id="proof-heading">[∴] Proof</p>
+      <p class="proof-card__badge" id="proof-heading">PROOF</p>
       <p class="proof-card__counts">
         {{ proofCard.axiomCount }} AXIOMS · {{ proofCard.postulateCount }} POSTULATES · {{ proofCard.theoremCount }} THEOREMS
       </p>
@@ -15,17 +15,15 @@
         {% for axiom in proofCard.axioms %}
           <li class="proof-card__item">
             <span class="proof-card__item-prefix">{{ axiom.id or ("A" ~ axiom.index) }}</span>
-            <span class="proof-card__item-text">
-              {{ axiom.premise }}
-              {% if axiom.sources.length %}
-                <span class="proof-card__citations">
-                  {% for source in axiom.sources %}
-                    {% set sourceRecord = source.documentUrl | getSourceDocument(collections.sourceDocument) %}
-                    <a href="{{ source.documentUrl }}" class="proof-card__citation-link" data-doc-url="{{ source.documentUrl }}" title="{{ sourceRecord.data.title if sourceRecord else source.label }}">[{{ loop.index }}]</a>
-                  {% endfor %}
-                </span>
-              {% endif %}
-            </span>
+            <span class="proof-card__item-text">{{ axiom.premise }}</span>
+            {% if axiom.sources.length %}
+              <span class="proof-card__citations">
+                {% for source in axiom.sources %}
+                  {% set sourceRecord = source.documentUrl | getSourceDocument(collections.sourceDocument) %}
+                  <a href="{{ source.documentUrl }}" class="proof-card__citation-link" data-doc-url="{{ source.documentUrl }}" title="{{ sourceRecord.data.title if sourceRecord else source.label }}">[{{ loop.index }}]</a>
+                {% endfor %}
+              </span>
+            {% endif %}
           </li>
         {% endfor %}
       </ol>
@@ -38,24 +36,22 @@
           {% for postulate in proofCard.postulates %}
             <li class="proof-card__item">
               <span class="proof-card__item-prefix">{{ postulate.id or ("P" ~ postulate.index) }}</span>
-              <span class="proof-card__item-text">
-                {{ postulate.fact }}
-                {% if postulate.sources.length %}
-                  <span class="proof-card__citations">
-                    {% for source in postulate.sources %}
-                      {% set sourceRecord = source.documentUrl | getSourceDocument(collections.sourceDocument) %}
-                      <a href="{{ source.documentUrl }}" class="proof-card__citation-link" data-doc-url="{{ source.documentUrl }}" title="{{ sourceRecord.data.title if sourceRecord else source.label }}">[{{ loop.index }}]</a>
-                    {% endfor %}
-                  </span>
-                {% endif %}
-              </span>
+              <span class="proof-card__item-text">{{ postulate.fact }}</span>
+              {% if postulate.sources.length %}
+                <span class="proof-card__citations">
+                  {% for source in postulate.sources %}
+                    {% set sourceRecord = source.documentUrl | getSourceDocument(collections.sourceDocument) %}
+                    <a href="{{ source.documentUrl }}" class="proof-card__citation-link" data-doc-url="{{ source.documentUrl }}" title="{{ sourceRecord.data.title if sourceRecord else source.label }}">[{{ loop.index }}]</a>
+                  {% endfor %}
+                </span>
+              {% endif %}
             </li>
           {% endfor %}
         </ol>
       </section>
     {% endif %}
 
-    <section class="proof-card__section" aria-labelledby="proof-theorems-label">
+    <section class="proof-card__section proof-card__section--theorems" aria-labelledby="proof-theorems-label">
       <h2 id="proof-theorems-label" class="proof-card__label">THEOREMS</h2>
       <ol class="proof-card__items">
         {% for theorem in proofCard.theorems %}
@@ -71,8 +67,10 @@
 
     <section class="proof-card__section proof-card__qed" aria-labelledby="proof-qed-label">
       <h2 id="proof-qed-label" class="proof-card__label">Q.E.D.</h2>
-      <p class="proof-card__qed-text">{{ proofCard.qed or proofCard.conclusion }}</p>
-      <span class="proof-card__watermark" aria-hidden="true">∴</span>
+      <div class="proof-card__qed-block">
+        <img src="/assets/images/uploads/proof-mark-ink.svg" alt="" aria-hidden="true" class="proof-card__qed-mark">
+        <p class="proof-card__qed-text">{{ proofCard.qed or proofCard.conclusion }}</p>
+      </div>
     </section>
 
     {% if proofCard.sourceDocuments.length %}
@@ -81,9 +79,10 @@
         <ul class="proof-card__documents">
           {% for doc in proofCard.sourceDocuments %}
             {% set docRecord = doc.documentUrl | getSourceDocument(collections.sourceDocument) %}
+            {% set docType = (docRecord.data.file_type if docRecord else "DOC") | upper %}
             <li>
               <a href="{{ doc.documentUrl }}" class="proof-card__document-link" data-doc-url="{{ doc.documentUrl }}">
-                <span class="proof-card__document-badge">{{ (docRecord.data.file_type if docRecord else "DOC") | upper }}</span>
+                <span class="proof-card__document-badge">{{ docType }}</span>
                 <span>{{ docRecord.data.title if docRecord else doc.label }}</span>
               </a>
             </li>
