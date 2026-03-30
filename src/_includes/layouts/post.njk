@@ -50,7 +50,12 @@ ogType: article
     <div class="mt-6">{% include "components/meta-row.njk" %}</div>
   </header>
 
-  {# Section 1: Reported Narrative #}
+  {# Section 1: Proof Card #}
+  {% if proofCard %}
+    {% include "components/proof-card.njk" %}
+  {% endif %}
+
+  {# Section 2: Reported Narrative #}
   <section id="narrative" aria-labelledby="narrative-content-heading" class="mb-16">
     <h2 id="narrative-content-heading" class="sr-only">Reported Narrative</h2>
     {% if tocItems.length > 2 %}
@@ -61,11 +66,6 @@ ogType: article
     {% endif %}
     <div class="prose prose-lg">{{ articleHtml }}</div>
   </section>
-
-  {# Section 2: Proof Card #}
-  {% if proofCard %}
-    {% include "components/proof-card.njk" %}
-  {% endif %}
 
   {# Section 3: Source Documents #}
   {% if proofCard and proofCard.sourceDocuments.length %}

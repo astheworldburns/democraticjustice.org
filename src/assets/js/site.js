@@ -44,12 +44,15 @@
     return systemQuery.matches ? "dark" : "light";
   }
 
-  function syncThemeColor(theme) {
+  function syncThemeColor() {
     if (!themeColorMeta) {
       return;
     }
 
-    themeColorMeta.setAttribute("content", theme === "dark" ? "#161a20" : "#f1eee8");
+    const computed = getComputedStyle(root).getPropertyValue("--color-bg-page").trim();
+    if (computed) {
+      themeColorMeta.setAttribute("content", computed);
+    }
   }
 
   function syncProofMarks(theme) {
@@ -73,7 +76,7 @@
   function applyTheme(theme) {
     root.dataset.theme = theme;
     syncThemeLabel(theme);
-    syncThemeColor(theme);
+    syncThemeColor();
     syncProofMarks(theme);
   }
 

@@ -77,6 +77,21 @@
 
   :root {
     color-scheme: light;
+    --color-bg-page: #f4f7fc;
+    --color-bg-surface: #ffffff;
+    --color-bg-proof: #111317;
+    --color-text-body: #141b26;
+    --color-text-heading: #141b26;
+    --color-text-secondary: #414c5c;
+    --color-text-muted: #68758a;
+    --color-text-on-proof: #e4e8ef;
+    --color-text-heading-on-proof: #f7f8fa;
+    --color-accent: #3f5f80;
+    --color-accent-on-proof: #5f81a3;
+    --color-border: #cfd9e8;
+    --color-border-on-proof: rgba(255, 255, 255, 0.12);
+    --color-badge-pdf: #e9eef5;
+    --color-badge-image: #eef2f8;
     --page: 244 247 252;
     --page-top: 249 251 255;
     --surface: 255 255 255;
@@ -87,8 +102,8 @@
     --ink-muted: 104 117 138;
     --rule: 207 217 232;
     --rule-strong: 42 56 82;
-    --accent: 161 49 36;
-    --accent-soft: 246 228 224;
+    --accent: 63 95 128;
+    --accent-soft: 233 238 245;
     --radius-xs: 0.35rem;
     --radius-sm: 0.5rem;
     --radius-md: 0.85rem;
@@ -98,31 +113,36 @@
     --type-ui: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
     --type-mono: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
     --type-masthead: "Century Schoolbook", "New Century Schoolbook", "Bookman Old Style", Georgia, serif;
-    /* Legacy color tokens remain in use; semantic aliases are added for consolidation. */
-    --color-surface: #f7f2e8;
-    --color-surface-elevated: #ffffff;
+    --color-surface: var(--color-bg-page);
+    --color-surface-elevated: var(--color-bg-surface);
     --color-surface-overlay: rgba(255, 255, 255, 0.8);
-    --color-ink: #0f0d0b;
-    --color-ink-secondary: #5a5046;
-    --color-ink-muted: #6b7280;
-    --color-accent: #0078a8;
-    --color-accent-subtle: rgba(0, 120, 168, 0.08);
-    --color-border: #e8e0d4;
-    --color-border-subtle: rgba(69, 60, 52, 0.1);
+    --color-ink: var(--color-text-heading);
+    --color-ink-secondary: var(--color-text-secondary);
+    --color-ink-muted: var(--color-text-muted);
+    --color-accent-subtle: rgba(var(--accent), 0.08);
+    --color-border-subtle: rgba(var(--rule), 0.1);
     --color-glass-bg: rgba(247, 242, 232, 0.72);
     --color-glass-border: rgba(255, 255, 255, 0.5);
     --grid-gap: 1.25rem;
   }
 
   html[data-theme="dark"] {
-    /* Contrast verification:
-       --color-ink (#f1eee8) on --color-surface (#0f0d0b) = ~17.5:1 ✓
-       --color-ink-secondary (#cdbfad) on --color-surface (#0f0d0b) = ~11.2:1 ✓
-       --color-ink-muted (#6b7280) on --color-surface (#0f0d0b) = ~4.2:1 ✓ (large text only)
-       --color-accent (#67cdcc) on --color-surface (#0f0d0b) = ~10.8:1 ✓
-       --color-ink-muted on --color-surface-elevated (#1a1612) = ~3.8:1 ✓ (large text)
-    */
     color-scheme: dark;
+    --color-bg-page: #0f151f;
+    --color-bg-surface: #182130;
+    --color-bg-proof: #111317;
+    --color-text-body: #ecf0f7;
+    --color-text-heading: #ecf0f7;
+    --color-text-secondary: #c6cfdd;
+    --color-text-muted: #95a3b7;
+    --color-text-on-proof: #e4e8ef;
+    --color-text-heading-on-proof: #f7f8fa;
+    --color-accent: #6d88a4;
+    --color-accent-on-proof: #5f81a3;
+    --color-border: #495c77;
+    --color-border-on-proof: rgba(255, 255, 255, 0.12);
+    --color-badge-pdf: #2d3a4b;
+    --color-badge-image: #2f3e52;
     --page: 15 21 31;
     --page-top: 21 30 44;
     --surface: 24 33 48;
@@ -133,21 +153,18 @@
     --ink-muted: 149 163 183;
     --rule: 73 92 119;
     --rule-strong: 218 225 236;
-    --accent: 228 150 137;
-    --accent-soft: 72 52 50;
-    /* Legacy dark tokens remain; semantic aliases mirror the design token system. */
-    --color-surface: #0f0d0b;
-    --color-surface-elevated: #1a1612;
-    --color-surface-overlay: rgba(26, 22, 18, 0.85);
-    --color-ink: #f1eee8;
-    --color-ink-secondary: #cdbfad;
-    --color-ink-muted: #8b929c;
-    --color-accent: #67cdcc;
-    --color-accent-subtle: rgba(103, 205, 204, 0.1);
-    --color-border: #2a231e;
-    --color-border-subtle: rgba(239, 225, 191, 0.12);
-    --color-glass-bg: rgba(15, 13, 11, 0.72);
-    --color-glass-border: rgba(239, 225, 191, 0.08);
+    --accent: 109 136 164;
+    --accent-soft: 54 68 87;
+    --color-surface: #0f151f;
+    --color-surface-elevated: #182130;
+    --color-surface-overlay: rgba(24, 33, 48, 0.85);
+    --color-ink: var(--color-text-heading);
+    --color-ink-secondary: var(--color-text-secondary);
+    --color-ink-muted: var(--color-text-muted);
+    --color-accent-subtle: rgba(var(--accent), 0.1);
+    --color-border-subtle: rgba(236, 240, 247, 0.12);
+    --color-glass-bg: rgba(15, 21, 31, 0.72);
+    --color-glass-border: rgba(236, 240, 247, 0.08);
   }
 
   html {
@@ -268,7 +285,7 @@
     top: -100%;
     left: theme('spacing.4');
     background: var(--color-accent);
-    color: #fff;
+    color: var(--color-bg-surface);
     padding: theme('spacing.2') theme('spacing.4');
     border-radius: theme('borderRadius.squircle-sm');
     font-family: theme('fontFamily.mono');
@@ -424,7 +441,7 @@
 
   .primary-nav__link[aria-current="page"] {
     color: rgb(var(--ink));
-    background: rgba(var(--accent), 0.1);
+    background: color-mix(in srgb, var(--color-accent) 10%, transparent);
   }
 
 
@@ -707,7 +724,7 @@
   }
 
   .headline-link:hover {
-    color: rgb(var(--accent));
+    color: var(--color-accent);
   }
 
   .button-link,
@@ -736,7 +753,7 @@
   .proof-link:hover {
     transform: translateY(-1px);
     background: rgb(var(--accent));
-    border-color: rgb(var(--accent));
+    border-color: var(--color-accent);
   }
 
   .button-link-muted,
@@ -933,7 +950,7 @@
     font-size: 0.63rem;
     letter-spacing: 0.11em;
     text-transform: uppercase;
-    color: rgb(var(--accent));
+    color: var(--color-accent);
     padding-top: 0.08rem;
   }
 
@@ -1082,7 +1099,7 @@
   .homepage-link-list__item:hover span,
   .homepage-desk-item:hover strong,
   .homepage-desk-item:hover span {
-    color: rgb(var(--accent));
+    color: var(--color-accent);
   }
 
   .home-story-grid,
@@ -1191,10 +1208,10 @@
   }
 
   .proof-card {
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid var(--color-border-on-proof);
     border-radius: var(--radius-lg);
-    background: #111317;
-    color: #eceff4;
+    background: var(--color-bg-proof);
+    color: var(--color-text-on-proof);
     padding: 1rem;
   }
 
@@ -1217,13 +1234,13 @@
   .proof-card__eyebrow {
     margin: 0;
     font-size: 0.72rem;
-    color: rgb(var(--accent));
+    color: var(--color-accent-on-proof);
   }
 
   .proof-card__counts {
     margin: 0;
     font-size: 0.66rem;
-    color: #b7bec9;
+    color: var(--color-text-muted);
   }
 
   .proof-card__issue {
@@ -1231,7 +1248,7 @@
     font-family: "Source Serif 4";
     font-size: clamp(1.2rem, 1.05rem + 0.75vw, 1.55rem);
     line-height: 1.2;
-    color: #f7f8fa;
+    color: var(--color-text-heading-on-proof);
     font-weight: 700;
   }
 
@@ -1239,13 +1256,13 @@
     position: relative;
     margin-top: 1rem;
     padding-top: 0.75rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    border-top: 1px solid var(--color-border-on-proof);
   }
 
   .proof-card__label {
     margin: 0 0 0.6rem;
     font-size: 0.68rem;
-    color: rgb(var(--accent));
+    color: var(--color-accent-on-proof);
   }
 
   .proof-card__items {
@@ -1264,7 +1281,7 @@
   }
 
   .proof-card__item-prefix {
-    color: rgb(var(--accent));
+    color: var(--color-accent-on-proof);
     font-family: "IBM Plex Mono";
     font-size: 0.76rem;
     font-weight: 700;
@@ -1276,7 +1293,7 @@
   .proof-card__item-text {
     font-size: 0.95rem;
     line-height: 1.4;
-    color: #e4e8ef;
+    color: var(--color-text-on-proof);
     font-family: "Source Serif 4";
   }
 
@@ -1286,7 +1303,7 @@
   }
 
   .proof-card__citation-link {
-    color: rgb(var(--accent));
+    color: var(--color-accent-on-proof);
     font-family: "IBM Plex Mono";
     font-size: 0.68rem;
     text-decoration: none;
@@ -1297,7 +1314,7 @@
   }
 
   .proof-card__references {
-    color: #b7bec9;
+    color: var(--color-text-muted);
     font-size: 0.86rem;
     font-family: "IBM Plex Mono";
   }
@@ -1312,7 +1329,7 @@
     font-size: 1.12rem;
     line-height: 1.35;
     font-weight: 700;
-    color: #f7f8fa;
+    color: var(--color-text-heading-on-proof);
   }
 
   .proof-card__watermark {
@@ -1321,7 +1338,7 @@
     bottom: 0.1rem;
     font-size: 5rem;
     line-height: 1;
-    color: rgba(255, 255, 255, 0.08);
+    color: color-mix(in srgb, var(--color-text-on-proof) 12%, transparent);
     font-family: "IBM Plex Mono";
     pointer-events: none;
   }
@@ -1338,21 +1355,21 @@
     display: inline-flex;
     gap: 0.45rem;
     align-items: center;
-    color: #e4e8ef;
+    color: var(--color-text-on-proof);
     text-decoration: none;
     font-size: 0.86rem;
   }
 
   .proof-card__document-link:hover {
-    color: rgb(var(--accent));
+    color: var(--color-accent-on-proof);
   }
 
   .proof-card__document-badge {
-    border: 1px solid rgba(255, 255, 255, 0.24);
+    border: 1px solid color-mix(in srgb, var(--color-border-on-proof) 85%, white 15%);
     border-radius: 999px;
     padding: 0.08rem 0.45rem;
     font-size: 0.58rem;
-    color: #ccd3de;
+    color: var(--color-text-muted);
   }
 
   .document-shell {
@@ -1567,7 +1584,7 @@
     width: 3rem;
     height: 3rem;
     background: rgba(var(--accent), 0.15);
-    color: rgb(var(--accent));
+    color: var(--color-accent);
     font-family: "Space Grotesk";
     font-size: 0.88rem;
     font-weight: 600;
@@ -1626,7 +1643,7 @@
   }
 
   .pagefind-ui__result-link:hover {
-    color: rgb(var(--accent));
+    color: var(--color-accent);
   }
 
   .pagefind-ui__result-excerpt,
@@ -1868,7 +1885,7 @@
 
   .primary-nav__link[aria-current="page"] {
     border-color: rgba(var(--rule-strong), 0.45);
-    background: rgba(var(--accent), 0.14);
+    background: color-mix(in srgb, var(--color-accent) 14%, transparent);
   }
 
   .theme-toggle,
@@ -2113,7 +2130,7 @@
   }
 
   .home-news-list__item:hover strong {
-    color: rgb(var(--accent));
+    color: var(--color-accent);
   }
 
   /* Design math: fixed spacing unit and rank hierarchy */
