@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 Sitemap: https://democraticjustice.org/sitemap.xml
+Sitemap: https://democraticjustice.org/news-sitemap.xml
