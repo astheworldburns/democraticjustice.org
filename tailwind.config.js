@@ -44,6 +44,17 @@ export default {
         glass: "12px"
       },
       colors: {
+        page: "var(--color-bg-page)",
+        "bg-page": "var(--color-bg-page)",
+        "bg-surface": "var(--color-bg-surface)",
+        "bg-proof": "var(--color-bg-proof)",
+        "text-ink": "var(--color-text-body)",
+        "text-ink-secondary": "var(--color-text-secondary)",
+        "text-ink-muted": "var(--color-text-muted)",
+        "text-accent": "var(--color-accent)",
+        "border-rule": "var(--color-border)",
+        "bg-badge-pdf": "var(--color-badge-pdf)",
+        "bg-badge-image": "var(--color-badge-image)",
         surface: {
           DEFAULT: "var(--color-surface)",
           elevated: "var(--color-surface-elevated)",

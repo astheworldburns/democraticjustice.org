@@ -1,7 +1,7 @@
 <section id="proof-card" aria-labelledby="proof-heading" class="proof-card-shell mb-12 max-w-3xl">
   <article class="proof-card proof-card--unified">
     <div class="proof-card__topbar">
-      <p class="proof-card__eyebrow" id="proof-heading">Proof</p>
+      <p class="proof-card__eyebrow" id="proof-heading">PROOF</p>
       <p class="proof-card__counts">
         <span><span class="proof-card__count-num">{{ proofCard.axiomCount }}</span> Axioms</span>
         <span><span class="proof-card__count-num">{{ proofCard.postulateCount }}</span> Postulates</span>
@@ -70,7 +70,9 @@
     </section>
 
     <section class="proof-card__qed" aria-labelledby="proof-qed-label">
-      <span class="proof-card__qed-mark" aria-hidden="true">[∴]</span>
+      <span class="proof-card__qed-mark" aria-hidden="true">
+        <img src="/assets/images/uploads/proof-mark-light.svg" alt="" loading="lazy" decoding="async">
+      </span>
       <div>
         <h3 id="proof-qed-label" class="proof-card__qed-label">Q.E.D.</h3>
         <p class="proof-card__qed-text">{{ proofCard.qed or proofCard.conclusion }}</p>
@@ -84,9 +86,13 @@
           {% for doc in proofCard.sourceDocuments %}
             {% set docRecord = doc.documentUrl | getSourceDocument(collections.sourceDocument) %}
             {% set docType = (docRecord.data.file_type if docRecord else "DOC") | upper %}
+            {% set docTypeClass = "proof-card__document-badge proof-card__document-badge--pdf" %}
+            {% if docType == "IMAGE" %}
+              {% set docTypeClass = "proof-card__document-badge proof-card__document-badge--image" %}
+            {% endif %}
             <li>
               <a href="{{ doc.documentUrl }}" class="proof-card__document-link" data-doc-url="{{ doc.documentUrl }}">
-                <span class="proof-card__document-badge">{{ docType }}</span>
+                <span class="{{ docTypeClass }}">{{ docType }}</span>
                 <span class="proof-card__document-name">{{ docRecord.data.title if docRecord else doc.label }}</span>
               </a>
             </li>
