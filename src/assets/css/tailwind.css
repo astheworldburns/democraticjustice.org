@@ -1207,19 +1207,25 @@
     color: rgb(var(--ink));
   }
 
+  .proof-card-shell {
+    width: 100%;
+  }
+
   .proof-card {
     border: 1px solid var(--color-border-on-proof);
     border-radius: var(--radius-lg);
     background: var(--color-bg-proof);
     color: var(--color-text-on-proof);
-    padding: 1rem;
+    padding: 0.9rem;
+    box-shadow: 0 0.9rem 2rem rgba(0, 0, 0, 0.18);
   }
 
   .proof-card__header {
     display: flex;
     justify-content: space-between;
-    gap: 0.75rem;
+    gap: 0.55rem;
     align-items: baseline;
+    margin-bottom: 0.25rem;
   }
 
   .proof-card__eyebrow,
@@ -1244,7 +1250,7 @@
   }
 
   .proof-card__issue {
-    margin: 0.85rem 0 0;
+    margin: 0;
     font-family: "Source Serif 4";
     font-size: clamp(1.2rem, 1.05rem + 0.75vw, 1.55rem);
     line-height: 1.2;
@@ -1254,13 +1260,13 @@
 
   .proof-card__section {
     position: relative;
-    margin-top: 1rem;
-    padding-top: 0.75rem;
+    margin-top: 0.65rem;
+    padding-top: 0.5rem;
     border-top: 1px solid var(--color-border-on-proof);
   }
 
   .proof-card__label {
-    margin: 0 0 0.6rem;
+    margin: 0 0 0.42rem;
     font-size: 0.68rem;
     color: var(--color-accent-on-proof);
   }
@@ -1270,13 +1276,13 @@
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 0.55rem;
+    gap: 0.42rem;
   }
 
   .proof-card__item {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
-    gap: 0.55rem;
+    gap: 0.4rem;
     align-items: start;
   }
 
@@ -1287,7 +1293,7 @@
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    min-width: 3.5rem;
+    min-width: 2.75rem;
   }
 
   .proof-card__item-text {
@@ -1320,13 +1326,13 @@
   }
 
   .proof-card__qed {
-    padding-right: 4rem;
+    padding-right: 3.75rem;
   }
 
   .proof-card__qed-text {
     margin: 0;
     font-family: "Source Serif 4";
-    font-size: 1.12rem;
+    font-size: 1.16rem;
     line-height: 1.35;
     font-weight: 700;
     color: var(--color-text-heading-on-proof);
@@ -1334,9 +1340,9 @@
 
   .proof-card__watermark {
     position: absolute;
-    right: 0.45rem;
-    bottom: 0.1rem;
-    font-size: 5rem;
+    right: 0.35rem;
+    bottom: -0.15rem;
+    font-size: 5.8rem;
     line-height: 1;
     color: color-mix(in srgb, var(--color-text-on-proof) 12%, transparent);
     font-family: "IBM Plex Mono";
@@ -1348,7 +1354,7 @@
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 0.45rem;
+    gap: 0.35rem;
   }
 
   .proof-card__document-link {
@@ -1357,7 +1363,7 @@
     align-items: center;
     color: var(--color-text-on-proof);
     text-decoration: none;
-    font-size: 0.86rem;
+    font-size: 0.82rem;
   }
 
   .proof-card__document-link:hover {
