@@ -42,13 +42,32 @@ ogType: article
 {% endif %}
 
 <article data-pagefind-body aria-labelledby="narrative-heading">
+  <header class="max-w-3xl mb-12">
+    {% if kicker %}<p class="card__tag">{{ kicker }}</p>{% endif %}
+    <h1 id="narrative-heading" class="font-serif text-display-lg mt-2">{{ title }}</h1>
+    {% if description %}<p class="font-serif text-xl text-ink-secondary italic mt-4">{{ description }}</p>{% endif %}
+    {% set metaDesk = kicker %}{% set metaAuthor = authorProfile.data.name if authorProfile else author %}{% set metaAuthorUrl = authorProfile.url if authorProfile else null %}{% set metaDate = date %}{% set metaReadTime = content | readingMinutes %}
+    <div class="mt-6">{% include "components/meta-row.njk" %}</div>
+  </header>
 
-  {# Section 1: Proof Card #}
+  {# Section 1: Reported Narrative #}
+  <section id="narrative" aria-labelledby="narrative-content-heading" class="mb-16">
+    <h2 id="narrative-content-heading" class="sr-only">Reported Narrative</h2>
+    {% if tocItems.length > 2 %}
+      <aside class="mb-8 p-4 border border-border-subtle rounded-squircle max-w-2xl mx-auto" aria-label="Table of contents">
+        <h3 class="font-mono text-xs uppercase tracking-widest text-ink-muted mb-3">Contents</h3>
+        <ol class="space-y-1">{% for item in tocItems %}<li class="{{ 'ml-4' if item.level === 3 }}"><a href="#{{ item.id }}" class="text-sm text-ink-secondary hover:text-accent">{{ item.text }}</a></li>{% endfor %}</ol>
+      </aside>
+    {% endif %}
+    <div class="prose prose-lg">{{ articleHtml }}</div>
+  </section>
+
+  {# Section 2: Proof Card #}
   {% if proofCard %}
     {% include "components/proof-card.njk" %}
   {% endif %}
 
-  {# Section 2: Source Documents #}
+  {# Section 3: Source Documents #}
   {% if proofCard and proofCard.sourceDocuments.length %}
   <section id="source-documents" aria-labelledby="source-docs-heading" class="mb-16">
     {% set sectionKicker = "02" %}{% set sectionTitle = "Source Documents" %}{% set sectionId = "source-docs-heading" %}
@@ -61,18 +80,6 @@ ogType: article
     </div>
   </section>
   {% endif %}
-
-  {# Section 3: Reported Narrative #}
-  <section id="narrative" aria-labelledby="narrative-heading" class="mb-16">
-    <h2 id="narrative-heading" class="sr-only">Reported Narrative</h2>
-    {% if tocItems.length > 2 %}
-      <aside class="mb-8 p-4 border border-border-subtle rounded-squircle max-w-2xl mx-auto" aria-label="Table of contents">
-        <h3 class="font-mono text-xs uppercase tracking-widest text-ink-muted mb-3">Contents</h3>
-        <ol class="space-y-1">{% for item in tocItems %}<li class="{{ 'ml-4' if item.level === 3 }}"><a href="#{{ item.id }}" class="text-sm text-ink-secondary hover:text-accent">{{ item.text }}</a></li>{% endfor %}</ol>
-      </aside>
-    {% endif %}
-    <div class="prose prose-lg">{{ articleHtml }}</div>
-  </section>
 
   {# Related Stories #}
   {% if relatedStories.length %}
