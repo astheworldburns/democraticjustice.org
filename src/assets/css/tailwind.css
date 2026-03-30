@@ -1207,22 +1207,53 @@
     color: rgb(var(--ink));
   }
 
+  .proof-card-shell {
+    width: 100%;
+    margin-top: 2.5rem;
+  }
+
   .proof-card {
-    border: 1px solid var(--color-border-on-proof);
-    border-radius: var(--radius-lg);
-    background: var(--color-bg-proof);
-    color: var(--color-text-on-proof);
-    padding: 1rem;
+    border: 1px solid rgba(17, 24, 39, 0.25);
+    border-top: 0.38rem solid #111827;
+    border-radius: 0;
+    background: #ffffff;
+    color: #1f2937;
+    padding: 1.05rem 1.1rem 1rem;
+    box-shadow: 0 0.5rem 1.4rem rgba(15, 23, 42, 0.08);
   }
 
   .proof-card__header {
     display: flex;
     justify-content: space-between;
-    gap: 0.75rem;
-    align-items: baseline;
+    gap: 0.7rem;
+    align-items: center;
+    margin-bottom: 0.35rem;
   }
 
-  .proof-card__eyebrow,
+  .proof-card__badge,
+  .proof-card__eyebrow {
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    font-family: "IBM Plex Mono";
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #ffffff;
+    background: #111827;
+    border-radius: 0;
+    padding: 0.18rem 0.5rem;
+  }
+
+  .proof-card__mark-inline {
+    width: 0.8rem;
+    height: 0.8rem;
+    object-fit: contain;
+  }
+
   .proof-card__counts,
   .proof-card__label,
   .proof-card__document-badge {
@@ -1231,38 +1262,39 @@
     letter-spacing: 0.08em;
   }
 
-  .proof-card__eyebrow {
-    margin: 0;
-    font-size: 0.72rem;
-    color: var(--color-accent-on-proof);
-  }
-
   .proof-card__counts {
     margin: 0;
-    font-size: 0.66rem;
-    color: var(--color-text-muted);
+    font-size: 0.68rem;
+    color: #4b5563;
   }
 
   .proof-card__issue {
-    margin: 0.85rem 0 0;
+    margin: 0;
     font-family: "Source Serif 4";
-    font-size: clamp(1.2rem, 1.05rem + 0.75vw, 1.55rem);
-    line-height: 1.2;
-    color: var(--color-text-heading-on-proof);
-    font-weight: 700;
+    font-size: clamp(1.3rem, 1.1rem + 1vw, 1.72rem);
+    line-height: 1.18;
+    color: #111827;
+    font-weight: 800;
+    padding-bottom: 0.62rem;
+    border-bottom: 2px solid #111827;
   }
 
   .proof-card__section {
     position: relative;
-    margin-top: 1rem;
-    padding-top: 0.75rem;
-    border-top: 1px solid var(--color-border-on-proof);
+    margin-top: 0.62rem;
+    padding-top: 0.52rem;
+    border-top: 1px solid rgba(17, 24, 39, 0.16);
+  }
+
+  .proof-card__section--theorems {
+    border-top: 1px solid rgba(17, 24, 39, 0.24);
   }
 
   .proof-card__label {
-    margin: 0 0 0.6rem;
-    font-size: 0.68rem;
-    color: var(--color-accent-on-proof);
+    margin: 0 0 0.42rem;
+    font-size: 0.64rem;
+    color: #374151;
+    letter-spacing: 0.14em;
   }
 
   .proof-card__items {
@@ -1270,77 +1302,89 @@
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 0.55rem;
+    gap: 0.42rem;
   }
 
   .proof-card__item {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    gap: 0.55rem;
+    grid-template-columns: 2.4rem minmax(0, 1fr) auto;
+    gap: 0.7rem;
     align-items: start;
   }
 
   .proof-card__item-prefix {
-    color: var(--color-accent-on-proof);
     font-family: "IBM Plex Mono";
-    font-size: 0.76rem;
+    font-size: 0.7rem;
     font-weight: 700;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    min-width: 3.5rem;
+    min-width: 2.2rem;
+    color: #111827;
+    text-align: left;
+    line-height: 1.2;
+    padding-top: 0.08rem;
   }
 
   .proof-card__item-text {
     font-size: 0.95rem;
-    line-height: 1.4;
-    color: var(--color-text-on-proof);
+    line-height: 1.45;
+    color: #1f2937;
     font-family: "Source Serif 4";
   }
 
   .proof-card__citations {
-    margin-left: 0.2rem;
+    margin-left: 0;
     white-space: nowrap;
+    justify-self: end;
+    text-align: right;
+    min-width: 2rem;
   }
 
   .proof-card__citation-link {
-    color: var(--color-accent-on-proof);
+    color: #374151;
     font-family: "IBM Plex Mono";
     font-size: 0.68rem;
     text-decoration: none;
   }
 
   .proof-card__citation-link:hover {
-    text-decoration: underline;
+    color: #111827;
   }
 
   .proof-card__references {
-    color: var(--color-text-muted);
+    color: #6b7280;
     font-size: 0.86rem;
     font-family: "IBM Plex Mono";
   }
 
   .proof-card__qed {
-    padding-right: 4rem;
+    padding-right: 0;
+  }
+
+  .proof-card__qed-block {
+    display: grid;
+    grid-template-columns: 5.2rem minmax(0, 1fr);
+    gap: 0.75rem;
+    align-items: center;
+    background: #f7f7f3;
+    border: 1px solid rgba(17, 24, 39, 0.12);
+    padding: 0.7rem 0.8rem;
+  }
+
+  .proof-card__qed-mark {
+    width: 4.5rem;
+    height: auto;
+    opacity: 0.95;
+    object-fit: contain;
   }
 
   .proof-card__qed-text {
     margin: 0;
     font-family: "Source Serif 4";
-    font-size: 1.12rem;
-    line-height: 1.35;
+    font-size: 1.2rem;
+    line-height: 1.3;
     font-weight: 700;
-    color: var(--color-text-heading-on-proof);
-  }
-
-  .proof-card__watermark {
-    position: absolute;
-    right: 0.45rem;
-    bottom: 0.1rem;
-    font-size: 5rem;
-    line-height: 1;
-    color: color-mix(in srgb, var(--color-text-on-proof) 12%, transparent);
-    font-family: "IBM Plex Mono";
-    pointer-events: none;
+    color: #111827;
   }
 
   .proof-card__documents {
@@ -1348,28 +1392,32 @@
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 0.45rem;
+    gap: 0.35rem;
   }
 
   .proof-card__document-link {
-    display: inline-flex;
-    gap: 0.45rem;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.65rem;
     align-items: center;
-    color: var(--color-text-on-proof);
+    color: #1f2937;
     text-decoration: none;
-    font-size: 0.86rem;
+    font-size: 0.82rem;
+    line-height: 1.35;
+    padding-top: 0.18rem;
+    border-top: 1px solid rgba(17, 24, 39, 0.12);
   }
 
   .proof-card__document-link:hover {
-    color: var(--color-accent-on-proof);
+    color: #111827;
   }
 
   .proof-card__document-badge {
-    border: 1px solid color-mix(in srgb, var(--color-border-on-proof) 85%, white 15%);
-    border-radius: 999px;
-    padding: 0.08rem 0.45rem;
-    font-size: 0.58rem;
-    color: var(--color-text-muted);
+    font-size: 0.62rem;
+    color: #374151;
+    padding-right: 0.62rem;
+    margin-right: 0.08rem;
+    border-right: 1px solid rgba(17, 24, 39, 0.26);
   }
 
   .document-shell {
