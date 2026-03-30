@@ -42,6 +42,11 @@ ogType: article
 {% endif %}
 
 <article data-pagefind-body aria-labelledby="narrative-heading">
+  {# Section 1: Proof Card #}
+  {% if proofCard %}
+    {% include "components/proof-card.njk" %}
+  {% endif %}
+
   <header class="max-w-3xl mb-12">
     {% if kicker %}<p class="card__tag">{{ kicker }}</p>{% endif %}
     <h1 id="narrative-heading" class="font-serif text-display-lg mt-2">{{ title }}</h1>
@@ -49,11 +54,6 @@ ogType: article
     {% set metaDesk = kicker %}{% set metaAuthor = authorProfile.data.name if authorProfile else author %}{% set metaAuthorUrl = authorProfile.url if authorProfile else null %}{% set metaDate = date %}{% set metaReadTime = content | readingMinutes %}
     <div class="mt-6">{% include "components/meta-row.njk" %}</div>
   </header>
-
-  {# Section 1: Proof Card #}
-  {% if proofCard %}
-    {% include "components/proof-card.njk" %}
-  {% endif %}
 
   {# Section 2: Reported Narrative #}
   <section id="narrative" aria-labelledby="narrative-content-heading" class="mb-16">
