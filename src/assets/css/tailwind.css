@@ -1191,188 +1191,168 @@
   }
 
   .proof-card {
-    @apply rounded-[var(--radius-lg)] border p-4 md:p-5;
-    border-color: rgba(var(--rule-strong), 0.78);
-    background:
-      linear-gradient(180deg, rgba(var(--surface-strong), 0.98), rgba(var(--surface), 0.96)),
-      linear-gradient(135deg, rgba(var(--accent-soft), 0.4), transparent 45%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: var(--radius-lg);
+    background: #111317;
+    color: #eceff4;
+    padding: 1rem;
   }
 
-  .proof-card__top {
-    @apply flex flex-col gap-3 border-b pb-4 md:flex-row md:items-center md:justify-between;
-    border-color: rgba(var(--rule), 0.82);
+  .proof-card__header {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    align-items: baseline;
   }
 
-  .proof-card__identity {
-    @apply inline-flex items-center gap-2 rounded-[var(--radius-sm)] border px-3 py-2;
-    border-color: rgba(var(--rule), 0.78);
-    background: rgba(var(--surface), 0.75);
-  }
-
-  .proof-card__mark {
-    width: 1.05rem;
+  .proof-card__eyebrow,
+  .proof-card__counts,
+  .proof-card__label,
+  .proof-card__document-badge {
+    font-family: "IBM Plex Mono";
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
   }
 
   .proof-card__eyebrow {
     margin: 0;
-    font-family: "IBM Plex Mono";
-    font-size: 0.63rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgb(var(--ink));
+    font-size: 0.72rem;
+    color: rgb(var(--accent));
   }
 
   .proof-card__counts {
     margin: 0;
-    font-family: "IBM Plex Mono";
-    font-size: 0.62rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgb(var(--ink-muted));
-  }
-
-  .proof-card__issue-wrap {
-    @apply mt-4 rounded-[var(--radius-md)] border px-4 py-4;
-    border-color: rgba(var(--rule), 0.82);
-    background: rgba(var(--surface-muted), 0.48);
+    font-size: 0.66rem;
+    color: #b7bec9;
   }
 
   .proof-card__issue {
-    margin: 0.35rem 0 0;
-    max-width: 60rem;
+    margin: 0.85rem 0 0;
     font-family: "Source Serif 4";
-    font-size: clamp(1.4rem, 2.2vw, 2rem);
-    font-weight: 600;
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-    color: rgb(var(--ink));
+    font-size: clamp(1.2rem, 1.05rem + 0.75vw, 1.55rem);
+    line-height: 1.2;
+    color: #f7f8fa;
+    font-weight: 700;
   }
 
-  .proof-grid {
-    display: grid;
-    gap: 0.8rem;
-    margin-top: 0.8rem;
+  .proof-card__section {
+    position: relative;
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
   }
 
-  .proof-disclosure {
-    @apply rounded-[var(--radius-md)] border;
-    border-color: rgba(var(--rule), 0.82);
-    background: rgba(var(--surface-strong), 0.8);
-    overflow: clip;
+  .proof-card__label {
+    margin: 0 0 0.6rem;
+    font-size: 0.68rem;
+    color: rgb(var(--accent));
   }
 
-  .proof-disclosure > summary {
-    @apply flex cursor-pointer items-center justify-between gap-4 px-4 py-3;
-    list-style: none;
-  }
-
-  .proof-disclosure > summary::-webkit-details-marker {
-    display: none;
-  }
-
-  .proof-disclosure__label {
-    margin: 0;
-    font-family: "Space Grotesk";
-    font-size: 0.86rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgb(var(--ink));
-  }
-
-  .proof-disclosure__count {
-    margin: 0;
-    font-family: "IBM Plex Mono";
-    font-size: 0.6rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgb(var(--ink-muted));
-  }
-
-  .proof-disclosure__body {
-    @apply border-t px-4 py-4;
-    border-color: rgba(var(--rule), 0.78);
-  }
-
-  .proof-list {
-    @apply grid gap-3;
+  .proof-card__items {
     list-style: none;
     margin: 0;
     padding: 0;
+    display: grid;
+    gap: 0.55rem;
   }
 
-  .proof-list__item {
+  .proof-card__item {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
-    gap: 0.65rem;
+    gap: 0.55rem;
     align-items: start;
   }
 
-  .proof-list__marker {
-    @apply inline-flex h-7 w-7 items-center justify-center rounded-full;
-    background: rgb(var(--ink));
-    color: rgb(var(--surface-strong));
+  .proof-card__item-prefix {
+    color: rgb(var(--accent));
     font-family: "IBM Plex Mono";
-    font-size: 0.6rem;
-    letter-spacing: 0.05em;
-  }
-
-  .proof-list__text {
-    margin: 0;
-    font-family: "Source Serif 4";
-    font-size: 0.98rem;
-    line-height: 1.52;
-    color: rgb(var(--ink-soft));
-  }
-
-  .proof-source-list {
-    @apply mt-2 flex flex-wrap gap-2;
-  }
-
-  .proof-source-link {
-    @apply inline-flex items-center rounded-[var(--radius-xs)] border px-2 py-1;
-    border-color: rgba(var(--rule), 0.82);
-    background: rgba(var(--surface), 0.8);
-    font-family: "IBM Plex Mono";
-    font-size: 0.56rem;
-    letter-spacing: 0.09em;
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: rgb(var(--ink-soft));
+    min-width: 3.5rem;
+  }
+
+  .proof-card__item-text {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: #e4e8ef;
+    font-family: "Source Serif 4";
+  }
+
+  .proof-card__citations {
+    margin-left: 0.2rem;
+    white-space: nowrap;
+  }
+
+  .proof-card__citation-link {
+    color: rgb(var(--accent));
+    font-family: "IBM Plex Mono";
+    font-size: 0.68rem;
     text-decoration: none;
   }
 
-  .proof-source-link:hover {
-    border-color: rgb(var(--rule-strong));
-    color: rgb(var(--ink));
+  .proof-card__citation-link:hover {
+    text-decoration: underline;
   }
 
-  .proof-card__conclusion {
-    @apply mt-3 rounded-[var(--radius-md)] border px-4 py-4;
-    border-color: rgba(var(--rule), 0.82);
-    background: rgba(var(--surface-muted), 0.44);
+  .proof-card__references {
+    color: #b7bec9;
+    font-size: 0.86rem;
+    font-family: "IBM Plex Mono";
   }
 
-  .proof-card__conclusion p {
-    margin: 0.35rem 0 0;
-    max-width: 58rem;
-    font-family: "Source Serif 4";
-    font-size: clamp(1.05rem, 0.95rem + 0.4vw, 1.3rem);
-    line-height: 1.45;
-    color: rgb(var(--ink));
+  .proof-card__qed {
+    padding-right: 4rem;
   }
 
-  .proof-card__actions {
-    @apply mt-4 flex flex-wrap items-center gap-2 border-t pt-4;
-    border-color: rgba(var(--rule), 0.78);
-  }
-
-  .proof-card__footnote {
+  .proof-card__qed-text {
     margin: 0;
     font-family: "Source Serif 4";
-    font-size: 0.84rem;
-    line-height: 1.5;
-    color: rgb(var(--ink-muted));
+    font-size: 1.12rem;
+    line-height: 1.35;
+    font-weight: 700;
+    color: #f7f8fa;
+  }
+
+  .proof-card__watermark {
+    position: absolute;
+    right: 0.45rem;
+    bottom: 0.1rem;
+    font-size: 5rem;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.08);
+    font-family: "IBM Plex Mono";
+    pointer-events: none;
+  }
+
+  .proof-card__documents {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .proof-card__document-link {
+    display: inline-flex;
+    gap: 0.45rem;
+    align-items: center;
+    color: #e4e8ef;
+    text-decoration: none;
+    font-size: 0.86rem;
+  }
+
+  .proof-card__document-link:hover {
+    color: rgb(var(--accent));
+  }
+
+  .proof-card__document-badge {
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 999px;
+    padding: 0.08rem 0.45rem;
+    font-size: 0.58rem;
+    color: #ccd3de;
   }
 
   .document-shell {

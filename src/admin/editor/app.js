@@ -178,9 +178,20 @@ function defaultAxiom() {
   };
 }
 
-function defaultInference() {
+function defaultTheorem() {
   return {
-    step: ""
+    id: "",
+    step: "",
+    references: ""
+  };
+}
+
+function defaultPostulate() {
+  return {
+    id: "",
+    fact: "",
+    no_source_needed: false,
+    sources: []
   };
 }
 
@@ -253,18 +264,29 @@ function normalizeProof(rawProof = {}) {
         sources: normalizeSources(axiom)
       }))
     : [];
-  const logic = Array.isArray(rawProof.logic)
-    ? rawProof.logic.map((entry) => ({
-        step: entry?.step || ""
+  const postulates = Array.isArray(rawProof.postulates)
+    ? rawProof.postulates.map((postulate) => ({
+        id: postulate?.id || "",
+        fact: postulate?.fact || "",
+        no_source_needed: Boolean(postulate?.no_source_needed),
+        sources: normalizeSources(postulate)
+      }))
+    : [];
+  const theoremsSource = Array.isArray(rawProof.theorems) && rawProof.theorems.length ? rawProof.theorems : rawProof.logic;
+  const theorems = Array.isArray(theoremsSource)
+    ? theoremsSource.map((entry) => ({
+        id: entry?.id || "",
+        step: entry?.step || "",
+        references: entry?.references || ""
       }))
     : [];
 
   return {
     issue: rawProof?.issue || "",
     axioms: axioms.length ? axioms : [defaultAxiom()],
-    logic: logic.length ? logic : [defaultInference()],
-    conclusion: rawProof?.conclusion || "",
-    inference: rawProof?.inference || ""
+    postulates: postulates.length ? postulates : [],
+    theorems: theorems.length ? theorems : [defaultTheorem()],
+    qed: rawProof?.qed || rawProof?.conclusion || ""
   };
 }
 
@@ -272,19 +294,24 @@ function serializeProof(proof = {}) {
   const next = {
     issue: (proof.issue || "").trim(),
     axioms: (proof.axioms || []).map((axiom) => ({
+      id: (axiom.id || "").trim(),
       premise: (axiom.premise || "").trim(),
       sources: axiom.no_source_needed ? [] : dedupeSources(axiom.sources || []),
       no_source_needed: Boolean(axiom.no_source_needed)
     })),
-    logic: (proof.logic || []).map((entry) => ({
-      step: (entry.step || "").trim()
+    postulates: (proof.postulates || []).map((postulate) => ({
+      id: (postulate.id || "").trim(),
+      fact: (postulate.fact || "").trim(),
+      sources: postulate.no_source_needed ? [] : dedupeSources(postulate.sources || []),
+      no_source_needed: Boolean(postulate.no_source_needed)
     })),
-    conclusion: (proof.conclusion || "").trim()
+    theorems: (proof.theorems || []).map((entry) => ({
+      id: (entry.id || "").trim(),
+      step: (entry.step || "").trim(),
+      references: (entry.references || "").trim()
+    })),
+    qed: (proof.qed || "").trim()
   };
-
-  if ((proof.inference || "").trim()) {
-    next.inference = proof.inference.trim();
-  }
 
   return next;
 }
@@ -443,18 +470,29 @@ function computeProofErrors(proof = {}, documents = state.documents) {
     });
   }
 
-  if (!Array.isArray(proof.logic) || proof.logic.length === 0) {
-    errors.push("At least one inference is required.");
-  } else {
-    proof.logic.forEach((entry, index) => {
-      if (!(entry.step || "").trim()) {
-        errors.push(`Inference ${index + 1} needs text.`);
+  if (Array.isArray(proof.postulates)) {
+    proof.postulates.forEach((postulate, index) => {
+      if (!(postulate.id || "").trim()) {
+        errors.push(`Postulate ${index + 1} needs an ID.`);
+      }
+      if (!(postulate.fact || "").trim()) {
+        errors.push(`Postulate ${index + 1} needs a verified fact.`);
       }
     });
   }
 
-  if (!(proof.conclusion || "").trim()) {
-    errors.push("Conclusion is required.");
+  if (!Array.isArray(proof.theorems) || proof.theorems.length === 0) {
+    errors.push("At least one theorem is required.");
+  } else {
+    proof.theorems.forEach((entry, index) => {
+      if (!(entry.step || "").trim()) {
+        errors.push(`Theorem ${index + 1} needs text.`);
+      }
+    });
+  }
+
+  if (!(proof.qed || "").trim()) {
+    errors.push("Q.E.D. is required.");
   }
 
   return errors;
@@ -804,18 +842,47 @@ function renderAxiomBlock(axiom, index) {
   `;
 }
 
-function renderInferenceBlock(entry, index) {
+function renderPostulateBlock(postulate, index) {
   return `
     <section class="editor-block">
       <div class="editor-block__header">
-        <h3 class="editor-section-title">Inference ${index + 1}</h3>
-        <button class="editor-button-ghost" type="button" data-action="remove-inference" data-logic-index="${index}">
-          Remove inference
+        <h3 class="editor-section-title">Postulate ${index + 1}</h3>
+        <button class="editor-button-ghost" type="button" data-action="remove-postulate" data-postulate-index="${index}">
+          Remove postulate
         </button>
       </div>
       <label class="editor-field">
-        <span class="editor-label">Inference</span>
-        <textarea class="editor-textarea" data-logic-index="${index}" data-logic-field="step">${escapeHtml(entry.step || "")}</textarea>
+        <span class="editor-label">ID</span>
+        <input class="editor-input" type="text" value="${escapeHtml(postulate.id || "")}" data-postulate-index="${index}" data-postulate-field="id" />
+      </label>
+      <label class="editor-field">
+        <span class="editor-label">Verified Fact</span>
+        <textarea class="editor-textarea" data-postulate-index="${index}" data-postulate-field="fact">${escapeHtml(postulate.fact || "")}</textarea>
+      </label>
+    </section>
+  `;
+}
+
+function renderTheoremBlock(entry, index) {
+  return `
+    <section class="editor-block">
+      <div class="editor-block__header">
+        <h3 class="editor-section-title">Theorem ${index + 1}</h3>
+        <button class="editor-button-ghost" type="button" data-action="remove-theorem" data-theorem-index="${index}">
+          Remove theorem
+        </button>
+      </div>
+      <label class="editor-field">
+        <span class="editor-label">Theorem ID</span>
+        <input class="editor-input" type="text" value="${escapeHtml(entry.id || "")}" data-theorem-index="${index}" data-theorem-field="id" />
+      </label>
+      <label class="editor-field">
+        <span class="editor-label">Deductive Inference</span>
+        <textarea class="editor-textarea" data-theorem-index="${index}" data-theorem-field="step">${escapeHtml(entry.step || "")}</textarea>
+      </label>
+      <label class="editor-field">
+        <span class="editor-label">References (optional)</span>
+        <input class="editor-input" type="text" value="${escapeHtml(entry.references || "")}" data-theorem-index="${index}" data-theorem-field="references" />
       </label>
     </section>
   `;
@@ -1109,7 +1176,7 @@ function renderSelectedArticle() {
       <div class="editor-panel__header">
         <div>
           <p class="editor-kicker">Proof</p>
-          <h2>Issue, axioms, inferences, and conclusion</h2>
+          <h2>Issue, axioms, postulates, theorems, and Q.E.D.</h2>
         </div>
         <div class="editor-actions">
           <button class="editor-button" type="button" data-action="save-proof" ${state.savingProof ? "disabled" : ""}>
@@ -1120,7 +1187,8 @@ function renderSelectedArticle() {
 
       <div class="editor-pill-row">
         <span class="editor-pill">${proof.axioms.length} axioms</span>
-        <span class="editor-pill">${proof.logic.length} inferences</span>
+        <span class="editor-pill">${proof.postulates.length} postulates</span>
+        <span class="editor-pill">${proof.theorems.length} theorems</span>
         <span class="editor-pill">${uniqueSourceCount} linked documents</span>
       </div>
 
@@ -1143,16 +1211,24 @@ function renderSelectedArticle() {
 
       <div class="editor-section">
         <div class="editor-panel__header">
-          <h2>Inferences</h2>
-          <button class="editor-button-secondary" type="button" data-action="add-inference">Add inference</button>
+          <h2>Postulates</h2>
+          <button class="editor-button-secondary" type="button" data-action="add-postulate">Add postulate</button>
         </div>
-        ${proof.logic.map((entry, index) => renderInferenceBlock(entry, index)).join("")}
+        ${proof.postulates.map((postulate, index) => renderPostulateBlock(postulate, index)).join("")}
+      </div>
+
+      <div class="editor-section">
+        <div class="editor-panel__header">
+          <h2>Theorems</h2>
+          <button class="editor-button-secondary" type="button" data-action="add-theorem">Add theorem</button>
+        </div>
+        ${proof.theorems.map((entry, index) => renderTheoremBlock(entry, index)).join("")}
       </div>
 
       <div class="editor-block">
         <label class="editor-field">
-          <span class="editor-label">Conclusion</span>
-          <textarea class="editor-textarea" data-proof-field="conclusion">${escapeHtml(proof.conclusion || "")}</textarea>
+          <span class="editor-label">Q.E.D.</span>
+          <textarea class="editor-textarea" data-proof-field="qed">${escapeHtml(proof.qed || "")}</textarea>
         </label>
       </div>
     </section>
@@ -1585,7 +1661,8 @@ function handleInput(event) {
   const articleField = event.target.dataset.articleField;
   const proofField = event.target.dataset.proofField;
   const axiomField = event.target.dataset.axiomField;
-  const logicField = event.target.dataset.logicField;
+  const postulateField = event.target.dataset.postulateField;
+  const theoremField = event.target.dataset.theoremField;
   const sourceSearch = event.target.dataset.sourceSearch;
   const newSourceField = event.target.dataset.newSourceField;
   const newUserField = event.target.dataset.newUserField;
@@ -1658,11 +1735,19 @@ function handleInput(event) {
     return;
   }
 
-  if (logicField) {
-    const entry = state.selectedArticle.proof.logic[Number(event.target.dataset.logicIndex)];
+  if (postulateField) {
+    const postulate = state.selectedArticle.proof.postulates[Number(event.target.dataset.postulateIndex)];
+    if (postulate) {
+      postulate[postulateField] = event.target.value;
+    }
+    return;
+  }
+
+  if (theoremField) {
+    const entry = state.selectedArticle.proof.theorems[Number(event.target.dataset.theoremIndex)];
 
     if (entry) {
-      entry[logicField] = event.target.value;
+      entry[theoremField] = event.target.value;
     }
     return;
   }
@@ -1781,16 +1866,28 @@ function handleClick(event) {
     return;
   }
 
-  if (action === "add-inference") {
-    state.selectedArticle.proof.logic.push(defaultInference());
+  if (action === "add-postulate") {
+    state.selectedArticle.proof.postulates.push(defaultPostulate());
     render();
     return;
   }
 
-  if (action === "remove-inference") {
-    state.selectedArticle.proof.logic.splice(Number(actionTarget.dataset.logicIndex), 1);
-    if (!state.selectedArticle.proof.logic.length) {
-      state.selectedArticle.proof.logic.push(defaultInference());
+  if (action === "remove-postulate") {
+    state.selectedArticle.proof.postulates.splice(Number(actionTarget.dataset.postulateIndex), 1);
+    render();
+    return;
+  }
+
+  if (action === "add-theorem") {
+    state.selectedArticle.proof.theorems.push(defaultTheorem());
+    render();
+    return;
+  }
+
+  if (action === "remove-theorem") {
+    state.selectedArticle.proof.theorems.splice(Number(actionTarget.dataset.theoremIndex), 1);
+    if (!state.selectedArticle.proof.theorems.length) {
+      state.selectedArticle.proof.theorems.push(defaultTheorem());
     }
     render();
     return;
@@ -1839,7 +1936,7 @@ function handleKeydown(event) {
     }
 
     const proofFieldTarget = event.target.closest(
-      "[data-proof-field], [data-axiom-field], [data-logic-field], [data-source-search], [data-new-source-field]"
+      "[data-proof-field], [data-axiom-field], [data-postulate-field], [data-theorem-field], [data-source-search], [data-new-source-field]"
     );
 
     if (state.selectedArticle.isNew) {

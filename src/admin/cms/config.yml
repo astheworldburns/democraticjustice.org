@@ -135,7 +135,7 @@ collections:
             widget: string
             required: false
             hint: Short charged proposition. State plainly what is being proved.
-          - label: Axioms
+          - label: Axioms (Foundational Rules of Law)
             name: axioms
             widget: list
             required: false
@@ -143,11 +143,15 @@ collections:
             label_singular: Axiom
             summary: "{{fields.premise}}"
             fields:
-              - label: Premise
-                name: premise
+              - label: ID
+                name: id
                 widget: string
                 required: true
-                hint: The undisputed, documented truth.
+                hint: Short identifier like 'Associational Autonomy'
+              - label: Rule of Law
+                name: premise
+                widget: text
+                required: true
               - label: Sources
                 name: sources
                 widget: list
@@ -175,29 +179,75 @@ collections:
                 required: false
                 default: false
                 hint: Use only when the axiom should remain source-free in the published proof.
-          - label: Inferences
-            name: logic
+          - label: Postulates (Verified Facts)
+            name: postulates
             widget: list
             required: false
             collapsed: true
-            label_singular: Inference
-            summary: "{{fields.step}}"
+            label_singular: Postulate
+            summary: "{{fields.fact}}"
             fields:
-              - label: Inference
-                name: step
+              - label: ID
+                name: id
                 widget: string
                 required: true
-                hint: Plain-language inferential step. State what follows from the documented facts.
-          - label: Bridge Note (Optional)
-            name: inference
+                hint: Short identifier like 'Fact 1'
+              - label: Verified Fact
+                name: fact
+                widget: text
+                required: true
+              - label: Sources
+                name: sources
+                widget: list
+                required: false
+                collapsed: true
+                label_singular: Source
+                summary: "{{fields.document_url}}"
+                fields:
+                  - label: Source URL
+                    name: document_url
+                    widget: relation
+                    required: true
+                    collection: source_documents
+                    search_fields:
+                      - title
+                      - description
+                      - source_method
+                    value_field: "/documents/{{slug}}/"
+                    display_fields:
+                      - title
+                    hint: Select the corresponding source document entry. Stored as /documents/.../
+              - label: No Source Needed
+                name: no_source_needed
+                widget: boolean
+                required: false
+                default: false
+          - label: Theorems (Deductive Inferences)
+            name: theorems
+            widget: list
+            required: false
+            collapsed: true
+            label_singular: Theorem
+            summary: "{{fields.step}}"
+            fields:
+              - label: ID
+                name: id
+                widget: string
+                required: true
+                hint: Short identifier like 'Theorem A'
+              - label: Deductive Inference
+                name: step
+                widget: text
+                required: true
+              - label: References
+                name: references
+                widget: string
+                required: false
+                hint: "Which axioms/postulates/theorems this builds on, e.g. 'Fact 2, Fact 3, Axiom 1'"
+          - label: Q.E.D. (Proven Thesis)
+            name: qed
             widget: text
             required: false
-            hint: Optional bridge note for the newsroom. Not currently displayed on published proofs.
-          - label: Conclusion
-            name: conclusion
-            widget: text
-            required: false
-            hint: Fuller proved finding. More detailed and earned than the issue.
       - label: Body
         name: body
         widget: markdown
