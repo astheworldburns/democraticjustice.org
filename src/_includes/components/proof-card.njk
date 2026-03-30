@@ -1,7 +1,11 @@
 <section id="proof-card" aria-labelledby="proof-heading" class="proof-card-shell mb-12 max-w-3xl">
   <div class="proof-card proof-card--unified">
     <header class="proof-card__header">
+<<<<<<< codex/move-proof-card-above-headline-and-style-it-bvn1ip
+      <p class="proof-card__badge" id="proof-heading">PROOF</p>
+=======
       <p class="proof-card__eyebrow" id="proof-heading">[∴] PROOF</p>
+>>>>>>> main
       <p class="proof-card__counts">
         {{ proofCard.axiomCount }} AXIOMS · {{ proofCard.postulateCount }} POSTULATES · {{ proofCard.theoremCount }} THEOREMS
       </p>
@@ -81,9 +85,10 @@
         <ul class="proof-card__documents">
           {% for doc in proofCard.sourceDocuments %}
             {% set docRecord = doc.documentUrl | getSourceDocument(collections.sourceDocument) %}
+            {% set docType = (docRecord.data.file_type if docRecord else "DOC") | upper %}
             <li>
               <a href="{{ doc.documentUrl }}" class="proof-card__document-link" data-doc-url="{{ doc.documentUrl }}">
-                <span class="proof-card__document-badge">{{ (docRecord.data.file_type if docRecord else "DOC") | upper }}</span>
+                <span class="proof-card__document-badge proof-card__document-badge--{{ docType | lower }}">{{ docType }}</span>
                 <span>{{ docRecord.data.title if docRecord else doc.label }}</span>
               </a>
             </li>
