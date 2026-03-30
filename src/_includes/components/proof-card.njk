@@ -1,19 +1,20 @@
 <section id="proof-card" aria-labelledby="proof-heading" class="proof-card-shell mb-12 max-w-3xl">
-  <div class="proof-card proof-card--unified">
-    <header class="proof-card__header">
-      <p class="proof-card__eyebrow" id="proof-heading">
-        <img src="/assets/images/uploads/proof-mark-ink.svg" alt="" aria-hidden="true" class="proof-card__mark-inline" width="14" height="14" decoding="async">
-        <span>PROOF</span>
-      </p>
+  <article class="proof-card proof-card--unified">
+    <div class="proof-card__topbar">
+      <p class="proof-card__eyebrow" id="proof-heading">Proof</p>
       <p class="proof-card__counts">
-        {{ proofCard.axiomCount }} AXIOMS · {{ proofCard.postulateCount }} POSTULATES · {{ proofCard.theoremCount }} THEOREMS
+        <span><span class="proof-card__count-num">{{ proofCard.axiomCount }}</span> Axioms</span>
+        <span><span class="proof-card__count-num">{{ proofCard.postulateCount }}</span> Postulates</span>
+        <span><span class="proof-card__count-num">{{ proofCard.theoremCount }}</span> Theorems</span>
       </p>
+    </div>
+
+    <header class="proof-card__header">
+      <h2 class="proof-card__issue">{{ proofCard.issue }}</h2>
     </header>
 
-    <p class="proof-card__issue">{{ proofCard.issue }}</p>
-
     <section class="proof-card__section" aria-labelledby="proof-axioms-label">
-      <h2 id="proof-axioms-label" class="proof-card__label">AXIOMS</h2>
+      <h3 id="proof-axioms-label" class="proof-card__label">Axioms</h3>
       <ol class="proof-card__items">
         {% for axiom in proofCard.axioms %}
           <li class="proof-card__item">
@@ -23,7 +24,7 @@
               <span class="proof-card__citations">
                 {% for source in axiom.sources %}
                   {% set sourceRecord = source.documentUrl | getSourceDocument(collections.sourceDocument) %}
-                  <a href="{{ source.documentUrl }}" class="proof-card__citation-link" data-doc-url="{{ source.documentUrl }}" title="{{ sourceRecord.data.title if sourceRecord else source.label }}">[{{ loop.index }}]</a>
+                  <a href="{{ source.documentUrl }}" class="proof-card__citation-link" data-doc-url="{{ source.documentUrl }}" title="{{ sourceRecord.data.title if sourceRecord else source.label }}">{{ loop.index }}</a>
                 {% endfor %}
               </span>
             {% endif %}
@@ -32,9 +33,9 @@
       </ol>
     </section>
 
-    {% if proofCard.postulates.length %}
+    {% if proofCard.postulateCount > 0 %}
       <section class="proof-card__section" aria-labelledby="proof-postulates-label">
-        <h2 id="proof-postulates-label" class="proof-card__label">POSTULATES</h2>
+        <h3 id="proof-postulates-label" class="proof-card__label">Postulates</h3>
         <ol class="proof-card__items">
           {% for postulate in proofCard.postulates %}
             <li class="proof-card__item">
@@ -44,7 +45,7 @@
                 <span class="proof-card__citations">
                   {% for source in postulate.sources %}
                     {% set sourceRecord = source.documentUrl | getSourceDocument(collections.sourceDocument) %}
-                    <a href="{{ source.documentUrl }}" class="proof-card__citation-link" data-doc-url="{{ source.documentUrl }}" title="{{ sourceRecord.data.title if sourceRecord else source.label }}">[{{ loop.index }}]</a>
+                    <a href="{{ source.documentUrl }}" class="proof-card__citation-link" data-doc-url="{{ source.documentUrl }}" title="{{ sourceRecord.data.title if sourceRecord else source.label }}">{{ loop.index }}</a>
                   {% endfor %}
                 </span>
               {% endif %}
@@ -55,7 +56,7 @@
     {% endif %}
 
     <section class="proof-card__section proof-card__section--theorems" aria-labelledby="proof-theorems-label">
-      <h2 id="proof-theorems-label" class="proof-card__label">THEOREMS</h2>
+      <h3 id="proof-theorems-label" class="proof-card__label">Theorems</h3>
       <ol class="proof-card__items">
         {% for theorem in proofCard.theorems %}
           <li class="proof-card__item">
@@ -68,17 +69,17 @@
       </ol>
     </section>
 
-    <section class="proof-card__section proof-card__qed" aria-labelledby="proof-qed-label">
-      <h2 id="proof-qed-label" class="proof-card__label">Q.E.D.</h2>
-      <div class="proof-card__qed-block">
-        <img src="/assets/images/uploads/proof-mark-ink.svg" alt="" aria-hidden="true" class="proof-card__qed-mark" width="72" height="72" decoding="async">
+    <section class="proof-card__qed" aria-labelledby="proof-qed-label">
+      <span class="proof-card__qed-mark" aria-hidden="true">[∴]</span>
+      <div>
+        <h3 id="proof-qed-label" class="proof-card__qed-label">Q.E.D.</h3>
         <p class="proof-card__qed-text">{{ proofCard.qed or proofCard.conclusion }}</p>
       </div>
     </section>
 
     {% if proofCard.sourceDocuments.length %}
-      <section class="proof-card__section" id="proof-documents" aria-labelledby="proof-documents-label">
-        <h2 id="proof-documents-label" class="proof-card__label">DOCUMENTS</h2>
+      <section class="proof-card__section proof-card__section--documents" id="proof-documents" aria-labelledby="proof-documents-label">
+        <h3 id="proof-documents-label" class="proof-card__label">Documents</h3>
         <ul class="proof-card__documents">
           {% for doc in proofCard.sourceDocuments %}
             {% set docRecord = doc.documentUrl | getSourceDocument(collections.sourceDocument) %}
@@ -86,12 +87,12 @@
             <li>
               <a href="{{ doc.documentUrl }}" class="proof-card__document-link" data-doc-url="{{ doc.documentUrl }}">
                 <span class="proof-card__document-badge">{{ docType }}</span>
-                <span>{{ docRecord.data.title if docRecord else doc.label }}</span>
+                <span class="proof-card__document-name">{{ docRecord.data.title if docRecord else doc.label }}</span>
               </a>
             </li>
           {% endfor %}
         </ul>
       </section>
     {% endif %}
-  </div>
+  </article>
 </section>
