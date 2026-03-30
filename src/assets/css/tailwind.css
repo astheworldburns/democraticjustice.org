@@ -1248,12 +1248,6 @@
     padding: 0.18rem 0.5rem;
   }
 
-  .proof-card__badge-mark {
-    width: 0.8rem;
-    height: 0.8rem;
-    object-fit: contain;
-  }
-
   .proof-card__counts,
   .proof-card__label,
   .proof-card__document-badge {
@@ -1372,10 +1366,11 @@
   }
 
   .proof-card__qed-mark {
-    width: 4.5rem;
-    height: auto;
-    opacity: 0.96;
-    object-fit: contain;
+    display: block;
+    font-size: 4.1rem;
+    line-height: 1;
+    color: rgba(17, 24, 39, 0.24);
+    font-family: "IBM Plex Mono";
   }
 
   .proof-card__qed-text {

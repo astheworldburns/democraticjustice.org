@@ -1,14 +1,7 @@
-{% set proofMarkDaySrc = site.proofMarkDay ~ "?v=" ~ buildVersion %}
-{% set proofMarkNightSrc = site.proofMarkNight ~ "?v=" ~ buildVersion %}
-{% set proofMarkPrintSrc = site.proofMarkPrint ~ "?v=" ~ buildVersion %}
-
 <section id="proof-card" aria-labelledby="proof-heading" class="proof-card-shell mb-12 max-w-3xl">
   <div class="proof-card proof-card--unified">
     <header class="proof-card__header">
-      <p class="proof-card__badge" id="proof-heading">
-        <img class="proof-mark proof-card__badge-mark" data-proof-mark data-proof-mark-day="{{ proofMarkDaySrc }}" data-proof-mark-night="{{ proofMarkNightSrc }}" data-proof-mark-print="{{ proofMarkPrintSrc }}" src="{{ proofMarkDaySrc }}" alt="" aria-hidden="true" width="15" height="15" decoding="async">
-        <span>PROOF</span>
-      </p>
+      <p class="proof-card__eyebrow" id="proof-heading">[∴] PROOF</p>
       <p class="proof-card__counts">
         {{ proofCard.axiomCount }} AXIOMS · {{ proofCard.postulateCount }} POSTULATES · {{ proofCard.theoremCount }} THEOREMS
       </p>
@@ -75,7 +68,7 @@
     <section class="proof-card__section proof-card__qed" aria-labelledby="proof-qed-label">
       <h2 id="proof-qed-label" class="proof-card__label">Q.E.D.</h2>
       <div class="proof-card__qed-block">
-        <img class="proof-mark proof-card__qed-mark" data-proof-mark data-proof-mark-day="{{ proofMarkDaySrc }}" data-proof-mark-night="{{ proofMarkNightSrc }}" data-proof-mark-print="{{ proofMarkPrintSrc }}" src="{{ proofMarkDaySrc }}" alt="" aria-hidden="true" width="72" height="72" decoding="async">
+        <span class="proof-card__qed-mark" aria-hidden="true">∴</span>
         <p class="proof-card__qed-text">{{ proofCard.qed or proofCard.conclusion }}</p>
       </div>
     </section>
