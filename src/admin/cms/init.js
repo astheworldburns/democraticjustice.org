@@ -25,6 +25,21 @@ async function fetchJson(url, options = {}) {
   return response.json();
 }
 
+async function fetchGitHubUser(token) {
+  const response = await fetch("https://api.github.com/user", {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error("GitHub user profile fetch failed.");
+  }
+
+  return response.json();
+}
+
 function loadSveltiaScript() {
   return new Promise((resolve, reject) => {
     const script = document.createElement("script");
@@ -45,31 +60,43 @@ const cmsConfigPromise = fetch("/admin/cms/data/config.json", {
   return response.json();
 });
 
-const cmsBootstrapPromise = (async () => {
-  const sessionPayload = await fetchJson("/api/auth/session");
-  const sessionUser = sessionPayload?.user;
-
-  if (!sessionUser) {
-    throw new Error("No authenticated admin session found.");
-  }
-
-  const tokenPayload = await fetchJson("/api/cms/github-token");
-  const token = tokenPayload?.token;
-
-  if (!token) {
-    throw new Error("Missing GitHub token for CMS.");
-  }
-
-  localStorage.setItem("sveltia-cms.user", JSON.stringify({ token }));
-
-  await loadSveltiaScript();
-})();
-
 window.addEventListener(
   "DOMContentLoaded",
   async () => {
     try {
-      const [config] = await Promise.all([cmsConfigPromise, cmsBootstrapPromise]);
+      const config = await cmsConfigPromise;
+
+      const sessionPayload = await fetchJson("/api/auth/session");
+      const sessionUser = sessionPayload?.user;
+
+      if (!sessionUser) {
+        throw new Error("No authenticated admin session found.");
+      }
+
+      const tokenPayload = await fetchJson("/api/cms/github-token");
+      const token = tokenPayload?.token;
+
+      if (!token) {
+        throw new Error("Missing GitHub token for CMS.");
+      }
+
+      const githubUser = await fetchGitHubUser(token);
+
+      localStorage.setItem(
+        "sveltia-cms.user",
+        JSON.stringify({
+          backendName: "github",
+          id: githubUser.id,
+          name: githubUser.name || null,
+          login: githubUser.login,
+          email: githubUser.email || null,
+          avatarURL: githubUser.avatar_url,
+          profileURL: githubUser.html_url,
+          token
+        })
+      );
+
+      await loadSveltiaScript();
 
       if (typeof window.initCMS !== "function") {
         throw new Error("Sveltia CMS did not finish loading.");
@@ -89,7 +116,8 @@ window.addEventListener(
       if (
         error instanceof Error &&
         (error.message === "No authenticated admin session found." ||
-          error.message === "Missing GitHub token for CMS.")
+          error.message === "Missing GitHub token for CMS." ||
+          error.message === "GitHub user profile fetch failed.")
       ) {
         window.location.assign("/admin/");
         return;
