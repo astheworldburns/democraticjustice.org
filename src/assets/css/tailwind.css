@@ -1209,7 +1209,7 @@
 
   .proof-card-shell {
     width: 100%;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
   }
 
   .proof-card--unified {
@@ -1218,6 +1218,9 @@
     border: 1px solid var(--color-border);
     border-radius: var(--radius-sm);
     overflow: hidden;
+    box-shadow:
+      inset 0 0 0 1px var(--color-border),
+      0 10px 30px rgba(var(--rule-strong), 0.08);
     padding: 0;
   }
 
@@ -1226,7 +1229,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    padding: 1rem 2rem;
+    padding: 0.9rem 1.5rem;
     border-bottom: 1px solid var(--color-border);
   }
 
@@ -1270,32 +1273,32 @@
   }
 
   .proof-card__header {
-    padding: 2.5rem 2rem 2.25rem;
+    padding: 1.5rem 1.5rem 1.25rem;
   }
 
   .proof-card__issue {
     margin: 0;
     max-width: 37.5rem;
     font-family: "Source Serif 4";
-    font-size: clamp(1.6rem, 1.4rem + 1vw, 1.9rem);
-    line-height: 1.25;
-    font-weight: 600;
+    font-size: clamp(1.75rem, 1.55rem + 0.9vw, 2.15rem);
+    line-height: 1.2;
+    font-weight: 700;
     color: var(--color-text-heading);
   }
 
   .proof-card__section {
-    padding: 0 2rem;
-    margin-bottom: 2rem;
+    padding: 0 1.5rem;
+    margin-bottom: 1.5rem;
   }
 
   .proof-card__label {
-    margin: 0 0 1.25rem;
-    font-size: 0.64rem;
+    margin: 0 0 0.9rem;
+    font-size: 0.72rem;
     font-weight: 600;
-    letter-spacing: 0.14em;
-    color: var(--color-text-muted);
+    letter-spacing: 0.12em;
+    color: var(--color-text-secondary);
     border-bottom: 1px solid var(--color-border);
-    padding-bottom: 0.75rem;
+    padding-bottom: 0.55rem;
   }
 
   .proof-card__items {
@@ -1309,7 +1312,7 @@
     grid-template-columns: 2.5rem minmax(0, 1fr) auto;
     gap: 0 1rem;
     align-items: start;
-    padding: 0.88rem 0;
+    padding: 0.7rem 0;
   }
 
   .proof-card__item + .proof-card__item {
@@ -1318,7 +1321,7 @@
 
   .proof-card__item-prefix {
     font-family: "IBM Plex Mono";
-    font-size: 0.74rem;
+    font-size: 0.78rem;
     font-weight: 500;
     color: var(--color-accent);
     line-height: 1.2;
@@ -1327,7 +1330,7 @@
 
   .proof-card__item-text {
     font-family: "Source Serif 4";
-    font-size: 0.94rem;
+    font-size: 1rem;
     font-weight: 400;
     line-height: 1.6;
     color: var(--color-text-body);
@@ -1373,8 +1376,8 @@
   }
 
   .proof-card__qed {
-    margin: 0.5rem 2rem 2rem;
-    padding: 1.75rem 2rem;
+    margin: 0.25rem 1.5rem 1.5rem;
+    padding: 1.25rem 1.5rem;
     border-radius: 2px;
     background: var(--color-bg-proof);
     display: flex;
@@ -1391,7 +1394,7 @@
   .proof-card__qed-mark img {
     display: block;
     width: auto;
-    height: 2.25rem;
+    height: 2rem;
     min-height: 1.5rem;
   }
 
@@ -1407,8 +1410,8 @@
   .proof-card__qed-text {
     margin: 0;
     font-family: "Source Serif 4";
-    font-size: 1.12rem;
-    line-height: 1.45;
+    font-size: 1.18rem;
+    line-height: 1.35;
     color: var(--color-text-heading-on-proof);
     font-weight: 400;
   }
@@ -1430,7 +1433,7 @@
     display: flex;
     align-items: center;
     gap: 0.62rem;
-    padding: 0.62rem 0.88rem;
+    padding: 0.55rem 0.8rem;
     border-radius: 2px;
     background: var(--color-bg-surface);
     color: var(--color-text-secondary);
@@ -1464,28 +1467,28 @@
 
   .proof-card__document-name {
     font-family: "Space Grotesk";
-    font-size: 0.82rem;
+    font-size: 0.88rem;
     font-weight: 500;
     color: var(--color-text-secondary);
   }
 
   @media (max-width: 40rem) {
     .proof-card__topbar {
-      padding: 0.88rem 1.25rem;
+      padding: 0.82rem 1.1rem;
       flex-wrap: wrap;
       gap: 0.5rem;
     }
 
     .proof-card__header {
-      padding: 1.75rem 1.25rem 1.5rem;
+      padding: 1.25rem 1.1rem 1rem;
     }
 
     .proof-card__issue {
-      font-size: 1.42rem;
+      font-size: 1.52rem;
     }
 
     .proof-card__section {
-      padding: 0 1.25rem;
+      padding: 0 1.1rem;
     }
 
     .proof-card__item {
@@ -1500,13 +1503,9 @@
     }
 
     .proof-card__qed {
-      margin: 0.5rem 1.25rem 1.5rem;
-      padding: 1.5rem 1.25rem;
+      margin: 0.2rem 1.1rem 1.2rem;
+      padding: 1.1rem;
       gap: 1rem;
-    }
-
-    .proof-card__qed-mark {
-      font-size: 2.05rem;
     }
 
     .proof-card__qed-text {
