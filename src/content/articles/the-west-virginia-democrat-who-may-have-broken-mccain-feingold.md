@@ -3,7 +3,7 @@ kicker: Investigation
 title: The West Virginia Democrat who may have broken McCain-Feingold
 description: A state party chair and lawmaker filed a criminal complaint against a youth leader to seize an independent organization that separated from the national party in 2002 under strict new campaign finance laws.
 author: seth-sturm
-date: 2026-03-31T08:45:00
+date: 2026-03-31T17:04:00
 tags:
   - article
 featured_image: /assets/images/uploads/KCSO Screenshot Victim WV.jpg
@@ -136,9 +136,9 @@ During the period when the case sat in prosecutorial limbo, Pushkin and Frankenb
 
 On January 23, 2025, Pushkin and Frankenberry filed Statements of Organization with the Secretary of State listing themselves as chairperson and treasurer of the West Virginia Young Democrats.
 
-For the first time since 2002, when Congress passed the Bipartisan Campaign Reform Act, the Young Democrats of America and the DNC were tied through official channels. 
+For the first time since 2002, when Congress passed the Bipartisan Campaign Reform Act, the Young Democrats of America and the DNC were tied through official channels.
 
-The BCRA, or McCain-Feingold, bans soft money contributions to political parties. Soft money is the unlimited, lightly regulated money that can flow from corporations, unions, and wealthy donors outside the federal contribution system. 
+The BCRA, or McCain-Feingold, bans soft money contributions to political parties. Soft money is the unlimited, lightly regulated money that can flow from corporations, unions, and wealthy donors outside the federal contribution system.
 
 The Young Democrats of America responded to McCain-Feingold by separating from the Democratic National Committee and reorganizing as an independent political organization.
 
@@ -146,8 +146,8 @@ That structure extended to the state level. State-chartered chapters of the YDA 
 
 Federal regulators evaluate control through a multi-factor test that looks at governance authority, overlapping officers, shared infrastructure, financing, and the overall relationship between the entities.
 
-The current filings for the West Virginia Young Democrats meet all of those criteria. 
+The current filings for the West Virginia Young Democrats meet all of those criteria.
 
-The DNC holds governance authority over the West Virginia Democratic Party. The West Virginia Democratic Party maintains operational control of the West Virginia Young Democrats. The Young Democrats of America issued a charter to that group. 
+The DNC holds governance authority over the West Virginia Democratic Party. The West Virginia Democratic Party maintains operational control of the West Virginia Young Democrats. The Young Democrats of America issued a charter to that group.
 
 Two entities, once separated to maintain a legal firewall, are now connected through a state party’s infrastructure. Whether that arrangement complies with campaign finance law is a question for federal regulators.
