@@ -629,6 +629,10 @@
       grid-column: span 8;
     }
 
+    .bento-6 {
+      grid-column: span 6;
+    }
+
     .bento-4 {
       grid-column: span 4;
     }
