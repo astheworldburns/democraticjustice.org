@@ -40,6 +40,63 @@ async function fetchGitHubUser(token) {
   return response.json();
 }
 
+function encodeUploadPath(path = "") {
+  if (!path.startsWith("/assets/images/uploads/")) {
+    return path;
+  }
+
+  const basePath = "/assets/images/uploads/";
+  const rawTail = path.slice(basePath.length);
+  const [filename, query = ""] = rawTail.split("?");
+  const encodedFilename = filename
+    .split("/")
+    .map((segment) => encodeURIComponent(decodeURIComponent(segment)))
+    .join("/");
+
+  return query ? `${basePath}${encodedFilename}?${query}` : `${basePath}${encodedFilename}`;
+}
+
+function normalizeLocalUploadUrls(body = "") {
+  const markdownImagePattern = /(!\[[^\]]*\]\()([^\n)]+)(\))/g;
+
+  return body.replace(markdownImagePattern, (fullMatch, prefix, destination, suffix) => {
+    const hasTitle = destination.includes(' "');
+
+    if (hasTitle) {
+      const [path, ...titleParts] = destination.split(' "');
+      const normalizedPath = encodeUploadPath(path.trim());
+      return `${prefix}${normalizedPath} "${titleParts.join(' "')}${suffix}`;
+    }
+
+    return `${prefix}${encodeUploadPath(destination.trim())}${suffix}`;
+  });
+}
+
+function installLocalUploadPathHook() {
+  if (!window.CMS || typeof window.CMS.registerEventListener !== "function") {
+    return;
+  }
+
+  window.CMS.registerEventListener({
+    name: "preSave",
+    handler: async ({ data }) => {
+      if (!data || typeof data.body !== "string" || !data.body.includes("/assets/images/uploads/")) {
+        return data;
+      }
+
+      const normalizedBody = normalizeLocalUploadUrls(data.body);
+
+      if (normalizedBody === data.body) {
+        return data;
+      }
+
+      return {
+        ...data,
+        body: normalizedBody
+      };
+    }
+  });
+}
 
 function applyEditorLayoutFixes() {
   const style = document.createElement("style");
@@ -123,6 +180,7 @@ window.addEventListener(
 
       await loadSveltiaScript();
       applyEditorLayoutFixes();
+      installLocalUploadPathHook();
 
       if (typeof window.initCMS !== "function") {
         throw new Error("Sveltia CMS did not finish loading.");
