@@ -5,10 +5,8 @@ description: Latest investigative reporting with proof cards and source document
 permalink: /
 ogType: website
 ---
-{% set proofEntries = collections.proofArticle %}
-{% set featuredEntry = proofEntries[0] if proofEntries | length else null %}
-{% set featuredArticle = featuredEntry.article if featuredEntry else null %}
-{% set featuredProof = featuredEntry.proofCard if featuredEntry else null %}
+{% set publishedEntries = collections.article or [] %}
+{% set featuredArticle = publishedEntries[0] if publishedEntries | length else null %}
 {% set featuredAuthor = featuredArticle.data.author | getAuthor(collections.authorProfiles) if featuredArticle else null %}
 {% set evidenceDocuments = collections.primarySourceDocument or [] %}
 {% set evidencePreviewDocuments = evidenceDocuments.slice(0, 2) %}

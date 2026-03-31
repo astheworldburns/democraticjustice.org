@@ -27,12 +27,12 @@ ogType: website
   <div class="space-y-10">
     {% for yearBucket in collections.articleArchiveYears %}
       <section id="year-{{ yearBucket.year }}" aria-labelledby="year-heading-{{ yearBucket.year }}" class="space-y-4">
-        {% set sectionKicker = yearBucket.months | length %}{% set sectionTitle = yearBucket.year %}{% set sectionId = "year-heading-" + yearBucket.year %}
+        {% set sectionKicker = "Year" %}{% set sectionTitle = yearBucket.year %}{% set sectionId = "year-heading-" + yearBucket.year %}
         {% include "components/section-header.njk" %}
         <div class="bento-grid">
           {% for monthBucket in yearBucket.months %}
             <section class="card bento-6" aria-labelledby="month-{{ yearBucket.year }}-{{ loop.index }}">
-              <h3 id="month-{{ yearBucket.year }}-{{ loop.index }}" class="font-serif text-2xl">{{ monthBucket.label }} {{ monthBucket.year }}</h3>
+              <h3 id="month-{{ yearBucket.year }}-{{ loop.index }}" class="font-serif text-2xl">{{ monthBucket.label }}</h3>
               <div class="mt-4 space-y-4">
                 {% for story in monthBucket.posts %}
                   {% set storyAuthor = story.data.author | getAuthor(collections.authorProfiles) %}
