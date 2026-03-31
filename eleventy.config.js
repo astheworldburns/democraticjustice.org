@@ -234,6 +234,7 @@ function getSourceDocument(documentUrl, sourceDocuments = null) {
   }
 
   const normalizedUrl = documentUrl.replace(/\/+$/, "");
+  const isInternalDocumentUrl = /^\/documents\//.test(normalizedUrl);
   const records = Array.isArray(sourceDocuments) ? sourceDocuments : [];
   const sourceDocument =
     records.find((item) => (item.url || "").replace(/\/+$/, "") === normalizedUrl) ||
@@ -241,7 +242,7 @@ function getSourceDocument(documentUrl, sourceDocuments = null) {
     records.find((item) => `/documents/${item.fileSlug}/` === normalizedUrl) ||
     null;
 
-  if (!sourceDocument && Array.isArray(sourceDocuments)) {
+  if (!sourceDocument && isInternalDocumentUrl && Array.isArray(sourceDocuments)) {
     throw new Error(`Missing source document record for "${documentUrl}".`);
   }
 
@@ -256,7 +257,11 @@ function wrapImageCaptions(value = "") {
 }
 
 function sortByDateDesc(items = []) {
-  return [...items].sort((left, right) => right.date - left.date);
+  return [...items].sort((left, right) => {
+    const leftDate = toDateTime(left.data?.updated || left.data?.date || left.date);
+    const rightDate = toDateTime(right.data?.updated || right.data?.date || right.date);
+    return rightDate.toMillis() - leftDate.toMillis();
+  });
 }
 
 function proofCardForItem(item = {}, sourceDocuments = null) {
@@ -280,7 +285,7 @@ function publishedArticles(items = [], sourceDocuments = null) {
 
   return items.filter((item) => {
     const publicationDate = toDateTime(item.date).setZone(SITE_TIMEZONE);
-    return publicationDate.isValid && publicationDate <= now && Boolean(proofCardForItem(item, sourceDocuments));
+    return publicationDate.isValid && publicationDate <= now;
   });
 }
 
@@ -365,15 +370,21 @@ export default async function (eleventyConfig) {
     proofShareManifest.length = 0;
 
     return items.reduce((entries, article) => {
-      const proofCard = createProofCard({
-        ...article.data,
-        title: article.data.title,
-        description: article.data.description,
-        proof: article.data.proof,
-        fileSlug: article.fileSlug,
-        url: article.url,
-        sourceDocuments
-      });
+      let proofCard = null;
+
+      try {
+        proofCard = createProofCard({
+          ...article.data,
+          title: article.data.title,
+          description: article.data.description,
+          proof: article.data.proof,
+          fileSlug: article.fileSlug,
+          url: article.url,
+          sourceDocuments
+        });
+      } catch {
+        proofCard = null;
+      }
 
       if (!proofCard) {
         return entries;
