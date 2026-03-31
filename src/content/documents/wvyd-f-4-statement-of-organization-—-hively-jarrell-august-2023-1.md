@@ -1,5 +1,5 @@
 ---
-title: WVYD F-4 Statement of Organization — Hively/Jarrell (August 2023)
+title: WVYD F-4 Statement of Organization — Dowler (January 2026)
 file: documents/WVYD 2026 F-4.pdf
 video_url: ''
 preview_image: ''
