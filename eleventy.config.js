@@ -234,6 +234,7 @@ function getSourceDocument(documentUrl, sourceDocuments = null) {
   }
 
   const normalizedUrl = documentUrl.replace(/\/+$/, "");
+  const isInternalDocumentUrl = /^\/documents\//.test(normalizedUrl);
   const records = Array.isArray(sourceDocuments) ? sourceDocuments : [];
   const sourceDocument =
     records.find((item) => (item.url || "").replace(/\/+$/, "") === normalizedUrl) ||
@@ -241,7 +242,7 @@ function getSourceDocument(documentUrl, sourceDocuments = null) {
     records.find((item) => `/documents/${item.fileSlug}/` === normalizedUrl) ||
     null;
 
-  if (!sourceDocument && Array.isArray(sourceDocuments)) {
+  if (!sourceDocument && isInternalDocumentUrl && Array.isArray(sourceDocuments)) {
     throw new Error(`Missing source document record for "${documentUrl}".`);
   }
 
