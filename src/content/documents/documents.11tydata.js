@@ -35,8 +35,13 @@ export default {
       return value !== false;
     },
     file_url: (data) => data.file || "",
+    video_url: (data) => (data.video_url || "").toString().trim(),
     file_type: (data) => {
       const value = (data.file || "").toLowerCase();
+
+      if (!value) {
+        return "";
+      }
 
       if (value.endsWith(".pdf")) {
         return "pdf";

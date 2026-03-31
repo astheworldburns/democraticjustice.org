@@ -276,7 +276,13 @@ collections:
         name: file
         widget: file
         accept: application/pdf,.pdf,image/*
+        required: false
         choose_url: false
+      - name: video_url
+        label: Video URL
+        widget: string
+        required: false
+        hint: "YouTube or other hosted video URL for video evidence"
       - label: Preview Image URL
         name: preview_image
         widget: string
