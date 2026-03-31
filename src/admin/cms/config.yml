@@ -144,11 +144,6 @@ collections:
             label_singular: Axiom
             summary: "{{fields.premise}}"
             fields:
-              - label: ID
-                name: id
-                widget: string
-                required: true
-                hint: Short identifier like 'Associational Autonomy'
               - label: Rule of Law
                 name: premise
                 widget: text
@@ -193,11 +188,6 @@ collections:
             label_singular: Postulate
             summary: "{{fields.fact}}"
             fields:
-              - label: ID
-                name: id
-                widget: string
-                required: true
-                hint: Short identifier like 'Fact 1'
               - label: Verified Fact
                 name: fact
                 widget: text
@@ -241,11 +231,6 @@ collections:
             label_singular: Theorem
             summary: "{{fields.step}}"
             fields:
-              - label: ID
-                name: id
-                widget: string
-                required: true
-                hint: Short identifier like 'Theorem A'
               - label: Deductive Inference
                 name: step
                 widget: text
