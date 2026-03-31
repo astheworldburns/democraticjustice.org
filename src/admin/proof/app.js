@@ -259,10 +259,13 @@ function computeValidationErrors(proof = {}, documents = state.documents) {
       }
 
       for (const source of axiom.sources || []) {
-        if (
-          source?.document_url &&
-          !knownDocuments.some((document) => document.url === source.document_url)
-        ) {
+        if (!source?.document_url) {
+          continue;
+        }
+
+        const linksToDocument = knownDocuments.some((document) => document.url === source.document_url);
+
+        if (!linksToDocument && !isWebUrl(source.document_url)) {
           errors.push(`Axiom ${index + 1} links to a missing source document: ${source.document_url}`);
         }
       }
@@ -302,6 +305,15 @@ function countUniqueSources(proof = {}) {
 
 function getDocumentByUrl(documentUrl = "") {
   return state.documents.find((document) => document.url === documentUrl) || null;
+}
+
+function isWebUrl(value = "") {
+  try {
+    const parsed = new URL(value);
+    return parsed.protocol === "http:" || parsed.protocol === "https:";
+  } catch {
+    return false;
+  }
 }
 
 function filteredArticles() {
@@ -571,6 +583,28 @@ function renderAxiomBlock(axiom, index) {
                 </label>
                 <div class="editor-results">
                   ${renderSourceResults(index)}
+                </div>
+              </div>
+            </details>
+
+            <details class="editor-details">
+              <summary>Attach a webpage URL</summary>
+              <div class="editor-details__body">
+                <label class="editor-field">
+                  <span class="editor-label">Webpage URL</span>
+                  <input
+                    class="editor-input"
+                    type="url"
+                    placeholder="https://example.com/source"
+                    value="${escapeHtml(formState.webpage_url || "")}"
+                    data-new-source-index="${index}"
+                    data-new-source-field="webpage_url"
+                  />
+                </label>
+                <div class="editor-actions" style="margin-top: 1rem;">
+                  <button class="editor-button-secondary" type="button" data-action="attach-source-url" data-axiom-index="${index}">
+                    Attach webpage URL
+                  </button>
                 </div>
               </div>
             </details>
@@ -1269,6 +1303,31 @@ function handleClick(event) {
 
     axiom.sources = (axiom.sources || []).filter((source) => source.document_url !== actionTarget.dataset.documentUrl);
     render();
+    return;
+  }
+
+  if (action === "attach-source-url") {
+    const axiomIndex = Number(actionTarget.dataset.axiomIndex);
+    const axiom = state.selectedArticle.proof.axioms[axiomIndex];
+    const formState = state.newSourceForms[axiomIndex] || {};
+    const webpageUrl = (formState.webpage_url || "").trim();
+
+    if (!axiom) {
+      return;
+    }
+
+    if (!isWebUrl(webpageUrl)) {
+      setStatus("Enter a valid http(s) URL before attaching a webpage source.", "error");
+      return;
+    }
+
+    axiom.sources = dedupeSources([...(axiom.sources || []), { document_url: webpageUrl }]);
+    axiom.no_source_needed = false;
+    if (state.newSourceForms[axiomIndex]) {
+      delete state.newSourceForms[axiomIndex].webpage_url;
+    }
+    updateValidationPanel();
+    setStatus("Attached webpage source URL.", "success");
     return;
   }
 
