@@ -45,7 +45,6 @@ collections:
     identifier_field: name
     slug: "{{slug}}"
     summary: "{{name}} - {{role}}"
-    preview_path: "/staff/{{slug}}/"
     fields:
       - label: Full Name
         name: name
@@ -83,8 +82,6 @@ collections:
     folder: src/content/articles
     slug: "{{slug}}"
     summary: "{{title}} - {{date | date('DD MMM YYYY')}}"
-    preview_path: "/articles/{{slug}}/"
-    preview_path_date_field: date
     thumbnail: featured_image
     sortable_fields:
       - title
@@ -259,7 +256,6 @@ collections:
     media_folder: static/documents
     public_folder: /documents
     summary: "{{title}} - {{obtained | date('DD MMM YYYY')}}"
-    preview_path: "/documents/{{slug}}/"
     sortable_fields:
       - title
       - obtained
@@ -320,7 +316,6 @@ collections:
     media_folder: static/media/podcast
     public_folder: /media/podcast
     summary: "{{title}} - {{publish_date | date('DD MMM YYYY')}}"
-    preview_path: "/podcast/{{slug}}/"
     sortable_fields:
       - title
       - publish_date
