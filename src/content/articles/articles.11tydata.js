@@ -3,20 +3,22 @@ import { DateTime } from "luxon";
 
 const SITE_TIMEZONE = "America/New_York";
 
-function isPublicArticle(data = {}) {
+function safeProofCard(data = {}) {
   if (!hasMeaningfulValue(data.proof)) {
-    return false;
+    return null;
   }
 
-  const proofCard = createProofCard({
-    ...data,
-    siteTitle: data.siteSettings?.site_title || data.site?.name
-  });
-
-  if (!proofCard) {
-    return false;
+  try {
+    return createProofCard({
+      ...data,
+      siteTitle: data.siteSettings?.site_title || data.site?.name
+    });
+  } catch {
+    return null;
   }
+}
 
+function isPublicArticle(data = {}) {
   const publicationDate = DateTime.fromJSDate(new Date(data.date)).setZone(SITE_TIMEZONE);
   return publicationDate.isValid && publicationDate <= DateTime.now().setZone(SITE_TIMEZONE);
 }
@@ -26,11 +28,7 @@ export default {
   permalink: (data) => (isPublicArticle(data) ? `/articles/${data.page.fileSlug}/index.html` : false),
   eleventyComputed: {
     author: (data) => data.author || "seth-sturm",
-    proofCard: (data) =>
-      createProofCard({
-        ...data,
-        siteTitle: data.siteSettings?.site_title || data.site?.name
-      }),
+    proofCard: (data) => safeProofCard(data),
     tags: (data) => {
       const tags = Array.isArray(data.tags)
         ? data.tags
@@ -40,15 +38,7 @@ export default {
 
       return Array.from(new Set(["article", ...tags]));
     },
-    socialImage: (data) =>
-      createProofCard({
-        ...data,
-        siteTitle: data.siteSettings?.site_title || data.site?.name
-      })?.shareImagePath || data.socialImage,
-    socialDescription: (data) =>
-      createProofCard({
-        ...data,
-        siteTitle: data.siteSettings?.site_title || data.site?.name
-      })?.socialDescription || data.socialDescription
+    socialImage: (data) => safeProofCard(data)?.shareImagePath || data.socialImage,
+    socialDescription: (data) => safeProofCard(data)?.socialDescription || data.socialDescription
   }
 };
