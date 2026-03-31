@@ -8,6 +8,7 @@ display_url: https://democraticjustice.org
 media_folder: src/assets/images/uploads
 public_folder: /assets/images/uploads
 
+
 singletons:
   - name: site_settings
     label: Site Settings
