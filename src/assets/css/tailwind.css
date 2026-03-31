@@ -851,7 +851,8 @@
   }
 
   .page-prose,
-  .story-prose {
+  .story-prose,
+  .article-prose {
     @apply prose prose-lg max-w-none;
     --tw-prose-body: rgb(var(--ink-soft));
     --tw-prose-headings: rgb(var(--ink));
@@ -883,6 +884,19 @@
     border: 1px solid rgba(var(--rule), 0.8);
     border-radius: var(--radius-xs);
     background: rgba(var(--surface-muted), 0.7);
+  }
+
+
+  .article-prose figure,
+  .story-prose figure,
+  .page-prose figure {
+    margin: 2rem 0;
+  }
+
+  .article-prose > img,
+  .article-prose figure img {
+    width: 100%;
+    height: auto;
   }
 
   .story-prose figure figcaption,

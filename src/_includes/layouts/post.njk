@@ -47,7 +47,7 @@ ogType: article
     {% include "components/proof-card.njk" %}
   {% endif %}
 
-  <header class="max-w-3xl mb-12">
+  <header class="max-w-3xl mx-auto mb-12">
     {% if kicker %}<p class="card__tag">{{ kicker }}</p>{% endif %}
     <h1 id="narrative-heading" class="font-serif text-display-lg mt-2">{{ title }}</h1>
     {% if description %}<p class="font-serif text-xl text-ink-secondary italic mt-4">{{ description }}</p>{% endif %}
@@ -56,7 +56,7 @@ ogType: article
   </header>
 
   {% if featured_image %}
-    <figure class="max-w-5xl mx-auto mb-12">
+    <figure class="max-w-3xl mx-auto mb-12">
       <img
         src="{{ featured_image }}"
         alt="Featured image for {{ title }}"
@@ -76,7 +76,7 @@ ogType: article
         <ol class="space-y-1">{% for item in tocItems %}<li class="{{ 'ml-4' if item.level === 3 }}"><a href="#{{ item.id }}" class="text-sm text-ink-secondary hover:text-accent">{{ item.text }}</a></li>{% endfor %}</ol>
       </aside>
     {% endif %}
-    <div class="prose prose-lg">{{ articleHtml }}</div>
+    <div class="article-prose max-w-3xl mx-auto">{{ articleHtml }}</div>
   </section>
 
   {# Section 3: Source Documents #}
