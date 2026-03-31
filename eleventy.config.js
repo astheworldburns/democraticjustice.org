@@ -257,7 +257,11 @@ function wrapImageCaptions(value = "") {
 }
 
 function sortByDateDesc(items = []) {
-  return [...items].sort((left, right) => right.date - left.date);
+  return [...items].sort((left, right) => {
+    const leftDate = toDateTime(left.data?.updated || left.data?.date || left.date);
+    const rightDate = toDateTime(right.data?.updated || right.data?.date || right.date);
+    return rightDate.toMillis() - leftDate.toMillis();
+  });
 }
 
 function proofCardForItem(item = {}, sourceDocuments = null) {
