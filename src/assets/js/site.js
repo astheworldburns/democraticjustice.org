@@ -213,6 +213,16 @@
 (function(){
   var nav=document.querySelector('.proof-nav');
   if(!nav)return;
+  var header=document.querySelector('.site-header');
+  function updateProofNavOffset(){
+    if(!header)return;
+    var computedTop=window.getComputedStyle(header).top;
+    var stickyTop=Number.parseFloat(computedTop);
+    if(Number.isNaN(stickyTop))stickyTop=0;
+    nav.style.top=(stickyTop+header.offsetHeight)+'px';
+  }
+  updateProofNavOffset();
+  window.addEventListener('resize',updateProofNavOffset);
   var links=nav.querySelectorAll('.proof-nav__link');
   var sections=[];
   links.forEach(function(l){
