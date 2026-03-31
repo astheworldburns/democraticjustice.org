@@ -3,7 +3,7 @@ kicker: Investigation
 title: The West Virginia Democrat who may have broken McCain-Feingold
 description: A state party chair and lawmaker filed a criminal complaint against a youth leader to seize an independent organization that separated from the national party in 2002 under strict new campaign finance laws.
 author: seth-sturm
-date: 2026-03-31T17:04:00
+date: 2026-03-31T18:55:00
 tags:
   - article
 featured_image: /assets/images/uploads/KCSO Screenshot Victim WV.jpg
@@ -128,7 +128,7 @@ The Prosecuting Attorney’s Office responded on March 13, after a phone call al
 
 For all other categories, including communications, arranging the June 4 meeting, materials presented by Frankenberry, and intake, routing, or case-status records covering the eighteen months the file was under review, the office stated it had no responsive records.
 
-In a subsequent response, Prosecuting Attorney Rusnak confirmed that Frankenberry had provided documents during the meeting and that members of her office “likely reviewed” them. 
+In a subsequent response, Prosecuting Attorney Rusnak confirmed that Frankenberry had provided documents during the meeting and that members of her office “likely reviewed” them.
 
 She stated that her office “does not accept evidence” and that no one collected any records. She did not address the request for scheduling communications between Pushkin and Petry.
 
