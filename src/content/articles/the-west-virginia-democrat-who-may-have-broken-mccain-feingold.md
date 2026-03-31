@@ -1,104 +1,104 @@
 ---
 kicker: Investigation
 title: The West Virginia Democrat who may have broken McCain-Feingold
-description: State Lawmaker Mike Pushkin met with prosecutors and accused a youth leader of a felony for a $948.61 reimbursement.  A detective cleared the spending. Pushkin folded the group into the party and possibly eroded the federal soft-money firewall.
+description: A state party chair and lawmaker filed a criminal complaint against a youth leader to seize an independent organization that separated from the national party in 2002 under strict new campaign finance laws.
 author: seth-sturm
 date: 2026-03-31T08:45:00
 tags:
-  - A West Virginia delegate put the DNC and the Young Democrats of America at risk of federal campaign-finance liability when he took control of an independent youth organization through extrajudicial means and reconnected it to the state party.
-featured_image: ''
+  - article
+featured_image: /assets/images/uploads/KCSO Screenshot Victim WV.jpg
 proof:
-  issue: A state party chair's takeover of an independent youth organization created a federal campaign finance problem for the DNC and the Young Democrats of America.
+  issue: Does the West Virginia Democratic Party's control of the West Virginia Young Democrats violate federal campaign-finance law governing party committee affiliation?
   axioms:
-    - premise: Political party committees cannot raise or spend soft money.
+    - premise: The Bipartisan Campaign Reform Act of 2002 bans soft money contributions to political parties.
       sources:
         - document_url: ''
           webpage_url: https://www.congress.gov/bill/107th-congress/house-bill/2356
       no_source_needed: false
-    - premise: If one organization controls another through shared officers, infrastructure, or governance, the FEC treats them as affiliated.
+    - premise: The Young Democrats of America responded by separating from the DNC and reorganizing as an independent political organization.
+      sources:
+        - document_url: ''
+          webpage_url: https://yda.org/about/history/
+      no_source_needed: false
+    - premise: A committee established, financed, maintained, or controlled by a party is affiliated with that party and subject to party committee restrictions.
       sources:
         - document_url: ''
           webpage_url: https://www.ecfr.gov/current/title-11/chapter-I/subchapter-A/part-100/subpart-A/section-100.5
       no_source_needed: false
-    - premise: A charter is enough to establish that affiliation.
-      sources:
-        - document_url: ''
-          webpage_url: https://www.ecfr.gov/current/title-11/chapter-I/subchapter-A/part-100/subpart-A/section-100.5
-      no_source_needed: false
+    - premise: Violations of federal campaign-finance law carry civil and criminal penalties.
+      sources: []
+      no_source_needed: true
   postulates:
-    - fact: The WVYD was an independent, separately registered political organization.
+    - fact: The West Virginia Young Democrats was a legally distinct, independently registered political organization.
       sources:
         - document_url: /documents/wvyd-f-4-statement-of-organization-—-hively-jarrell-august-2023/
           webpage_url: ''
-        - document_url: /documents/west-virginia-young-democrats-constitution-2018/
-          webpage_url: ''
       no_source_needed: false
-    - fact: After McCain-Feingold, the YDA separated from the DNC. State chapters like the WVYD operated independently from state parties.
-      sources:
-        - document_url: ''
-          webpage_url: https://www.congress.gov/bill/107th-congress/house-bill/2356
-      no_source_needed: false
-    - fact: Pushkin arranged a private meeting with Kanawha County prosecutors and initiated a criminal case over $948.61 in expenses for WVYD.
-      sources:
-        - document_url: /documents/kcso-case-no.-2024-00017430-—-hively-investigation-and-declination/
-          webpage_url: ''
-      no_source_needed: false
-    - fact: Every witness contradicted the complaint. The detective found every expense legitimate. The charge carried up to a year in jail.
-      sources:
-        - document_url: /documents/kcso-case-no.-2024-00017430-—-hively-investigation-and-declination/
-          webpage_url: ''
-        - document_url: ''
-          webpage_url: https://code.wvlegislature.gov/61-3-13/
-      no_source_needed: false
-    - fact: The prosecutor's office held the completed case open 18 months and declined charges only after FOIA requests.
-      sources:
-        - document_url: /documents/kcso-case-no.-2024-00017430-—-hively-investigation-and-declination/
-          webpage_url: ''
-      no_source_needed: false
-    - fact: While the case sat open, Pushkin filed himself as WVYD chair with the state party's address, phone, and email on the registration.
+    - fact: Mike Pushkin is Chair of the West Virginia Democratic Party.
+      sources: []
+      no_source_needed: true
+    - fact: Ryan Frankenberry is Executive Director of the West Virginia Democratic Party.
+      sources: []
+      no_source_needed: true
+    - fact: On January 23, 2025, Pushkin and Frankenberry filed Statements of Organization listing themselves as Chairperson and Treasurer of the West Virginia Young Democrats.
       sources:
         - document_url: /documents/f-4-statement-of-organization-for-west-virginia-young-democrats-filed-january-23-2025/
           webpage_url: ''
       no_source_needed: false
-    - fact: The WVYD still operates under state-party infrastructure today.
+    - fact: The current WVYD filings list the state party's P.O. Box and email address.
       sources:
         - document_url: /documents/wvyd-f-4-statement-of-organization-—-hively-jarrell-august-2023-1/
           webpage_url: ''
       no_source_needed: false
-    - fact: The YDA chartered the WVYD  operating under state-party infrastructure.
+    - fact: Under Supreme Court precedent, a national political party has First Amendment associational rights, which give it governance authority over state parties.
+      sources:
+        - document_url: ''
+          webpage_url: https://supreme.justia.com/cases/federal/us/419/477/
+        - document_url: ''
+          webpage_url: https://supreme.justia.com/cases/federal/us/450/107/
+        - document_url: ''
+          webpage_url: https://supreme.justia.com/cases/federal/us/489/214/
+      no_source_needed: false
+    - fact: The YDA issued a charter to an entity over which the state party has asserted governance authority and whose operations route through state party infrastructure.
       sources:
         - document_url: ''
           webpage_url: https://www.theintermountain.com/life/2025/11/rechartered-reorganized/
       no_source_needed: false
-  theorems: []
-  qed: ''
+  theorems:
+    - step: The WVYD now has overlapping officers with the WVDP
+      references: P2, P3, P4
+    - step: The WVYD now operates through state party infrastructure.
+      references: P5
+    - step: The WVYD meets the standard for a committee controlled by a party.
+      references: A2, P4, P5, T1, T2
+    - step: A controlled committee is subject to party soft-money restrictions under BCRA.
+      references: A1, A2, T3
+    - step: The DNC has governance authority over the West Virginia Democratic Party.
+      references: A5, P6
+    - step: By chartering an entity under state party control, the YDA has reconnected to the DNC through the state party structure.
+      references: A4, P6, P7, T3, T5
+  qed: For the first time since 2002, the Young Democrats of America is connected to the Democratic National Committee through official party channels.
 ---
 
 At 10:30 a.m. on June 4, 2024, Delegate Mike Pushkin arrived at the Kanawha County Prosecutor’s Office for a private meeting.
 
 Pushkin had contacted Prosecutor Adam Petry about a “possible criminal matter,” after which Kanawha County Sheriff Chief Deputy S.D. Snuffer ordered Detective Ana Pile to attend.
 
-Ryan Frankenberry, the party’s executive director, and prosecutors Adam Petry, Kenneth Bannon, and Debra Rusnak sat at the conference table. According to Detective Pile’s supplemental narrative, Frankenberry “did most of the explaining.”
+Ryan Frankenberry, the West Virginia Democratic Party’s executive director, and prosecutors Adam Petry, Kenneth Bannon, and Debra Rusnak sat at the conference table. Frankenberry “did most of the explaining" as he laid out a case against Jacob Hively, president of the West Virginia Young Democrats.
 
-In March 2024, Frankenberry met with “Jessica” at United Bank. [With no legal right](https://takeastand.substack.com/p/wva-democrats-seize-young-democrats?r=onh4h), Frankenberry obtained the confidential records at this meeting.
+He told prosecutors that Jacob Hively had "declared himself president" of the West Virginia Young Democrats, taken a checkbook without the treasurer's permission, and written checks to himself. Frankenberry called it fraud.
 
-The checks were drawn on the United Bank account of the West Virginia Young Democrats, which had less than $5,000 in it. Each check was made out to the same person and signed by the same hand: _Jacob Hively, President._
+The criminal referral capped months of demands. Since December 2023, Pushkin and Frankenberry had ordered Hively to hand over the youth group's banking, social media, and other account credentials, threatening to pursue "legal action" if he refused.
 
-The memo lines contained notations. Reimbursement for website hosting. A YDA registration fee. Printing. Postage. Postcards. Hively had paid those expenses himself and reimbursed himself from the account.
+The WVYD is a legally distinct, independently registered entity. State party officials had no legal authority over its accounts. Nonetheless, in March 2024, Frankenberry met with a United Bank representative and obtained confidential banking records for the youth group.
 
-The Kanawha County Sheriff’s Office logged Case No. 2024-00017430. The listed victim was the State of West Virginia
+The account held less than $5,000. Six checks totaling $948.61 drew scrutiny, all payable to Hively and signed "Jacob Hively, President." The memo lines listed website hosting, a YDA registration fee, printing, postage, and postcards.
+
+The Kanawha County Sheriff’s Office logged Case No. 2024-00017430. The listed victim was the State of West Virginia. The offense classification: fraudulent schemes, false pretenses under $1,000.
 
 ![Kanawha County Sheriff Case Report Detail for Case No. 2024-00017430. The victim is listed as West Virginia, address unknown, victim type Government. The related offense is Crime Code 26A, Statute 61-3-24(D), described as less than $1,000 (False pretenses) Fraudulent schemes.](/assets/images/uploads/KCSO%20Screenshot%20Victim%20WV.jpg "Kanawha County Sheriff Case Report Detail for Case No. 2024-00017430. The victim is listed as West Virginia, address unknown, victim type Government. The related offense is Crime Code 26A, Statute 61-3-24(D), described as less than $1,000 (False pretenses) Fraudulent schemes.")
 
-KCSO Case No. 2024-00017430. The listed victim is the State of West Virginia. The offense classification: sub-$1,000 fraudulent schemes.
-
-A sitting legislator arranged the meeting, resulting in an 18-month felony case over $948.61 in reimbursement checks.
-
-While the case remained open, Pushkin and Frankenberry incorporated the WVYD into the state party apparatus and worked with the Young Democrats of America to charter it.
-
-Previously, these two organizations had separated during the McCain-Feingold era to allow the youth organization to operate outside soft-money restrictions, but now they were reconnected.
-
-Detective Pile interviewed the three witnesses, each of whom undermined the initial complaint.
+Detective Pile interviewed Hively and two other witnesses. Each contradicted the initial complaint.
 
 Frankenberry claimed Hively had “declared himself president” and that “there is a procedure to follow” for an appointment to be valid.
 
@@ -114,9 +114,7 @@ Hively showed Pile a United Bank email dated August 29, 2023, confirming his ema
 
 He showed a message from November 2, 2023, in which Jarrell confirmed receipt of the checkbook, along with messages documenting each purchase and reimbursement as they occurred, which the detective described as the pair’s “checks and balances.”
 
-[![Kanawha County Sheriff's Office Case Supplement Field Report for Case No. 2024-00017430. The supplemental narrative states Detective Pile met with Chase Jarrell at 10:00 a.m. at the Starbucks parking lot at Southridge and audio recorded the interview. Jarrell affirmed he had been treasurer of WVYD since 2020 and said he recognized Jacob Hively as president when Lora Walker stepped down.](https://substackcdn.com/image/fetch/$s_!Y7Gn!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F999c0909-9fd0-4fb8-9255-d134c80000c9_2710x1108.heic "Kanawha County Sheriff's Office Case Supplement Field Report for Case No. 2024-00017430. The supplemental narrative states Detective Pile met with Chase Jarrell at 10:00 a.m. at the Starbucks parking lot at Southridge and audio recorded the interview. Jarrell affirmed he had been treasurer of WVYD since 2020 and said he recognized Jacob Hively as president when Lora Walker stepped down.")](https://substackcdn.com/image/fetch/$s_!Y7Gn!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F999c0909-9fd0-4fb8-9255-d134c80000c9_2710x1108.heic)
-
-Detective Pile's supplemental narrative shows that the WVYD treasurer recognized Hively's authority as President.
+[![Kanawha County Sheriff's Office Case Supplement Field Report for Case No. 2024-00017430. The supplemental narrative states Detective Pile met with Chase Jarrell at 10:00 a.m. at the Starbucks parking lot at Southridge and audio recorded the interview. Jarrell affirmed he had been treasurer of WVYD since 2020 and said he recognized Jacob Hively as president when Lora Walker stepped down.](https://substackcdn.com/image/fetch/$s_!Y7Gn!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F999c0909-9fd0-4fb8-9255-d134c80000c9_2710x1108.heic "Detective Pile's supplemental narrative shows that the WVYD treasurer recognized Hively's authority as president.")](https://substackcdn.com/image/fetch/$s_!Y7Gn!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F999c0909-9fd0-4fb8-9255-d134c80000c9_2710x1108.heic)
 
 Pile examined the checks against the bank records. Her report states: “All purchases which were mentioned by the complainant appear to be purchases for legitimate items related to WVYD.”
 
@@ -132,28 +130,24 @@ For all other categories, including communications, arranging the June 4 meeting
 
 In a subsequent response, Prosecuting Attorney Rusnak confirmed that Frankenberry had provided documents during the meeting and that members of her office “likely reviewed” them. She stated that her office “does not accept evidence” and that no one collected any records. She did not address the request for scheduling communications between Pushkin and Petry.
 
-[![Email from Debra L. Rusnak, Kanawha County Prosecuting Attorney, to Seth Sturm, dated March 18, 2026, subject line RE: FW: Third Notice and Updated WVFOIA Request — Jacob Hively / WVYD. Rusnak states her office searched all devices and found no records of communications arranging the June 4, 2024 meeting. She confirms Frankenberry provided documents during the meeting and that members of her office likely reviewed them, but states her office does not accept evidence and no one collected any records. The email bears the seal of the Kanawha County Prosecuting Attorney's Office.](https://substackcdn.com/image/fetch/$s_!eD6E!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fc298527d-a00e-4079-a60b-0993454a75e9_5334x3334.heic "Email from Debra L. Rusnak, Kanawha County Prosecuting Attorney, to Seth Sturm, dated March 18, 2026, subject line RE: FW: Third Notice and Updated WVFOIA Request — Jacob Hively / WVYD. Rusnak states her office searched all devices and found no records of communications arranging the June 4, 2024 meeting. She confirms Frankenberry provided documents during the meeting and that members of her office likely reviewed them, but states her office does not accept evidence and no one collected any records. The email bears the seal of the Kanawha County Prosecuting Attorney's Office.")](https://substackcdn.com/image/fetch/$s_!eD6E!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fc298527d-a00e-4079-a60b-0993454a75e9_5334x3334.heic)
-
-Prosecuting Attorney Rusnak confirmed that documents were presented and reviewed at the June 4 meeting but stated none were collected. Her office reported no records before the FOIA request for the matter.
+[![Email from Debra L. Rusnak, Kanawha County Prosecuting Attorney, to Seth Sturm, dated March 18, 2026, subject line RE: FW: Third Notice and Updated WVFOIA Request — Jacob Hively / WVYD. Rusnak states her office searched all devices and found no records of communications arranging the June 4, 2024 meeting. She confirms Frankenberry provided documents during the meeting and that members of her office likely reviewed them, but states her office does not accept evidence and no one collected any records. The email bears the seal of the Kanawha County Prosecuting Attorney's Office.](https://substackcdn.com/image/fetch/$s_!eD6E!,w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fc298527d-a00e-4079-a60b-0993454a75e9_5334x3334.heic "Email from Debra L. Rusnak, Kanawha County Prosecuting Attorney, to Seth Sturm, dated March 18, 2026.")](https://substackcdn.com/image/fetch/$s_!eD6E!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fc298527d-a00e-4079-a60b-0993454a75e9_5334x3334.heic)
 
 During the period when the case sat in prosecutorial limbo, Pushkin and Frankenberry secured operational control of the WVYD.
 
-On January 23, 2025, Pushkin and Frankenberry filed Statements of Organization with the Secretary of State listing themselves as “Chairperson” and “Treasurer” of the West Virginia Young Democrats.
+On January 23, 2025, Pushkin and Frankenberry filed Statements of Organization with the Secretary of State listing themselves as chairperson and treasurer of the West Virginia Young Democrats.
 
-In 2002, Congress passed the Bipartisan Campaign Reform Act, also known as McCain-Feingold, to ban soft money contributions to political parties. Soft money is the unlimited, lightly regulated money that can flow from corporations, unions, and wealthy donors outside the federal contribution system. The law bars national parties from raising or spending it.
+For the first time since 2002, when Congress passed the Bipartisan Campaign Reform Act, the Young Democrats of America and the DNC were tied through official channels. 
 
-The Young Democrats of America responded to McCain-Feingold by separating from the Democratic National Committee and reorganizing as an independent political organization, thus preserving its ability to raise funds outside the party structure.
+The BCRA, or McCain-Feingold, bans soft money contributions to political parties. Soft money is the unlimited, lightly regulated money that can flow from corporations, unions, and wealthy donors outside the federal contribution system. 
+
+The Young Democrats of America responded to McCain-Feingold by separating from the Democratic National Committee and reorganizing as an independent political organization.
 
 That structure extended to the state level. State-chartered chapters of the YDA operate as separate entities, legally distinct from the state party. The firewall between state parties and these independent organizations is what makes the fundraising architecture legal.
 
 Federal regulators evaluate control through a multi-factor test that looks at governance authority, overlapping officers, shared infrastructure, financing, and the overall relationship between the entities.
 
-The current filings for the West Virginia Young Democrats meet several of those criteria. The Young Democrats of America issued a charter to that group. Under federal election law, a charter is sufficient to establish affiliation.
+The current filings for the West Virginia Young Democrats meet all of those criteria. 
 
-The DNC holds governance authority over the West Virginia Democratic Party. The West Virginia Democratic Party maintains operational control of the West Virginia Young Democrats.
+The DNC holds governance authority over the West Virginia Democratic Party. The West Virginia Democratic Party maintains operational control of the West Virginia Young Democrats. The Young Democrats of America issued a charter to that group. 
 
-Two entities, once separated to maintain a legal firewall, are united under state-party control.
-
-Delegate Mike Pushkin achieved his goals with help from the criminal investigation opened at the June 4, 2024, meeting with Kanawha County Prosecutors.
-
-In doing so, he created an election law issue that could impact the independence of youth political groups for both parties nationwide.
+Two entities, once separated to maintain a legal firewall, are now connected through a state party’s infrastructure. Whether that arrangement complies with campaign finance law is a question for federal regulators.
