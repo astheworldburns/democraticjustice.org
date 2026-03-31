@@ -24,13 +24,13 @@ The memo lines contained notations. Reimbursement for website hosting. A YDA reg
 
 The Kanawha County Sheriff’s Office logged Case No. 2024-00017430. The listed victim was the State of West Virginia
 
-[![Kanawha County Sheriff Case Report Detail for Case No. 2024-00017430. The victim is listed as West Virginia, address unknown, victim type Government. The related offense is Crime Code 26A, Statute 61-3-24(D), described as less than $1,000 (False pretenses) Fraudulent schemes.](/assets/images/uploads/KCSO%20Screenshot%20Victim%20WV.jpg "Kanawha County Sheriff Case Report Detail for Case No. 2024-00017430. The victim is listed as West Virginia, address unknown, victim type Government. The related offense is Crime Code 26A, Statute 61-3-24(D), described as less than $1,000 (False pretenses) Fraudulent schemes.")](https://substackcdn.com/image/fetch/$s_!7BLK!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F6aec6a25-4110-418e-856c-e1811a6aaaac_2716x1302.heic)
+![Kanawha County Sheriff Case Report Detail for Case No. 2024-00017430. The victim is listed as West Virginia, address unknown, victim type Government. The related offense is Crime Code 26A, Statute 61-3-24(D), described as less than $1,000 (False pretenses) Fraudulent schemes.](/assets/images/uploads/KCSO%20Screenshot%20Victim%20WV.jpg "Kanawha County Sheriff Case Report Detail for Case No. 2024-00017430. The victim is listed as West Virginia, address unknown, victim type Government. The related offense is Crime Code 26A, Statute 61-3-24(D), described as less than $1,000 (False pretenses) Fraudulent schemes.")
 
 KCSO Case No. 2024-00017430. The listed victim is the State of West Virginia. The offense classification: sub-$1,000 fraudulent schemes.
 
 A sitting legislator arranged the meeting, resulting in an 18-month felony case over $948.61 in reimbursement checks.
 
-While the case remained open, Pushkin and Frankenberry incorporated the WVYD into the state party apparatus and worked with the Young Democrats of America to charter it. 
+While the case remained open, Pushkin and Frankenberry incorporated the WVYD into the state party apparatus and worked with the Young Democrats of America to charter it.
 
 Previously, these two organizations had separated during the McCain-Feingold era to allow the youth organization to operate outside soft-money restrictions, but now they were reconnected.
 
@@ -46,7 +46,7 @@ Jarrell told Pile he had given Hively the United Bank mobile login in 2023 and s
 
 Frankenberry claimed Hively “was never added to the bank account.”
 
-Hively showed Pile a United Bank email dated August 29, 2023, confirming his email address had been added. He produced text messages in which Jarrell referred to him as president, including one from June 15, 2023: “Let’s get your name on the account so you can get things going.” 
+Hively showed Pile a United Bank email dated August 29, 2023, confirming his email address had been added. He produced text messages in which Jarrell referred to him as president, including one from June 15, 2023: “Let’s get your name on the account so you can get things going.”
 
 He showed a message from November 2, 2023, in which Jarrell confirmed receipt of the checkbook, along with messages documenting each purchase and reimbursement as they occurred, which the detective described as the pair’s “checks and balances.”
 
@@ -62,7 +62,7 @@ On February 20, 2026, a Freedom of Information Act request was filed with the Ka
 
 > Deb and/or Adam,The case regarding Jacob Hively allegedly embezzling money from the WV Democratic Party was sent down for review on August 13, 2024. The complainant was Mike Pushkin, Delegate. I have attached my narratives just for a quick refresher.I am emailing because we have received a FOIA request for the report, but I am showing it is still an open case.Can you have someone in the PAO review the matter to determine if there should be any criminal charges or not against Jacob Hively? Then, I need a letter or email declaring the decision.
 
-The Prosecuting Attorney’s Office responded on March 13, after a phone call alerting them that a third request was incoming. It produced the declination email with the detective’s narrative removed. 
+The Prosecuting Attorney’s Office responded on March 13, after a phone call alerting them that a third request was incoming. It produced the declination email with the detective’s narrative removed.
 
 For all other categories, including communications, arranging the June 4 meeting, materials presented by Frankenberry, and intake, routing, or case-status records covering the eighteen months the file was under review, the office stated it had no responsive records.
 
@@ -84,12 +84,12 @@ That structure extended to the state level. State-chartered chapters of the YDA 
 
 Federal regulators evaluate control through a multi-factor test that looks at governance authority, overlapping officers, shared infrastructure, financing, and the overall relationship between the entities.
 
-The current filings for the West Virginia Young Democrats meet several of those criteria. The Young Democrats of America issued a charter to that group. Under federal election law, a charter is sufficient to establish affiliation. 
+The current filings for the West Virginia Young Democrats meet several of those criteria. The Young Democrats of America issued a charter to that group. Under federal election law, a charter is sufficient to establish affiliation.
 
-The DNC holds governance authority over the West Virginia Democratic Party. The West Virginia Democratic Party maintains operational control of the West Virginia Young Democrats. 
+The DNC holds governance authority over the West Virginia Democratic Party. The West Virginia Democratic Party maintains operational control of the West Virginia Young Democrats.
 
-Two entities, once separated to maintain a legal firewall, are united under state-party control. 
+Two entities, once separated to maintain a legal firewall, are united under state-party control.
 
-Delegate Mike Pushkin achieved his goals with help from the criminal investigation opened at the June 4, 2024, meeting with Kanawha County Prosecutors. 
+Delegate Mike Pushkin achieved his goals with help from the criminal investigation opened at the June 4, 2024, meeting with Kanawha County Prosecutors.
 
 In doing so, he created an election law issue that could impact the independence of youth political groups for both parties nationwide.
