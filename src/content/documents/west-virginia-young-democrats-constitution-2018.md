@@ -1,11 +1,11 @@
 ---
-title: West Virginia Young Democrats Constitution (2018)
+title: Constitution of the West Virginia Young Democrats (March 25, 2018)
 file: documents/WVYD State Constitution.pdf
 video_url: ''
 preview_image: ''
 og_image: ''
 primary_source: true
-description: The constitution of the West Virginia Young Democrats, adopted March 25, 2018, at the WVYD Annual State Convention in Morgantown. Establishes the WVYD State Convention as the "highest authority of the organization" (Article IV, Section 1) and the WVYD Executive Committee as its "administrative unit and governing body" (Article VI, Section 1). Critically, defines the "State Executive Committee" referenced in officer appointment provisions (Article V, Section 7.2) as the WVYD's own internal body composed of WVYD officers (Article VI, Section 2).
+description: Governing document adopted at the WVYD Annual State Convention in Morgantown. Defines organizational structure, officer positions, election procedures, vacancy provisions, and the composition and authority of the WVYD State Executive Committee (Art. VI). Contains provisions for annual conventions (Art. IV), officer appointments (Art. V, §7), and expenditure approval (Art. VI, §5).
 obtained: 2026-02-02
-source_method: Party records
+source_method: Exhibit to Powell v. Hively grievance filing
 ---
