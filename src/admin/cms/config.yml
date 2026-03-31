@@ -163,17 +163,9 @@ collections:
                 fields:
                   - label: Source URL
                     name: document_url
-                    widget: relation
+                    widget: string
                     required: true
-                    collection: source_documents
-                    search_fields:
-                      - title
-                      - description
-                      - source_method
-                    value_field: "/documents/{{slug}}/"
-                    display_fields:
-                      - title
-                    hint: Select the corresponding source document entry. Stored as /documents/.../
+                    hint: Paste either an internal source path (/documents/.../) or a full webpage URL (https://...).
               - label: No Source Needed
                 name: no_source_needed
                 widget: boolean
@@ -207,17 +199,9 @@ collections:
                 fields:
                   - label: Source URL
                     name: document_url
-                    widget: relation
+                    widget: string
                     required: true
-                    collection: source_documents
-                    search_fields:
-                      - title
-                      - description
-                      - source_method
-                    value_field: "/documents/{{slug}}/"
-                    display_fields:
-                      - title
-                    hint: Select the corresponding source document entry. Stored as /documents/.../
+                    hint: Paste either an internal source path (/documents/.../) or a full webpage URL (https://...).
               - label: No Source Needed
                 name: no_source_needed
                 widget: boolean
