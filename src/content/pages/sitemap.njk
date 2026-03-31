@@ -4,7 +4,7 @@ eleventyExcludeFromCollections: true
 ---
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-{% for pg in collections.all %}{% if not pg.data.eleventyExcludeFromCollections and not pg.url.startsWith("/admin/") %}
+{% for pg in collections.all %}{% if not pg.data.eleventyExcludeFromCollections and pg.url and not pg.url.startsWith("/admin/") %}
   <url>
     <loc>{{ site.url }}{{ pg.url }}</loc>
     <lastmod>{{ pg.date | machineDate }}</lastmod>
