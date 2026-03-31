@@ -250,10 +250,27 @@ function getSourceDocument(documentUrl, sourceDocuments = null) {
 }
 
 function wrapImageCaptions(value = "") {
-  return value.replace(
-    /<p>\s*(<img\b[^>]*>)\s*<\/p>\s*<p>\s*<em>([\s\S]*?)<\/em>\s*<\/p>/gi,
-    (match, imageHtml, captionHtml) => `<figure>${imageHtml}<figcaption>${captionHtml.trim()}</figcaption></figure>`
-  );
+  const wrapLinkedImageCaptions = (input = "") =>
+    input.replace(
+      /<p>\s*(<a\b[^>]*>\s*<img\b[^>]*\btitle="([^"]+)"[^>]*>\s*<\/a>)\s*<\/p>/gi,
+      (match, linkedImageHtml, captionText) =>
+        `<figure>${linkedImageHtml.replace(/\s*title="[^"]*"/i, "")}<figcaption>${captionText.trim()}</figcaption></figure>`
+    );
+
+  const wrapImageTitleCaptions = (input = "") =>
+    input.replace(
+      /<p>\s*(<img\b[^>]*\btitle="([^"]+)"[^>]*>)\s*<\/p>/gi,
+      (match, imageHtml, captionText) =>
+        `<figure>${imageHtml.replace(/\s*title="[^"]*"/i, "")}<figcaption>${captionText.trim()}</figcaption></figure>`
+    );
+
+  const wrapParagraphEmCaptions = (input = "") =>
+    input.replace(
+      /<p>\s*(<img\b[^>]*>)\s*<\/p>\s*<p>\s*<em>([\s\S]*?)<\/em>\s*<\/p>/gi,
+      (match, imageHtml, captionHtml) => `<figure>${imageHtml}<figcaption>${captionHtml.trim()}</figcaption></figure>`
+    );
+
+  return wrapParagraphEmCaptions(wrapImageTitleCaptions(wrapLinkedImageCaptions(value)));
 }
 
 function sortByDateDesc(items = []) {
