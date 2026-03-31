@@ -661,10 +661,6 @@ function renderPostulateBlock(postulate, index) {
         </button>
       </div>
       <label class="editor-field">
-        <span class="editor-label">ID</span>
-        <input class="editor-input" type="text" value="${escapeHtml(postulate.id || "")}" data-postulate-index="${index}" data-postulate-field="id" />
-      </label>
-      <label class="editor-field">
         <span class="editor-label">Verified Fact</span>
         <textarea class="editor-textarea" data-postulate-index="${index}" data-postulate-field="fact">${escapeHtml(postulate.fact || "")}</textarea>
       </label>
@@ -681,10 +677,6 @@ function renderTheoremBlock(entry, index) {
           Remove theorem
         </button>
       </div>
-      <label class="editor-field">
-        <span class="editor-label">Theorem ID</span>
-        <input class="editor-input" type="text" value="${escapeHtml(entry.id || "")}" data-theorem-index="${index}" data-theorem-field="id" />
-      </label>
       <label class="editor-field">
         <span class="editor-label">Deductive Inference</span>
         <textarea class="editor-textarea" data-theorem-index="${index}" data-theorem-field="step">${escapeHtml(entry.step || "")}</textarea>
