@@ -62,8 +62,13 @@ proof:
       no_source_needed: false
     - fact: The WVYD still operates under state-party infrastructure today.
       sources:
-        - document_url: ''
+        - document_url: /documents/wvyd-f-4-statement-of-organization-—-hively-jarrell-august-2023-1/
           webpage_url: ''
+      no_source_needed: false
+    - fact: The YDA chartered the WVYD  operating under state-party infrastructure.
+      sources:
+        - document_url: ''
+          webpage_url: https://www.theintermountain.com/life/2025/11/rechartered-reorganized/
       no_source_needed: false
   theorems: []
   qed: ''
