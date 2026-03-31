@@ -118,7 +118,7 @@ function normalizeSources(rawAxiom = {}) {
         typeof source === "string"
           ? source
           : source && typeof source === "object"
-            ? source.document_url
+            ? source.webpage_url || source.document_url
             : "";
 
       if (documentUrl) {
@@ -259,10 +259,13 @@ function computeValidationErrors(proof = {}, documents = state.documents) {
       }
 
       for (const source of axiom.sources || []) {
-        if (
-          source?.document_url &&
-          !knownDocuments.some((document) => document.url === source.document_url)
-        ) {
+        if (!source?.document_url) {
+          continue;
+        }
+
+        const linksToDocument = knownDocuments.some((document) => document.url === source.document_url);
+
+        if (!linksToDocument && !isWebUrl(source.document_url)) {
           errors.push(`Axiom ${index + 1} links to a missing source document: ${source.document_url}`);
         }
       }
@@ -302,6 +305,15 @@ function countUniqueSources(proof = {}) {
 
 function getDocumentByUrl(documentUrl = "") {
   return state.documents.find((document) => document.url === documentUrl) || null;
+}
+
+function isWebUrl(value = "") {
+  try {
+    const parsed = new URL(value);
+    return parsed.protocol === "http:" || parsed.protocol === "https:";
+  } catch {
+    return false;
+  }
 }
 
 function filteredArticles() {
@@ -585,6 +597,10 @@ function renderAxiomBlock(axiom, index) {
                 <label class="editor-field">
                   <span class="editor-label">File</span>
                   <input class="editor-file" type="file" accept="application/pdf,.pdf,image/*" data-new-source-index="${index}" data-new-source-field="file" />
+                </label>
+                <label class="editor-field">
+                  <span class="editor-label">Webpage URL (optional if no file)</span>
+                  <input class="editor-input" type="url" placeholder="https://example.com/source" value="${escapeHtml(formState.webpage_url || "")}" data-new-source-index="${index}" data-new-source-field="webpage_url" />
                 </label>
                 <label class="editor-field">
                   <span class="editor-label">Description</span>
@@ -1018,13 +1034,37 @@ async function createSourceForAxiom(index) {
     return;
   }
 
-  if (!(formState.title || "").trim() || !formState.file || !(formState.description || "").trim()) {
-    setStatus("New source documents need a title, file, and description.", "error");
+  const webpageUrl = (formState.webpage_url || "").trim();
+  const hasWebpageUrl = Boolean(webpageUrl);
+
+  if (!(formState.title || "").trim() || !(formState.description || "").trim()) {
+    setStatus("New source documents need a title and description.", "error");
     return;
   }
 
   if (!(formState.obtained || "").trim() || !(formState.source_method || "").trim()) {
     setStatus("New source documents need an obtained date and source method.", "error");
+    return;
+  }
+
+  if (!formState.file && !hasWebpageUrl) {
+    setStatus("Add either a source file or a webpage URL.", "error");
+    return;
+  }
+
+  if (hasWebpageUrl && !isWebUrl(webpageUrl)) {
+    setStatus("Enter a valid http(s) webpage URL.", "error");
+    return;
+  }
+
+  if (hasWebpageUrl) {
+    const axiom = state.selectedArticle.proof.axioms[index];
+    axiom.sources = dedupeSources([...(axiom.sources || []), { document_url: webpageUrl }]);
+    axiom.no_source_needed = false;
+    delete state.newSourceForms[index];
+
+    updateValidationPanel();
+    setStatus("Attached webpage URL source.", "success");
     return;
   }
 

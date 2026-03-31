@@ -704,9 +704,27 @@ async function handleCallback(request, env) {
   }
 }
 
-function normalizeDocumentUrl(value = "") {
+function isWebUrl(value = "") {
+  try {
+    const parsed = new URL(value);
+    return parsed.protocol === "http:" || parsed.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+function normalizeSourceUrl(value = "") {
   const trimmed = normalizeWhitespace(value);
-  return /^\/documents\/[a-z0-9-]+\/$/i.test(trimmed) ? trimmed : "";
+
+  if (/^\/documents\/[a-z0-9-]+\/$/i.test(trimmed)) {
+    return trimmed;
+  }
+
+  if (isWebUrl(trimmed)) {
+    return trimmed;
+  }
+
+  return "";
 }
 
 function dedupeProofSources(entries = []) {
@@ -716,8 +734,8 @@ function dedupeProofSources(entries = []) {
   for (const entry of entries) {
     const documentUrl =
       typeof entry === "string"
-        ? normalizeDocumentUrl(entry)
-        : normalizeDocumentUrl(entry?.document_url || entry?.documentUrl || "");
+        ? normalizeSourceUrl(entry)
+        : normalizeSourceUrl(entry?.document_url || entry?.documentUrl || "");
 
     if (!documentUrl || seen.has(documentUrl)) {
       continue;
@@ -786,7 +804,11 @@ function computeProofValidationErrors(proof = {}, documents = []) {
       }
 
       for (const source of axiom.sources || []) {
-        if (!knownDocumentUrls.has(source.document_url)) {
+        if (!source?.document_url) {
+          continue;
+        }
+
+        if (!knownDocumentUrls.has(source.document_url) && !isWebUrl(source.document_url)) {
           errors.push(`Axiom ${index + 1} links to a missing source document: ${source.document_url}`);
         }
       }
