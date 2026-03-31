@@ -55,6 +55,18 @@ ogType: article
     <div class="mt-6">{% include "components/meta-row.njk" %}</div>
   </header>
 
+  {% if featured_image %}
+    <figure class="max-w-5xl mx-auto mb-12">
+      <img
+        src="{{ featured_image }}"
+        alt="Featured image for {{ title }}"
+        class="w-full h-auto rounded-squircle border border-border-subtle"
+        loading="lazy"
+        decoding="async"
+      />
+    </figure>
+  {% endif %}
+
   {# Section 2: Reported Narrative #}
   <section id="narrative" aria-labelledby="narrative-content-heading" class="mb-16">
     <h2 id="narrative-content-heading" class="sr-only">Reported Narrative</h2>
