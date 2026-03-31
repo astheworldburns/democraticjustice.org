@@ -85,7 +85,7 @@
         <ul class="proof-card__documents">
           {% for doc in proofCard.sourceDocuments %}
             {% set docRecord = doc.documentUrl | getSourceDocument(collections.sourceDocument) %}
-            {% set docType = (docRecord.data.file_type if docRecord else "DOC") | upper %}
+            {% set docType = (docRecord.data.file_type if docRecord else ("WEB" if doc.sourceType == "webpage" else "DOC")) | upper %}
             {% set docTypeClass = "proof-card__document-badge proof-card__document-badge--pdf" %}
             {% if docType == "IMAGE" %}
               {% set docTypeClass = "proof-card__document-badge proof-card__document-badge--image" %}

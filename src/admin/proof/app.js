@@ -118,7 +118,7 @@ function normalizeSources(rawAxiom = {}) {
         typeof source === "string"
           ? source
           : source && typeof source === "object"
-            ? source.document_url
+            ? source.webpage_url || source.document_url
             : "";
 
       if (documentUrl) {

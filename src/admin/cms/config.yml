@@ -161,10 +161,10 @@ collections:
                 label_singular: Source
                 summary: "{{fields.document_url}}"
                 fields:
-                  - label: Source URL
+                  - label: Source document
                     name: document_url
                     widget: relation
-                    required: true
+                    required: false
                     collection: source_documents
                     search_fields:
                       - title
@@ -173,7 +173,12 @@ collections:
                     value_field: "/documents/{{slug}}/"
                     display_fields:
                       - title
-                    hint: Select the corresponding source document entry. Stored as /documents/.../
+                    hint: Pick an internal source document (optional when Webpage URL is provided).
+                  - label: Webpage URL
+                    name: webpage_url
+                    widget: string
+                    required: false
+                    hint: Paste a full webpage URL (optional when Source document is selected).
               - label: No Source Needed
                 name: no_source_needed
                 widget: boolean
@@ -205,10 +210,10 @@ collections:
                 label_singular: Source
                 summary: "{{fields.document_url}}"
                 fields:
-                  - label: Source URL
+                  - label: Source document
                     name: document_url
                     widget: relation
-                    required: true
+                    required: false
                     collection: source_documents
                     search_fields:
                       - title
@@ -217,7 +222,12 @@ collections:
                     value_field: "/documents/{{slug}}/"
                     display_fields:
                       - title
-                    hint: Select the corresponding source document entry. Stored as /documents/.../
+                    hint: Pick an internal source document (optional when Webpage URL is provided).
+                  - label: Webpage URL
+                    name: webpage_url
+                    widget: string
+                    required: false
+                    hint: Paste a full webpage URL (optional when Source document is selected).
               - label: No Source Needed
                 name: no_source_needed
                 widget: boolean
