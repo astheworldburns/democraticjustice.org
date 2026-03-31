@@ -5,9 +5,68 @@ description: State Lawmaker Mike Pushkin met with prosecutors and accused a yout
 author: seth-sturm
 date: 2026-03-31T08:45:00
 tags:
-  - A West Virginia lawmaker reconnected two national organizations that McCain-Feingold had separated over $948.61 in expenses that a detective found legitimate. If it stands, the DNC and the Young Democrats of America may face federal campaign finance exposure.
+  - A West Virginia delegate put the DNC and the Young Democrats of America at risk of federal campaign-finance liability when he took control of an independent youth organization through extrajudicial means and reconnected it to the state party.
 featured_image: ''
-proof: null
+proof:
+  issue: A state party chair's takeover of an independent youth organization created a federal campaign finance problem for the DNC and the Young Democrats of America.
+  axioms:
+    - premise: Political party committees cannot raise or spend soft money.
+      sources:
+        - document_url: ''
+          webpage_url: https://www.congress.gov/bill/107th-congress/house-bill/2356
+      no_source_needed: false
+    - premise: If one organization controls another through shared officers, infrastructure, or governance, the FEC treats them as affiliated.
+      sources:
+        - document_url: ''
+          webpage_url: https://www.ecfr.gov/current/title-11/chapter-I/subchapter-A/part-100/subpart-A/section-100.5
+      no_source_needed: false
+    - premise: A charter is enough to establish that affiliation.
+      sources:
+        - document_url: ''
+          webpage_url: https://www.ecfr.gov/current/title-11/chapter-I/subchapter-A/part-100/subpart-A/section-100.5
+      no_source_needed: false
+  postulates:
+    - fact: The WVYD was an independent, separately registered political organization.
+      sources:
+        - document_url: /documents/wvyd-f-4-statement-of-organization-—-hively-jarrell-august-2023/
+          webpage_url: ''
+        - document_url: /documents/west-virginia-young-democrats-constitution-2018/
+          webpage_url: ''
+      no_source_needed: false
+    - fact: After McCain-Feingold, the YDA separated from the DNC. State chapters like the WVYD operated independently from state parties.
+      sources:
+        - document_url: ''
+          webpage_url: https://www.congress.gov/bill/107th-congress/house-bill/2356
+      no_source_needed: false
+    - fact: Pushkin arranged a private meeting with Kanawha County prosecutors and initiated a criminal case over $948.61 in expenses for WVYD.
+      sources:
+        - document_url: /documents/kcso-case-no.-2024-00017430-—-hively-investigation-and-declination/
+          webpage_url: ''
+      no_source_needed: false
+    - fact: Every witness contradicted the complaint. The detective found every expense legitimate. The charge carried up to a year in jail.
+      sources:
+        - document_url: /documents/kcso-case-no.-2024-00017430-—-hively-investigation-and-declination/
+          webpage_url: ''
+        - document_url: ''
+          webpage_url: https://code.wvlegislature.gov/61-3-13/
+      no_source_needed: false
+    - fact: The prosecutor's office held the completed case open 18 months and declined charges only after FOIA requests.
+      sources:
+        - document_url: /documents/kcso-case-no.-2024-00017430-—-hively-investigation-and-declination/
+          webpage_url: ''
+      no_source_needed: false
+    - fact: While the case sat open, Pushkin filed himself as WVYD chair with the state party's address, phone, and email on the registration.
+      sources:
+        - document_url: /documents/f-4-statement-of-organization-for-west-virginia-young-democrats-filed-january-23-2025/
+          webpage_url: ''
+      no_source_needed: false
+    - fact: The WVYD still operates under state-party infrastructure today.
+      sources:
+        - document_url: ''
+          webpage_url: ''
+      no_source_needed: false
+  theorems: []
+  qed: ''
 ---
 
 At 10:30 a.m. on June 4, 2024, Delegate Mike Pushkin arrived at the Kanawha County Prosecutor’s Office for a private meeting.
