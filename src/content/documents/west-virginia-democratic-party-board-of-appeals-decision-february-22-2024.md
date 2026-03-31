@@ -1,11 +1,11 @@
 ---
-title: West Virginia Democratic Party Board of Appeals Decision (February 22, 2024)
+title: Decision of the WVDP Board of Appeals — Powell v. Hively (February 22, 2024)
 file: documents/ADOPTED Decision of the WVDP Board of Appeals - Powell v. Hively.pdf
 video_url: ''
 preview_image: ''
 og_image: ''
 primary_source: true
-description: The Board of Appeals ruling was adopted on February 22, 2024, at a hearing chaired by Delegate Mike Pushkin. Finding of Fact No. 1 states, "Hively was never appointed or elected as President of the WVYD." Finding No. 2 states he "was not appointed as Executive Vice President in August 2022, or to any other office of the WVYD, per the provisions of the WVYD Constitution." The decision orders the transfer of $4,293.60 to the WVSDEC within seven days, demands surrender of all WVYD records and accounts, including banking, social media, and postal, and threatens legal action twice, including a directive that "the Chair of the WVSDEC is directed to initiate legal proceedings to obtain control of the funds and bank records."
+description: Eight-page adopted decision of the WVDP Board of Appeals. Contains 14 findings of fact, conclusions of law organized under five sections (A through F), and orders directing turnover of WVYD records, accounts, and funds. Cites the WVYD Constitution, the DNC Charter, DNC Bylaws, Six Basic Elements of an Open Party, and WVDP Bylaws. Hively did not file a response or appear at the hearing.
 obtained: 2025-10-23
-source_method: Party records
+source_method: Published by WVDP in publicly accessible Google Drive folder
 ---
