@@ -18,7 +18,6 @@
       <ol class="proof-card__items">
         {% for axiom in proofCard.axioms %}
           <li class="proof-card__item">
-            <span class="proof-card__item-prefix">{{ axiom.id or ("A" ~ axiom.index) }}</span>
             <span class="proof-card__item-text">{{ axiom.premise }}</span>
             {% if axiom.sources.length %}
               <span class="proof-card__citations">
@@ -39,7 +38,6 @@
         <ol class="proof-card__items">
           {% for postulate in proofCard.postulates %}
             <li class="proof-card__item">
-              <span class="proof-card__item-prefix">{{ postulate.id or ("P" ~ postulate.index) }}</span>
               <span class="proof-card__item-text">{{ postulate.fact }}</span>
               {% if postulate.sources.length %}
                 <span class="proof-card__citations">
@@ -60,7 +58,6 @@
       <ol class="proof-card__items">
         {% for theorem in proofCard.theorems %}
           <li class="proof-card__item">
-            <span class="proof-card__item-prefix">{{ theorem.id or ("T" ~ theorem.index) }}</span>
             <span class="proof-card__item-text">
               {{ theorem.step }}{% if theorem.references %} <span class="proof-card__references">({{ theorem.references }})</span>{% endif %}
             </span>
