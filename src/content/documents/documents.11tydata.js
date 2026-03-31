@@ -6,15 +6,42 @@ function normalizeFilePath(value = "") {
     .replace(/\/+/g, "/");
 }
 
+function resolveDocumentFileUrl(value = "") {
+  const rawValue = (value || "").toString().trim();
+
+  if (!rawValue) {
+    return "";
+  }
+
+  if (/^[a-z][a-z0-9+.-]*:/i.test(rawValue) || rawValue.startsWith("//")) {
+    return rawValue;
+  }
+
+  const normalizedPath = `/${rawValue.replace(/^\/+/, "")}`;
+  return encodeURI(normalizedPath);
+}
+
+function decodePath(value = "") {
+  try {
+    return decodeURI(value);
+  } catch {
+    return value;
+  }
+}
+
 function getManifestPreview(manifest = {}, fileUrl = "", slug = "") {
   if (!manifest || typeof manifest !== "object") {
     return "";
   }
 
   const normalizedFileUrl = normalizeFilePath(fileUrl);
+  const decodedFileUrl = normalizeFilePath(decodePath(fileUrl));
+  const encodedFileUrl = encodeURI(decodedFileUrl);
 
   return (
     manifest[normalizedFileUrl] ||
+    manifest[decodedFileUrl] ||
+    manifest[encodedFileUrl] ||
     manifest[fileUrl] ||
     (slug ? manifest[slug] : "") ||
     ""
@@ -34,7 +61,7 @@ export default {
 
       return value !== false;
     },
-    file_url: (data) => data.file || "",
+    file_url: (data) => resolveDocumentFileUrl(data.file),
     video_url: (data) => (data.video_url || "").toString().trim(),
     file_type: (data) => {
       const value = (data.file || "").toLowerCase();
