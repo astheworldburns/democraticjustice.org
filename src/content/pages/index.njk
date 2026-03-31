@@ -117,6 +117,10 @@ ogType: website
                         <span class="font-mono text-xs text-ink-muted block mt-0.5">Preview processing</span>
                       </div>
                     </div>
+                  {% elif doc.data.video_url %}
+                    <div class="w-full h-12 bg-surface flex items-center justify-center">
+                      <span class="font-mono text-xs text-ink-muted uppercase tracking-wide">VIDEO</span>
+                    </div>
                   {% else %}
                     <div class="w-full h-12 bg-surface flex items-center justify-center">
                       <span class="font-mono text-xs text-ink-muted uppercase tracking-wide">{{ doc.data.file_type | default("doc") | upper }}</span>

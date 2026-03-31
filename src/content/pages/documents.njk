@@ -18,7 +18,7 @@ ogType: website
     </div>
     <div class="bento-grid">
       {% for doc in collections.sourceDocument %}
-        {% set docTitle = doc.data.title %}{% set docDescription = doc.data.description %}{% set docUrl = doc.url %}{% set docFile = doc.data.file %}{% set docFileType = doc.data.file_type %}{% set docObtained = doc.data.obtained %}{% set docSourceMethod = doc.data.source_method %}
+        {% set docTitle = doc.data.title %}{% set docDescription = doc.data.description %}{% set docUrl = doc.url %}{% set docFile = doc.data.file %}{% set docVideoUrl = doc.data.video_url %}{% set docFileType = doc.data.file_type %}{% set docObtained = doc.data.obtained %}{% set docSourceMethod = doc.data.source_method %}
         <div class="bento-4">{% include "components/document-card.njk" %}</div>
       {% endfor %}
     </div>

@@ -18,6 +18,11 @@
         <dt>Format</dt>
         <dd class="uppercase">{{ docFileType }}</dd>
       </div>
+    {% elseif docVideoUrl %}
+      <div class="flex gap-2">
+        <dt>Format</dt>
+        <dd class="uppercase">VIDEO</dd>
+      </div>
     {% endif %}
   </dl>
   <div class="mt-4 flex gap-3">
@@ -25,6 +30,11 @@
     {% if docFile %}
       <a href="{{ docFile }}" class="font-mono text-sm text-ink-muted hover:underline" download>
         Download {{ docFileType | default("file") | upper }}
+      </a>
+    {% endif %}
+    {% if docVideoUrl %}
+      <a href="{{ docVideoUrl }}" class="font-mono text-sm text-ink-muted hover:underline" target="_blank" rel="noreferrer">
+        Watch video
       </a>
     {% endif %}
   </div>

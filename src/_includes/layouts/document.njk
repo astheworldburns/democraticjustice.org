@@ -21,12 +21,12 @@ ogType: website
       "description": "{{ description | replace('"', '\\"') }}",
       "url": "{{ page.url | absoluteUrl(site.url) }}",
       "datePublished": "{{ obtained | machineDate }}",
-      "creator": { "@id": "{{ site.url }}/#organization" },
+      "creator": { "@id": "{{ site.url }}/#organization" }{% if file_url %},
       "distribution": {
         "@type": "DataDownload",
         "contentUrl": "{{ file_url | absoluteUrl(site.url) }}",
         "encodingFormat": "{{ file_type }}"
-      }{% if preview_image %},
+      }{% endif %}{% if preview_image %},
       "thumbnailUrl": "{{ preview_image | absoluteUrl(site.url) }}"
       {% endif %}
     }
@@ -39,8 +39,13 @@ ogType: website
       <p class="document-shell__description">{{ description }}</p>
     {% endif %}
     <div class="document-shell__actions">
-      <a class="button-link" href="{{ file_url }}" target="_blank" rel="noreferrer" data-haptic data-haptic="confirm">Open file</a>
-      <a class="button-link-muted" href="{{ file_url }}" download data-haptic>Download</a>
+      {% if file_url %}
+        <a class="button-link" href="{{ file_url }}" target="_blank" rel="noreferrer" data-haptic data-haptic="confirm">Open file</a>
+        <a class="button-link-muted" href="{{ file_url }}" download data-haptic>Download</a>
+      {% endif %}
+      {% if video_url %}
+        <a class="button-link" href="{{ video_url }}" target="_blank" rel="noreferrer" data-haptic data-haptic="confirm">Open video</a>
+      {% endif %}
     </div>
   </header>
 
@@ -48,7 +53,12 @@ ogType: website
     <section class="document-shell__primary" aria-labelledby="document-preview-heading">
       <h2 id="document-preview-heading" class="sr-only">Document preview</h2>
       <div class="document-preview">
-        {% if preview_image %}
+        {% if video_url %}
+          <div class="document-preview__fallback">
+            <p class="section-kicker">Video evidence</p>
+            <p class="mt-3 font-serif text-base leading-relaxed text-ink-secondary">Watch this source recording at <a class="headline-link break-all" href="{{ video_url }}" target="_blank" rel="noreferrer">{{ video_url }}</a>.</p>
+          </div>
+        {% elseif preview_image %}
           <img class="document-preview__image" src="{{ preview_image }}" alt="Preview of {{ title }}" loading="lazy" decoding="async" width="1200" height="1600" />
         {% elseif file_type == "image" %}
           <img class="document-preview__image" src="{{ file_url }}" alt="{{ title }}" loading="lazy" decoding="async" width="1200" height="1600" />
@@ -75,10 +85,18 @@ ogType: website
             <dt>Source method</dt>
             <dd>{{ source_method }}</dd>
           </div>
-          <div class="document-meta__item">
-            <dt>File URL</dt>
-            <dd><a class="headline-link break-all" href="{{ file_url }}">{{ file_url }}</a></dd>
-          </div>
+          {% if file_url %}
+            <div class="document-meta__item">
+              <dt>File URL</dt>
+              <dd><a class="headline-link break-all" href="{{ file_url }}" target="_blank" rel="noreferrer">{{ file_url }}</a></dd>
+            </div>
+          {% endif %}
+          {% if video_url %}
+            <div class="document-meta__item">
+              <dt>Video URL</dt>
+              <dd><a class="headline-link break-all" href="{{ video_url }}" target="_blank" rel="noreferrer">{{ video_url }}</a></dd>
+            </div>
+          {% endif %}
         </dl>
         <p class="provenance-note">C2PA: no manifest attached to this source file.</p>
       </section>
