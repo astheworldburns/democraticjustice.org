@@ -11,6 +11,7 @@ ogType: website
 {% set featuredProof = featuredEntry.proofCard if featuredEntry else null %}
 {% set featuredAuthor = featuredArticle.data.author | getAuthor(collections.authorProfiles) if featuredArticle else null %}
 {% set evidenceDocuments = collections.primarySourceDocument or [] %}
+{% set evidencePreviewDocuments = evidenceDocuments.slice(0, 2) %}
 
 <style>
   .hp-doc-thumb {
@@ -96,7 +97,7 @@ ogType: website
 
         {% if evidenceDocuments.length %}
           <ul class="mt-4 space-y-3">
-            {% for doc in evidenceDocuments %}
+            {% for doc in evidencePreviewDocuments %}
               <li>
                 <a href="{{ doc.url }}" class="group block no-underline rounded-squircle-sm border border-border-subtle overflow-hidden hover:border-accent transition-colors">
 
