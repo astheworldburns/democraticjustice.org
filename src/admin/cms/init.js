@@ -40,6 +40,31 @@ async function fetchGitHubUser(token) {
   return response.json();
 }
 
+
+function applyEditorLayoutFixes() {
+  const style = document.createElement("style");
+  style.id = "cms-editor-layout-fixes";
+  style.textContent = `
+    .nc-entryEditor-pane,
+    .nc-entryEditor-editor,
+    [role='document'] section,
+    [role='document'] [data-testid='editor-pane'] {
+      min-height: 70vh;
+    }
+
+    .nc-entryEditor-editor textarea,
+    .nc-entryEditor-editor .CodeMirror,
+    .nc-entryEditor-editor .cm-editor,
+    [role='document'] textarea[name='body'],
+    [role='document'] [id*='body'] textarea,
+    [role='document'] [aria-label='Body'] textarea {
+      min-height: 60vh !important;
+    }
+  `;
+
+  document.head.append(style);
+}
+
 function loadSveltiaScript() {
   return new Promise((resolve, reject) => {
     const script = document.createElement("script");
@@ -97,6 +122,7 @@ window.addEventListener(
       );
 
       await loadSveltiaScript();
+      applyEditorLayoutFixes();
 
       if (typeof window.initCMS !== "function") {
         throw new Error("Sveltia CMS did not finish loading.");
