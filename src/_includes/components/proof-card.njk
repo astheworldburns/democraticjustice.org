@@ -79,26 +79,5 @@
       </div>
     </section>
 
-    {% if proofCard.sourceDocuments.length %}
-      <section class="proof-card__section proof-card__section--documents" id="proof-documents" aria-labelledby="proof-documents-label">
-        <h3 id="proof-documents-label" class="proof-card__label">Documents</h3>
-        <ul class="proof-card__documents">
-          {% for doc in proofCard.sourceDocuments %}
-            {% set docRecord = doc.documentUrl | getSourceDocument(collections.sourceDocument) %}
-            {% set docType = (docRecord.data.file_type if docRecord else ("WEB" if doc.sourceType == "webpage" else "DOC")) | upper %}
-            {% set docTypeClass = "proof-card__document-badge proof-card__document-badge--pdf" %}
-            {% if docType == "IMAGE" %}
-              {% set docTypeClass = "proof-card__document-badge proof-card__document-badge--image" %}
-            {% endif %}
-            <li>
-              <a href="{{ doc.documentUrl }}" class="proof-card__document-link" data-doc-url="{{ doc.documentUrl }}">
-                <span class="{{ docTypeClass }}">{{ docType }}</span>
-                <span class="proof-card__document-name">{{ docRecord.data.title if docRecord else doc.label }}</span>
-              </a>
-            </li>
-          {% endfor %}
-        </ul>
-      </section>
-    {% endif %}
   </article>
 </section>
