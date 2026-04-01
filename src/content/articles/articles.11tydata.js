@@ -31,7 +31,7 @@ export default {
     }
 
     const articleSlug = data.url_slug || data.page.fileSlug;
-    return `/articles/${articleSlug}/index.html`;
+    return `/${articleSlug}/index.html`;
   },
   eleventyComputed: {
     author: (data) => data.author || "seth-sturm",
