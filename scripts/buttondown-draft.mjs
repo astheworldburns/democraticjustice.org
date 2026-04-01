@@ -123,7 +123,7 @@ function readFeedItems() {
 }
 
 function buildSubject(article) {
-  return `${article.title} | Democratic Justice`;
+  return article.title;
 }
 
 function getArticleSlug(articleLink) {
@@ -212,19 +212,15 @@ function readArticleExcerpt(articleLink) {
 
 function buildBody(article) {
   const excerptParagraphs = readArticleExcerpt(article.link);
-  const meta = [article.author, formatPublishDate(article.pubDate)].filter(Boolean).join(" · ");
   const excerptHtml = excerptParagraphs
     .map((paragraph) => `<p style="margin: 0 0 16px 0;">${escapeHtml(paragraph)}</p>`)
     .join("\n");
+  const leadHtml = excerptHtml || `<p style="margin: 0 0 16px 0;">${escapeHtml(article.description || "")}</p>`;
 
   return [
-    '<div style="font-family: Georgia, \'Times New Roman\', serif; font-size: 20px; line-height: 1.65; color: #111; max-width: 680px; margin: 0 auto;">',
-    `  <p style="margin: 0 0 14px 0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.5; color: #444;">Democratic Justice</p>`,
-    `  <h1 style="margin: 0 0 14px 0; font-size: 42px; line-height: 1.08; color: #111;">${escapeHtml(article.title)}</h1>`,
-    `  <p style="margin: 0 0 16px 0; font-family: Arial, Helvetica, sans-serif; font-size: 28px; line-height: 1.25; color: #30363d;">${escapeHtml(article.description)}</p>`,
-    `  <p style="margin: 0 0 24px 0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #555;">${escapeHtml(meta)}</p>`,
-    excerptHtml,
-    `  <p style="margin: 24px 0 0 0;"><a href="${escapeHtml(article.link)}" style="color: #111; text-decoration: underline; font-family: Arial, Helvetica, sans-serif; font-size: 16px;">Continue reading on Democratic Justice</a></p>`,
+    '<div style="font-family: Georgia, \'Times New Roman\', serif; font-size: 20px; line-height: 1.65; color: #111;">',
+    leadHtml,
+    `  <p style="margin: 24px 0 0 0;"><a href="${escapeHtml(article.link)}" style="color: #111; text-decoration: underline; font-family: Arial, Helvetica, sans-serif; font-size: 16px;">Continue reading</a></p>`,
     '  <p style="margin: 18px 0 0 0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.6; color: #444;">Every Democratic Justice story opens with a proof card and the source documents behind it.</p>',
     '  <p style="margin: 18px 0 0 0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #111;">',
     '    <a href="{{ unsubscribe_url }}" style="color: #111; text-decoration: underline; font-weight: 700;">Unsubscribe</a>',
