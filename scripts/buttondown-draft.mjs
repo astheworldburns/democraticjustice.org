@@ -215,7 +215,7 @@ function buildBody(article) {
   const excerptHtml = excerptParagraphs
     .map((paragraph) => `<p style="margin: 0 0 16px 0;">${escapeHtml(paragraph)}</p>`)
     .join("\n");
-  const leadHtml = excerptHtml || `<p style="margin: 0 0 16px 0;">${escapeHtml(article.description || "")}</p>`;
+  const leadHtml = excerptHtml || '<p style="margin: 0 0 16px 0;">Read today\'s story at Democratic Justice.</p>';
 
   return [
     '<div style="font-family: Georgia, \'Times New Roman\', serif; font-size: 20px; line-height: 1.65; color: #111;">',
@@ -268,7 +268,6 @@ async function createDraft(headers, article, subject, body) {
       status: "draft",
       email_type: "public",
       template: "classic",
-      description: article.description,
       canonical_url: article.link,
       metadata: {
         article_url: article.link,
