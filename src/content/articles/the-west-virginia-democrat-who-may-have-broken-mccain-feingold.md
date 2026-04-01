@@ -1,6 +1,6 @@
 ---
 kicker: Investigation
-title: The West Virginia Democrat who may have broken McCain-Feingold
+title: West Virginia Democrats may have broken McCain-Feingold
 description: A state party chair and lawmaker filed a criminal complaint against a youth leader to seize an independent organization that separated from the national party in 2002 under strict new campaign finance laws.
 author: seth-sturm
 date: 2026-03-31T18:55:00
@@ -88,7 +88,7 @@ Ryan Frankenberry, the West Virginia Democratic Party’s executive director, an
 
 He told prosecutors that Jacob Hively had "declared himself president" of the West Virginia Young Democrats, taken a checkbook without the treasurer's permission, and written checks to himself. Frankenberry called it fraud.
 
-The criminal referral capped months of demands. Since December 2023, Pushkin and Frankenberry had ordered Hively to hand over the youth group's banking, social media, and other account credentials. 
+The criminal referral capped months of demands. Since December 2023, Pushkin and Frankenberry had ordered Hively to hand over the youth group's banking, social media, and other account credentials.
 
 ![A screengrab from a Zoom video conference meeting. The black screen is divided into five video windows arranged in a 3-2 grid.  The top middle window, which is slightly prominent, features Delegate Mike Pushkin, who is actively speaking. He is a Caucasian man with glasses and dark hair, wearing a dark blazer over a multi-colored shirt and tie. In his background, a tall banner reads "WEST VIRGINIA" vertically with a "DNC" (Democratic National Committee) logo below it.  The top left window features a woman labeled "Pam Cline." She is Caucasian, wearing glasses, a denim jacket, and a necklace. The top right window features a Caucasian woman named "Carrie Clendening," who is adjusting her reddish-brown hair with both hands.  The bottom left window features a man named "Jarryd Powell," who has dark hair, glasses, and a full beard. His window is highlighted with a green border, indicating he may be speaking or was recently active. The bottom right window features an older Caucasian man with white hair named "nick casey" (all lowercase), who is smiling.  A large white "zoom" logo is visible in the bottom right corner of the entire screengrab. At the bottom, centered in the black background, are the captions: "I am, yes."](/assets/images/uploads/Screenshot%202026-03-31%20at%204.45.35%20PM.png "Delegate Mike Pushkin (top center), pictured here during a February 2024, party Zoom meeting, answers affirmatively to a question about his authority, just moments before the West Virginia Democratic Party Board of Appeals authorized a threat of 'legal action' against the independent West Virginia Young Democrats.")
 
