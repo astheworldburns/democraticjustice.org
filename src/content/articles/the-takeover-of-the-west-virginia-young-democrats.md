@@ -1,6 +1,7 @@
 ---
 kicker: Investigation
 title: Pretext
+url_slug: pretext
 description: Documents Show WV Democratic Party chair staged extrajudicial hearing to seize independent youth organization.
 author: seth-sturm
 date: 2026-03-31T17:04:00
