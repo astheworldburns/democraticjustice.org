@@ -90,21 +90,23 @@ Around the conference table sat Prosecutor Adam Petry, assistant prosecutors Ken
 
 It was Frankenberry who "did most of the explaining," laying out a case against Jacob Hively, president of the West Virginia Young Democrats.
 
-He told prosecutors that Jacob Hively had "declared himself president" of the West Virginia Young Democrats, taken a checkbook without the treasurer's permission, and written checks to himself. Frankenberry called it fraud.
+According to Detective Pile's report, Frankenberry told prosecutors that Hively had "declared himself president" of the West Virginia Young Democrats, obtained a checkbook without the treasurer's authorization, and written checks to himself. He provided documents to support the claims. Frankenberry called it fraud.
 
-The criminal referral capped months of demands. Since December 2023, Pushkin and Frankenberry had ordered Hively to hand over the youth group's banking, social media, and other account credentials.
+In March 2024, Frankenberry met with a United Bank representative and obtained confidential banking records for the youth group's account. Frankenberry presented copies of six checks, numbered 151 through 156. Each was payable to Hively and signed "Jacob Hively, President."
 
-The threat of "legal action" was formalized during a February 22, 2024,  state party Board of Appeals Zoom meeting, where officials authorized Chair Pushkin to take legal measures should Hively refuse to surrender the independent organization's accounts.
+The memo lines listed website hosting, a Young Democrats of America registration fee, printing, postage, and postcards. The total was $948.61.
 
-The WVYD is a legally distinct, independently registered entity. State party officials had no legal authority over its accounts. In March 2024, Frankenberry met with a United Bank representative and obtained confidential banking records for the youth group.
+At the close of the meeting, prosecutors directed that more information be obtained, including an interview with Hively, and ordered the case reviewed in its entirety to determine whether criminal charges were applicable.
 
-The account held less than $5,000. Six checks totaling $948.61 drew scrutiny, all payable to Hively and signed "Jacob Hively, President." The memo lines listed website hosting, a YDA registration fee, printing, postage, and postcards.
+The Kanawha County Sheriff's Office opened a case. The listed victim was the State of West Virginia. The offense classification: fraudulent schemes, false pretenses under $1,000.
 
-The Kanawha County Sheriff’s Office logged Case No. 2024-00017430. The listed victim was the State of West Virginia. The offense classification: fraudulent schemes, false pretenses under $1,000.
+The criminal referral capped months of escalation. Since December 2023, Pushkin and Frankenberry had demanded Hively surrender the youth group's banking, social media, and other account credentials.
+
+In February 2024, a state party Board of Appeals Zoom meeting formalized the threat of "legal action," authorizing Chair Pushkin to take legal measures should Hively refuse to comply.
 
 ![Kanawha County Sheriff Case Report Detail for Case No. 2024-00017430. The victim is listed as West Virginia, address unknown, victim type Government. The related offense is Crime Code 26A, Statute 61-3-24(D), described as less than $1,000 (False pretenses) Fraudulent schemes.](/assets/images/uploads/KCSO%20Screenshot%20Victim%20WV.jpg "Kanawha County Sheriff Case Report Detail for Case No. 2024-00017430. The victim is listed as West Virginia, address unknown, victim type Government. The related offense is Crime Code 26A, Statute 61-3-24(D), described as less than $1,000 (False pretenses) Fraudulent schemes. || FOIA Request KCSO")
 
-Detective Pile interviewed Hively and two other witnesses. Each contradicted the initial complaint.
+In the weeks following the June 4th meeting, Detective Pile interviewed Hively and two other witnesses. Each contradicted the initial complaint.
 
 Frankenberry claimed Hively had “declared himself president” and that “there is a procedure to follow” for an appointment to be valid.
 
@@ -144,18 +146,16 @@ During the period when the case sat in prosecutorial limbo, Pushkin and Frankenb
 
 On January 23, 2025, Pushkin and Frankenberry filed Statements of Organization with the Secretary of State listing themselves as chairperson and treasurer of the West Virginia Young Democrats.
 
-For the first time since 2002, when Congress passed the Bipartisan Campaign Reform Act, the Young Democrats of America and the DNC were tied through official channels.
+The DNC holds governance authority over the West Virginia Democratic Party. The West Virginia Democratic Party now maintains operational control of the West Virginia Young Democrats. The Young Democrats of America issued a charter to that group.
 
-The BCRA, or McCain-Feingold, bans soft money contributions to political parties. Soft money is the unlimited, lightly regulated money that can flow from corporations, unions, and wealthy donors outside the federal contribution system.
+State-chartered chapters of the Young Democrats of America operate as separate entities, legally distinct from state parties. That separation exists because federal law requires it.
 
-The Young Democrats of America responded to McCain-Feingold by separating from the Democratic National Committee and reorganizing as an independent political organization.
+In 2002, Congress passed the Bipartisan Campaign Reform Act, known as McCain-Feingold, banning soft money contributions to political parties. Soft money is the unlimited, lightly regulated money that can flow from corporations, unions, and wealthy donors outside the federal contribution system.
 
-That structure extended to the state level. State-chartered chapters of the YDA operate as separate entities, legally distinct from the state party. The firewall between state parties and these independent organizations is what makes the fundraising architecture legal.
+The Young Democrats of America responded by separating from the Democratic National Committee and reorganizing as an independent political organization. The firewall between state parties and these independent organizations is what makes the fundraising architecture legal.
 
-Federal regulators evaluate control through a multi-factor test that looks at governance authority, overlapping officers, shared infrastructure, financing, and the overall relationship between the entities.
+Federal regulators evaluate control through a multi-factor test that examines governance authority, overlapping officers, shared infrastructure, financing, and the overall relationship between entities.
 
-The current filings for the West Virginia Young Democrats meet all of those criteria.
+The current filings for the West Virginia Young Democrats satisfy every one of those criteria.
 
-The DNC holds governance authority over the West Virginia Democratic Party. The West Virginia Democratic Party maintains operational control of the West Virginia Young Democrats. The Young Democrats of America issued a charter to that group.
-
-Two entities, once separated to maintain a legal firewall, are now connected through a state party’s infrastructure. Whether that arrangement complies with campaign finance law is a question for federal regulators.
+Two entities that were separated to maintain a legal firewall are now connected through a state party's infrastructure. Whether that arrangement complies with campaign finance law is a question for federal regulators.
