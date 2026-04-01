@@ -111,7 +111,8 @@ function readFeedItems() {
       link: extractTag(itemXml, "link"),
       description: extractTag(itemXml, "description"),
       author: extractTag(itemXml, "author"),
-      pubDate: extractTag(itemXml, "pubDate")
+      pubDate: extractTag(itemXml, "pubDate"),
+      content: extractTag(itemXml, "content:encoded")
     }))
     .filter((item) => item.title && item.link);
 
@@ -120,6 +121,29 @@ function readFeedItems() {
   }
 
   return items;
+}
+
+function stripHtmlTags(value = "") {
+  return value.replace(/<[^>]+>/g, " ");
+}
+
+function readFeedExcerpt(contentHtml = "") {
+  if (!contentHtml) {
+    return [];
+  }
+
+  const paragraphs = [...contentHtml.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
+    .map((match) => stripHtmlTags(match[1] || ""))
+    .map((text) => cleanMarkdownBlock(decodeXmlEntities(text)))
+    .filter(Boolean)
+    .filter((text) => text.length > 40);
+
+  if (!paragraphs.length) {
+    return [];
+  }
+
+  const excerptCount = Math.min(6, Math.max(2, Math.ceil(paragraphs.length / 3)));
+  return paragraphs.slice(0, excerptCount);
 }
 
 function buildSubject(article) {
@@ -206,16 +230,18 @@ function readArticleExcerpt(articleLink) {
     return [];
   }
 
-  const excerptCount = Math.max(1, Math.ceil(narrativeBlocks.length / 3));
+  const excerptCount = Math.min(6, Math.max(2, Math.ceil(narrativeBlocks.length / 3)));
   return narrativeBlocks.slice(0, excerptCount);
 }
 
 function buildBody(article) {
   const excerptParagraphs = readArticleExcerpt(article.link);
-  const excerptHtml = excerptParagraphs
+  const fallbackFeedExcerpt = readFeedExcerpt(article.content);
+  const selectedExcerpt = excerptParagraphs.length ? excerptParagraphs : fallbackFeedExcerpt;
+  const excerptMarkup = selectedExcerpt
     .map((paragraph) => `<p style="margin: 0 0 16px 0;">${escapeHtml(paragraph)}</p>`)
     .join("\n");
-  const leadHtml = excerptHtml || '<p style="margin: 0 0 16px 0;">Read today\'s story at Democratic Justice.</p>';
+  const leadHtml = excerptMarkup || '<p style="margin: 0 0 16px 0;">Read today\'s story at Democratic Justice.</p>';
 
   return [
     '<div style="font-family: Georgia, \'Times New Roman\', serif; font-size: 20px; line-height: 1.65; color: #111;">',
