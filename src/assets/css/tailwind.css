@@ -1322,7 +1322,7 @@
     margin: 0;
     max-width: 37.5rem;
     font-family: "Source Serif 4";
-    font-size: clamp(1.75rem, 1.55rem + 0.9vw, 2.15rem);
+    font-size: clamp(1.4rem, 1.24rem + 0.72vw, 1.85rem);
     line-height: 1.2;
     font-weight: 700;
     color: var(--color-text-heading);
@@ -1539,7 +1539,7 @@
     }
 
     .proof-card__issue {
-      font-size: 1.52rem;
+      font-size: 1.3rem;
     }
 
     .proof-card__section {
