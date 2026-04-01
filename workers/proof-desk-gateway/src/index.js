@@ -940,7 +940,7 @@ async function loadArticles(token, env) {
         description: parsed.data?.description || "",
         author: parsed.data?.author || "",
         date: parsed.data?.date || null,
-        url: `/articles/${slug}/`,
+        url: `/${slug}/`,
         repo_path: entry.path,
         proof: parsed.data?.proof || null
       };
@@ -1403,7 +1403,7 @@ function articleResponseFromParsed(slug, repoPath, parsed = {}) {
     tags: Array.isArray(data.tags) ? data.tags : data.tags ? [data.tags] : [],
     featured_image: data.featured_image || "",
     body: parsed.body || "",
-    url: `/articles/${slug}/`,
+    url: `/${slug}/`,
     repo_path: repoPath,
     proof: data.proof || null
   };

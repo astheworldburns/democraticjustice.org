@@ -1341,10 +1341,10 @@
 
   .proof-card__issue {
     margin: 0;
-    max-width: 37.5rem;
+    max-width: none;
     font-family: "Source Serif 4";
-    font-size: clamp(1.4rem, 1.24rem + 0.72vw, 1.85rem);
-    line-height: 1.2;
+    font-size: clamp(1.28rem, 1.14rem + 0.56vw, 1.62rem);
+    line-height: 1.22;
     font-weight: 700;
     color: var(--color-text-heading);
   }
@@ -1560,7 +1560,8 @@
     }
 
     .proof-card__issue {
-      font-size: 1.3rem;
+      font-size: 1.18rem;
+      line-height: 1.24;
     }
 
     .proof-card__section {
