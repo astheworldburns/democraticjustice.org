@@ -6,7 +6,7 @@ author: seth-sturm
 date: 2026-03-31T18:55:00
 tags:
   - article
-featured_image: /assets/images/uploads/Screenshot 2026-03-31 at 4.45.35 PM.png
+featured_image: ''
 proof:
   issue: Does the West Virginia Democratic Party's control of the West Virginia Young Democrats violate federal campaign-finance law governing party committee affiliation?
   axioms:
