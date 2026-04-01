@@ -4,7 +4,7 @@ title: West Virginia Democrats may have broken McCain-Feingold
 url_slug: west-virginia-democrats-may-have-broken-mccain-feingold
 description: The Democratic Party chair filed a criminal complaint against a youth leader and seized control of an independent organization that split from the DNC in 2002, in order to comply with campaign finance laws.
 author: seth-sturm
-date: 2026-03-31T18:55:00
+date: 2026-04-01T11:46:00
 tags:
   - article
 featured_image: /assets/images/uploads/Screenshot 2026-03-31 at 4.45.35 PM.png
