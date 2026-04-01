@@ -910,6 +910,13 @@
     color: rgb(var(--ink-muted));
   }
 
+  .story-prose figure figcaption .figure-credit,
+  .page-prose figure figcaption .figure-credit,
+  .article-prose figure figcaption .figure-credit {
+    display: block;
+    margin-top: 0.2rem;
+  }
+
   .home-shell {
     @apply grid gap-10;
   }
