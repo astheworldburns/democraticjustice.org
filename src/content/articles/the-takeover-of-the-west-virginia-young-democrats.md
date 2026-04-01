@@ -8,6 +8,9 @@ date: 2026-03-31T17:04:00
 tags:
   - article
 featured_image: /assets/images/uploads/Screenshot 2026-03-31 at 4.45.35 PM.png
+featured_image_alt: ''
+featured_image_caption: ''
+featured_image_credit: ''
 proof:
   issue: Did state party leaders use an internal tribunal and a fabricated rules violation to execute a hostile takeover of a legally independent political action committee?
   axioms:
@@ -140,7 +143,7 @@ Jarryd Powell, who filed the grievance that triggered the seizure, was elected v
 
 In public-facing statements, the newly rechartered organization provided a Gmail email address as its primary contact information.
 
-The new officers filed an amended [F-4 Statement of Organization](https://drive.google.com/file/d/1Imit4gcRkQ6veoRk6E_lYa7zZrpkX5Jr/view?usp=sharing) with the WVSOS on January 21, 2026. The new filing still lists the party’s P.O. Box, phone number and an email hosted by the party. 
+The new officers filed an amended [F-4 Statement of Organization](https://drive.google.com/file/d/1Imit4gcRkQ6veoRk6E_lYa7zZrpkX5Jr/view?usp=sharing) with the WVSOS on January 21, 2026. The new filing still lists the party’s P.O. Box, phone number and an email hosted by the party.
 
 An entity that was previously an independently registered PAC with its own fiduciaries was now under the control of the state party.
 
@@ -148,4 +151,4 @@ But between the board's internal ruling and the recharter, the party took one ad
 
 On June 4, 2024, Pushkin and Frankenberry walked into the Kanawha County Prosecutor's Office and filed a criminal complaint against Jacob Hively.
 
-[Continued in Part II: The Criminal Case]
+**Read what happened next:** [**West Virginia Democrats may have broken McCain-Feingold**](https://playground.outlier.ai/link)
