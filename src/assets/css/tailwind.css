@@ -1272,11 +1272,11 @@
   .proof-card--unified::after {
     content: "";
     position: absolute;
-    inset: 0 0 auto;
-    height: 42%;
-    background: linear-gradient(165deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0));
+    inset: 0;
+    background:
+      linear-gradient(165deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.02) 48%, rgba(255, 255, 255, 0));
     pointer-events: none;
-    z-index: 1;
+    z-index: 0;
   }
 
   .proof-card__topbar {
