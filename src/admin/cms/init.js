@@ -136,6 +136,61 @@ function applyEditorLayoutFixes() {
   document.head.append(style);
 }
 
+function installImageWithCreditEditorComponent() {
+  if (!window.CMS || typeof window.CMS.registerEditorComponent !== "function") {
+    return;
+  }
+
+  const captionCreditSeparator = "||";
+  const imageBlockPattern = /^!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)$/;
+
+  window.CMS.registerEditorComponent({
+    id: "image-with-credit",
+    label: "Image with Credit",
+    fields: [
+      { name: "alt", label: "Alt Text", widget: "string", required: false },
+      { name: "src", label: "Image", widget: "image" },
+      { name: "caption", label: "Caption", widget: "text", required: false },
+      { name: "credit", label: "Credit", widget: "string", required: false }
+    ],
+    pattern: imageBlockPattern,
+    fromBlock(match) {
+      const [, alt = "", src = "", title = ""] = match;
+      const [caption = "", credit = ""] = title
+        .split(captionCreditSeparator)
+        .map((part) => part.trim());
+
+      return {
+        alt,
+        src,
+        caption,
+        credit
+      };
+    },
+    toBlock({ alt = "", src = "", caption = "", credit = "" }) {
+      const normalizedSrc = encodeUploadPath(src);
+      const captionValue = caption.trim();
+      const creditValue = credit.trim();
+      const titleValue = [captionValue, creditValue].filter(Boolean).join(` ${captionCreditSeparator} `);
+      const escapedTitle = titleValue.replace(/"/g, "&quot;");
+
+      if (titleValue) {
+        return `![${alt}](${normalizedSrc} "${escapedTitle}")`;
+      }
+
+      return `![${alt}](${normalizedSrc})`;
+    },
+    toPreview({ alt = "", src = "", caption = "", credit = "" }) {
+      const captionValue = caption.trim();
+      const creditValue = credit.trim();
+      const captionLine = [captionValue, creditValue ? `Photo: ${creditValue}` : ""].filter(Boolean).join(" ");
+      const imageAlt = alt || captionValue || "Inline image";
+
+      return `<figure><img src="${encodeUploadPath(src)}" alt="${imageAlt}" />${captionLine ? `<figcaption>${captionLine}</figcaption>` : ""}</figure>`;
+    }
+  });
+}
+
 function loadSveltiaScript() {
   return new Promise((resolve, reject) => {
     const script = document.createElement("script");
@@ -195,6 +250,7 @@ window.addEventListener(
       await loadSveltiaScript();
       applyEditorLayoutFixes();
       installLocalUploadPathHook();
+      installImageWithCreditEditorComponent();
 
       if (typeof window.initCMS !== "function") {
         throw new Error("Sveltia CMS did not finish loading.");

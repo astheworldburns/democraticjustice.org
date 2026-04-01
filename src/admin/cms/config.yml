@@ -128,6 +128,21 @@ collections:
         name: featured_image
         widget: image
         required: false
+      - label: Featured Image Alt Text
+        name: featured_image_alt
+        widget: string
+        required: false
+        hint: Optional descriptive alt text for the featured image.
+      - label: Featured Image Caption
+        name: featured_image_caption
+        widget: text
+        required: false
+        hint: Optional caption shown beneath the featured image.
+      - label: Featured Image Credit
+        name: featured_image_credit
+        widget: string
+        required: false
+        hint: 'Optional source/credit line shown as "Photo: ..." beneath the featured image.'
       - label: Proof Card
         name: proof
         widget: object
@@ -252,6 +267,7 @@ collections:
       - label: Body
         name: body
         widget: markdown
+        hint: Use "Insert → Image with Credit" in the editor toolbar for a caption/credit form (no markdown syntax needed).
   - name: source_documents
     label: Source Documents
     label_singular: Source Document

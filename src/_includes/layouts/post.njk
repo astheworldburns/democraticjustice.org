@@ -6,8 +6,7 @@ ogType: article
 {% set articleHtml = content | withHeadingIds | safe %}
 {% set tocItems = content | withHeadingIds | extractHeadings %}
 {% set relatedStories = collections.article | relatedArticles(page, tags, 3) %}
-{% set fallbackLeadImage = articleHtml | firstImageFromHtml %}
-{% set leadImage = {"src": featured_image, "alt": "Featured image for " ~ title} if featured_image else fallbackLeadImage %}
+{% set leadImage = {"src": featured_image, "alt": featured_image_alt or ("Featured image for " ~ title)} if featured_image else null %}
 
 {% if proofCard %}
 <script type="application/ld+json">
@@ -61,11 +60,16 @@ ogType: article
     <figure class="max-w-3xl mx-auto mb-12">
       <img
         src="{{ leadImage.src }}"
-        alt="{{ leadImage.alt or ("Lead image for " ~ title) }}"
+        alt="{{ leadImage.alt }}"
         class="w-full h-auto rounded-squircle border border-border-subtle"
         loading="lazy"
         decoding="async"
       />
+      {% if featured_image_caption or featured_image_credit %}
+        <figcaption class="mt-3 text-center text-xs italic text-ink-muted">
+          {% if featured_image_caption %}{{ featured_image_caption }}{% endif %}{% if featured_image_caption and featured_image_credit %} {% endif %}{% if featured_image_credit %}Photo: {{ featured_image_credit }}{% endif %}
+        </figcaption>
+      {% endif %}
     </figure>
   {% endif %}
 

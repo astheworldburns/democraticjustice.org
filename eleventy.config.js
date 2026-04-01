@@ -250,18 +250,33 @@ function getSourceDocument(documentUrl, sourceDocuments = null) {
 }
 
 function wrapImageCaptions(value = "") {
+  const renderCaption = (rawCaption = "") => {
+    const captionValue = rawCaption.trim();
+    const [caption = "", credit = ""] = captionValue.split("||").map((part) => part.trim());
+
+    if (caption && credit) {
+      return `${caption} <span class="figure-credit">Photo: ${credit}</span>`;
+    }
+
+    if (!caption && credit) {
+      return `<span class="figure-credit">Photo: ${credit}</span>`;
+    }
+
+    return captionValue;
+  };
+
   const wrapLinkedImageCaptions = (input = "") =>
     input.replace(
       /<p>\s*(<a\b[^>]*>\s*<img\b[^>]*\btitle="([^"]+)"[^>]*>\s*<\/a>)\s*<\/p>/gi,
       (match, linkedImageHtml, captionText) =>
-        `<figure>${linkedImageHtml.replace(/\s*title="[^"]*"/i, "")}<figcaption>${captionText.trim()}</figcaption></figure>`
+        `<figure>${linkedImageHtml.replace(/\s*title="[^"]*"/i, "")}<figcaption>${renderCaption(captionText)}</figcaption></figure>`
     );
 
   const wrapImageTitleCaptions = (input = "") =>
     input.replace(
       /<p>\s*(<img\b[^>]*\btitle="([^"]+)"[^>]*>)\s*<\/p>/gi,
       (match, imageHtml, captionText) =>
-        `<figure>${imageHtml.replace(/\s*title="[^"]*"/i, "")}<figcaption>${captionText.trim()}</figcaption></figure>`
+        `<figure>${imageHtml.replace(/\s*title="[^"]*"/i, "")}<figcaption>${renderCaption(captionText)}</figcaption></figure>`
     );
 
   const wrapParagraphEmCaptions = (input = "") =>
