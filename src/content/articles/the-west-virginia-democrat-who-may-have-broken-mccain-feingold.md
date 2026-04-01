@@ -84,11 +84,11 @@ proof:
   qed: For the first time since 2002, the Young Democrats of America is connected to the Democratic National Committee through official party channels.
 ---
 
-At 10:30 a.m. on June 4, 2024, Delegate Mike Pushkin arrived at the Kanawha County Prosecutor’s Office for a private meeting.
+At 10:30 a.m. on June 4, 2024, Delegate Mike Pushkin walked into the Kanawha County Prosecutor's Office. He had requested the meeting to discuss what he described as a "possible criminal matter."
 
-Pushkin had contacted Prosecutor Adam Petry about a “possible criminal matter,” after which Kanawha County Sheriff Chief Deputy S.D. Snuffer ordered Detective Ana Pile to attend.
+Around the conference table sat Prosecutor Adam Petry, assistant prosecutors Kenneth Bannon and Debra Rusnak, and Ryan Frankenberry, executive director of the West Virginia Democratic Party. Detective Ana Pile attended on orders from Kanawha County Sheriff Chief Deputy S.D. Snuffer.
 
-Ryan Frankenberry, the West Virginia Democratic Party’s executive director, and prosecutors Adam Petry, Kenneth Bannon, and Debra Rusnak sat at the conference table. Frankenberry “did most of the explaining" as he laid out a case against Jacob Hively, president of the West Virginia Young Democrats.
+It was Frankenberry who "did most of the explaining," laying out a case against Jacob Hively, president of the West Virginia Young Democrats.
 
 He told prosecutors that Jacob Hively had "declared himself president" of the West Virginia Young Democrats, taken a checkbook without the treasurer's permission, and written checks to himself. Frankenberry called it fraud.
 
