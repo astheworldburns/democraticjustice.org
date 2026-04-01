@@ -25,7 +25,14 @@ function isPublicArticle(data = {}) {
 
 export default {
   layout: "layouts/post.njk",
-  permalink: (data) => (isPublicArticle(data) ? `/articles/${data.page.fileSlug}/index.html` : false),
+  permalink: (data) => {
+    if (!isPublicArticle(data)) {
+      return false;
+    }
+
+    const articleSlug = data.url_slug || data.page.fileSlug;
+    return `/articles/${articleSlug}/index.html`;
+  },
   eleventyComputed: {
     author: (data) => data.author || "seth-sturm",
     proofCard: (data) => safeProofCard(data),

@@ -98,6 +98,11 @@ collections:
       - label: Headline
         name: title
         widget: string
+      - label: Article URL Slug
+        name: url_slug
+        widget: string
+        required: false
+        hint: "Optional URL segment after /articles/. Use lowercase words separated by hyphens (example: pretext). Leave blank to keep the filename-based URL."
       - label: Lede
         name: description
         widget: text
