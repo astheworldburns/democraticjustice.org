@@ -4,9 +4,9 @@
   {% endif %}
   {% if metaAuthor %}
     {% if metaAuthorUrl %}
-      <a href="{{ metaAuthorUrl }}" class="meta-row__author">{{ metaAuthor }}</a>
+      <span>By <a href="{{ metaAuthorUrl }}" class="meta-row__author">{{ metaAuthor }}</a></span>
     {% else %}
-      <span class="meta-row__author">{{ metaAuthor }}</span>
+      <span>By <span class="meta-row__author">{{ metaAuthor }}</span></span>
     {% endif %}
   {% endif %}
   {% if metaDate %}

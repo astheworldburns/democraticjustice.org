@@ -54,6 +54,18 @@ ogType: article
     {% if description %}<p class="font-serif text-xl text-ink-secondary italic mt-4">{{ description }}</p>{% endif %}
     {% set metaDesk = kicker %}{% set metaAuthor = authorProfile.data.name if authorProfile else author %}{% set metaAuthorUrl = authorProfile.url if authorProfile else null %}{% set metaDate = date %}{% set metaReadTime = content | readingMinutes %}
     <div class="mt-6">{% include "components/meta-row.njk" %}</div>
+    <div class="mt-4 flex justify-end" data-pagefind-ignore>
+      <button
+        type="button"
+        class="button-link-muted text-xs px-3 py-2"
+        data-copy-link
+        data-copy-value="{{ site.url }}{{ page.url }}"
+        data-copy-label-default="Share story"
+        data-copy-label-success="Link copied"
+      >
+        Share story
+      </button>
+    </div>
   </header>
 
   {% if leadImage and leadImage.src %}
@@ -73,12 +85,7 @@ ogType: article
     </figure>
   {% endif %}
 
-  {% set shareTitle = "Share this investigation" %}
-  {% set shareDeck = "If this reporting matters, send it to someone who should see it." %}
-  {% set showShareUrl = false %}
-  <div class="mb-12">
-    {% include "components/story-share-callout.njk" %}
-  </div>
+  <div class="max-w-3xl mx-auto mb-12 border-t border-border-subtle" aria-hidden="true"></div>
 
   {# Section 2: Reported Narrative #}
   <section id="narrative" aria-labelledby="narrative-content-heading" class="mb-16">
@@ -90,12 +97,6 @@ ogType: article
       </aside>
     {% endif %}
     <div class="article-prose max-w-3xl mx-auto">{{ articleHtml }}</div>
-    <div class="mt-10">
-      {% set shareTitle = "Share this investigation" %}
-      {% set shareDeck = "Keep this reporting moving. Share the link, forward it, and put it in front of the people who need to see it." %}
-      {% set showShareUrl = true %}
-      {% include "components/story-share-callout.njk" %}
-    </div>
   </section>
 
   {# Related Stories #}
