@@ -11,7 +11,8 @@ const BUTTONDOWN_API_URL = "https://api.buttondown.com/v1/emails";
 function parseArgs(argv = []) {
   return {
     dryRun: argv.includes("--dry-run"),
-    force: argv.includes("--force")
+    force: argv.includes("--force"),
+    check: argv.includes("--check")
   };
 }
 
@@ -122,7 +123,7 @@ function readFeedItems() {
 }
 
 function buildSubject(article) {
-  return `${article.title} | Democratic Justice`;
+  return article.title;
 }
 
 function getArticleSlug(articleLink) {
@@ -211,38 +212,20 @@ function readArticleExcerpt(articleLink) {
 
 function buildBody(article) {
   const excerptParagraphs = readArticleExcerpt(article.link);
-  const meta = [article.author, formatPublishDate(article.pubDate)].filter(Boolean).join(" · ");
   const excerptHtml = excerptParagraphs
-    .map((paragraph) => `<p style="margin: 0 0 18px 0; font-family: Georgia, 'Times New Roman', serif; font-size: 20px; line-height: 1.75; color: #171717;">${escapeHtml(paragraph)}</p>`)
+    .map((paragraph) => `<p style="margin: 0 0 16px 0;">${escapeHtml(paragraph)}</p>`)
     .join("\n");
+  const leadHtml = excerptHtml || '<p style="margin: 0 0 16px 0;">Read today\'s story at Democratic Justice.</p>';
 
   return [
-    "<!-- buttondown-editor-mode: fancy -->",
-    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="width: 100%; border-collapse: collapse;">',
-    "  <tr>",
-    '    <td style="padding: 0;">',
-    '      <p style="margin: 0 0 18px 0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase; color: #5f6368;">Democratic Justice</p>',
-    `      <h1 style="margin: 0 0 16px 0; font-family: Georgia, 'Times New Roman', serif; font-size: 46px; line-height: 1.05; font-weight: 700; color: #111111;">${escapeHtml(article.title)}</h1>`,
-    `      <p style="margin: 0 0 18px 0; font-family: Arial, Helvetica, sans-serif; font-size: 24px; line-height: 1.45; color: #4b4f56;">${escapeHtml(article.description)}</p>`,
-    `      <p style="margin: 0 0 30px 0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #6b7280;">${escapeHtml(meta)}</p>`,
-    excerptHtml,
-    '      <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin: 34px 0 0 0; border-collapse: collapse;">',
-    "        <tr>",
-    '          <td bgcolor="#111111" style="background-color: #111111;">',
-    `            <a href="${escapeHtml(article.link)}" style="display: inline-block; padding: 15px 22px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #ffffff; text-decoration: none;">Continue reading</a>`,
-    "          </td>",
-    "        </tr>",
-    "      </table>",
-    '      <p style="margin: 28px 0 0 0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; line-height: 1.6; color: #4b5563;">Every Democratic Justice story opens with a Proof Card and the source documents behind it.</p>',
-    '      <p style="margin: 18px 0 0 0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; line-height: 1.7; color: #111111;">',
-    '        <a href="{{ unsubscribe_url }}" style="color: #111111; text-decoration: underline; font-weight: 700;">Unsubscribe</a>',
-    '        {% if manage_subscription_url %}',
-    '          <span style="color: #6b7280;"> · </span><a href="{{ manage_subscription_url }}" style="color: #111111; text-decoration: underline; font-weight: 700;">Manage subscription</a>',
-    "        {% endif %}",
-    "      </p>",
-    "    </td>",
-  "  </tr>",
-    "</table>"
+    '<div style="font-family: Georgia, \'Times New Roman\', serif; font-size: 20px; line-height: 1.65; color: #111;">',
+    leadHtml,
+    `  <p style="margin: 24px 0 0 0;"><a href="${escapeHtml(article.link)}" style="color: #111; text-decoration: underline; font-family: Arial, Helvetica, sans-serif; font-size: 16px;">Continue reading</a></p>`,
+    '  <p style="margin: 18px 0 0 0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.6; color: #444;">Every Democratic Justice story opens with a proof card and the source documents behind it.</p>',
+    '  <p style="margin: 18px 0 0 0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #111;">',
+    '    <a href="{{ unsubscribe_url }}" style="color: #111; text-decoration: underline; font-weight: 700;">Unsubscribe</a>',
+    "  </p>",
+    "</div>"
   ].join("\n");
 }
 
@@ -285,7 +268,6 @@ async function createDraft(headers, article, subject, body) {
       status: "draft",
       email_type: "public",
       template: "classic",
-      description: article.description,
       canonical_url: article.link,
       metadata: {
         article_url: article.link,
@@ -323,6 +305,35 @@ function printDraftSummary(prefix, article, subject, body, draftId = null) {
   console.log("4. Schedule it for the time you want");
 }
 
+function printConnectivitySummary(feedItems = [], drafts = []) {
+  const latestArticle = feedItems[0] || null;
+  console.log("Buttondown connectivity check");
+  console.log(`Feed items found: ${feedItems.length}`);
+  console.log(`Drafts fetched: ${drafts.length}`);
+
+  if (!latestArticle) {
+    console.log("No article found in _site/feed.xml.");
+    return;
+  }
+
+  const existingDraft = findMatchingDraft(drafts, latestArticle);
+  console.log(`Latest feed article: ${latestArticle.title}`);
+  console.log(`Latest feed URL: ${latestArticle.link}`);
+  console.log(`Matching Buttondown draft: ${existingDraft ? `yes (ID ${existingDraft.id})` : "no"}`);
+
+  const sampleDrafts = drafts.slice(0, 5);
+
+  if (!sampleDrafts.length) {
+    console.log("No drafts returned by Buttondown for this API key.");
+    return;
+  }
+
+  console.log("Recent drafts:");
+  for (const draft of sampleDrafts) {
+    console.log(`- #${draft.id} ${draft.subject || "(no subject)"} [${draft.status || "unknown"}]`);
+  }
+}
+
 async function main() {
   const options = parseArgs(process.argv.slice(2));
   loadLocalEnv();
@@ -341,6 +352,11 @@ async function main() {
   }
 
   const drafts = options.force || !headers ? [] : await fetchDrafts(headers);
+
+  if (options.check) {
+    printConnectivitySummary(feedItems, drafts);
+    return;
+  }
   const pendingArticle = options.force
     ? feedItems[0]
     : feedItems.find((item) => !findMatchingDraft(drafts, item));
