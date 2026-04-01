@@ -102,7 +102,8 @@ What the command does:
 - uses the article description as the deck
 - pulls the opening third of the article from the local source file
 - creates a Buttondown draft with a story-first body
-- refuses to create a duplicate draft for the same article unless you force it
+- updates the matching draft for that article if one already exists
+- creates a second draft only if you pass `--force`
 
 The draft body is built like a real newsletter:
 
@@ -194,7 +195,7 @@ npm run build
 
 ### Existing draft already found
 
-If the tool says a matching draft already exists, that is working as intended. Open Buttondown and edit the existing draft instead of creating another one.
+If the newest article already has a matching Buttondown draft, the tool updates that draft in place so the latest source text is reflected. Use `--force` only if you intentionally want a second draft for the same article.
 
 ### Buttondown is not getting new data
 

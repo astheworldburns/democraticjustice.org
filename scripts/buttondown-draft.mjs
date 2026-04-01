@@ -8,6 +8,7 @@ const ARTICLE_SOURCE_DIR = path.join(ROOT, "src", "content", "articles");
 const ENV_FILES = [".env.local", ".env"];
 const BUTTONDOWN_API_URL = "https://api.buttondown.com/v1/emails";
 const STRONG_LINK_STYLE = "color: #111111 !important; text-decoration: underline !important; -webkit-text-fill-color: #111111;";
+const articleSourceCache = new Map();
 
 function parseArgs(argv = []) {
   return {
@@ -157,6 +158,99 @@ function getArticleSlug(articleLink) {
   return parts.at(-1) || "";
 }
 
+function extractFrontmatterBlock(markdown = "") {
+  const match = markdown.match(/^---\s*\n([\s\S]*?)\n---\s*/);
+  return match ? match[1] : "";
+}
+
+function normalizeFrontmatterValue(value = "") {
+  const trimmed = value.trim();
+
+  if ((trimmed.startsWith("\"") && trimmed.endsWith("\"")) || (trimmed.startsWith("'") && trimmed.endsWith("'"))) {
+    return trimmed.slice(1, -1);
+  }
+
+  return trimmed;
+}
+
+function extractFrontmatterValue(frontmatter = "", key = "") {
+  const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const pattern = new RegExp(`^${escapedKey}:\\s*(.+)$`, "m");
+  const match = frontmatter.match(pattern);
+  return match ? normalizeFrontmatterValue(match[1]) : "";
+}
+
+function resolveArticleSource(articleLink) {
+  const slug = getArticleSlug(articleLink);
+
+  if (!slug) {
+    return null;
+  }
+
+  if (articleSourceCache.has(slug)) {
+    return articleSourceCache.get(slug);
+  }
+
+  const directPath = path.join(ARTICLE_SOURCE_DIR, `${slug}.md`);
+  let sourcePath = fs.existsSync(directPath) ? directPath : null;
+  let markdown = sourcePath ? fs.readFileSync(sourcePath, "utf8") : "";
+
+  if (!sourcePath) {
+    const entries = fs.readdirSync(ARTICLE_SOURCE_DIR, { withFileTypes: true });
+
+    for (const entry of entries) {
+      if (!entry.isFile() || !entry.name.endsWith(".md")) {
+        continue;
+      }
+
+      const candidatePath = path.join(ARTICLE_SOURCE_DIR, entry.name);
+      const candidateMarkdown = fs.readFileSync(candidatePath, "utf8");
+      const frontmatter = extractFrontmatterBlock(candidateMarkdown);
+
+      if (extractFrontmatterValue(frontmatter, "url_slug") !== slug) {
+        continue;
+      }
+
+      sourcePath = candidatePath;
+      markdown = candidateMarkdown;
+      break;
+    }
+  }
+
+  if (!sourcePath) {
+    articleSourceCache.set(slug, null);
+    return null;
+  }
+
+  const frontmatter = extractFrontmatterBlock(markdown);
+  const resolved = {
+    sourcePath,
+    markdown,
+    title: extractFrontmatterValue(frontmatter, "title"),
+    description: extractFrontmatterValue(frontmatter, "description"),
+    date: extractFrontmatterValue(frontmatter, "date"),
+    urlSlug: extractFrontmatterValue(frontmatter, "url_slug") || slug
+  };
+
+  articleSourceCache.set(slug, resolved);
+  return resolved;
+}
+
+function applySourceOverrides(article = {}) {
+  const source = resolveArticleSource(article.link);
+
+  if (!source) {
+    return article;
+  }
+
+  return {
+    ...article,
+    title: source.title || article.title,
+    description: source.description || article.description,
+    pubDate: source.date || article.pubDate
+  };
+}
+
 function stripFrontmatter(markdown = "") {
   return markdown.replace(/^---[\s\S]*?---\s*/, "");
 }
@@ -203,20 +297,13 @@ function isNarrativeBlock(block = "") {
 }
 
 function readArticleExcerpt(articleLink) {
-  const slug = getArticleSlug(articleLink);
+  const source = resolveArticleSource(articleLink);
 
-  if (!slug) {
+  if (!source) {
     return [];
   }
 
-  const sourcePath = path.join(ARTICLE_SOURCE_DIR, `${slug}.md`);
-
-  if (!fs.existsSync(sourcePath)) {
-    return [];
-  }
-
-  const markdown = fs.readFileSync(sourcePath, "utf8");
-  const body = stripFrontmatter(markdown);
+  const body = stripFrontmatter(source.markdown);
   const rawBlocks = body
     .split(/\n\s*\n/)
     .map((block) => block.trim())
@@ -285,6 +372,25 @@ function findMatchingDraft(drafts = [], article = {}) {
   }) || null;
 }
 
+function buildDraftPayload(article, subject, body) {
+  const payload = {
+    subject,
+    body,
+    canonical_url: article.link,
+    metadata: {
+      article_url: article.link,
+      article_title: article.title,
+      generated_by: "democraticjustice_newsletter_draft"
+    }
+  };
+
+  if (article.description) {
+    payload.description = article.description;
+  }
+
+  return payload;
+}
+
 async function createDraft(headers, article, subject, body) {
   const response = await fetch(BUTTONDOWN_API_URL, {
     method: "POST",
@@ -293,23 +399,35 @@ async function createDraft(headers, article, subject, body) {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
+      ...buildDraftPayload(article, subject, body),
       subject,
-      body,
       status: "draft",
       email_type: "public",
-      template: "classic",
-      canonical_url: article.link,
-      metadata: {
-        article_url: article.link,
-        article_title: article.title,
-        generated_by: "democraticjustice_newsletter_draft"
-      }
+      template: "classic"
     })
   });
 
   if (!response.ok) {
     const errorText = await response.text();
     throw new Error(`Buttondown draft creation failed (${response.status}): ${errorText}`);
+  }
+
+  return response.json();
+}
+
+async function updateDraft(headers, draftId, article, subject, body) {
+  const response = await fetch(`${BUTTONDOWN_API_URL}/${draftId}`, {
+    method: "PATCH",
+    headers: {
+      ...headers,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(buildDraftPayload(article, subject, body))
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Buttondown draft update failed (${response.status}): ${errorText}`);
   }
 
   return response.json();
@@ -336,7 +454,7 @@ function printDraftSummary(prefix, article, subject, body, draftId = null) {
 }
 
 function printConnectivitySummary(feedItems = [], drafts = []) {
-  const latestArticle = feedItems[0] || null;
+  const latestArticle = feedItems[0] ? applySourceOverrides(feedItems[0]) : null;
   console.log("Buttondown connectivity check");
   console.log(`Feed items found: ${feedItems.length}`);
   console.log(`Drafts fetched: ${drafts.length}`);
@@ -368,7 +486,7 @@ async function main() {
   const options = parseArgs(process.argv.slice(2));
   loadLocalEnv();
 
-  const feedItems = readFeedItems();
+  const feedItems = readFeedItems().map((item) => applySourceOverrides(item));
 
   const apiKey = process.env.BUTTONDOWN_API_KEY;
   const headers = apiKey
@@ -387,33 +505,30 @@ async function main() {
     printConnectivitySummary(feedItems, drafts);
     return;
   }
-  const pendingArticle = options.force
-    ? feedItems[0]
-    : feedItems.find((item) => !findMatchingDraft(drafts, item));
+
+  const pendingArticle = feedItems[0] || null;
 
   if (!pendingArticle) {
-    throw new Error("Every article currently in _site/feed.xml already has a matching Buttondown draft.");
+    throw new Error("No article found in _site/feed.xml.");
   }
 
   const subject = buildSubject(pendingArticle);
   const body = buildBody(pendingArticle);
+  const existingDraft = options.force ? null : findMatchingDraft(drafts, pendingArticle);
 
   if (options.dryRun) {
     printDraftSummary("Dry run only. No Buttondown draft was created.", pendingArticle, subject, body);
     return;
   }
 
-  if (!options.force) {
-    const existingDraft = findMatchingDraft(drafts, pendingArticle);
-
-    if (existingDraft) {
-      printDraftSummary("A matching Buttondown draft already exists. No new draft was created.", pendingArticle, subject, body, existingDraft.id);
-      return;
-    }
-  }
-
   if (!headers) {
     throw new Error("Missing BUTTONDOWN_API_KEY. Set it in your shell or in .env.local.");
+  }
+
+  if (existingDraft) {
+    const draft = await updateDraft(headers, existingDraft.id, pendingArticle, subject, body);
+    printDraftSummary("Updated existing Buttondown draft.", pendingArticle, subject, body, draft.id);
+    return;
   }
 
   const draft = await createDraft(headers, pendingArticle, subject, body);
