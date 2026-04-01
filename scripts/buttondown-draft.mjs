@@ -91,36 +91,34 @@ function extractTag(source, tagName) {
   return match ? decodeXmlEntities(match[1].trim()) : "";
 }
 
-function readLatestFeedItem() {
+function readFeedItems() {
   if (!fs.existsSync(FEED_PATH)) {
     throw new Error("Missing _site/feed.xml. Run `npm run build` first.");
   }
 
   const feedXml = fs.readFileSync(FEED_PATH, "utf8");
-  const itemMatch = feedXml.match(/<item>([\s\S]*?)<\/item>/i);
+  const itemMatches = [...feedXml.matchAll(/<item>([\s\S]*?)<\/item>/gi)];
 
-  if (!itemMatch) {
+  if (!itemMatches.length) {
     throw new Error("No public article found in _site/feed.xml.");
   }
 
-  const itemXml = itemMatch[1];
-  const title = extractTag(itemXml, "title");
-  const link = extractTag(itemXml, "link");
-  const description = extractTag(itemXml, "description");
-  const author = extractTag(itemXml, "author");
-  const pubDate = extractTag(itemXml, "pubDate");
+  const items = itemMatches
+    .map((match) => match[1])
+    .map((itemXml) => ({
+      title: extractTag(itemXml, "title"),
+      link: extractTag(itemXml, "link"),
+      description: extractTag(itemXml, "description"),
+      author: extractTag(itemXml, "author"),
+      pubDate: extractTag(itemXml, "pubDate")
+    }))
+    .filter((item) => item.title && item.link);
 
-  if (!title || !link) {
-    throw new Error("Feed item is missing required title or link.");
+  if (!items.length) {
+    throw new Error("Feed items are missing required title/link fields.");
   }
 
-  return {
-    title,
-    link,
-    description,
-    author,
-    pubDate
-  };
+  return items;
 }
 
 function buildSubject(article) {
@@ -248,10 +246,9 @@ function buildBody(article) {
   ].join("\n");
 }
 
-async function fetchExistingDraft(headers, article, subject) {
+async function fetchDrafts(headers) {
   const params = new URLSearchParams({
     status: "draft",
-    subject,
     ordering: "-creation_date"
   });
 
@@ -264,9 +261,11 @@ async function fetchExistingDraft(headers, article, subject) {
   }
 
   const payload = await response.json();
-  const results = Array.isArray(payload.results) ? payload.results : [];
+  return Array.isArray(payload.results) ? payload.results : [];
+}
 
-  return results.find((draft) => {
+function findMatchingDraft(drafts = [], article = {}) {
+  return drafts.find((draft) => {
     const metadataUrl = draft?.metadata?.article_url;
     const canonicalUrl = draft?.canonical_url;
     return metadataUrl === article.link || canonicalUrl === article.link;
@@ -328,36 +327,51 @@ async function main() {
   const options = parseArgs(process.argv.slice(2));
   loadLocalEnv();
 
-  const article = readLatestFeedItem();
-  const subject = buildSubject(article);
-  const body = buildBody(article);
-
-  if (options.dryRun) {
-    printDraftSummary("Dry run only. No Buttondown draft was created.", article, subject, body);
-    return;
-  }
+  const feedItems = readFeedItems();
 
   const apiKey = process.env.BUTTONDOWN_API_KEY;
+  const headers = apiKey
+    ? {
+      Authorization: `Token ${apiKey}`
+    }
+    : null;
 
-  if (!apiKey) {
+  if (!apiKey && !options.dryRun) {
     throw new Error("Missing BUTTONDOWN_API_KEY. Set it in your shell or in .env.local.");
   }
 
-  const headers = {
-    Authorization: `Token ${apiKey}`
-  };
+  const drafts = options.force || !headers ? [] : await fetchDrafts(headers);
+  const pendingArticle = options.force
+    ? feedItems[0]
+    : feedItems.find((item) => !findMatchingDraft(drafts, item));
+
+  if (!pendingArticle) {
+    throw new Error("Every article currently in _site/feed.xml already has a matching Buttondown draft.");
+  }
+
+  const subject = buildSubject(pendingArticle);
+  const body = buildBody(pendingArticle);
+
+  if (options.dryRun) {
+    printDraftSummary("Dry run only. No Buttondown draft was created.", pendingArticle, subject, body);
+    return;
+  }
 
   if (!options.force) {
-    const existingDraft = await fetchExistingDraft(headers, article, subject);
+    const existingDraft = findMatchingDraft(drafts, pendingArticle);
 
     if (existingDraft) {
-      printDraftSummary("A matching Buttondown draft already exists. No new draft was created.", article, subject, body, existingDraft.id);
+      printDraftSummary("A matching Buttondown draft already exists. No new draft was created.", pendingArticle, subject, body, existingDraft.id);
       return;
     }
   }
 
-  const draft = await createDraft(headers, article, subject, body);
-  printDraftSummary("Created Buttondown draft.", article, subject, body, draft.id);
+  if (!headers) {
+    throw new Error("Missing BUTTONDOWN_API_KEY. Set it in your shell or in .env.local.");
+  }
+
+  const draft = await createDraft(headers, pendingArticle, subject, body);
+  printDraftSummary("Created Buttondown draft.", pendingArticle, subject, body, draft.id);
 }
 
 main().catch((error) => {
