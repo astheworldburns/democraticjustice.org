@@ -333,7 +333,7 @@ function normalizeArticle(rawArticle = {}) {
           .filter(Boolean),
     featured_image: rawArticle.featured_image || "",
     body: rawArticle.body || "",
-    url: rawArticle.url || (rawArticle.slug ? `/articles/${rawArticle.slug}/` : ""),
+    url: rawArticle.url || (rawArticle.slug ? `/${rawArticle.slug}/` : ""),
     repo_path: rawArticle.repo_path || "",
     proof: normalizeProof(rawArticle.proof || {})
   };
@@ -679,7 +679,7 @@ function mergeArticleIntoList(article) {
     description: article.description,
     author: article.author,
     date: article.date,
-    url: article.url || `/articles/${article.slug}/`,
+    url: article.url || `/${article.slug}/`,
     repo_path: article.repo_path || "",
     proof: article.proof || null
   };

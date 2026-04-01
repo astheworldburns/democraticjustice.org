@@ -83,7 +83,7 @@ collections:
     folder: src/content/articles
     slug: "{{slug}}"
     summary: "{{title}} - {{date | date('DD MMM YYYY')}}"
-    preview_path: "/articles/{{slug}}/"
+    preview_path: "/{{slug}}/"
     preview_path_date_field: date
     thumbnail: featured_image
     sortable_fields:
@@ -102,7 +102,7 @@ collections:
         name: url_slug
         widget: string
         required: false
-        hint: "Optional URL segment after /articles/. Use lowercase words separated by hyphens (example: pretext). Leave blank to keep the filename-based URL."
+        hint: "Optional URL segment after /. Use lowercase words separated by hyphens (example: pretext). Leave blank to keep the filename-based URL."
       - label: Lede
         name: description
         widget: text
