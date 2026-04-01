@@ -159,3 +159,5 @@ Federal regulators evaluate control through a multi-factor test that examines go
 The current filings for the West Virginia Young Democrats satisfy every one of those criteria.
 
 Two entities that were separated to maintain a legal firewall are now connected through a state party's infrastructure. Whether that arrangement complies with campaign finance law is a question for federal regulators.
+
+**Read the first part of this story:** [**Pretext**](https://democraticjustice.org/pretext/)
