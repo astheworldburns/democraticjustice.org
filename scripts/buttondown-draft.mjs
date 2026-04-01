@@ -7,6 +7,7 @@ const FEED_PATH = path.join(ROOT, "_site", "feed.xml");
 const ARTICLE_SOURCE_DIR = path.join(ROOT, "src", "content", "articles");
 const ENV_FILES = [".env.local", ".env"];
 const BUTTONDOWN_API_URL = "https://api.buttondown.com/v1/emails";
+const STRONG_LINK_STYLE = "color: #111111 !important; text-decoration: underline !important; -webkit-text-fill-color: #111111;";
 
 function parseArgs(argv = []) {
   return {
@@ -246,10 +247,13 @@ function buildBody(article) {
   return [
     '<div style="font-family: Georgia, \'Times New Roman\', serif; font-size: 20px; line-height: 1.65; color: #111;">',
     leadHtml,
-    `  <p style="margin: 24px 0 0 0;"><a href="${escapeHtml(article.link)}" style="color: #111; text-decoration: underline; font-family: Arial, Helvetica, sans-serif; font-size: 16px;">Continue reading</a></p>`,
+    `  <p style="margin: 24px 0 0 0;"><a href="${escapeHtml(article.link)}" style="${STRONG_LINK_STYLE} font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700;">Continue reading</a></p>`,
     '  <p style="margin: 18px 0 0 0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.6; color: #444;">Every Democratic Justice story opens with a proof card and the source documents behind it.</p>',
-    '  <p style="margin: 18px 0 0 0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #111;">',
-    '    <a href="{{ unsubscribe_url }}" style="color: #111; text-decoration: underline; font-weight: 700;">Unsubscribe</a>',
+    '  <p style="margin: 18px 0 0 0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; line-height: 1.6; color: #111111;">',
+    `    <a href="{{ unsubscribe_url }}" style="${STRONG_LINK_STYLE} font-weight: 700;">Unsubscribe</a>`,
+    '    {% if manage_subscription_url %}',
+    '      <span style="color: #444444;"> or </span><a href="{{ manage_subscription_url }}" style="' + STRONG_LINK_STYLE + ' font-weight: 700;">manage your subscription</a>',
+    "    {% endif %}",
     "  </p>",
     "</div>"
   ].join("\n");
