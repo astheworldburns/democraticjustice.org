@@ -86,7 +86,7 @@ proof:
 
 At 10:30 a.m. on June 4, 2024, Delegate Mike Pushkin walked into the Kanawha County Prosecutor's Office. He had requested the meeting to discuss what he described as a "possible criminal matter."
 
-Around the conference table sat Prosecutors Adam Petry, Kenneth Bannon, and Debra Rusnak. Ryan Frankenberry, executive director of the West Virginia Democratic Party. Detective Ana Pile attended on orders from Kanawha County Sheriff Chief Deputy S.D. Snuffer.
+Around the conference table sat Adam Petry, Kenneth Bannon, and Kanawha County Prosecutor Debra Rusnak. Ryan Frankenberry, executive director of the West Virginia Democratic Party. Detective Ana Pile attended on orders from Kanawha County Sheriff Chief Deputy S.D. Snuffer.
 
 It was Frankenberry who "did most of the explaining," laying out a case against Jacob Hively, president of the West Virginia Young Democrats.
 
