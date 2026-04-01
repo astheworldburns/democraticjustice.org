@@ -73,6 +73,13 @@ ogType: article
     </figure>
   {% endif %}
 
+  {% set shareTitle = "Share this investigation" %}
+  {% set shareDeck = "If this reporting matters, send it to someone who should see it." %}
+  {% set showShareUrl = false %}
+  <div class="mb-12">
+    {% include "components/story-share-callout.njk" %}
+  </div>
+
   {# Section 2: Reported Narrative #}
   <section id="narrative" aria-labelledby="narrative-content-heading" class="mb-16">
     <h2 id="narrative-content-heading" class="sr-only">Reported Narrative</h2>
@@ -83,6 +90,12 @@ ogType: article
       </aside>
     {% endif %}
     <div class="article-prose max-w-3xl mx-auto">{{ articleHtml }}</div>
+    <div class="mt-10">
+      {% set shareTitle = "Share this investigation" %}
+      {% set shareDeck = "Keep this reporting moving. Share the link, forward it, and put it in front of the people who need to see it." %}
+      {% set showShareUrl = true %}
+      {% include "components/story-share-callout.njk" %}
+    </div>
   </section>
 
   {# Related Stories #}
