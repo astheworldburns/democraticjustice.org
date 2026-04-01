@@ -35,8 +35,8 @@ ogType: article
 <nav class="proof-nav" aria-label="Investigation sections">
   <ol class="proof-nav__list">
     <li><a href="#proof-card" class="proof-nav__link" data-section="proof-card" aria-current="true">Proof Card</a></li>
-    <li><a href="#source-documents" class="proof-nav__link" data-section="source-documents">Source Documents</a></li>
     <li><a href="#narrative" class="proof-nav__link" data-section="narrative">Narrative</a></li>
+    <li><a href="#source-documents" class="proof-nav__link" data-section="source-documents">Sources</a></li>
   </ol>
 </nav>
 {% endif %}
@@ -79,20 +79,6 @@ ogType: article
     <div class="article-prose max-w-3xl mx-auto">{{ articleHtml }}</div>
   </section>
 
-  {# Section 3: Source Documents #}
-  {% if proofCard and proofCard.sourceDocuments.length %}
-  <section id="source-documents" aria-labelledby="source-docs-heading" class="mb-16">
-    {% set sectionKicker = "02" %}{% set sectionTitle = "Source Documents" %}{% set sectionId = "source-docs-heading" %}
-    {% include "components/section-header.njk" %}
-    <div class="bento-grid">
-      {% for doc in proofCard.sourceDocuments %}
-        {% set docTitle = doc.data.title %}{% set docDescription = doc.data.description %}{% set docUrl = doc.url %}{% set docFile = doc.data.file %}{% set docVideoUrl = doc.data.video_url %}{% set docFileType = doc.data.file_type %}{% set docObtained = doc.data.obtained %}{% set docSourceMethod = doc.data.source_method %}
-        <div class="bento-6">{% include "components/document-card.njk" %}</div>
-      {% endfor %}
-    </div>
-  </section>
-  {% endif %}
-
   {# Related Stories #}
   {% if relatedStories.length %}
   <section aria-labelledby="related-heading" class="mb-16" data-pagefind-ignore>
@@ -112,5 +98,7 @@ ogType: article
     </div>
   </section>
   {% endif %}
+
+  {% include "components/sources-module.njk" %}
 
 </article>
