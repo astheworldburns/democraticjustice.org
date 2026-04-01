@@ -273,6 +273,34 @@ function wrapImageCaptions(value = "") {
   return wrapParagraphEmCaptions(wrapImageTitleCaptions(wrapLinkedImageCaptions(value)));
 }
 
+
+function firstImageFromHtml(value = "") {
+  const html = value.toString();
+  const imageMatch = html.match(/<img\b[^>]*>/i);
+
+  if (!imageMatch) {
+    return null;
+  }
+
+  const tag = imageMatch[0];
+  const getAttribute = (name) => {
+    const pattern = new RegExp(`${name}="([^"]*)"`, "i");
+    const match = tag.match(pattern);
+    return match ? match[1].trim() : "";
+  };
+
+  const src = getAttribute("src");
+
+  if (!src) {
+    return null;
+  }
+
+  return {
+    src,
+    alt: getAttribute("alt") || getAttribute("title") || ""
+  };
+}
+
 function sortByDateDesc(items = []) {
   return [...items].sort((left, right) => {
     const leftDate = toDateTime(left.data?.updated || left.data?.date || left.date);
@@ -607,6 +635,7 @@ export default async function (eleventyConfig) {
   });
 
   eleventyConfig.addFilter("machineDate", machineDate);
+  eleventyConfig.addFilter("firstImageFromHtml", firstImageFromHtml);
   eleventyConfig.addFilter("slugifyTag", slugifyTag);
   eleventyConfig.addFilter("tagLabel", tagLabel);
   eleventyConfig.addFilter("initials", initials);

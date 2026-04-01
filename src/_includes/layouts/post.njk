@@ -6,6 +6,8 @@ ogType: article
 {% set articleHtml = content | withHeadingIds | safe %}
 {% set tocItems = content | withHeadingIds | extractHeadings %}
 {% set relatedStories = collections.article | relatedArticles(page, tags, 3) %}
+{% set fallbackLeadImage = articleHtml | firstImageFromHtml %}
+{% set leadImage = {"src": featured_image, "alt": "Featured image for " ~ title} if featured_image else fallbackLeadImage %}
 
 {% if proofCard %}
 <script type="application/ld+json">
@@ -55,11 +57,11 @@ ogType: article
     <div class="mt-6">{% include "components/meta-row.njk" %}</div>
   </header>
 
-  {% if featured_image %}
+  {% if leadImage and leadImage.src %}
     <figure class="max-w-3xl mx-auto mb-12">
       <img
-        src="{{ featured_image }}"
-        alt="Featured image for {{ title }}"
+        src="{{ leadImage.src }}"
+        alt="{{ leadImage.alt or ("Lead image for " ~ title) }}"
         class="w-full h-auto rounded-squircle border border-border-subtle"
         loading="lazy"
         decoding="async"
