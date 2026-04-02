@@ -5,7 +5,10 @@ import sharp from "sharp";
 import { createCanvas, DOMMatrix, ImageData, Path2D } from "@napi-rs/canvas";
 
 const ROOT = process.cwd();
-const SOURCE_DIR = path.join(ROOT, "static", "documents");
+const SOURCE_DIRECTORIES = [
+  path.join(ROOT, "static", "documents"),
+  path.join(ROOT, "src", "content", "documents", "static", "documents")
+];
 const GENERATED_DIR = path.join(ROOT, ".generated", "document-previews");
 const MANIFEST_PATH = path.join(ROOT, ".generated", "document-previews.json");
 const STANDARD_FONT_URL = `${pathToFileURL(path.join(ROOT, "node_modules", "pdfjs-dist", "standard_fonts")).href}/`;
@@ -83,12 +86,48 @@ async function clearGeneratedPreviews() {
 }
 
 async function listSourcePdfs() {
-  const entries = await readdir(SOURCE_DIR, { withFileTypes: true });
+  const pdfByFilename = new Map();
 
-  return entries
-    .filter((entry) => entry.isFile() && isPdf(entry.name))
-    .map((entry) => entry.name)
-    .sort((left, right) => left.localeCompare(right));
+  for (const sourceDirectory of SOURCE_DIRECTORIES) {
+    let entries = [];
+
+    try {
+      entries = await readdir(sourceDirectory, { withFileTypes: true });
+    } catch (error) {
+      if (error?.code === "ENOENT") {
+        continue;
+      }
+
+      throw error;
+    }
+
+    for (const entry of entries) {
+      if (!entry.isFile() || !isPdf(entry.name)) {
+        continue;
+      }
+
+      const fullPath = path.join(sourceDirectory, entry.name);
+      const current = pdfByFilename.get(entry.name);
+
+      if (!current) {
+        pdfByFilename.set(entry.name, { filename: entry.name, sourcePath: fullPath });
+        continue;
+      }
+
+      const [nextStats, currentStats] = await Promise.all([
+        stat(fullPath),
+        stat(current.sourcePath)
+      ]);
+
+      if (nextStats.mtimeMs > currentStats.mtimeMs) {
+        pdfByFilename.set(entry.name, { filename: entry.name, sourcePath: fullPath });
+      }
+    }
+  }
+
+  return Array.from(pdfByFilename.values()).sort((left, right) =>
+    left.filename.localeCompare(right.filename)
+  );
 }
 
 async function fileExists(filePath) {
@@ -100,9 +139,9 @@ async function fileExists(filePath) {
   }
 }
 
-async function renderFirstPageToWebp(pdfFilename, pdfjs) {
-  const pdfPath = path.join(SOURCE_DIR, pdfFilename);
-  const pdfBytes = new Uint8Array(await readFile(pdfPath));
+async function renderFirstPageToWebp(pdfRecord, pdfjs) {
+  const { filename, sourcePath } = pdfRecord;
+  const pdfBytes = new Uint8Array(await readFile(sourcePath));
   const loadingTask = pdfjs.getDocument({
     data: pdfBytes,
     disableWorker: true,
@@ -138,7 +177,7 @@ async function renderFirstPageToWebp(pdfFilename, pdfjs) {
         }).promise;
 
         const pngBuffer = canvasAndContext.canvas.toBuffer("image/png");
-        const previewPath = path.join(GENERATED_DIR, previewFilenameFor(pdfFilename));
+        const previewPath = path.join(GENERATED_DIR, previewFilenameFor(filename));
 
         await sharp(pngBuffer)
           .resize(TARGET_WIDTH, TARGET_HEIGHT, {
@@ -160,35 +199,34 @@ async function renderFirstPageToWebp(pdfFilename, pdfjs) {
   }
 }
 
-async function isPreviewCurrent(pdfFilename) {
-  const previewPath = path.join(GENERATED_DIR, previewFilenameFor(pdfFilename));
+async function isPreviewCurrent(pdfRecord) {
+  const { filename, sourcePath } = pdfRecord;
+  const previewPath = path.join(GENERATED_DIR, previewFilenameFor(filename));
 
   if (!(await fileExists(previewPath))) {
     return false;
   }
 
-  const [pdfStats, previewStats] = await Promise.all([
-    stat(path.join(SOURCE_DIR, pdfFilename)),
-    stat(previewPath)
-  ]);
+  const [pdfStats, previewStats] = await Promise.all([stat(sourcePath), stat(previewPath)]);
 
   return previewStats.mtimeMs >= pdfStats.mtimeMs;
 }
 
-async function writeManifest(pdfFiles) {
+async function writeManifest(pdfRecords) {
   const manifest = {};
 
-  for (const pdfFilename of pdfFiles) {
-    const previewFilename = previewFilenameFor(pdfFilename);
+  for (const pdfRecord of pdfRecords) {
+    const { filename } = pdfRecord;
+    const previewFilename = previewFilenameFor(filename);
     const previewPath = path.join(GENERATED_DIR, previewFilename);
 
     if (!(await fileExists(previewPath))) {
       continue;
     }
 
-    const previewUrl = previewUrlFor(pdfFilename);
-    manifest[`/documents/${pdfFilename}`] = previewUrl;
-    manifest[slugFor(pdfFilename)] = previewUrl;
+    const previewUrl = previewUrlFor(filename);
+    manifest[`/documents/${filename}`] = previewUrl;
+    manifest[slugFor(filename)] = previewUrl;
   }
 
   await mkdir(path.dirname(MANIFEST_PATH), { recursive: true });
@@ -216,14 +254,14 @@ async function main() {
 
   console.log(`Generating previews for ${pdfFiles.length} PDF source document(s)...`);
 
-  for (const pdfFilename of pdfFiles) {
-    if (!force && (await isPreviewCurrent(pdfFilename))) {
-      console.log(`Preview already current for ${pdfFilename}.`);
+  for (const pdfRecord of pdfFiles) {
+    if (!force && (await isPreviewCurrent(pdfRecord))) {
+      console.log(`Preview already current for ${pdfRecord.filename}.`);
       continue;
     }
 
-    console.log(`Rendering ${pdfFilename}...`);
-    await renderFirstPageToWebp(pdfFilename, pdfjs);
+    console.log(`Rendering ${pdfRecord.filename}...`);
+    await renderFirstPageToWebp(pdfRecord, pdfjs);
   }
 
   const manifest = await writeManifest(pdfFiles);
