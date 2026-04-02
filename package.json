@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "npx @11ty/eleventy --serve",
-    "build": "rm -rf _site && npm run preview:sync && npx @11ty/eleventy && npm run audit:assets && npm run audit:public",
+    "build": "rm -rf _site && npm run preview:sync && npx @11ty/eleventy && npm run audit:assets && npm run audit:public && npm run audit:links",
     "audit:assets": "node ./scripts/asset-audit.mjs",
     "audit:assets:strict": "node ./scripts/asset-audit.mjs --strict",
     "audit:public": "node ./scripts/public-surface-audit.mjs",
@@ -22,7 +22,9 @@
     "preview:sync:force": "node ./scripts/sync-document-previews.mjs --force",
     "preview-worker:install": "npm --prefix ./workers/document-preview-pipeline install",
     "preview-worker:dev": "npm --prefix ./workers/document-preview-pipeline run dev",
-    "preview-worker:deploy": "npm --prefix ./workers/document-preview-pipeline run deploy"
+    "preview-worker:deploy": "npm --prefix ./workers/document-preview-pipeline run deploy",
+    "audit:links": "node ./scripts/internal-link-audit.mjs",
+    "audit:links:strict": "node ./scripts/internal-link-audit.mjs --strict"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.2",

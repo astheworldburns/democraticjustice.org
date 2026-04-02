@@ -363,6 +363,7 @@ export default async function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/assets/feed.xsl");
   eleventyConfig.addPassthroughCopy("src/assets/js");
   eleventyConfig.addPassthroughCopy({ "static/documents": "documents" });
+  eleventyConfig.addPassthroughCopy({ "src/content/documents/static/documents": "documents" });
   eleventyConfig.addPassthroughCopy({ "static/media": "media" });
   eleventyConfig.addPassthroughCopy({ ".generated/document-previews": "assets/document-previews" });
   eleventyConfig.addPassthroughCopy({ "static/_headers": "_headers" });
