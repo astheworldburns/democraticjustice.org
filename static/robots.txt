@@ -1,5 +1,9 @@
 User-agent: *
 Allow: /
 Disallow: /admin/
+Disallow: /admin/cms/
+Disallow: /admin/editor/
+Disallow: /admin/proof/
+Disallow: /admin/*/data/
 Sitemap: https://democraticjustice.org/sitemap.xml
 Sitemap: https://democraticjustice.org/news-sitemap.xml
