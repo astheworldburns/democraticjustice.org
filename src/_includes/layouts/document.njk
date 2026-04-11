@@ -20,6 +20,7 @@ ogType: website
       "name": "{{ title | replace('"', '\\"') }}",
       "description": "{{ description | replace('"', '\\"') }}",
       "url": "{{ page.url | absoluteUrl(site.url) }}",
+      "license": "{{ site.contentLicenseUrl | default(site.url) }}",
       "datePublished": "{{ obtained | machineDate }}",
       "creator": { "@id": "{{ site.url }}/#organization" }{% if file_url %},
       "distribution": {
