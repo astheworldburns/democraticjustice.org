@@ -1,6 +1,7 @@
 ---
 kicker: Investigation
 title: Pretext
+section: politics
 url_slug: pretext
 description: Documents Show WV Democratic Party chair staged extrajudicial hearing to seize independent youth organization.
 author: seth-sturm
@@ -151,4 +152,4 @@ But between the board's internal ruling and the recharter, the party took one ad
 
 On June 4, 2024, Pushkin and Frankenberry walked into the Kanawha County Prosecutor's Office and filed a criminal complaint against Jacob Hively.
 
-\*\*Read what happened next:\*\* [**West Virginia Democrats may have broken McCain-Feingold**](https://democraticjustice.org/west-virginia-democrats-may-have-broken-mccain-feingold/)
+\*\*Read what happened next:\*\* [**West Virginia Democrats may have broken McCain-Feingold**](https://democraticjustice.org/articles/politics/west-virginia-democrats-may-have-broken-mccain-feingold/)
