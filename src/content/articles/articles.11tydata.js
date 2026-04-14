@@ -2,6 +2,33 @@ import { createProofCard, hasMeaningfulValue } from "../../../lib/proof.js";
 import { DateTime } from "luxon";
 
 const SITE_TIMEZONE = "America/New_York";
+const DEFAULT_ARTICLE_SECTION = "politics";
+
+function slugifySegment(value = "") {
+  return String(value)
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function getArticleSection(data = {}) {
+  const explicitSection = slugifySegment(data.section);
+  if (explicitSection) {
+    return explicitSection;
+  }
+
+  const tags = Array.isArray(data.tags)
+    ? data.tags
+    : data.tags
+      ? [data.tags]
+      : [];
+  const inferredSection = tags
+    .map((tag) => slugifySegment(tag))
+    .find((tag) => tag && tag !== "article");
+
+  return inferredSection || DEFAULT_ARTICLE_SECTION;
+}
 
 function safeProofCard(data = {}) {
   if (!hasMeaningfulValue(data.proof)) {
@@ -30,11 +57,14 @@ export default {
       return false;
     }
 
-    const articleSlug = data.url_slug || data.page.fileSlug;
-    return `/${articleSlug}/index.html`;
+    const articleSlug = slugifySegment(data.url_slug || data.page.fileSlug);
+    const articleSection = getArticleSection(data);
+
+    return `/articles/${articleSection}/${articleSlug}/index.html`;
   },
   eleventyComputed: {
     author: (data) => data.author || "seth-sturm",
+    section: (data) => getArticleSection(data),
     proofCard: (data) => safeProofCard(data),
     tags: (data) => {
       const tags = Array.isArray(data.tags)

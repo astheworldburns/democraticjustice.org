@@ -1,6 +1,7 @@
 ---
 kicker: Investigation
 title: West Virginia Democrats may have broken McCain-Feingold
+section: politics
 url_slug: west-virginia-democrats-may-have-broken-mccain-feingold
 description: The Democratic Party chair filed a criminal complaint against a youth leader and seized control of an independent organization that split from the DNC in 2002.
 author: seth-sturm
@@ -160,4 +161,4 @@ The current filings for the West Virginia Young Democrats satisfy every one of t
 
 Two entities that were separated to maintain a legal firewall are now connected through a state party's infrastructure. Whether that arrangement complies with campaign finance law is a question for federal regulators.
 
-**Read the first part of this story:** [**Pretext**](https://democraticjustice.org/pretext/)
+**Read the first part of this story:** [**Pretext**](https://democraticjustice.org/articles/politics/pretext/)
