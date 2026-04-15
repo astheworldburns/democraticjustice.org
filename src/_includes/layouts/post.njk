@@ -35,19 +35,14 @@ ogType: article
 {% if proofCard %}
 <nav class="proof-nav" aria-label="Investigation sections">
   <ol class="proof-nav__list">
-    <li><a href="#proof-card" class="proof-nav__link" data-section="proof-card" aria-current="true">Proof Card</a></li>
-    <li><a href="#narrative" class="proof-nav__link" data-section="narrative">Narrative</a></li>
+    <li><a href="#narrative" class="proof-nav__link" data-section="narrative" aria-current="true">Story</a></li>
+    <li><a href="#proof-card" class="proof-nav__link" data-section="proof-card">Check Our Work</a></li>
     <li><a href="#source-documents" class="proof-nav__link" data-section="source-documents">Sources</a></li>
   </ol>
 </nav>
 {% endif %}
 
 <article data-pagefind-body aria-labelledby="narrative-heading">
-  {# Section 1: Proof Card #}
-  {% if proofCard %}
-    {% include "components/proof-card.njk" %}
-  {% endif %}
-
   <header class="max-w-3xl mx-auto mb-12">
     {% if kicker %}<p class="card__tag">{{ kicker }}</p>{% endif %}
     <h1 id="narrative-heading" class="font-serif text-display-lg mt-2">{{ title }}</h1>
@@ -117,6 +112,11 @@ ogType: article
       {% endfor %}
     </div>
   </section>
+  {% endif %}
+
+  {# Section 2: Proof Card #}
+  {% if proofCard %}
+    {% include "components/proof-card.njk" %}
   {% endif %}
 
   {% include "components/sources-module.njk" %}
