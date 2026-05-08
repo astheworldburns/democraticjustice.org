@@ -1649,6 +1649,12 @@
     min-height: 68vh;
   }
 
+  .document-preview__video {
+    aspect-ratio: 16 / 9;
+    min-height: 0;
+    display: block;
+  }
+
   .document-preview__fallback {
     @apply p-5;
   }
