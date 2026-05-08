@@ -27,37 +27,7 @@ A newly surfaced September 2021 recording from West Virginia shows what that cha
 
 On the tape, Harold Ickes describes how the Democratic National Committee found a jurisdictional hook, entered Alabama’s party leadership fight, forced new elections, rewrote bylaws and used an affirmative action plan to break the Black caucus controlled by Reed. Ickes was not a bystander to the rules fight. He had served as Bill Clinton’s deputy chief of staff, sat on the DNC Rules and Bylaws Committee, and told the West Virginia meeting that Tom Perez had asked him to “try to deal with the challenge” in Alabama.
 
-<figure class="my-8">
-
-  <div class="relative overflow-hidden rounded-squircle border border-border-subtle bg-black" style="aspect-ratio: 16 / 9;">
-
-    <iframe
-
-      class="absolute inset-0 h-full w-full"
-
-      src="https://www.youtube-nocookie.com/embed/abc123XYZ"
-
-      title="Supercut: AAC Planning Subcommittee Meeting"
-
-      loading="lazy"
-
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-
-      referrerpolicy="strict-origin-when-cross-origin"
-
-      allowfullscreen>
-
-    </iframe>
-
-  </div>
-
-  <figcaption>
-
-    Supercut from the AAC Planning Subcommittee meeting. Source video hosted on YouTube.
-
-  </figcaption>
-
-</figure>
+{% youtube "https://youtu.be/A_h90sgJQxI", "DNC's Harold Ickes on Breaking Alabama's Black Caucus" %}
 
 Alabama's rules, the national party said, lacked a valid affirmative action and outreach plan for Hispanic, Asian American, Pacific Islander, youth, LGBTQ and disabled Democrats. The DNC invalidated the 2018 leadership elections of Nancy Worley and Randy Kelley and ordered Alabama to freeze further minority at-large selections until the party rewrote its bylaws and adopted outreach programs.
 
@@ -71,7 +41,7 @@ Then he pivoted. The structure Reed built, Ickes said, had "morphed" into autocr
 
 Reed controlled the caucus "lock stock and barrel," Ickes said. Younger Black legislators and activists could not get into Reed's circle.
 
-"So breaking that lock that Reed and his caucus had was a major effort of the reforming of the rules," Ickes said. 
+"So breaking that lock that Reed and his caucus had was a major effort of the reforming of the rules," Ickes said.
 
 Ickes claimed success. "That was a massive fight, which we won — which the Alabama reformers won," he said.
 
