@@ -21,11 +21,11 @@ After the Supreme Court’s decision in Louisiana v. Callais, Alabama lawmakers 
 
 HB1 would allow Alabama to replace primaries already underway with new contests under revised districts.
 
-Democrats answered from Birmingham. At Boutwell Auditorium, Sen. Cory Booker, Rep. Terri Sewell, former Sen. Doug Jones and Birmingham Mayor Randall Woodfin spoke about voting rights and representation. The stage gave national Democrats a public response to the map fight. It also put Jones back inside a story that began years earlier, when his 2017 Senate victory helped give national Democrats new leverage in Alabama and a new reason to challenge Joe Reed’s control of the state party.
+Democrats answered from Birmingham. At Boutwell Auditorium, Sen. Cory Booker, Rep. Terri Sewell, former Sen. Doug Jones and Birmingham Mayor Randall Woodfin spoke about voting rights and representation. The stage gave national Democrats a public response to the map fight. It also put Jones back inside a story that began years earlier, when Jones initiated a challenge to the DNC that led to 8 years of DNC interventions in the state.
 
-A newly surfaced September 2021 recording from West Virginia shows what that challenge became.
+A newly surfaced September 2021 recording from West Virginia recontextualizes those interventions.
 
-On the tape, Harold Ickes describes how the Democratic National Committee found a jurisdictional hook, entered Alabama’s party leadership fight, forced new elections, rewrote bylaws and used an affirmative action plan to break the Black caucus controlled by Reed. Ickes was not a bystander to the rules fight. He had served as Bill Clinton’s deputy chief of staff, sat on the DNC Rules and Bylaws Committee, and told the West Virginia meeting that Tom Perez had asked him to “try to deal with the challenge” in Alabama.
+On the video, Rules and Bylaws Committee member, Harold Ickes, describes how the Democratic National Committee found a jurisdictional hook to break the Black caucus controlled by Civil Rights leader, Joe L. Reed. Ickes served as Bill Clinton’s deputy chief of staff in the 90s, and has sat on the DNC Rules and Bylaws Committee off and on for decades. He told the West Virginia meeting that Tom Perez had asked him to “try to deal with the challenge” in Alabama.
 
 {% youtube "https://youtu.be/A_h90sgJQxI", "DNC's Harold Ickes on Breaking Alabama's Black Caucus" %}
 
