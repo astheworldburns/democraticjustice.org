@@ -272,7 +272,7 @@ collections:
       - label: Body
         name: body
         widget: markdown
-        hint: Use "Insert → Image with Credit" in the editor toolbar for a caption/credit form (no markdown syntax needed).
+        hint: Use "Insert → Image with Credit" for images or "Insert → YouTube Video" for article video embeds.
   - name: source_documents
     label: Source Documents
     label_singular: Source Document

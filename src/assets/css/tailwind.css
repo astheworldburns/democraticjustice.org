@@ -893,6 +893,27 @@
     margin: 2rem 0;
   }
 
+  .article-video-embed {
+    width: min(100%, 48rem);
+    max-width: 100%;
+    margin: 2rem auto;
+  }
+
+  .article-video-embed__frame {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-sm);
+    background: #000;
+  }
+
+  .article-video-embed__frame iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
   .article-prose > img,
   .article-prose figure img {
     width: 100%;
@@ -1647,6 +1668,12 @@
 
   .document-preview__frame {
     min-height: 68vh;
+  }
+
+  .document-preview__video {
+    aspect-ratio: 16 / 9;
+    min-height: 0;
+    display: block;
   }
 
   .document-preview__fallback {
