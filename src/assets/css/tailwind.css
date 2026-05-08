@@ -897,6 +897,7 @@
     width: min(100%, 48rem);
     max-width: 100%;
     margin: 2rem auto;
+    margin: 2rem 0;
   }
 
   .article-video-embed__frame {
