@@ -191,6 +191,85 @@ function installImageWithCreditEditorComponent() {
   });
 }
 
+function installYouTubeVideoEditorComponent() {
+  if (!window.CMS || typeof window.CMS.registerEditorComponent !== "function") {
+    return;
+  }
+
+  const youtubeShortcodePattern = /^{%\s*youtube\s+"([^"]+)"(?:\s*,\s*"([^"]*)")?(?:\s*,\s*"([^"]*)")?\s*%}$/;
+  const escapeShortcodeValue = (value = "") => value.toString().replace(/\\/g, "\\\\").replace(/"/g, "\\\"");
+  const escapePreviewAttribute = (value = "") => value.toString().replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const toEmbedUrl = (value = "") => {
+    const rawValue = value.toString().trim();
+
+    if (/^[A-Za-z0-9_-]{6,}$/.test(rawValue) && !rawValue.includes(".")) {
+      return `https://www.youtube-nocookie.com/embed/${rawValue}`;
+    }
+
+    try {
+      const url = new URL(rawValue);
+      const host = url.hostname.replace(/^www\./, "").toLowerCase();
+
+      if (host === "youtu.be") {
+        const videoId = url.pathname.split("/").filter(Boolean)[0];
+        return videoId ? `https://www.youtube-nocookie.com/embed/${videoId}` : "";
+      }
+
+      if (host === "youtube.com" || host === "m.youtube.com" || host === "youtube-nocookie.com") {
+        if (url.pathname.startsWith("/embed/") || url.pathname.startsWith("/shorts/")) {
+          const videoId = url.pathname.split("/").filter(Boolean)[1];
+          return videoId ? `https://www.youtube-nocookie.com/embed/${videoId}` : "";
+        }
+
+        const videoId = url.searchParams.get("v");
+        return videoId ? `https://www.youtube-nocookie.com/embed/${videoId}` : "";
+      }
+    } catch {
+      return "";
+    }
+
+    return "";
+  };
+
+  window.CMS.registerEditorComponent({
+    id: "youtube-video",
+    label: "YouTube Video",
+    fields: [
+      { name: "url", label: "YouTube URL or Video ID", widget: "string" },
+      { name: "title", label: "Accessible Title", widget: "string", required: false },
+      { name: "caption", label: "Caption", widget: "text", required: false }
+    ],
+    pattern: youtubeShortcodePattern,
+    fromBlock(match) {
+      const [, url = "", title = "", caption = ""] = match;
+
+      return { url, title, caption };
+    },
+    toBlock({ url = "", title = "", caption = "" }) {
+      const values = [url, title, caption]
+        .map((value) => value.trim())
+        .map(escapeShortcodeValue);
+
+      while (values.length > 1 && !values[values.length - 1]) {
+        values.pop();
+      }
+
+      return `{% youtube ${values.map((value) => `"${value}"`).join(", ")} %}`;
+    },
+    toPreview({ url = "", title = "Embedded YouTube video", caption = "" }) {
+      const embedUrl = toEmbedUrl(url);
+      const safeTitle = escapePreviewAttribute(title || "Embedded YouTube video");
+      const safeCaption = escapePreviewAttribute(caption);
+
+      if (!embedUrl) {
+        return `<p>Enter a valid YouTube URL or video ID.</p>`;
+      }
+
+      return `<figure class="article-video-embed"><div class="article-video-embed__frame"><iframe src="${embedUrl}" title="${safeTitle}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>${safeCaption ? `<figcaption>${safeCaption}</figcaption>` : ""}</figure>`;
+    }
+  });
+}
+
 function loadSveltiaScript() {
   return new Promise((resolve, reject) => {
     const script = document.createElement("script");
@@ -251,6 +330,7 @@ window.addEventListener(
       applyEditorLayoutFixes();
       installLocalUploadPathHook();
       installImageWithCreditEditorComponent();
+      installYouTubeVideoEditorComponent();
 
       if (typeof window.initCMS !== "function") {
         throw new Error("Sveltia CMS did not finish loading.");
