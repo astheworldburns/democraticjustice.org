@@ -8,7 +8,7 @@ import pluginRss from "@11ty/eleventy-plugin-rss";
 import { DateTime } from "luxon";
 
 import { createProofCard, hasMeaningfulValue } from "./lib/proof.js";
-import { renderProofShareImage } from "./lib/proof-share.js";
+import { renderArticleShareImage } from "./lib/proof-share.js";
 
 const execFileAsync = promisify(execFile);
 const SITE_TIMEZONE = "America/New_York";
@@ -422,7 +422,7 @@ function publishedArticles(items = [], sourceDocuments = null) {
 }
 
 export default async function (eleventyConfig) {
-  const proofShareManifest = [];
+  const articleShareManifest = [];
 
   eleventyConfig.addPlugin(pluginRss, {
     posthtmlRenderOptions: {
@@ -461,16 +461,49 @@ export default async function (eleventyConfig) {
     return wrapImageCaptions(content);
   });
 
-  eleventyConfig.addCollection("article", (collectionApi) =>
-    publishedArticles(
+  eleventyConfig.addCollection("article", (collectionApi) => {
+    const sourceDocuments = collectionApi
+      .getFilteredByGlob("./src/content/documents/**/*.md")
+      .sort((left, right) => right.date - left.date);
+    const items = publishedArticles(
       collectionApi
         .getFilteredByGlob("./src/content/articles/**/*.md")
         .sort((left, right) => right.date - left.date),
-      collectionApi
-        .getFilteredByGlob("./src/content/documents/**/*.md")
-        .sort((left, right) => right.date - left.date)
-    )
-  );
+      sourceDocuments
+    );
+
+    articleShareManifest.length = 0;
+
+    for (const article of items) {
+      let proofCard = null;
+
+      try {
+        proofCard = createProofCard({
+          ...article.data,
+          title: article.data.title,
+          description: article.data.description,
+          proof: article.data.proof,
+          fileSlug: article.fileSlug,
+          url: article.url,
+          sourceDocuments
+        });
+      } catch {
+        proofCard = null;
+      }
+
+      articleShareManifest.push({
+        slug: article.fileSlug,
+        siteTitle: article.data.siteSettings?.site_title,
+        eyebrow: article.data.kicker,
+        headline: article.data.title,
+        deck: article.data.description,
+        featuredImage: article.data.featured_image,
+        proofCard
+      });
+    }
+
+    return items;
+  });
 
   eleventyConfig.addCollection("publishedArticle", (collectionApi) =>
     publishedArticles(
@@ -500,8 +533,6 @@ export default async function (eleventyConfig) {
       sourceDocuments
     );
 
-    proofShareManifest.length = 0;
-
     return items.reduce((entries, article) => {
       let proofCard = null;
 
@@ -523,7 +554,6 @@ export default async function (eleventyConfig) {
         return entries;
       }
 
-      proofShareManifest.push(proofCard);
       entries.push({
         article,
         proofCard
@@ -808,7 +838,7 @@ export default async function (eleventyConfig) {
   eleventyConfig.on("eleventy.after", async ({ directories }) => {
     const cssOutputDir = path.resolve(directories.output, "assets/css");
     const cssOutputPath = path.join(cssOutputDir, "style.css");
-    const proofOutputDir = path.resolve(directories.output, "assets/images/proof-cards");
+    const shareOutputDir = path.resolve(directories.output, "assets/images/share-cards");
     const siteSettings = await loadSiteSettings(PROJECT_ROOT);
 
     await mkdir(cssOutputDir, { recursive: true });
@@ -825,8 +855,8 @@ export default async function (eleventyConfig) {
     ]);
 
     await Promise.all(
-      proofShareManifest.map((proofCard) =>
-        renderProofShareImage(proofCard, proofOutputDir, {
+      articleShareManifest.map((articleCard) =>
+        renderArticleShareImage(articleCard, shareOutputDir, {
           projectRoot: PROJECT_ROOT,
           siteTitle: siteSettings.site_title
         })
