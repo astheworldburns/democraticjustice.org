@@ -60,6 +60,78 @@ function imageFormatsForSource(src = "") {
   return /\.png$/i.test(src) ? ["avif", "webp", "png"] : ["avif", "webp", "jpeg"];
 }
 
+function escapeHtmlAttribute(value = "") {
+  return value
+    .toString()
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function youtubeEmbedUrl(value = "") {
+  const rawValue = (value || "").toString().trim();
+
+  if (!rawValue) {
+    return "";
+  }
+
+  if (/^[A-Za-z0-9_-]{6,}$/.test(rawValue) && !rawValue.includes(".")) {
+    return `https://www.youtube-nocookie.com/embed/${rawValue}`;
+  }
+
+  try {
+    const url = new URL(rawValue);
+    const host = url.hostname.replace(/^www\./, "").toLowerCase();
+
+    if (host === "youtu.be") {
+      const videoId = url.pathname.split("/").filter(Boolean)[0];
+      return videoId ? `https://www.youtube-nocookie.com/embed/${videoId}` : "";
+    }
+
+    if (host === "youtube.com" || host === "m.youtube.com" || host === "youtube-nocookie.com") {
+      if (url.pathname.startsWith("/embed/") || url.pathname.startsWith("/shorts/")) {
+        const videoId = url.pathname.split("/").filter(Boolean)[1];
+        return videoId ? `https://www.youtube-nocookie.com/embed/${videoId}` : "";
+      }
+
+      const videoId = url.searchParams.get("v");
+      return videoId ? `https://www.youtube-nocookie.com/embed/${videoId}` : "";
+    }
+  } catch {
+    return "";
+  }
+
+  return "";
+}
+
+function youtubeFigure(value = "", title = "Embedded YouTube video", caption = "") {
+  const embedUrl = youtubeEmbedUrl(value);
+
+  if (!embedUrl) {
+    return "";
+  }
+
+  const safeTitle = escapeHtmlAttribute(title || "Embedded YouTube video");
+  const captionHtml = caption
+    ? `<figcaption>${caption}</figcaption>`
+    : "";
+
+  return `<figure class="article-video-embed">
+  <div class="article-video-embed__frame">
+    <iframe
+      src="${embedUrl}"
+      title="${safeTitle}"
+      loading="lazy"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerpolicy="strict-origin-when-cross-origin"
+      allowfullscreen
+    ></iframe>
+  </div>
+  ${captionHtml}
+</figure>`;
+}
+
 function slugifyTag(value = "") {
   return value
     .toString()
@@ -669,6 +741,8 @@ export default async function (eleventyConfig) {
 
   eleventyConfig.addGlobalData("buildDate", new Date());
   eleventyConfig.addGlobalData("buildVersion", Date.now().toString());
+
+  eleventyConfig.addShortcode("youtube", youtubeFigure);
 
   eleventyConfig.addNunjucksAsyncShortcode(
     "image",

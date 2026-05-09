@@ -21,6 +21,43 @@ function resolveDocumentFileUrl(value = "") {
   return encodeURI(normalizedPath);
 }
 
+function getVideoEmbedUrl(value = "") {
+  const rawValue = (value || "").toString().trim();
+
+  if (!rawValue) {
+    return "";
+  }
+
+  try {
+    const url = new URL(rawValue);
+    const host = url.hostname.replace(/^www\./, "").toLowerCase();
+
+    if (host === "youtu.be") {
+      const videoId = url.pathname.split("/").filter(Boolean)[0];
+      return videoId ? `https://www.youtube-nocookie.com/embed/${videoId}` : "";
+    }
+
+    if (host === "youtube.com" || host === "m.youtube.com" || host === "youtube-nocookie.com") {
+      if (url.pathname.startsWith("/embed/")) {
+        const videoId = url.pathname.split("/").filter(Boolean)[1];
+        return videoId ? `https://www.youtube-nocookie.com/embed/${videoId}` : "";
+      }
+
+      if (url.pathname.startsWith("/shorts/")) {
+        const videoId = url.pathname.split("/").filter(Boolean)[1];
+        return videoId ? `https://www.youtube-nocookie.com/embed/${videoId}` : "";
+      }
+
+      const videoId = url.searchParams.get("v");
+      return videoId ? `https://www.youtube-nocookie.com/embed/${videoId}` : "";
+    }
+  } catch {
+    return "";
+  }
+
+  return "";
+}
+
 function decodePath(value = "") {
   try {
     return decodeURI(value);
@@ -63,6 +100,7 @@ export default {
     },
     file_url: (data) => resolveDocumentFileUrl(data.file),
     video_url: (data) => (data.video_url || "").toString().trim(),
+    video_embed_url: (data) => getVideoEmbedUrl(data.video_url),
     file_type: (data) => {
       const value = (data.file || "").toLowerCase();
 
