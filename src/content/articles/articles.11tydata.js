@@ -12,6 +12,12 @@ function slugifySegment(value = "") {
     .replace(/^-+|-+$/g, "");
 }
 
+function getArticleShareImage(data = {}) {
+  const slug = slugifySegment(data.page?.fileSlug || data.fileSlug || data.url_slug);
+
+  return slug ? `/assets/images/share-cards/${slug}.jpg` : data.socialImage;
+}
+
 function getArticleSection(data = {}) {
   const explicitSection = slugifySegment(data.section);
   if (explicitSection) {
@@ -75,7 +81,7 @@ export default {
 
       return Array.from(new Set(["article", ...tags]));
     },
-    socialImage: (data) => safeProofCard(data)?.shareImagePath || data.socialImage,
+    socialImage: (data) => data.socialImage || safeProofCard(data)?.shareImagePath || getArticleShareImage(data),
     socialDescription: (data) => safeProofCard(data)?.socialDescription || data.socialDescription
   }
 };
