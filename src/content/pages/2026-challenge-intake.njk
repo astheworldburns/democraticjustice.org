@@ -6,6 +6,7 @@ permalink: /2026-challenge-intake/index.html
 ogType: website
 ---
 {% set challengePdfPath = "/documents/2026-challenge.pdf" %}
+{% set challengeViewerUrl = "https://docs.google.com/gview?embedded=1&url=https%3A%2F%2Fdemocraticjustice.org%2Fdocuments%2F2026-challenge.pdf" %}
 {# Add the final PDF at static/documents/2026-challenge.pdf. Eleventy publishes it at the challengePdfPath above. #}
 {# To change the reader to a different challenge PDF, upload the PDF into src/content/documents/static/documents/ and replace challengePdfPath above with /documents/<url-encoded-filename>.pdf. #}
 <main id="main-content" data-pagefind-body>
@@ -41,6 +42,28 @@ ogType: website
           allowfullscreen
           style="border: 0; display: block; min-height: 620px;"
         ></iframe>
+      <div
+        class="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-900"
+        data-pdf-reader
+        data-pdf-url="{{ challengePdfPath }}"
+      >
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-950">
+          <div class="flex items-center gap-2">
+            <button class="rounded-lg border border-slate-300 px-3 py-2 font-mono text-sm disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-600" type="button" data-pdf-previous disabled>Previous</button>
+            <button class="rounded-lg border border-slate-300 px-3 py-2 font-mono text-sm disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-600" type="button" data-pdf-next disabled>Next</button>
+          </div>
+          <p class="m-0 font-mono text-sm" data-pdf-status role="status" aria-live="polite">Loading challenge PDF…</p>
+          <a class="font-mono text-sm" href="{{ challengePdfPath }}" target="_blank" rel="noopener">Open PDF</a>
+        </div>
+        <div class="flex min-h-[620px] items-start justify-center overflow-auto p-3 sm:p-6" data-pdf-stage>
+          <canvas class="max-w-full bg-white shadow-lg" data-pdf-canvas aria-label="Rendered page of the challenge PDF"></canvas>
+          <noscript>
+            <p>
+              JavaScript is required for the embedded reader.
+              <a href="{{ challengePdfPath }}">Open the challenge PDF directly</a>.
+            </p>
+          </noscript>
+        </div>
       </div>
     </section>
 
@@ -56,3 +79,4 @@ ogType: website
     </section>
   </section>
 </main>
+<script type="module" src="/assets/js/challenge-pdf-reader.js"></script>
