@@ -5,7 +5,7 @@
     {% set siteMetaDescription = siteSettings.meta_description or site.description %}
     {% set canonicalUrl = page.url | absoluteUrl(site.url) %}
     {% set browserTitle = title + " | " + siteTitle if title and title != siteTitle else siteTitle %}
-    {% set socialTitle = title if ogType == "article" and title else browserTitle %}
+    {% set socialTitle = socialTitle or (title if ogType == "article" and title else browserTitle) %}
     {% set socialDescription = socialDescription or (siteMetaDescription if page.url == "/" else description or siteMetaDescription) %}
     {% set socialImagePath = socialImage or (featured_image if featured_image else site.defaultSocialImage) %}
     {% set socialImageUrl = socialImagePath | absoluteUrl(site.url) %}
