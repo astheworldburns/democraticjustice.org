@@ -6,10 +6,9 @@ permalink: /2026-challenge-intake/index.html
 ogType: website
 ---
 {% set challengePdfPath = "/documents/2026-challenge.pdf" %}
-{% set challengeViewerUrl = "https://docs.google.com/gview?embedded=1&url=https%3A%2F%2Fdemocraticjustice.org%2Fdocuments%2F2026-challenge.pdf" %}
 {# Add the final PDF at static/documents/2026-challenge.pdf. Eleventy publishes it at the challengePdfPath above. #}
-{# To change the reader to a different challenge PDF, upload the PDF into src/content/documents/static/documents/ and replace challengePdfPath above with /documents/<url-encoded-filename>.pdf. #}
-<main id="main-content" data-pagefind-body>
+{# To change the reader to a different challenge PDF, place it in static/documents/ and update challengePdfPath above. #}
+<div data-pagefind-body>
   <section aria-labelledby="challenge-intake-heading" class="max-w-6xl mx-auto space-y-8">
     {% set sectionKicker = "2026" %}{% set sectionTitle = "Challenge Intake" %}{% set sectionId = "challenge-intake-heading" %}{% set sectionLevel = "h1" %}
     {% include "components/section-header.njk" %}
@@ -32,16 +31,6 @@ ogType: website
       <div class="prose prose-lg max-w-none">
         <h2 id="challenge-pdf-heading">1. Review the challenge</h2>
       </div>
-      <div class="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-950" style="height: min(85vh, 900px); min-height: 620px;">
-        <iframe
-          src="{{ challengePdfPath }}#view=FitH"
-          title="2026 challenge PDF reader"
-          width="100%"
-          height="100%"
-          loading="eager"
-          allowfullscreen
-          style="border: 0; display: block; min-height: 620px;"
-        ></iframe>
       <div
         class="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-900"
         data-pdf-reader
@@ -56,9 +45,9 @@ ogType: website
           <a class="font-mono text-sm" href="{{ challengePdfPath }}" target="_blank" rel="noopener">Open PDF</a>
         </div>
         <div class="flex min-h-[620px] items-start justify-center overflow-auto p-3 sm:p-6" data-pdf-stage>
-          <canvas class="max-w-full bg-white shadow-lg" data-pdf-canvas aria-label="Rendered page of the challenge PDF"></canvas>
+          <canvas class="max-w-full bg-white shadow-lg" data-pdf-canvas role="img" aria-label="Loading the challenge PDF"></canvas>
           <noscript>
-            <p>
+            <p class="max-w-xl self-center text-center">
               JavaScript is required for the embedded reader.
               <a href="{{ challengePdfPath }}">Open the challenge PDF directly</a>.
             </p>
@@ -72,11 +61,15 @@ ogType: website
         <h2 id="signature-heading">2. Sign the challenge</h2>
         <p>Use the secure Adobe form below to add your signature and submit your intake information.</p>
         <p><strong>Only West Virginia Democrats in good standing may sign.</strong></p>
+        <p>
+          If the form does not load, you can
+          <a href="https://na3.documents.adobe.com/public/esignWidget?wid=CBFCIBAA3AAABLblqZhBI0WkAEG2sc2NOB7GWXtoMEqWaZCIHQ5uJpESXOtF4btS2YEVwb7ELIUo48PrAQvM*&amp;hosted=false" target="_blank" rel="noopener">open the secure signature form in a new tab</a>.
+        </p>
       </div>
-      <div class="mt-4 overflow-auto rounded-2xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-950" style="height: min(90vh, 900px); min-height: 560px;">
-        <iframe src="https://na3.documents.adobe.com/public/esignWidget?wid=CBFCIBAA3AAABLblqZhBI0WkAEG2sc2NOB7GWXtoMEqWaZCIHQ5uJpESXOtF4btS2YEVwb7ELIUo48PrAQvM*&hosted=false" width="100%" height="100%" frameborder="0" title="Adobe signature intake form" style="border: 0; overflow: hidden; min-height: 500px; min-width: 600px;"></iframe>
+      <div class="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-950" style="height: min(90vh, 900px); min-height: 560px;">
+        <iframe src="https://na3.documents.adobe.com/public/esignWidget?wid=CBFCIBAA3AAABLblqZhBI0WkAEG2sc2NOB7GWXtoMEqWaZCIHQ5uJpESXOtF4btS2YEVwb7ELIUo48PrAQvM*&amp;hosted=false" width="100%" height="100%" title="Adobe signature intake form" loading="lazy" style="border: 0; display: block; min-height: 560px;"></iframe>
       </div>
     </section>
   </section>
-</main>
+</div>
 <script type="module" src="/assets/js/challenge-pdf-reader.js"></script>

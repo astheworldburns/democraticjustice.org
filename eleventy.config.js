@@ -436,7 +436,10 @@ export default async function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/assets/js");
   eleventyConfig.addPassthroughCopy({
     "node_modules/pdfjs-dist/build/pdf.mjs": "assets/vendor/pdfjs/pdf.mjs",
-    "node_modules/pdfjs-dist/build/pdf.worker.mjs": "assets/vendor/pdfjs/pdf.worker.mjs"
+    "node_modules/pdfjs-dist/build/pdf.worker.mjs": "assets/vendor/pdfjs/pdf.worker.mjs",
+    "node_modules/pdfjs-dist/cmaps": "assets/vendor/pdfjs/cmaps",
+    "node_modules/pdfjs-dist/standard_fonts": "assets/vendor/pdfjs/standard_fonts",
+    "node_modules/pdfjs-dist/wasm": "assets/vendor/pdfjs/wasm"
   });
   eleventyConfig.addPassthroughCopy({ "static/documents": "documents" });
   eleventyConfig.addPassthroughCopy({ "src/content/documents/static/documents": "documents" });
