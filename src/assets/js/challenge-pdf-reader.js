@@ -16,6 +16,8 @@ if (reader) {
   let documentHandle;
   let pageNumber = 1;
   let renderTask;
+  let renderRequest = 0;
+  let resizeTimer;
 
   const updateControls = () => {
     previousButton.disabled = !documentHandle || pageNumber <= 1;
@@ -27,8 +29,21 @@ if (reader) {
       return;
     }
 
+    const request = ++renderRequest;
+
     if (renderTask) {
       renderTask.cancel();
+      try {
+        await renderTask.promise;
+      } catch (error) {
+        if (error?.name !== "RenderingCancelledException") {
+          throw error;
+        }
+      }
+    }
+
+    if (request !== renderRequest) {
+      return;
     }
 
     status.textContent = `Loading page ${pageNumber} of ${documentHandle.numPages}…`;
@@ -53,13 +68,21 @@ if (reader) {
 
     try {
       await renderTask.promise;
-      status.textContent = `Page ${pageNumber} of ${documentHandle.numPages}`;
+      if (request === renderRequest) {
+        status.textContent = `Page ${pageNumber} of ${documentHandle.numPages}`;
+        canvas.setAttribute(
+          "aria-label",
+          `Page ${pageNumber} of ${documentHandle.numPages} of the 2026 challenge`
+        );
+      }
     } catch (error) {
       if (error?.name !== "RenderingCancelledException") {
         throw error;
       }
     } finally {
-      renderTask = null;
+      if (request === renderRequest) {
+        renderTask = null;
+      }
       updateControls();
     }
   };
@@ -78,8 +101,27 @@ if (reader) {
     }
   });
 
+  if ("ResizeObserver" in window) {
+    const resizeObserver = new ResizeObserver(() => {
+      if (!documentHandle) {
+        return;
+      }
+
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(renderPage, 150);
+    });
+    resizeObserver.observe(stage);
+  }
+
   try {
-    documentHandle = await pdfjsLib.getDocument(pdfUrl).promise;
+    const loadingTask = pdfjsLib.getDocument({
+      url: pdfUrl,
+      cMapUrl: "/assets/vendor/pdfjs/cmaps/",
+      cMapPacked: true,
+      standardFontDataUrl: "/assets/vendor/pdfjs/standard_fonts/",
+      wasmUrl: "/assets/vendor/pdfjs/wasm/"
+    });
+    documentHandle = await loadingTask.promise;
     updateControls();
     await renderPage();
   } catch (error) {
