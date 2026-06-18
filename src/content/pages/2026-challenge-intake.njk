@@ -1,22 +1,27 @@
 ---
 layout: layouts/base.njk
-title: 2026 Challenge Intake Page
-description: "Review the challenge packet and complete the secure Adobe signature intake form."
+title: 2026 Challenge Intake
+description: "Review the 2026 challenge, then sign it using the secure form directly below the document."
 permalink: /2026-challenge-intake/index.html
 ogType: website
 ---
 {% set challengePdfPath = "/documents/2026-challenge.pdf" %}
+{% set challengeViewerUrl = "https://docs.google.com/gview?embedded=1&url=https%3A%2F%2Fdemocraticjustice.org%2Fdocuments%2F2026-challenge.pdf" %}
 {# Add the final PDF at static/documents/2026-challenge.pdf. Eleventy publishes it at the challengePdfPath above. #}
 {# To change the reader to a different challenge PDF, upload the PDF into src/content/documents/static/documents/ and replace challengePdfPath above with /documents/<url-encoded-filename>.pdf. #}
 <main id="main-content" data-pagefind-body>
   <section aria-labelledby="challenge-intake-heading" class="max-w-6xl mx-auto space-y-8">
-    {% set sectionKicker = "Challenge intake" %}{% set sectionTitle = "2026 Challenge Intake Page" %}{% set sectionId = "challenge-intake-heading" %}
+    {% set sectionKicker = "2026" %}{% set sectionTitle = "Challenge Intake" %}{% set sectionId = "challenge-intake-heading" %}{% set sectionLevel = "h1" %}
     {% include "components/section-header.njk" %}
 
     <article class="card prose prose-lg max-w-none">
-      <p>
-        Review the challenge packet below, then use the secure Adobe form to add your signature and submit your intake information.
+      <h2>Review the challenge, then sign below</h2>
+      <p class="text-xl">
+        Read the 2026 challenge in the document viewer. When you are ready, scroll to the signature form directly below the challenge to add your signature and submit your intake information.
       </p>
+      <aside class="rounded-xl border-2 border-accent bg-surface-overlay p-4" aria-label="Signature eligibility">
+        <p class="m-0"><strong>Eligibility:</strong> Only West Virginia Democrats in good standing may sign this challenge.</p>
+      </aside>
       <p>
         If the document reader does not load, you can
         <a href="{{ challengePdfPath }}">open the challenge PDF directly</a>.
@@ -25,15 +30,16 @@ ogType: website
 
     <section class="card" aria-labelledby="challenge-pdf-heading">
       <div class="prose prose-lg max-w-none">
-        <h2 id="challenge-pdf-heading">Challenge PDF</h2>
+        <h2 id="challenge-pdf-heading">1. Review the challenge</h2>
       </div>
-      <div class="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-900" style="height: min(85vh, 900px); min-height: 620px;">
+      <div class="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-950" style="height: min(85vh, 900px); min-height: 620px;">
         <iframe
-          src="{{ challengePdfPath }}#view=FitH"
-          title="Challenge PDF reader"
+          src="{{ challengeViewerUrl }}"
+          title="2026 challenge PDF reader"
           width="100%"
           height="100%"
-          loading="lazy"
+          loading="eager"
+          allowfullscreen
           style="border: 0; display: block; min-height: 620px;"
         ></iframe>
       </div>
@@ -41,8 +47,9 @@ ogType: website
 
     <section class="card" aria-labelledby="signature-heading">
       <div class="prose prose-lg max-w-none">
-        <h2 id="signature-heading">Signature intake form</h2>
-        <p>Complete the Adobe signature form below after reviewing the challenge packet.</p>
+        <h2 id="signature-heading">2. Sign the challenge</h2>
+        <p>Use the secure Adobe form below to add your signature and submit your intake information.</p>
+        <p><strong>Only West Virginia Democrats in good standing may sign.</strong></p>
       </div>
       <div class="mt-4 overflow-auto rounded-2xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-950" style="height: min(90vh, 900px); min-height: 560px;">
         <iframe src="https://na3.documents.adobe.com/public/esignWidget?wid=CBFCIBAA3AAABLblqZhBI0WkAEG2sc2NOB7GWXtoMEqWaZCIHQ5uJpESXOtF4btS2YEVwb7ELIUo48PrAQvM*&hosted=false" width="100%" height="100%" frameborder="0" title="Adobe signature intake form" style="border: 0; overflow: hidden; min-height: 500px; min-width: 600px;"></iframe>
