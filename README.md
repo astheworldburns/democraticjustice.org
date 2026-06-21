@@ -68,6 +68,12 @@ WCAG 2.1 AA. Skip nav, focus-visible indicators, semantic landmarks, proper head
 ## Performance
 Self-hosted fonts with preload + font-display:swap. Lazy images with width/height. Tailwind purge. Vanilla JS (~4KB). Glassmorphism with @supports fallbacks.
 
+## Analytics
+
+Google Analytics can be enabled at build time by setting either `GA_MEASUREMENT_ID` or `GOOGLE_ANALYTICS_ID` to a GA4 measurement ID such as `G-XXXXXXXXXX` before running `npm run build`.
+
+When the variable is absent, the analytics tag is not rendered. When it is present, the base layout loads Google Analytics with IP anonymization and first-party cookie flags so the site can produce aggregate traffic and engagement reports for advertisers, sponsors, grantmakers, and other monetization partners.
+
 ## Deploy
 GitHub Actions (`.github/workflows/r2-sync.yml`) syncs to Cloudflare R2. Proof API via Cloudflare Worker (`workers/proof-desk-gateway/`).
 
