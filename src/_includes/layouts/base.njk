@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
   <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3TV2GBS34Y"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-3TV2GBS34Y');
+    </script>
     {% set siteTitle = siteSettings.site_title or site.name %}
     {% set siteMetaDescription = siteSettings.meta_description or site.description %}
     {% set canonicalUrl = page.url | absoluteUrl(site.url) %}
@@ -26,18 +35,6 @@
         document.documentElement.setAttribute('data-theme',t);
       })();
     </script>
-    {% if analytics.googleMeasurementId %}
-      <script async src="https://www.googletagmanager.com/gtag/js?id={{ analytics.googleMeasurementId }}"></script>
-      <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', '{{ analytics.googleMeasurementId }}', {
-          anonymize_ip: true,
-          cookie_flags: 'SameSite=Lax;Secure'
-        });
-      </script>
-    {% endif %}
     <title>{{ browserTitle }}</title>
     <meta name="description" content="{{ socialDescription }}" />
     <meta name="generator" content="Eleventy v3" />
