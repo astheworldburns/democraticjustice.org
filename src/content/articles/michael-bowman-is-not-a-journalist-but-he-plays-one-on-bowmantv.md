@@ -15,10 +15,6 @@ featured_image_credit: ''
 proof: null
 ---
 
-# MICHAEL BOWMAN IS NOT A JOURNALIST, BUT HE PLAYS ONE ON BOWMANTV
-
-_The content creator's time in Worthington reveals the cost of claiming journalism's authority without accepting its ethical obligations._
-
 On April 15, 2026, Michael Bowman stood at the glass partition inside Worthington Town Hall, camera raised, and asked Mayor Debbie Heflin, "[Do you just, like, are you just, like, do you just lie? Like, it's just, like, lies just come out of your mouth?](https://www.youtube.com/watch?v=MoEdeQIAiG0)"
 
 Heflin did not answer. Bowman told the mayor she was making herself "look like an ass" and accused private citizens of being the mayor's "cronies," saying he knew who her "people are." He said he wanted to "know where the $2 million is going."
