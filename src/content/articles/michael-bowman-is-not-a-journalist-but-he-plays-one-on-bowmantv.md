@@ -17,7 +17,7 @@ proof: null
 
 # MICHAEL BOWMAN IS NOT A JOURNALIST, BUT HE PLAYS ONE ON BOWMANTV
 
-*The content creator's time in Worthington reveals the cost of claiming journalism's authority without accepting its ethical obligations.*
+_The content creator's time in Worthington reveals the cost of claiming journalism's authority without accepting its ethical obligations._
 
 On April 15, 2026, Michael Bowman stood at the glass partition inside Worthington Town Hall, camera raised, and asked Mayor Debbie Heflin, "[Do you just, like, are you just, like, do you just lie? Like, it's just, like, lies just come out of your mouth?](https://www.youtube.com/watch?v=MoEdeQIAiG0)"
 
@@ -85,4 +85,4 @@ West Virginia has many towns like Worthington with profitable narratives for sto
 
 BowmanTV: Coming soon to a town near you.
 
-*Seth Sturm is an elected member of the West Virginia State Democratic Executive Committee, Senatorial District 2, and the founder of Democratic Justice. He writes in his individual capacity.*
+_Seth Sturm is an elected member of the West Virginia State Democratic Executive Committee, Senatorial District 2, and the founder of Democratic Justice. He writes in his individual capacity._
