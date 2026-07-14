@@ -8,7 +8,7 @@ author: seth-sturm
 date: 2026-07-13T19:24:00
 tags:
   - opinion
-featured_image: /assets/images/uploads/Bowman Not a Doctor.png
+featured_image: /assets/images/uploads/BOWMANSHARE.png
 featured_image_alt: 'Broadcast-style graphic reading "News for Views: The Dangers of Influencer Journalism," showing content creator Michael Bowman filming on his phone inside Worthington Town Hall.'
 featured_image_caption: ''
 featured_image_credit: ''
@@ -23,7 +23,7 @@ Gov. Patrick Morrisey announced a [$2 million AMLER grant](https://governor.wv.g
 
 Bowman said he was not trying to make Heflin out to be a villain, but that she was "falling right into that role."
 
-Later that day, deputies arrested Bowman on obstruction charges, which were [later dropped](https://www.timeswv.com/news/local_news/marion-county-sheriffs-office-drops-worthington-charges-against-content-creator-michael-bowman/article_1d225329-4b57-46af-9493-42bead816e81.html). On June 5, he filed a [federal lawsuit](https://democraticjustice.org/documents/bowman-v-worthington-complaint.pdf) against the Town of Worthington, Marion County, the county sheriff, various officials, and a private citizen who posted about his arrest on social media. 
+Later that day, deputies arrested Bowman on obstruction charges, which were [later dropped](https://www.timeswv.com/news/local_news/marion-county-sheriffs-office-drops-worthington-charges-against-content-creator-michael-bowman/article_1d225329-4b57-46af-9493-42bead816e81.html). On June 5, he filed a [federal lawsuit](https://democraticjustice.org/documents/bowman-v-worthington-complaint.pdf) against the Town of Worthington, Marion County, the county sheriff, various officials, and a private citizen who posted about his arrest on social media.
 
 Bowman's federal complaint describes him as an independent journalist. The [Society of Professional Journalists' Code of Ethics](https://www.spj.org/spj-code-of-ethics/) identifies four obligations for those claiming journalism's authority: seek truth and report it, minimize harm, act independently, and be accountable and transparent.
 
