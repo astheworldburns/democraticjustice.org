@@ -779,6 +779,7 @@ export default async function (eleventyConfig) {
   eleventyConfig.addGlobalData("buildDate", new Date());
   eleventyConfig.addGlobalData("buildVersion", Date.now().toString());
   eleventyConfig.addGlobalData("analytics", {
+    googleMeasurementId: process.env.GA_MEASUREMENT_ID || process.env.GOOGLE_ANALYTICS_ID || "G-3TV2GBS34Y"
     googleMeasurementId: process.env.GA_MEASUREMENT_ID || process.env.GOOGLE_ANALYTICS_ID || ""
   });
 

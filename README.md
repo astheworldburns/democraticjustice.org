@@ -70,6 +70,9 @@ Self-hosted fonts with preload + font-display:swap. Lazy images with width/heigh
 
 ## Analytics
 
+Google Analytics is configured with the GA4 measurement ID `G-3TV2GBS34Y` so production builds render the Google tag automatically.
+
+To temporarily point a build at a different GA4 property, set either `GA_MEASUREMENT_ID` or `GOOGLE_ANALYTICS_ID` before running `npm run build`; the environment variable overrides the committed default. The base layout loads Google Analytics with IP anonymization and first-party cookie flags so the site can produce aggregate traffic and engagement reports for advertisers, sponsors, grantmakers, and other monetization partners.
 Google Analytics can be enabled at build time by setting either `GA_MEASUREMENT_ID` or `GOOGLE_ANALYTICS_ID` to a GA4 measurement ID such as `G-XXXXXXXXXX` before running `npm run build`.
 
 When the variable is absent, the analytics tag is not rendered. When it is present, the base layout loads Google Analytics with IP anonymization and first-party cookie flags so the site can produce aggregate traffic and engagement reports for advertisers, sponsors, grantmakers, and other monetization partners.
