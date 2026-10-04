@@ -15,7 +15,7 @@ featured_image_credit: ''
 proof: null
 ---
 
-Michael Bowman built a following across West Virginia calling himself an independent journalist, and that title opened doors. Podcaster J.D. Belcher, congressional nominee Ace Parsi, and attorney Stephen New treated him as a legitimate investigator. 
+Michael Bowman built a following across West Virginia calling himself an independent journalist, and that title opened doors. Podcaster J.D. Belcher, congressional nominee Ace Parsi, and attorney Stephen New treated him as a legitimate investigator.
 
 Months before police arrested Bowman on Sept. 30 on felony strangulation charges, Belcher and Parsi received direct documentation of his recorded statements defending men on the age of consent. Both kept promoting him, while New enabled him through the courts.
 
@@ -85,7 +85,7 @@ Parsi explained his rationale by saying he placed himself in front of anyone hol
 
 Parsi stated that Bowman operated outside his team, and they didn't coordinate.
 
-![Screenshot of a digital calendar entry titled "Monongalia County - Candidate Event: Ace Touring Morgantown with Michael Bowman" scheduled for Wednesday, July 22, 2026, with the sponsoring candidate listed as Ace Parsi, U.S. House District 2.   ](/assets/images/uploads/Screenshot%202026-07-03%20at%2011.42.28%20AM.png "The public calendar listing for July 22, 2026, showing congressional candidate Ace Parsi’s campaign sponsoring a tour of Morgantown with Michael Bowman.   ")
+![Screenshot of a digital calendar entry titled "Monongalia County - Candidate Event: Ace Touring Morgantown with Michael Bowman" scheduled for Wednesday, July 22, 2026, with the sponsoring candidate listed as Ace Parsi, U.S. House District 2.   ](/assets/images/uploads/Screenshot%202026-07-03%20at%2011.42.28%20AM.png "The public calendar listing for July 22, 2026, showing congressional candidate Ace Parsi’s campaign sponsoring a tour of Morgantown with Michael Bowman.")
 
 That same day, a public event titled "Monongalia County - Candidate Event: Ace Touring Morgantown with Michael Bowman" appeared on the State Democratic Party calendar, sponsored by Parsi's campaign.
 
@@ -113,7 +113,7 @@ Bowman also [sued Renee Courtney](https://democraticjustice.org/documents/bowman
 
 Bowman, through New, alleged "upon information and belief" that Courtney acted "under color of state law" in a conspiracy with the mayor, asserting that her social media posts were planned in coordination with town officials to defame Bowman.
 
-![Excerpt of paragraph 18 from a federal legal complaint asserting that Renee Courtney, a resident of Marion County, acted in concert with state actors under color of state law for purposes of 42 U.S.C. Section 1983.   ](/assets/images/uploads/Screenshot%202026-10-04%20at%202.11.14%20PM.png "Paragraph 18 of the federal civil rights complaint, alleging 'on information and belief' that private citizen Renee Courtney acted under color of state law pursuant to 42 U.S.C. § 1983.   ")
+![Excerpt of paragraph 18 from a federal legal complaint asserting that Renee Courtney, a resident of Marion County, acted in concert with state actors under color of state law for purposes of 42 U.S.C. Section 1983.   ](/assets/images/uploads/Screenshot%202026-10-04%20at%202.11.14%20PM.png "Paragraph 18 of the federal civil rights complaint, alleging 'on information and belief' that private citizen Renee Courtney acted under color of state law pursuant to 42 U.S.C. § 1983.")
 
 An attorney who files a federal complaint certifies under Rule 11 of the Federal Rules of Civil Procedure that he has conducted a reasonable inquiry into the facts and that the factual contentions have evidentiary support. The complaint does not quote one false statement she made.
 
@@ -141,7 +141,7 @@ One such example occurred in higher education, where academic gatekeepers accept
 
 An event titled "Fireside Chat with Journalist Michael Bowman" was scheduled in the Encova Auditorium at Marshall University's Brad D. Smith Center for Business and Innovation for October 13.
 
-![An Eventbrite listing for an October 13, 2026 event titled "Fireside Chat with Journalist Michael Bowman" at the Brad D. Smith Center for Business and Innovation in Huntington, West Virginia, showing the event marked as canceled.   ](/assets/images/uploads/Screenshot%202026-10-04%20at%202.19.55%20PM.png "The Eventbrite registration page for the October 13, 2026 'Fireside Chat with Journalist Michael Bowman' at Marshall University’s Brad D. Smith Center, marked canceled.   ")
+![An Eventbrite listing for an October 13, 2026 event titled "Fireside Chat with Journalist Michael Bowman" at the Brad D. Smith Center for Business and Innovation in Huntington, West Virginia, showing the event marked as canceled.   ](/assets/images/uploads/Screenshot%202026-10-04%20at%202.19.55%20PM.png "The Eventbrite registration page for the October 13, 2026 'Fireside Chat with Journalist Michael Bowman' at Marshall University’s Brad D. Smith Center, marked canceled.")
 
 Marketing materials described him as "a rising star" with "over 350,000 followers," inviting students and community members to explore "the future of journalism" and asserting that "much about his unconventional approach remains a mystery."
 
@@ -159,7 +159,7 @@ Following Bowman's arrest, people, mostly women, who had followed his content be
 
 One had followed him since February without suspecting anything was wrong. She said that she would have unfollowed immediately if she had seen the videos I shared.
 
-Another had defended him as a freelance journalist because she never saw his early catalog. "If I had," she wrote, "I would have listened AND I would have warned my friends." 
+Another had defended him as a freelance journalist because she never saw his early catalog. "If I had," she wrote, "I would have listened AND I would have warned my friends."
 
 A domestic violence survivor said my early posts helped when a friend had her own run-in with Bowman. They saw the warning, and they acted on it.
 
@@ -169,7 +169,7 @@ That's the duty they owe now. They can't undo what Bowman did. They can help cle
 
 Start with the one thing everyone should be able to agree on. Renee Courtney is a private citizen being sued in federal court over a meme. The complaint doesn't quote a single false statement she made. New filed it under the Ku Klux Klan Act. It's still active. She enters the holidays with her savings and reputation on the line.
 
-Bowman can dismiss it. New can advise him to. Everyone who vouched for Bowman can say publicly that it needs to end. 
+Bowman can dismiss it. New can advise him to. Everyone who vouched for Bowman can say publicly that it needs to end.
 
 Drop the lawsuit against Renee Courtney. Then we can start talking about the rest.
 
