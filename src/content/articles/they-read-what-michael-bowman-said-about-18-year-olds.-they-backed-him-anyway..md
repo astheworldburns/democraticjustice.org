@@ -8,8 +8,8 @@ author: seth-sturm
 date: 2026-10-04T14:21:00
 tags:
   - article
-featured_image: /assets/images/uploads/Bowman Plain.png
-featured_image_alt: Michael Bowman films on his phone inside Worthington Town Hall.
+featured_image: ''
+featured_image_alt: ''
 featured_image_caption: ''
 featured_image_credit: ''
 proof: null
@@ -114,6 +114,8 @@ Bowman also [sued Renee Courtney](https://democraticjustice.org/documents/bowman
 Bowman, through New, alleged "upon information and belief" that Courtney acted "under color of state law" in a conspiracy with the mayor, asserting that her social media posts were planned in coordination with town officials to defame Bowman.
 
 ![Excerpt of paragraph 18 from a federal legal complaint asserting that Renee Courtney, a resident of Marion County, acted in concert with state actors under color of state law for purposes of 42 U.S.C. Section 1983.   ](/assets/images/uploads/Screenshot%202026-10-04%20at%202.11.14%20PM.png "Paragraph 18 of the federal civil rights complaint, alleging 'on information and belief' that private citizen Renee Courtney acted under color of state law pursuant to 42 U.S.C. § 1983.")
+
+![Editorial social share card from democraticjustice.org featuring bold white text on a dark background on the left that reads: "They read what Michael Bowman said about 18-year-olds. They backed him anyway." On the right is video footage of Michael Bowman wearing a baseball cap, shorts, and sneakers while holding a camera, framed with a red "REC" indicator in the upper-right corner.   ](/assets/images/uploads/Bowman%20Age%20of%20Consent.png)
 
 An attorney who files a federal complaint certifies under Rule 11 of the Federal Rules of Civil Procedure that he has conducted a reasonable inquiry into the facts and that the factual contentions have evidentiary support. The complaint does not quote one false statement she made.
 
