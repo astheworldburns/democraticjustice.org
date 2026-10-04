@@ -15,6 +15,8 @@ featured_image_credit: ''
 proof: null
 ---
 
+![Editorial social share card from democraticjustice.org featuring bold white text on a dark background on the left that reads: "They read what Michael Bowman said about 18-year-olds. They backed him anyway." On the right is video footage of Michael Bowman wearing a baseball cap, shorts, and sneakers while holding a camera, framed with a red "REC" indicator in the upper-right corner.   ](/assets/images/uploads/Bowman%20Age%20of%20Consent.png)
+
 Michael Bowman built a following across West Virginia calling himself an independent journalist, and that title opened doors. Podcaster J.D. Belcher, congressional nominee Ace Parsi, and attorney Stephen New treated him as a legitimate investigator.
 
 Months before police arrested Bowman on Sept. 30 on felony strangulation charges, Belcher and Parsi received direct documentation of his recorded statements defending men on the age of consent. Both kept promoting him, while New enabled him through the courts.
