@@ -19,7 +19,7 @@ proof: null
 
 Michael Bowman built a following across West Virginia calling himself an independent journalist, and that title opened doors. Podcaster J.D. Belcher, congressional nominee Ace Parsi, and attorney Stephen New treated him as a legitimate investigator.
 
-Months before police arrested Bowman on Sept. 30 on felony strangulation charges, Belcher and Parsi received direct documentation of his recorded statements defending men on the age of consent. Both kept promoting him, while New enabled him through the courts.
+Months before police arrested Bowman on Sept. 30 on felony charges, Belcher and Parsi received direct documentation of his recorded statements defending men on the age of consent. Both kept promoting him, while New enabled him through the courts.
 
 Endorsements from trusted voices gave an unvetted outsider immediate credibility in communities where residents had never seen his past videos. Bowman used that cover to enter small towns like Worthington, where he flattened an eight-figure infrastructure crisis into a personal feud against two local women.
 
