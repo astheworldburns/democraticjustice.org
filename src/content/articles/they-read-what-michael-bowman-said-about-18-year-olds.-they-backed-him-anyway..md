@@ -65,7 +65,7 @@ Belcher went on to declare Creepalachia "a victim's first platform," yet kept hi
 
 Now, Belcher posts on Facebook declaring it "disgusting" that people message him defending adults dating sixteen-year-olds. But that is the exact audience Belcher cultivated.
 
-On the comment threads where Belcher defended Bowman for his own age of consent views, several men openly published anti-woman comments, and Belcher himself joined in to attack a female politician's integrity.
+When directly confronted on social media with Bowman's statements defending men who toe the age-of-consent line, Belcher dismissed the warning as "wrong," said only "3 people cares," and framed Bowman as an "innovator" being targeted by "haters."
 
 Belcher spent months ignoring blatant misogyny and platforming a man who parsed statutory consent lines. Now, he is shocked when that exact audience uses that exact rhetoric with him.
 
