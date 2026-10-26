@@ -17,7 +17,7 @@ proof: null
 
 ### The Dinner
 
-On Tuesday, Oct. 6, 2026, Worthington officials held a private dinner inside Town Hall. The town invited selected sewer customers from outside its corporate limits, but the gathering was closed to the public, and some council members did not know it was taking place. A resident served food while those present discussed grants, the engineering firm Thrasher and hiring a new water operator. 
+On Tuesday, Oct. 6, 2026, Worthington officials held a private dinner inside Town Hall. The town invited selected sewer customers from outside its corporate limits, but the gathering was closed to the public, and some council members did not know it was taking place. A resident served food while those present discussed grants, the engineering firm Thrasher and hiring a new water operator.
 
 Two days later, reporter Esteban Fernandez wrote in the _Times West Virginian_ that a "sense of optimism" had returned to Worthington. Fernandez reported that no votes or decisions were made at the dinner and that hiring the water operator still required town council approval.
 
@@ -27,7 +27,7 @@ On Oct. 16, [a Freedom of Information Act request asked the town](https://democr
 
 In the days before the dinner, sewer customers described worsening conditions. One woman wrote that her household had been unable to do laundry for weeks. Another reported that draining her washing machine caused her toilet to overflow. Several customers said they received 24-hour shutoff notices for utility bills delivered just two days earlier.
 
-"If you or I dump something illegal we Goin to jail," one resident wrote. 
+"If you or I dump something illegal we Goin to jail," one resident wrote.
 
 The _Times West Virginian_ described the complaints as "frustration on one of the town's social media pages over recent billing and service issues."
 
@@ -95,10 +95,9 @@ The DEP had already determined in its 2024 enforcement order that Worthington co
 
 The Thrasher Group outlined four phases of sewer replacement, each costing roughly $6 million to $8 million. The overall estimate of $20 million to $40 million amounts to approximately $50,000 to $100,000 per customer household.
 
-In its 2025 infrastructure report card, the American Society of Civil Engineers estimated West Virginia needed $35.2 billion for drinking-water and wastewater infrastructure, including $23.6 billion for wastewater across 336 regulated sewer utilities. 
+In its 2025 infrastructure report card, the American Society of Civil Engineers estimated West Virginia needed $35.2 billion for drinking-water and wastewater infrastructure, including $23.6 billion for wastewater across 336 regulated sewer utilities.
 
 ![Infographic showing West Virginia's estimated $23.6 billion in wastewater infrastructure needs, representing roughly two-thirds of the state's $35.2 billion in combined drinking-water and wastewater needs. The state has 336 regulated sewer utilities, according to the 2025 ASCE infrastructure report.](/assets/images/uploads/Worthington%20Article%20Infographic%20The%20State.png)
-
 
 Acting  Mayor Lindsey had also told staff at the PSC that Worthington had no new or unresolved customer complaints, even as customers were publicly reporting sewage backups, unusable household fixtures, shut-off notices and repeated requests for repairs.
 
@@ -108,7 +107,7 @@ Acting  Mayor Lindsey had also told staff at the PSC that Worthington had no new
 
 In 2025, the PSC held full public and evidentiary hearings after one customer in a 27-home subdivision of Hubbard Heights filed a petition under the same law. In Worthington, staff recommended dismissal without those hearings for a sewer system serving nearly 400 households. The Lindsey administration supports dismissal.
 
-Heflin [challenged staff's recommendation in reply filings](https://democraticjustice.org/documents/petitioner-s-response-to-further-joint-staff-memorandum-%E2%80%94-september-25-2026-wvpsc-case-no.-26-0715-s-p/), arguing that the town's corrective-action plan could not replace the hearings required by the distressed-utility law. 
+Heflin [challenged staff's recommendation in reply filings](https://democraticjustice.org/documents/petitioner-s-response-to-further-joint-staff-memorandum-%E2%80%94-september-25-2026-wvpsc-case-no.-26-0715-s-p/), arguing that the town's corrective-action plan could not replace the hearings required by the distressed-utility law.
 
 The _Times West Virginian_ subsequently published another article by Fernandez under the headline "Former mayor's plan to dissolve Worthington falls short." The article suggested the county's dissolution proceeding "may be stillborn" because PSC staff opposed the separate distressed-utility petition.
 
@@ -120,7 +119,7 @@ In September 2026, Lindsey's administration placed annexation under new business
 
 Under § 8-35-1, charter forfeiture depends on the number of legal votes cast at a municipality's "last election." Worthington's next regular municipal election is scheduled for June 2027. If the county delays its decision beyond that election, the town could argue that the new vote supersedes the eight-vote result from 2025. Annexation could enlarge the electorate before that vote.
 
-C. Renee Courtney, a resident outside Worthington's corporate limits, [submitted a formal notice to the circuit court](https://democraticjustice.org/documents/circuit-court-filing-challenging-mayoral-eligibility-and-residency-under-w.-va.-code-%C2%A7%C2%A7-8-5-7-and-53-2-1-case-no.-cc-24-2026-c-45/) challenging the Lindseys' constitutional eligibility to govern from Morgantown.
+C. Renee Courtney, who lives outside of Worthington's corporate limits, [submitted a formal notice to the circuit court](https://democraticjustice.org/documents/circuit-court-filing-challenging-mayoral-eligibility-and-residency-under-w.-va.-code-%C2%A7%C2%A7-8-5-7-and-53-2-1-case-no.-cc-24-2026-c-45/) challenging the Lindseys' constitutional eligibility to govern from Morgantown.
 
 [Judge Patrick Wilson subsequently found that the mandamus proceeding appeared moot](https://democraticjustice.org/documents/marion-county-circuit-court-order-following-status-hearing-on-petition-for-writ-of-mandamus-%E2%80%94-october-9-2026-case-no.-cc-24-2026-c-45/) because the council had made new appointments and the Lindseys had decided to remain in office. He directed the town to submit a final dismissal order within 10 days without deciding the residency challenge.
 
