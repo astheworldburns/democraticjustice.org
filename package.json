@@ -5,6 +5,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "test": "node --test scripts/internal-link-audit.test.mjs",
     "start": "npx @11ty/eleventy --serve",
     "build": "rm -rf _site && npm run preview:sync && npx @11ty/eleventy && npm run audit:assets && npm run audit:public && npm run audit:links",
     "audit:assets": "node ./scripts/asset-audit.mjs",
@@ -31,6 +32,7 @@
     "@11ty/eleventy-img": "^5.0.0",
     "@11ty/eleventy-plugin-rss": "^2.0.2",
     "@tailwindcss/typography": "^0.5.16",
+    "entities": "6.0.1",
     "luxon": "^3.7.2",
     "pagefind": "^1.4.0",
     "tailwindcss": "^3.4.17"

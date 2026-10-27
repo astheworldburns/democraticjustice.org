@@ -211,7 +211,7 @@ ogType: website
       <ul class="space-y-3">
         {% for desk in collections.editorialDesks %}
           <li class="flex items-center justify-between">
-            <a href="/categories/{{ desk.slug }}/" class="font-mono text-sm text-ink hover:text-accent transition-colors no-underline font-semibold">{{ desk.label }}</a>
+            <a href="/category/{{ desk.slug }}/" class="font-mono text-sm text-ink hover:text-accent transition-colors no-underline font-semibold">{{ desk.label }}</a>
             <span class="font-mono text-xs text-ink-muted bg-surface px-2 py-0.5 rounded-full">{{ desk.count }} {{ "report" if desk.count == 1 else "reports" }}</span>
           </li>
         {% endfor %}
