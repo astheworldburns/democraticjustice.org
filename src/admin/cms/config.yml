@@ -148,6 +148,25 @@ collections:
         widget: string
         required: false
         hint: 'Optional source/credit line shown as "Photo: ..." beneath the featured image.'
+      - label: Article Narration (MP3)
+        name: audio_file
+        widget: file
+        required: false
+        media_folder: /static/media/narration
+        public_folder: /media/narration
+        accept: audio/mpeg,.mp3
+        choose_url: false
+        hint: "Optional MP3, up to 20 MiB. Upload a recording to show the article's Listen player; clear this field to remove it. Use lowercase, hyphenated filenames."
+        media_library:
+          config:
+            max_file_size: 20971520
+            multiple: false
+            slugify_filename: true
+      - label: Narrator Name
+        name: audio_narrator
+        widget: string
+        required: false
+        hint: 'Optional credit beneath the player, for example "Seth Sturm".'
       - label: Proof Card
         name: proof
         widget: object

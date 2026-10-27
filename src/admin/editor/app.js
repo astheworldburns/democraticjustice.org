@@ -15,6 +15,8 @@ const state = {
   selectedArticle: null,
   selectedArticleLoading: false,
   savingArticle: false,
+  uploadingNarration: false,
+  narrationFile: null,
   savingProof: false,
   newUserForm: {
     name: "",
@@ -206,6 +208,8 @@ function defaultArticle() {
     date: dateToOffsetIso(new Date()),
     tags: [],
     featured_image: "",
+    audio_file: "",
+    audio_narrator: "",
     body: "",
     url: "",
     repo_path: "",
@@ -332,6 +336,8 @@ function normalizeArticle(rawArticle = {}) {
           .map((tag) => tag.trim())
           .filter(Boolean),
     featured_image: rawArticle.featured_image || "",
+    audio_file: rawArticle.audio_file || "",
+    audio_narrator: rawArticle.audio_narrator || "",
     body: rawArticle.body || "",
     url: rawArticle.url || (rawArticle.slug ? `/${rawArticle.slug}/` : ""),
     repo_path: rawArticle.repo_path || "",
@@ -349,6 +355,8 @@ function serializeArticle(article = {}) {
     date: (article.date || "").trim(),
     tags: (article.tags || []).map((tag) => tag.trim()).filter(Boolean),
     featured_image: (article.featured_image || "").trim(),
+    audio_file: (article.audio_file || "").trim(),
+    audio_narrator: (article.audio_narrator || "").trim(),
     body: article.body || ""
   };
 }
@@ -375,7 +383,7 @@ function syncSelectedArticleBaselines(article = state.selectedArticle) {
 }
 
 function hasUnsavedStoryChanges() {
-  return Boolean(state.selectedArticle) && articleSnapshot() !== state.initialArticleSnapshot;
+  return Boolean(state.selectedArticle) && (Boolean(state.narrationFile) || state.uploadingNarration || articleSnapshot() !== state.initialArticleSnapshot);
 }
 
 function hasUnsavedProofChanges() {
@@ -401,6 +409,10 @@ function unsavedChangeLabel() {
 }
 
 function confirmDiscardChanges(actionLabel = "continue") {
+  if (state.uploadingNarration) {
+    setStatus("Wait for the narration upload to finish before leaving this article.", "info");
+    return false;
+  }
   if (!hasUnsavedEditorChanges()) {
     return true;
   }
@@ -644,22 +656,22 @@ async function loadSession() {
 }
 
 async function loadArticles() {
-  const payload = await workerJson("/api/articles");
+  const payload = await workerJson("/api/editor/articles");
   return sortArticles(Array.isArray(payload.articles) ? payload.articles : []);
 }
 
 async function loadAuthors() {
-  const payload = await workerJson("/api/authors");
+  const payload = await workerJson("/api/editor/authors");
   return sortAuthors(Array.isArray(payload.authors) ? payload.authors : []);
 }
 
 async function loadDocuments() {
-  const payload = await workerJson("/api/documents");
+  const payload = await workerJson("/api/editor/documents");
   return sortDocuments(Array.isArray(payload.documents) ? payload.documents : []);
 }
 
 async function loadUsers() {
-  const payload = await workerJson("/api/admin/users");
+  const payload = await workerJson("/api/editor/admin/users");
   return Array.isArray(payload.users) ? payload.users : [];
 }
 
@@ -668,7 +680,7 @@ async function loadSelectedArticleContent() {
     return;
   }
 
-  const payload = await workerJson(`/api/article?slug=${encodeURIComponent(state.selectedArticle.slug)}`);
+  const payload = await workerJson(`/api/editor/article?slug=${encodeURIComponent(state.selectedArticle.slug)}`);
   state.selectedArticle = normalizeArticle(payload.article || {});
 }
 
@@ -979,7 +991,7 @@ function renderStorySection() {
         </div>
         <div class="editor-actions">
           ${article.url ? `<a class="editor-button-ghost" href="${escapeHtml(article.url)}" target="_blank" rel="noreferrer">Open article</a>` : ""}
-          <button class="editor-button" type="button" data-action="save-story" ${state.savingArticle ? "disabled" : ""}>
+          <button class="editor-button" type="button" data-action="save-story" ${state.savingArticle || state.uploadingNarration ? "disabled" : ""}>
             ${state.savingArticle ? "Saving…" : article.isNew ? "Create article" : "Save story"}
           </button>
         </div>
@@ -1027,6 +1039,26 @@ function renderStorySection() {
             <input class="editor-input" type="text" value="${escapeHtml(article.featured_image || "")}" data-article-field="featured_image" placeholder="/assets/images/uploads/example.jpg" autocapitalize="none" autocomplete="off" spellcheck="false" />
           </label>
         </div>
+
+        <fieldset class="editor-block" ${state.savingArticle || state.uploadingNarration ? "disabled" : ""}>
+          <legend class="editor-label">Article narration (optional)</legend>
+          <p class="editor-muted">Upload your MP3 reading, up to 20 MiB. The player appears above the story only when audio is attached.</p>
+          ${article.audio_file ? `
+            <p class="editor-muted">Attached: <a href="${escapeHtml(article.audio_file)}" target="_blank" rel="noreferrer">${escapeHtml(article.audio_file.split("/").pop())}</a></p>
+            <button class="editor-button-ghost" type="button" data-action="remove-narration">Remove audio from article</button>
+          ` : ""}
+          <label class="editor-field">
+            <span class="editor-label">MP3 recording</span>
+            <input class="editor-file" type="file" accept="audio/mpeg,.mp3" data-narration-file />
+            ${state.narrationFile ? `<span class="editor-muted">Selected: ${escapeHtml(state.narrationFile.name)}</span>` : ""}
+          </label>
+          <button class="editor-button-secondary" type="button" data-action="upload-narration" ${!state.narrationFile ? "disabled" : ""}>${state.uploadingNarration ? "Uploading…" : article.audio_file ? "Upload replacement MP3" : "Upload MP3"}</button>
+          <label class="editor-field">
+            <span class="editor-label">Read by (optional)</span>
+            <input class="editor-input" type="text" value="${escapeHtml(article.audio_narrator || "")}" data-article-field="audio_narrator" placeholder="Seth Sturm" />
+          </label>
+          <p class="editor-muted">After uploading or removing audio, save the story to publish the change. Removed recordings remain in the media library.</p>
+        </fieldset>
 
         <label class="editor-field">
           <span class="editor-label">Body</span>
@@ -1381,6 +1413,7 @@ async function loadDeskData({ selectFirst = true } = {}) {
 }
 
 async function selectArticle(slug) {
+  state.narrationFile = null;
   const article = state.articles.find((entry) => entry.slug === slug);
 
   if (!article) {
@@ -1414,6 +1447,7 @@ async function selectArticle(slug) {
 }
 
 function startNewArticle() {
+  state.narrationFile = null;
   state.selectedSlug = "__new__";
   state.selectedArticleLoading = false;
   state.selectedArticle = defaultArticle();
@@ -1434,7 +1468,41 @@ async function logout() {
   }
 }
 
+async function uploadNarration() {
+  const article = state.selectedArticle;
+  const file = state.narrationFile;
+  if (!article || !file || state.uploadingNarration || state.savingArticle) return;
+  if (!/\.mp3$/i.test(file.name) || file.size === 0 || file.size > 20 * 1024 * 1024) {
+    setStatus("Choose an MP3 recording that is 20 MiB or smaller.", "error");
+    return;
+  }
+  state.uploadingNarration = true;
+  render();
+  try {
+    const payload = await workerJson("/api/editor/upload-narration", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        file_name: file.name,
+        mime_type: file.type || "audio/mpeg",
+        file_base64: bytesToBase64(new Uint8Array(await file.arrayBuffer()))
+      })
+    });
+    if (state.selectedArticle === article) {
+      article.audio_file = payload.audio_file;
+      state.narrationFile = null;
+      setStatus("Recording uploaded. Save the story to attach it to the article.", "success");
+    }
+  } catch (error) {
+    setStatus(`Could not upload the recording. ${error.message || error}`, "error");
+  } finally {
+    state.uploadingNarration = false;
+    render();
+  }
+}
+
 async function saveArticle() {
+  if (state.uploadingNarration || state.savingArticle) return;
   if (!state.selectedArticle) {
     return;
   }
@@ -1451,7 +1519,7 @@ async function saveArticle() {
   render();
 
   try {
-    const payload = await workerJson("/api/article/save", {
+    const payload = await workerJson("/api/editor/article/save", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -1501,7 +1569,7 @@ async function saveProof() {
   render();
 
   try {
-    await workerJson("/api/proof/save", {
+    await workerJson("/api/editor/proof/save", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -1546,7 +1614,7 @@ async function createSourceForAxiom(index) {
   try {
     const file = formState.file;
     const fileBytes = new Uint8Array(await file.arrayBuffer());
-    const payload = await workerJson("/api/create-document", {
+    const payload = await workerJson("/api/editor/create-document", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -1596,7 +1664,7 @@ async function createUser() {
   }
 
   try {
-    const response = await workerJson("/api/admin/users", {
+    const response = await workerJson("/api/editor/admin/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -1632,7 +1700,7 @@ async function saveUser(email) {
   }
 
   try {
-    const response = await workerJson("/api/admin/users/update", {
+    const response = await workerJson("/api/editor/admin/users/update", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -1657,6 +1725,11 @@ async function saveUser(email) {
 }
 
 function handleInput(event) {
+  if (event.target.hasAttribute("data-narration-file")) {
+    state.narrationFile = event.target.files?.[0] || null;
+    render();
+    return;
+  }
   const uiField = event.target.dataset.ui;
   const articleField = event.target.dataset.articleField;
   const proofField = event.target.dataset.proofField;
@@ -1778,6 +1851,18 @@ function handleClick(event) {
   }
 
   const { action } = actionTarget.dataset;
+
+  if (action === "upload-narration") {
+    uploadNarration();
+    return;
+  }
+  if (action === "remove-narration" && state.selectedArticle && !state.uploadingNarration && !state.savingArticle) {
+    state.selectedArticle.audio_file = "";
+    state.selectedArticle.audio_narrator = "";
+    state.narrationFile = null;
+    render();
+    return;
+  }
 
   if (action === "logout") {
     if (!confirmDiscardChanges("sign out")) {

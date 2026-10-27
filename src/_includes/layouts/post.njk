@@ -4,7 +4,7 @@ ogType: article
 ---
 {% set authorProfile = author | getAuthor(collections.authorProfiles) %}
 {% set articleHtml = content | withHeadingIds | safe %}
-{% set tocItems = content | withHeadingIds | extractHeadings %}
+{% set articleAudio = audio_file | default("") | trim %}
 {% set relatedStories = collections.article | relatedArticles(page, tags, 3) %}
 {% set leadImage = {"src": featured_image, "alt": featured_image_alt or ("Featured image for " ~ title)} if featured_image else null %}
 
@@ -85,11 +85,8 @@ ogType: article
   {# Section 2: Reported Narrative #}
   <section id="narrative" aria-labelledby="narrative-content-heading" class="mb-16">
     <h2 id="narrative-content-heading" class="sr-only">Reported Narrative</h2>
-    {% if tocItems.length > 2 %}
-      <aside class="mb-8 p-4 border border-border-subtle rounded-squircle max-w-2xl mx-auto" aria-label="Table of contents">
-        <h3 class="font-mono text-xs uppercase tracking-widest text-ink-muted mb-3">Contents</h3>
-        <ol class="space-y-1">{% for item in tocItems %}<li class="{{ 'ml-4' if item.level === 3 }}"><a href="#{{ item.id }}" class="text-sm text-ink-secondary hover:text-accent">{{ item.text }}</a></li>{% endfor %}</ol>
-      </aside>
+    {% if articleAudio %}
+      {% include "components/article-audio.njk" %}
     {% endif %}
     <div class="article-prose max-w-3xl mx-auto">{{ articleHtml }}</div>
   </section>
