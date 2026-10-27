@@ -2,12 +2,13 @@ import { readFile, readdir, stat } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
+import { decodeHTMLAttribute } from "entities";
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const publicDir = path.join(rootDir, "_site");
 const strict = process.argv.includes("--strict");
 
-const htmlLinkPattern = /(?:href|src)=["']([^"']+)["']/gi;
+const htmlLinkPattern = /\b(?:href|src)\s*=\s*(?:"([^"]*)"|'([^']*)')/gi;
 const ignoredPrefixes = ["http://", "https://", "mailto:", "tel:", "javascript:", "data:", "#"];
 
 async function collectFiles(entryPath, baseDir = entryPath) {
@@ -62,8 +63,7 @@ async function canResolveToFile(absTargetPath) {
 }
 
 function toPublicRootPath(fromFile = "") {
-  const absPath = path.join(publicDir, fromFile);
-  const relDir = path.dirname(path.relative(publicDir, absPath));
+  const relDir = path.dirname(fromFile);
   return relDir === "." ? "/" : `/${relDir}/`;
 }
 
@@ -75,30 +75,33 @@ function toAbsolutePublicTarget(rawTarget = "", currentPublicRoute = "/") {
   return new URL(rawTarget, `https://democraticjustice.org${currentPublicRoute}`).pathname;
 }
 
-async function main() {
-  const publicFiles = await collectFiles(publicDir);
+export async function auditInternalLinks(directory = publicDir) {
+  const publicFiles = await collectFiles(directory);
   const htmlFiles = publicFiles.filter((filePath) => filePath.endsWith(".html"));
   const missingLinks = [];
 
   for (const filePath of htmlFiles) {
-    const absoluteFilePath = path.join(publicDir, filePath);
+    const absoluteFilePath = path.join(directory, filePath);
     const contents = await readFile(absoluteFilePath, "utf8");
     const currentPublicRoute = toPublicRootPath(filePath);
 
     for (const match of contents.matchAll(htmlLinkPattern)) {
-      const rawTarget = (match[1] || "").trim();
+      const rawTarget = match[1] ?? match[2] ?? "";
+      // HTML character references belong to the attribute value, not the URL's
+      // query or fragment syntax. Decode them once before interpreting the URL.
+      const target = decodeHTMLAttribute(rawTarget).trim();
 
-      if (!rawTarget || ignoredPrefixes.some((prefix) => rawTarget.startsWith(prefix))) {
+      if (!target || ignoredPrefixes.some((prefix) => target.startsWith(prefix))) {
         continue;
       }
 
-      const normalizedTarget = normalizeTarget(rawTarget);
+      const normalizedTarget = normalizeTarget(target);
       if (!normalizedTarget) {
         continue;
       }
 
       const absolutePublicTarget = decodePathname(toAbsolutePublicTarget(normalizedTarget, currentPublicRoute));
-      const absoluteTargetPath = path.join(publicDir, absolutePublicTarget.replace(/^\//, ""));
+      const absoluteTargetPath = path.join(directory, absolutePublicTarget.replace(/^\//, ""));
       const resolved = await canResolveToFile(absoluteTargetPath);
 
       if (!resolved) {
@@ -106,6 +109,12 @@ async function main() {
       }
     }
   }
+
+  return { htmlFiles, missingLinks };
+}
+
+async function main() {
+  const { htmlFiles, missingLinks } = await auditInternalLinks();
 
   if (missingLinks.length === 0) {
     console.log(`Internal link audit passed: checked ${htmlFiles.length} HTML file(s), found no broken internal links.`);
@@ -133,4 +142,6 @@ async function main() {
   console.warn("Warnings only in default mode. Run `npm run audit:links:strict` to fail on broken links.");
 }
 
-await main();
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  await main();
+}

@@ -464,6 +464,22 @@ Recommended canonical desk names should be decided early and documented.
 - keep inline images modest until the automated inline image pipeline is completed
 - test articles with images on desktop and mobile after publish
 
+### Standards for new images
+
+Apply these standards to new or replaced images. Existing assets can stay at their current URLs; renaming them requires updating every reference.
+
+- Use lowercase, hyphenated filenames without spaces, such as `town-council-meeting.jpg`.
+- Export or convert images to a real JPEG, PNG, WebP, or AVIF file. Changing the extension alone does not convert a HEIC/HEIF photo.
+- Keep images uploaded directly to `src/assets/images/uploads/` at or below 500 KiB. Resize and compress before upload; direct Markdown images are copied without automatic optimization.
+- For larger editorial figures, store the original in `src/assets/images/source/` and use the existing image shortcode to produce responsive, optimized derivatives:
+
+  ```njk
+  {% image "/assets/images/source/town-council-meeting.jpg", "Council members discussing the budget" %}
+  ```
+
+- Run `npm run build` and review `npm run audit:assets` before publishing. Fix warnings for new images; existing warnings do not need to be cleared to publish unrelated work. The global strict asset audit checks legacy files too.
+- Check the published image and its alt text on desktop and mobile.
+
 ## 12. Weekly And Monthly Maintenance
 
 ### Weekly
