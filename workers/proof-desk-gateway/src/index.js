@@ -1,4 +1,5 @@
 import yaml from "js-yaml";
+import { narrationMetadata, validateNarrationUpload } from "./narration.js";
 
 const SESSION_COOKIE = "__Host-dj_proof_session";
 const PROOF_STATE_COOKIE = "__Host-dj_proof_state";
@@ -884,12 +885,7 @@ async function writeRepoTextFile(repoPath, textValue, message, sha, token, env) 
   );
 }
 
-async function writeRepoBinaryFile(repoPath, bytes, message, token, env) {
-  let binary = "";
-  for (const byte of bytes) {
-    binary += String.fromCharCode(byte);
-  }
-
+async function writeRepoBinaryFile(repoPath, bytes, message, token, env, encodedContent) {
   await githubJson(
     `/repos/${env.GITHUB_REPO_OWNER}/${env.GITHUB_REPO_NAME}/contents/${repoPath
       .split("/")
@@ -905,7 +901,7 @@ async function writeRepoBinaryFile(repoPath, bytes, message, token, env) {
       body: JSON.stringify({
         message,
         branch: env.GITHUB_BRANCH || "main",
-        content: btoa(binary)
+        content: encodedContent || bytesToBase64(bytes)
       })
     }
   );
@@ -1348,6 +1344,7 @@ function normalizeTagList(rawTags) {
 
 function normalizeEditorArticlePayload(rawArticle = {}) {
   return {
+    ...narrationMetadata(rawArticle),
     slug: slugify(rawArticle.slug || ""),
     title: normalizeWhitespace(rawArticle.title || ""),
     kicker: normalizeWhitespace(rawArticle.kicker || ""),
@@ -1402,6 +1399,8 @@ function articleResponseFromParsed(slug, repoPath, parsed = {}) {
     date: data.date || "",
     tags: Array.isArray(data.tags) ? data.tags : data.tags ? [data.tags] : [],
     featured_image: data.featured_image || "",
+    audio_file: data.audio_file || "",
+    audio_narrator: data.audio_narrator || "",
     body: parsed.body || "",
     url: `/${slug}/`,
     repo_path: repoPath,
@@ -1653,6 +1652,9 @@ async function handleLogout(request, env) {
 }
 
 function editorErrorStatus(error) {
+  if (error.status === 400) {
+    return 400;
+  }
   if (error.message === "EDITOR_LOGIN_RATE_LIMITED") {
     return 429;
   }
@@ -1932,6 +1934,7 @@ async function handleEditorSaveArticle(request, env) {
 
     const nextData = {
       ...(parsed.data || {}),
+      ...narrationMetadata(article, parsed.data || {}),
       kicker: article.kicker,
       title: article.title,
       description: article.description,
@@ -2002,6 +2005,19 @@ async function handleEditorSaveProof(request, env) {
     );
 
     return withCors(request, json({ ok: true }), env);
+  } catch (error) {
+    return withCors(request, json({ error: error.message }, { status: editorErrorStatus(error) }), env);
+  }
+}
+
+async function handleEditorUploadNarration(request, env) {
+  try {
+    ensureAllowedOrigin(request, env);
+    await requireEditorSession(request, env);
+    const token = requireEditorRepoToken(env);
+    const { file_base64, audio_file, repoPath } = validateNarrationUpload(await request.json());
+    await writeRepoBinaryFile(repoPath, null, "Add article narration", token, env, file_base64);
+    return withCors(request, json({ audio_file }), env);
   } catch (error) {
     return withCors(request, json({ error: error.message }, { status: editorErrorStatus(error) }), env);
   }
@@ -2285,6 +2301,8 @@ export default {
         response = handleEditorDocuments(request, env);
       } else if (request.method === "POST" && url.pathname === "/api/editor/create-document") {
         response = handleEditorCreateDocument(request, env);
+      } else if (request.method === "POST" && url.pathname === "/api/editor/upload-narration") {
+        response = handleEditorUploadNarration(request, env);
       } else if (request.method === "GET" && url.pathname === "/api/editor/admin/users") {
         response = handleEditorAdminUsers(request, env);
       } else if (request.method === "POST" && url.pathname === "/api/editor/admin/users") {
@@ -2334,6 +2352,8 @@ export default {
       response = handleEditorDocuments(request, env);
     } else if (request.method === "POST" && url.pathname === "/api/editor/create-document") {
       response = handleEditorCreateDocument(request, env);
+    } else if (request.method === "POST" && url.pathname === "/api/editor/upload-narration") {
+      response = handleEditorUploadNarration(request, env);
     } else if (request.method === "GET" && url.pathname === "/api/editor/admin/users") {
       response = handleEditorAdminUsers(request, env);
     } else if (request.method === "POST" && url.pathname === "/api/editor/admin/users") {

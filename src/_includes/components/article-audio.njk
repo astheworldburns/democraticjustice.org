@@ -1,0 +1,51 @@
+<section class="article-audio" aria-labelledby="article-audio-heading" data-article-audio data-pagefind-ignore>
+  <div class="article-audio__masthead">
+    <div class="article-audio__wordmark" aria-label="{{ (siteSettings.site_title or site.name) | escape }}">
+      <img class="proof-mark article-audio__mark" data-proof-mark data-proof-mark-day="{{ site.proofMarkDay | escape }}" data-proof-mark-night="{{ site.proofMarkNight | escape }}" data-proof-mark-print="{{ site.proofMarkPrint | escape }}" src="{{ site.proofMarkDay | escape }}" alt="" aria-hidden="true" width="22" height="22" decoding="async" />
+      <span>{{ (siteSettings.site_title or site.name) | escape }}</span>
+    </div>
+    <span class="article-audio__edition">Audio edition</span>
+  </div>
+  <div class="article-audio__intro">
+    <h3 id="article-audio-heading">Listen to this article</h3>
+    {% if audio_narrator | default("") | trim %}
+      <p class="article-audio__byline">Read by {{ audio_narrator | trim | escape }}</p>
+    {% endif %}
+  </div>
+  <audio class="article-audio__native" controls preload="none" src="{{ articleAudio | escape }}" aria-label="Audio reading of {{ title | escape }}" data-audio-media>
+    Your browser does not support audio playback. <a href="{{ articleAudio | escape }}">Download the recording</a>.
+  </audio>
+  <div class="article-audio__controls" data-audio-controls hidden>
+    <button class="article-audio__play" type="button" aria-label="Play narration" aria-pressed="false" data-audio-play>
+      <svg class="article-audio__play-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12-7.5z" /></svg>
+      <svg class="article-audio__pause-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6zm8 0h4v14h-4z" /></svg>
+    </button>
+    <div class="article-audio__timeline">
+      <label class="sr-only" for="article-audio-seek">Position in recording</label>
+      <input id="article-audio-seek" class="article-audio__seek" type="range" min="0" max="0" step="1" value="0" aria-valuetext="0 minutes, 0 seconds" disabled data-audio-seek />
+      <div class="article-audio__times" aria-hidden="true"><span data-audio-current>0:00</span><span data-audio-duration>—:—</span></div>
+    </div>
+    <div class="article-audio__options">
+      <button class="article-audio__skip" type="button" aria-label="Back 15 seconds" disabled data-audio-skip="-15">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 9a8 8 0 1 1 .4 7M4 4v5h5" /></svg><span>15</span>
+      </button>
+      <button class="article-audio__skip" type="button" aria-label="Forward 15 seconds" disabled data-audio-skip="15">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 9a8 8 0 1 0-.4 7M20 4v5h-5" /></svg><span>15</span>
+      </button>
+      <label class="sr-only" for="article-audio-speed">Playback speed</label>
+      <select id="article-audio-speed" class="article-audio__speed" aria-label="Playback speed" data-audio-speed>
+        <option value="0.75">0.75×</option>
+        <option value="1" selected>1×</option>
+        <option value="1.25">1.25×</option>
+        <option value="1.5">1.5×</option>
+        <option value="1.75">1.75×</option>
+        <option value="2">2×</option>
+      </select>
+    </div>
+  </div>
+  <div class="article-audio__footer">
+    <p class="article-audio__status" role="status" aria-live="polite" data-audio-status></p>
+    <a class="article-audio__download" href="{{ articleAudio | escape }}" download>Download audio</a>
+  </div>
+</section>
+<script src="/assets/js/article-audio.js?v={{ buildVersion }}" defer></script>

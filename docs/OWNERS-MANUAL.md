@@ -480,6 +480,35 @@ Apply these standards to new or replaced images. Existing assets can stay at the
 - Run `npm run build` and review `npm run audit:assets` before publishing. Fix warnings for new images; existing warnings do not need to be cleared to publish unrelated work. The global strict asset audit checks legacy files too.
 - Check the published image and its alt text on desktop and mobile.
 
+### Article audio editions
+
+Articles can include your recorded reading in place of the old Contents box. The player uses the newsroom wordmark and article styles. It appears only when a recording is attached; articles without audio have no player or empty placeholder.
+
+Export the recording as an MP3, up to 20 MiB. Use a descriptive, lowercase filename such as `worthington-sewer-crisis-reading.mp3`. Compressed speech recordings are preferable to large uncompressed originals.
+
+In the Writer Desk:
+
+1. Open the article and find **Article narration (optional)** in the Story section.
+2. Choose the MP3 and click **Upload MP3**. The file selection remains available if an upload fails, so you can retry.
+3. Optionally fill in **Read by**, for example `Seth Sturm`.
+4. Click **Save story** to attach the recording to the article. Uploading alone does not publish the player.
+5. After the site deploys, verify playback, seeking, and the narrator credit on the article.
+
+In the Content Desk, use the article's optional **Article Narration (MP3)** and **Narrator Name** fields, then save/publish as usual. Existing podcast audio is managed separately.
+
+To replace a recording, upload another MP3 and save. To remove the player, use **Remove audio from article** in the Writer Desk or clear the narration field in the Content Desk, then save. Removing an attachment leaves the stored MP3 in the media library so existing file links remain available.
+
+The player offers play/pause, 15-second skips, seeking, and playback speed. It never autoplays and does not fetch the recording until the reader starts playback. Browser audio controls remain available when JavaScript is disabled. The article text serves as the written version of the recording; review both when updating a story.
+
+For file-based editing, the optional article frontmatter is:
+
+```yaml
+audio_file: /media/narration/worthington-sewer-crisis-reading.mp3
+audio_narrator: Seth Sturm
+```
+
+MP3 files live in `static/media/narration/` and are served from `/media/narration/` by the normal site build. This version uses the existing repository publishing workflow and does not require R2. The Writer Desk upload endpoint requires the updated `proof-desk-gateway` Worker to be deployed as part of releasing this feature; merging the static-site changes alone does not deploy that Worker.
+
 ## 12. Weekly And Monthly Maintenance
 
 ### Weekly

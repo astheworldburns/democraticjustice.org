@@ -5,7 +5,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test scripts/internal-link-audit.test.mjs",
+    "test": "node --test scripts/*.test.mjs",
     "start": "npx @11ty/eleventy --serve",
     "build": "rm -rf _site && npm run preview:sync && npx @11ty/eleventy && npm run audit:assets && npm run audit:public && npm run audit:links",
     "audit:assets": "node ./scripts/asset-audit.mjs",
