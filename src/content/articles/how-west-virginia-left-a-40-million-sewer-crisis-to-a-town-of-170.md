@@ -63,9 +63,11 @@ Municipal dissolution would transfer the town's assets and liabilities to the We
 
 ### The County
 
-The Marion County Commission acknowledged Heflin's dissolution petition at their August 12, 2026, meeting. Upon receipt of a lawfully filed petition, the commission will either set a hearing date or table defective petitions. For Heflin's petition, County Administrator Kris Cinalli announced that no action would be taken that day. 
+The Marion County Commission acknowledged Heflin's dissolution petition at their August 12, 2026, meeting. Upon receipt of a lawfully filed petition, the commission will either set a hearing date or table defective petitions. For Heflin's filing, County Administrator Kris Cinalli announced that no action would be taken that day.
 
-Earlier in the same meeting, engineer Kevin Watkins of The Thrasher Group had described neighboring Farmington's aging water system, which was losing more than half its water despite $3.5 million in grants and loans. Watkins said federal infrastructure money had largely expired and new grants were increasingly difficult to secure. Commission President Linda Longstreth acknowledged the problem: "All these small towns are having problems."
+Earlier in the same meeting, engineer Kevin Watkins of The Thrasher Group had described neighboring Farmington's aging water system, which was losing more than half its water despite $3.5 million in grants and loans. Watkins said federal infrastructure money had largely expired and new grants were increasingly difficult to secure. 
+
+Commission President Linda Longstreth stated, "All these small towns are having problems."
 
 Later that morning, resident organizer Andrea Zaleski asked how sewer customers outside Worthington could establish their own utility district. County Attorney Charles Shields and Commissioner Ernie VanGilder [said the pending petition placed commissioners in the position of judges](https://democraticjustice.org/documents/marion-county-commission-official-minutes-%E2%80%94-august-12-2026/) who could not advise residents or take sides before a hearing.
 
