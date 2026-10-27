@@ -31,6 +31,8 @@ In the days before the dinner, sewer customers described worsening conditions. O
 
 The _Times West Virginian_ described the complaints as "frustration on one of the town's social media pages over recent billing and service issues."
 
+West Virginia has billions in drinking-water and wastewater infrastructure needs. In Worthington, one of the state's smallest communities, officials have violated residents' constitutional and statutory rights as they seek state intervention for sewer repairs the town cannot afford.
+
 ### The Town
 
 Worthington covers less than one square mile along the West Fork River, with roughly 170 residents. The town operates a wastewater treatment facility connected to 15 miles of aging vacuum sewer lines serving nearly 400 customer households across Marion and Harrison counties. Most of those households lie outside Worthington's corporate limits, leaving their occupants unable to vote for the officials governing their sewer utility.
