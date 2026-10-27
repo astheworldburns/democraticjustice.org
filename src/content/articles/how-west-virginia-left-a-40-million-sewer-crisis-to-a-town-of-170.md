@@ -63,7 +63,7 @@ Municipal dissolution would transfer the town's assets and liabilities to the We
 
 ### The County
 
-When the Marion County Commission received Heflin's dissolution petition in August, County Administrator Kris Cinalli announced that no action would be taken that day.
+The Marion County Commission acknowledged Heflin's dissolution petition at their August 12, 2026, meeting. Upon receipt of a lawfully filed petition, the commission will either set a hearing date or table defective petitions. For Heflin's petition, County Administrator Kris Cinalli announced that no action would be taken that day. 
 
 Earlier in the same meeting, engineer Kevin Watkins of The Thrasher Group had described neighboring Farmington's aging water system, which was losing more than half its water despite $3.5 million in grants and loans. Watkins said federal infrastructure money had largely expired and new grants were increasingly difficult to secure. Commission President Linda Longstreth acknowledged the problem: "All these small towns are having problems."
 
