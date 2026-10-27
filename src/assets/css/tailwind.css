@@ -1,3 +1,8 @@
+@import "./reader-layout.css";
+@import "./evidence-drawer.css";
+@import "./audio-continuity.css";
+@import "./article-history.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

@@ -1,0 +1,49 @@
+@layer components {
+  .article-history__dates {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem 1.25rem;
+    margin-top: 0.85rem;
+    font-family: var(--type-mono);
+    font-size: 0.7rem;
+    line-height: 1.6;
+    color: rgb(var(--ink-soft));
+  }
+
+  .article-history__dates span {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .article-history__dates time {
+    color: rgb(var(--ink));
+  }
+
+  .article-history__notes {
+    margin-top: 1.25rem;
+    padding: 0.9rem 1rem;
+    border-left: 2px solid rgb(var(--accent));
+    background: rgba(var(--surface-muted), 0.55);
+    font-family: var(--type-ui);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: rgb(var(--ink-soft));
+  }
+
+  .article-history__notes p + p {
+    margin-top: 0.8rem;
+  }
+
+  .article-history__notes strong {
+    display: block;
+    margin-bottom: 0.2rem;
+    color: rgb(var(--ink));
+    font-weight: 600;
+  }
+
+  .article-history__notes span {
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+  }
+}

@@ -37,7 +37,7 @@ ogType: article
   <ol class="proof-nav__list">
     <li><a href="#narrative" class="proof-nav__link" data-section="narrative" aria-current="true">Story</a></li>
     <li><a href="#proof-card" class="proof-nav__link" data-section="proof-card">Check Our Work</a></li>
-    <li><a href="#source-documents" class="proof-nav__link" data-section="source-documents">Sources</a></li>
+    {% if proofCard.sourceDocuments.length %}<li><a href="#source-documents" class="proof-nav__link" data-section="source-documents">Sources</a></li>{% endif %}
   </ol>
 </nav>
 {% endif %}
@@ -47,8 +47,9 @@ ogType: article
     {% if kicker %}<p class="card__tag">{{ kicker }}</p>{% endif %}
     <h1 id="narrative-heading" class="font-serif text-display-lg mt-2">{{ title }}</h1>
     {% if description %}<p class="font-serif text-xl text-ink-secondary italic mt-4">{{ description }}</p>{% endif %}
-    {% set metaDesk = kicker %}{% set metaAuthor = authorProfile.data.name if authorProfile else author %}{% set metaAuthorUrl = authorProfile.url if authorProfile else null %}{% set metaDate = date %}{% set metaReadTime = content | readingMinutes %}
+    {% set metaDesk = kicker %}{% set metaAuthor = authorProfile.data.name if authorProfile else author %}{% set metaAuthorUrl = authorProfile.url if authorProfile else null %}{% set metaDate = null %}{% set metaReadTime = content | readingMinutes %}
     <div class="mt-6">{% include "components/meta-row.njk" %}</div>
+    {% include "components/article-history.njk" %}
     <div class="mt-4 flex justify-end" data-pagefind-ignore>
       <button
         type="button"
@@ -91,6 +92,13 @@ ogType: article
     <div class="article-prose max-w-3xl mx-auto">{{ articleHtml }}</div>
   </section>
 
+  {# Section 2: Proof Card #}
+  {% if proofCard %}
+    {% include "components/proof-card.njk" %}
+  {% endif %}
+
+  {% include "components/sources-module.njk" %}
+
   {# Related Stories #}
   {% if relatedStories.length %}
   <section aria-labelledby="related-heading" class="mb-16" data-pagefind-ignore>
@@ -111,11 +119,7 @@ ogType: article
   </section>
   {% endif %}
 
-  {# Section 2: Proof Card #}
-  {% if proofCard %}
-    {% include "components/proof-card.njk" %}
-  {% endif %}
-
-  {% include "components/sources-module.njk" %}
 
 </article>
+
+<script src="/assets/js/evidence-drawer.js?v={{ buildVersion }}" defer></script>

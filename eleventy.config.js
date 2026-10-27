@@ -9,6 +9,8 @@ import { DateTime } from "luxon";
 
 import { createProofCard, hasMeaningfulValue } from "./lib/proof.js";
 import { renderArticleShareImage } from "./lib/proof-share.js";
+import { getArticleHistory } from "./lib/article-history.js";
+import { leadSourceDocuments } from "./lib/front-page.js";
 
 const execFileAsync = promisify(execFile);
 const SITE_TIMEZONE = "America/New_York";
@@ -390,8 +392,10 @@ function firstImageFromHtml(value = "") {
 
 function sortByDateDesc(items = []) {
   return [...items].sort((left, right) => {
-    const leftDate = toDateTime(left.data?.updated || left.data?.date || left.date);
-    const rightDate = toDateTime(right.data?.updated || right.data?.date || right.date);
+    const leftPublished = left.data?.date || left.date;
+    const rightPublished = right.data?.date || right.date;
+    const leftDate = toDateTime(getArticleHistory({ ...left.data, date: leftPublished }).updated || leftPublished);
+    const rightDate = toDateTime(getArticleHistory({ ...right.data, date: rightPublished }).updated || rightPublished);
     return rightDate.toMillis() - leftDate.toMillis();
   });
 }
@@ -754,6 +758,11 @@ export default async function (eleventyConfig) {
     return parsed.isValid ? parsed.toFormat("MMMM d, yyyy") : "";
   });
 
+  eleventyConfig.addFilter("displayDateTime", (value) => {
+    const parsed = toDateTime(value).setZone(SITE_TIMEZONE);
+    return parsed.isValid ? parsed.toFormat("MMMM d, yyyy 'at' h:mm a ZZZZ") : "";
+  });
+
   eleventyConfig.addFilter("displayYear", (value) => {
     const parsed = toDateTime(value).setZone(SITE_TIMEZONE);
     return parsed.isValid ? parsed.toFormat("yyyy") : "";
@@ -774,6 +783,7 @@ export default async function (eleventyConfig) {
   eleventyConfig.addFilter("uniqueEditorialTags", uniqueEditorialTags);
   eleventyConfig.addFilter("relatedArticles", findRelatedArticles);
   eleventyConfig.addFilter("sortByDateDesc", sortByDateDesc);
+  eleventyConfig.addFilter("leadSourceDocuments", leadSourceDocuments);
   eleventyConfig.addFilter("publishedArticles", publishedArticles);
 
   eleventyConfig.addGlobalData("buildDate", new Date());

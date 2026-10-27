@@ -24,7 +24,7 @@
     {% set authorProfile = author | getAuthor(collections.authorProfiles) if ogType == "article" and author else null %}
     {% set articleAuthorName = authorProfile.data.name if authorProfile else author or siteTitle %}
     {% set articleAuthorUrl = authorProfile.url | absoluteUrl(site.url) if authorProfile else "" %}
-    {% set modifiedDate = (updated if updated else date) | machineDate %}
+    {% set modifiedDate = (reportingHistory.updated or date) | machineDate %}
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://analytics.google.com; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'self' https://buttondown.com; frame-src 'self' https://docs.google.com https://www.youtube-nocookie.com https://www.youtube.com https://na3.documents.adobe.com; upgrade-insecure-requests" />

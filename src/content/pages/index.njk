@@ -8,7 +8,13 @@ ogType: website
 {% set publishedEntries = (collections.article or []) | sortByDateDesc %}
 {% set featuredArticle = publishedEntries[0] if publishedEntries | length else null %}
 {% set featuredAuthor = featuredArticle.data.author | getAuthor(collections.authorProfiles) if featuredArticle else null %}
-{% set evidenceDocuments = collections.primarySourceDocument or [] %}
+{% set featuredUpdated = featuredArticle.data.reportingHistory.updated if featuredArticle else "" %}
+{% set featuredDate = featuredUpdated or featuredArticle.date if featuredArticle else null %}
+{% set latestArticles = publishedEntries.slice(1, 7) %}
+{% set featuredProof = featuredArticle.data.proofCard if featuredArticle else null %}
+{% set archiveDocuments = collections.primarySourceDocument or [] %}
+{% set featuredBody = featuredArticle.templateContent if featuredArticle else "" %}
+{% set evidenceDocuments = featuredArticle | leadSourceDocuments(collections.sourceDocument, featuredBody) %}
 {% set evidencePreviewDocuments = evidenceDocuments.slice(0, 2) %}
 
 <style>
@@ -54,44 +60,83 @@ ogType: website
   }
 </style>
 
-<div class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+<div class="front-page max-w-6xl mx-auto px-4 sm:px-6 py-12">
 
   {# ═══ HERO ROW ═══ #}
   <div class="bento-grid mb-5">
 
-    <article class="card card--featured bento-8 bento-rows-2">
+    <div class="front-page__reporting bento-8 bento-rows-2">
+    {% if featuredArticle %}
+    <article class="card card--featured front-page__lead">
       {% if featuredArticle.data.kicker %}
         <span class="font-mono text-xs uppercase tracking-wide text-ink-muted">{{ featuredArticle.data.kicker }}</span>
       {% endif %}
-      <h2 class="font-serif text-display-md mt-2 leading-tight">
+      <h1 class="font-serif text-display-md mt-2 leading-tight">
         <a href="{{ featuredArticle.url }}" class="text-ink hover:text-accent transition-colors no-underline">{{ featuredArticle.data.title }}</a>
-      </h2>
+      </h1>
       <p class="text-lg text-ink-secondary mt-4 leading-relaxed">{{ featuredArticle.data.description }}</p>
       <div class="mt-6 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-xs text-ink-muted uppercase tracking-wide">
-        <time datetime="{{ featuredArticle.date | machineDate }}">{{ featuredArticle.date | displayDate }}</time>
+        <span>{% if featuredUpdated %}Updated {% endif %}<time datetime="{{ featuredDate | machineDate }}">{{ featuredDate | displayDate }}</time></span>
         <span>·</span>
         {% if featuredAuthor %}<a href="{{ featuredAuthor.url }}" class="text-ink-secondary hover:text-accent no-underline">by {{ featuredAuthor.data.name }}</a><span>·</span>{% endif %}
         <span>{{ featuredArticle.templateContent | readingMinutes }} min read</span>
       </div>
-      <div class="mt-6 flex flex-wrap gap-3">
-        <a href="{{ featuredArticle.url }}" class="inline-block bg-ink text-surface font-mono text-sm uppercase tracking-wide px-5 py-2.5 rounded-squircle-sm hover:bg-accent transition-colors no-underline">Read Investigation</a>
+      <div class="front-page__lead-actions mt-6 flex flex-wrap gap-3">
+        <a href="{{ featuredArticle.url }}" class="inline-block bg-ink text-surface font-mono text-sm uppercase tracking-wide px-5 py-2.5 rounded-squircle-sm hover:bg-accent transition-colors no-underline">{{ "Read investigation" if featuredProof else "Read story" }}</a>
+        {% if featuredProof %}
         <a href="{{ featuredArticle.url }}#proof-card" class="inline-block border border-border text-ink-secondary font-mono text-sm uppercase tracking-wide px-5 py-2.5 rounded-squircle-sm hover:border-accent hover:text-accent transition-colors no-underline">Check Our Work</a>
+        {% endif %}
+        {% if featuredProof and featuredProof.sourceDocuments.length %}
         <a href="{{ featuredArticle.url }}#source-documents" class="inline-block border border-border text-ink-secondary font-mono text-sm uppercase tracking-wide px-5 py-2.5 rounded-squircle-sm hover:border-accent hover:text-accent transition-colors no-underline">Source Documents</a>
-      </div>
-      <div class="mt-8 pt-6 border-t border-border-subtle">
-        <span class="font-mono text-xs uppercase tracking-wide text-ink-muted block mb-3">Preview</span>
-        <p class="font-serif text-base text-ink-secondary leading-relaxed">
-          {{ featuredArticle.templateContent | excerptText(350) }}
-        </p>
+        {% endif %}
+        {% if featuredArticle.data.audio_file | default("") | trim %}
+          <a href="{{ featuredArticle.url }}#article-audio-heading" class="front-page__listen">Listen</a>
+        {% endif %}
       </div>
     </article>
+    {% else %}
+      <section class="front-page__empty" aria-labelledby="front-page-heading">
+        <h1 id="front-page-heading" class="font-serif text-display-md">Investigations, with the records behind them.</h1>
+        <p class="mt-4 text-ink-secondary">New reporting will appear here as it is published.</p>
+      </section>
+    {% endif %}
+
+    {% if latestArticles.length %}
+      <section class="front-page__latest" aria-labelledby="latest-reporting-heading">
+        <div class="front-page__section-heading">
+          <h2 id="latest-reporting-heading">Latest reporting</h2>
+          <a href="/archives/">Full archive <span aria-hidden="true">→</span></a>
+        </div>
+        <ol class="front-page__latest-list">
+          {% for story in latestArticles %}
+            {% set storyAuthor = story.data.author | getAuthor(collections.authorProfiles) %}
+            {% set storyUpdated = story.data.reportingHistory.updated %}
+            {% set storyDate = storyUpdated or story.date %}
+            <li>
+              <article class="front-page__story">
+                {% if story.data.kicker %}<p class="front-page__story-kicker">{{ story.data.kicker }}</p>{% endif %}
+                <h3><a href="{{ story.url }}">{{ story.data.title }}</a></h3>
+                {% if story.data.description %}<p class="front-page__story-description">{{ story.data.description }}</p>{% endif %}
+                <div class="front-page__story-meta">
+                  <span>{% if storyUpdated %}Updated {% endif %}<time datetime="{{ storyDate | machineDate }}">{{ storyDate | displayDate }}</time></span>
+                  {% if storyAuthor %}<a href="{{ storyAuthor.url }}">By {{ storyAuthor.data.name }}</a>{% endif %}
+                  <span>{{ story.templateContent | readingMinutes }} min read</span>
+                  {% if story.data.audio_file | default("") | trim %}<a class="front-page__listen" href="{{ story.url }}#article-audio-heading" aria-label="Listen to {{ story.data.title | escape }}">Listen <span aria-hidden="true">↗</span></a>{% endif %}
+                </div>
+              </article>
+            </li>
+          {% endfor %}
+        </ol>
+      </section>
+    {% endif %}
+    </div>
 
     <div class="card hp-card bento-4 hp-span-4 bento-rows-2 hp-rows-2" style="display:flex;flex-direction:column">
 
-      {# ── Evidence Room: global document archive ── #}
-      <div>
+      {# ── Records actually cited by the lead investigation ── #}
+      <div class="front-page__evidence" data-featured-evidence>
         <span class="font-mono text-xs uppercase tracking-wide text-accent">The Evidence Room</span>
-        <p class="text-sm text-ink-muted mt-1">{{ evidenceDocuments.length }} source {{ "document" if evidenceDocuments.length == 1 else "documents" }} on file.</p>
+        {% if evidenceDocuments.length %}<p class="text-sm text-ink-muted mt-1">{{ evidenceDocuments.length }} {{ "record" if evidenceDocuments.length == 1 else "records" }} cited in the lead story.</p>{% endif %}
 
         {% if evidenceDocuments.length %}
           <ul class="mt-4 space-y-3">
@@ -145,10 +190,11 @@ ogType: website
               </li>
             {% endfor %}
           </ul>
-          <a href="/documents/" class="inline-block mt-4 font-mono text-xs text-accent hover:underline uppercase tracking-wide">Full Document Archive →</a>
         {% else %}
-          <p class="text-sm text-ink-muted mt-4 italic">Documents published with each investigation.</p>
+          <p class="text-sm text-ink-muted mt-4">Source records will appear here when they are cited in the lead story.</p>
         {% endif %}
+        <a href="/documents/" class="front-page__archive-link inline-block mt-4 font-mono text-xs text-accent hover:underline uppercase tracking-wide">Full document archive <span aria-hidden="true">→</span></a>
+        <p class="text-xs text-ink-muted">{{ archiveDocuments.length }} {{ "record" if archiveDocuments.length == 1 else "records" }} across the newsroom archive.</p>
       </div>
 
       {# ── 2026 Challenge intake ── #}

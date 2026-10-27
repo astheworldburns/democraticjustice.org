@@ -1,5 +1,6 @@
 import yaml from "js-yaml";
 import { narrationMetadata, validateNarrationUpload } from "./narration.js";
+import { normalizeArticleHistory } from "../../../lib/article-history.js";
 
 const SESSION_COOKIE = "__Host-dj_proof_session";
 const PROOF_STATE_COOKIE = "__Host-dj_proof_state";
@@ -1343,7 +1344,7 @@ function normalizeTagList(rawTags) {
 }
 
 function normalizeEditorArticlePayload(rawArticle = {}) {
-  return {
+  const article = {
     ...narrationMetadata(rawArticle),
     slug: slugify(rawArticle.slug || ""),
     title: normalizeWhitespace(rawArticle.title || ""),
@@ -1355,6 +1356,10 @@ function normalizeEditorArticlePayload(rawArticle = {}) {
     featured_image: normalizeWhitespace(rawArticle.featured_image || ""),
     body: rawArticle.body == null ? "" : rawArticle.body.toString()
   };
+  for (const field of ["updated", "update_note", "correction_note"]) {
+    if (Object.hasOwn(rawArticle, field)) article[field] = rawArticle[field];
+  }
+  return article;
 }
 
 function computeEditorArticleErrors(article = {}, { requireSlug = false } = {}) {
@@ -1397,6 +1402,9 @@ function articleResponseFromParsed(slug, repoPath, parsed = {}) {
     description: data.description || "",
     author: data.author || "",
     date: data.date || "",
+    updated: data.updated || "",
+    update_note: data.update_note || "",
+    correction_note: data.correction_note || "",
     tags: Array.isArray(data.tags) ? data.tags : data.tags ? [data.tags] : [],
     featured_image: data.featured_image || "",
     audio_file: data.audio_file || "",
@@ -1935,6 +1943,7 @@ async function handleEditorSaveArticle(request, env) {
     const nextData = {
       ...(parsed.data || {}),
       ...narrationMetadata(article, parsed.data || {}),
+      ...normalizeArticleHistory(article, parsed.data || {}),
       kicker: article.kicker,
       title: article.title,
       description: article.description,

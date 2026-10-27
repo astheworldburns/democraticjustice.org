@@ -509,6 +509,32 @@ audio_narrator: Seth Sturm
 
 MP3 files live in `static/media/narration/` and are served from `/media/narration/` by the normal site build. This version uses the existing repository publishing workflow and does not require R2. The Writer Desk upload endpoint requires the updated `proof-desk-gateway` Worker to be deployed as part of releasing this feature; merging the static-site changes alone does not deploy that Worker.
 
+Readers can resume a recording where they left off, with their chosen playback speed. Those settings stay in the browser on that device and are specific to the recording's URL. Replacing a recording with a new upload starts fresh. Playback always requires a reader action. After playback starts, a compact player appears when the full player scrolls away; readers can pause, return to the full controls, or hide it for the session. Supported browsers also receive article title, narrator, artwork, and transport controls for the phone's media screen.
+
+### Publication dates, updates, and corrections
+
+Keep **Publication date** as the date the original story appeared. Both publishing desks provide optional **Updated date and time**, **Update note**, and **Correction note** fields. Set the update time explicitly when revising reporting; it must be later than publication. A note requires that update time. Nothing fills these fields automatically.
+
+The article shows its original publication date and, when valid, the updated date and time in Eastern time. Supplied notes appear near the byline as plain text. Use the update note to explain substantive additions; use the correction note to state the error and its correction. These fields describe the latest dated revision, rather than an automatically generated revision log. Preserve prior correction information when editing the note.
+
+For file-based editing:
+
+```yaml
+updated: '2026-10-27T14:30:00-04:00'
+update_note: Added the agency's response and linked its supporting records.
+correction_note: Corrected the date of the council meeting.
+```
+
+Leave the fields blank when no update or correction applies. To clear an updated date, also clear its dated notes. Older clients that omit these fields retain the existing values. Writer Desk saving requires the updated `proof-desk-gateway` Worker; deploy it when releasing the reporting-history fields.
+
+### Reading and checking sources
+
+The homepage shows the lead investigation followed by recent reporting. Its Evidence Room highlights source records cited by that lead; the archive link still reaches the complete collection.
+
+On an article, local source-document citations open a source drawer with the document description, provenance, and available preview. The full document record and file remain accessible from the drawer. Close it or press Escape to return to the same place in the article. External source links and ordinary new-tab gestures retain normal navigation. Without JavaScript, citations still open the original document links.
+
+The reading order is story, Check Our Work, Sources, and then related reporting. A first-page preview is labelled as such; it is not a representation of every page in the record.
+
 ## 12. Weekly And Monthly Maintenance
 
 ### Weekly
