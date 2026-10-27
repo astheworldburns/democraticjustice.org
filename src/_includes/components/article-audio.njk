@@ -1,3 +1,4 @@
+{% set audioDownloadSlug = (title | slugifyTag) or "article" %}
 <section class="article-audio" aria-labelledby="article-audio-heading" data-article-audio data-pagefind-ignore>
   <div class="article-audio__masthead">
     <div class="article-audio__wordmark" aria-label="{{ (siteSettings.site_title or site.name) | escape }}">
@@ -13,7 +14,7 @@
     {% endif %}
   </div>
   <audio class="article-audio__native" controls preload="none" src="{{ articleAudio | escape }}" aria-label="Audio reading of {{ title | escape }}" data-audio-media>
-    Your browser does not support audio playback. <a href="{{ articleAudio | escape }}">Download the recording</a>.
+    Your browser does not support audio playback. <a href="{{ articleAudio | escape }}" download="{{ audioDownloadSlug | escape }}-narration.mp3">Download</a>.
   </audio>
   <div class="article-audio__controls" data-audio-controls hidden>
     <button class="article-audio__play" type="button" aria-label="Play narration" aria-pressed="false" data-audio-play>
@@ -45,7 +46,7 @@
   </div>
   <div class="article-audio__footer">
     <p class="article-audio__status" role="status" aria-live="polite" data-audio-status></p>
-    <a class="article-audio__download" href="{{ articleAudio | escape }}" download>Download audio</a>
+    <a class="article-audio__download" href="{{ articleAudio | escape }}" download="{{ audioDownloadSlug | escape }}-narration.mp3">Download</a>
   </div>
 </section>
 <script src="/assets/js/article-audio.js?v={{ buildVersion }}" defer></script>
