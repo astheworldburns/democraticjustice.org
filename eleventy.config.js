@@ -6,6 +6,7 @@ import { promisify } from "node:util";
 import Image from "@11ty/eleventy-img";
 import pluginRss from "@11ty/eleventy-plugin-rss";
 import { DateTime } from "luxon";
+import { decodeHTMLAttribute } from "entities";
 
 import { createProofCard, hasMeaningfulValue } from "./lib/proof.js";
 import { renderArticleShareImage } from "./lib/proof-share.js";
@@ -149,6 +150,23 @@ function tagLabel(value = "") {
     .toString()
     .replace(/[-_]+/g, " ")
     .replace(/\b\w/g, (character) => character.toUpperCase());
+}
+
+function frontPageTopic(data = {}) {
+  const topics = {
+    politics: { label: "Politics", kind: "politics" },
+    opinion: { label: "Opinion", kind: "opinion" },
+    investigation: { label: "Investigation", kind: "investigation" },
+    investigations: { label: "Investigation", kind: "investigation" }
+  };
+  const kicker = String(data.kicker || "").trim().toLowerCase();
+  const section = String(data.section || "").trim().toLowerCase();
+  if (Object.hasOwn(topics, kicker)) return topics[kicker];
+  if (Object.hasOwn(topics, section)) return topics[section];
+  return {
+    label: tagLabel(section || "reporting"),
+    kind: "other"
+  };
 }
 
 function initials(value = "") {
@@ -365,7 +383,7 @@ function wrapImageCaptions(value = "") {
 
 function firstImageFromHtml(value = "") {
   const html = value.toString();
-  const imageMatch = html.match(/<img\b[^>]*>/i);
+  const imageMatch = html.match(/<img\b(?:[^"'<>]|"[^"]*"|'[^']*')*>/i);
 
   if (!imageMatch) {
     return null;
@@ -373,9 +391,9 @@ function firstImageFromHtml(value = "") {
 
   const tag = imageMatch[0];
   const getAttribute = (name) => {
-    const pattern = new RegExp(`${name}="([^"]*)"`, "i");
+    const pattern = new RegExp("\\s" + name + "\\s*=\\s*(?:\"([^\"]*)\"|'([^']*)'|([^\\s\"'=<>`]+))", "i");
     const match = tag.match(pattern);
-    return match ? match[1].trim() : "";
+    return match ? decodeHTMLAttribute(match[1] ?? match[2] ?? match[3] ?? "").trim() : "";
   };
 
   const src = getAttribute("src");
@@ -772,6 +790,7 @@ export default async function (eleventyConfig) {
   eleventyConfig.addFilter("firstImageFromHtml", firstImageFromHtml);
   eleventyConfig.addFilter("slugifyTag", slugifyTag);
   eleventyConfig.addFilter("tagLabel", tagLabel);
+  eleventyConfig.addFilter("frontPageTopic", frontPageTopic);
   eleventyConfig.addFilter("initials", initials);
   eleventyConfig.addFilter("getAuthor", getAuthorProfile);
   eleventyConfig.addFilter("getSourceDocument", getSourceDocument);
@@ -793,6 +812,40 @@ export default async function (eleventyConfig) {
   });
 
   eleventyConfig.addShortcode("youtube", youtubeFigure);
+
+  eleventyConfig.addNunjucksAsyncShortcode(
+    "storyImage",
+    async (src, alt = "", placement = "thumbnail") => {
+      if (!src) return "";
+
+      const isLead = placement === "lead";
+      let source = resolveImageSource(src);
+      if (src.startsWith("/") && !src.startsWith("//")) {
+        try {
+          source = resolveImageSource(decodeURIComponent(src));
+        } catch {
+          // A literal percent sign in a local filename does not need decoding.
+        }
+      }
+      const metadata = await Image(source, {
+        widths: isLead ? [480, 800, 1280] : [160, 320],
+        formats: imageFormatsForSource(src),
+        outputDir: "./_site/assets/images/optimized",
+        urlPath: "/assets/images/optimized/"
+      });
+
+      return Image.generateHTML(metadata, {
+        alt,
+        sizes: isLead
+          ? "(min-width: 1152px) 705px, (min-width: 860px) 62vw, calc(100vw - 2rem)"
+          : "(min-width: 640px) 144px, 88px",
+        loading: isLead ? "eager" : "lazy",
+        fetchpriority: isLead ? "high" : "auto",
+        decoding: "async",
+        class: "front-page__image"
+      });
+    }
+  );
 
   eleventyConfig.addNunjucksAsyncShortcode(
     "image",

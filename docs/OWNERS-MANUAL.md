@@ -562,6 +562,18 @@ Leave the fields blank when no update or correction applies. To clear an updated
 
 The homepage shows the lead investigation followed by recent reporting. Its Evidence Room highlights source records cited by that lead; the archive link still reaches the complete collection.
 
+The lead story uses a large featured image, with its existing caption and photo
+credit. Other headlines use compact thumbnails. Set **Featured Image** on an
+article to choose its homepage image; when that field is empty, the homepage can
+use the first image in the article body. Stories without either image keep a
+text-only layout. Images are resized for the homepage rather than loading the
+original upload at full size.
+
+The small topic banner uses a recognized **Kicker** such as Opinion or
+Investigation, otherwise the article's **Section**. Other kicker text, such as a
+dateline, stays separate from the topic label. These labels use the existing
+article fields and do not change the article's URL.
+
 On an article, local source-document citations open a source drawer with the document description, provenance, and available preview. The full document record and file remain accessible from the drawer. Close it or press Escape to return to the same place in the article. External source links and ordinary new-tab gestures retain normal navigation. Without JavaScript, citations still open the original document links.
 
 The reading order is story, Check Our Work, Sources, and then related reporting. A first-page preview is labelled as such; it is not a representation of every page in the record.

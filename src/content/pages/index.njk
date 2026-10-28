@@ -14,6 +14,8 @@ ogType: website
 {% set featuredProof = featuredArticle.data.proofCard if featuredArticle else null %}
 {% set archiveDocuments = collections.primarySourceDocument or [] %}
 {% set featuredBody = featuredArticle.templateContent if featuredArticle else "" %}
+{% set featuredTopic = featuredArticle.data | frontPageTopic if featuredArticle else null %}
+{% set featuredImage = {"src": featuredArticle.data.featured_image, "alt": featuredArticle.data.featured_image_alt or "", "caption": featuredArticle.data.featured_image_caption or "", "credit": featuredArticle.data.featured_image_credit or ""} if featuredArticle and featuredArticle.data.featured_image else (featuredBody | firstImageFromHtml) %}
 {% set evidenceDocuments = featuredArticle | leadSourceDocuments(collections.sourceDocument, featuredBody) %}
 {% set evidencePreviewDocuments = evidenceDocuments.slice(0, 2) %}
 
@@ -68,8 +70,22 @@ ogType: website
     <div class="front-page__reporting bento-8 bento-rows-2">
     {% if featuredArticle %}
     <article class="card card--featured front-page__lead">
-      {% if featuredArticle.data.kicker %}
-        <span class="font-mono text-xs uppercase tracking-wide text-ink-muted">{{ featuredArticle.data.kicker }}</span>
+      <div class="front-page__story-labels front-page__lead-labels">
+        <span class="front-page__topic" data-topic-kind="{{ featuredTopic.kind | escape }}">{{ featuredTopic.label | escape }}</span>
+        {% if featuredArticle.data.kicker and (featuredArticle.data.kicker | lower) != (featuredTopic.label | lower) %}
+          <span class="front-page__story-kicker">{{ featuredArticle.data.kicker }}</span>
+        {% endif %}
+      </div>
+      {% if featuredImage and featuredImage.src %}
+        <figure class="front-page__hero">
+          {% storyImage featuredImage.src, featuredImage.alt, "lead" %}
+          {% if featuredImage.caption or featuredImage.credit %}
+            <figcaption class="front-page__hero-caption">
+              {% if featuredImage.caption %}<span>{{ featuredImage.caption | escape }}</span>{% endif %}
+              {% if featuredImage.credit %}<span class="front-page__hero-credit">{{ featuredImage.credit | escape }}</span>{% endif %}
+            </figcaption>
+          {% endif %}
+        </figure>
       {% endif %}
       <h1 class="font-serif text-display-md mt-2 leading-tight">
         <a href="{{ featuredArticle.url }}" class="text-ink hover:text-accent transition-colors no-underline">{{ featuredArticle.data.title }}</a>
@@ -79,7 +95,7 @@ ogType: website
         <span>{% if featuredUpdated %}Updated {% endif %}<time datetime="{{ featuredDate | machineDate }}">{{ featuredDate | displayDate }}</time></span>
         <span>·</span>
         {% if featuredAuthor %}<a href="{{ featuredAuthor.url }}" class="text-ink-secondary hover:text-accent no-underline">by {{ featuredAuthor.data.name }}</a><span>·</span>{% endif %}
-        <span>{{ featuredArticle.templateContent | readingMinutes }} min read</span>
+        <span>{{ featuredBody | readingMinutes }} min read</span>
       </div>
       <div class="front-page__lead-actions mt-6 flex flex-wrap gap-3">
         <a href="{{ featuredArticle.url }}" class="inline-block bg-ink text-surface font-mono text-sm uppercase tracking-wide px-5 py-2.5 rounded-squircle-sm hover:bg-accent transition-colors no-underline">{{ "Read investigation" if featuredProof else "Read story" }}</a>
@@ -112,15 +128,25 @@ ogType: website
             {% set storyAuthor = story.data.author | getAuthor(collections.authorProfiles) %}
             {% set storyUpdated = story.data.reportingHistory.updated %}
             {% set storyDate = storyUpdated or story.date %}
+            {% set storyBody = story.templateContent %}
+            {% set storyTopic = story.data | frontPageTopic %}
+            {% set storyImage = {"src": story.data.featured_image, "alt": story.data.featured_image_alt or ""} if story.data.featured_image else (storyBody | firstImageFromHtml) %}
             <li>
-              <article class="front-page__story">
-                {% if story.data.kicker %}<p class="front-page__story-kicker">{{ story.data.kicker }}</p>{% endif %}
-                <h3><a href="{{ story.url }}">{{ story.data.title }}</a></h3>
-                {% if story.data.description %}<p class="front-page__story-description">{{ story.data.description }}</p>{% endif %}
+              <article class="front-page__story{% if storyImage and storyImage.src %} front-page__story--illustrated{% endif %}">
+                <a class="front-page__story-link" href="{{ story.url }}">
+                  <div class="front-page__story-heading">
+                    <div class="front-page__story-labels">
+                      <span class="front-page__topic" data-topic-kind="{{ storyTopic.kind | escape }}">{{ storyTopic.label | escape }}</span>
+                      {% if story.data.kicker and (story.data.kicker | lower) != (storyTopic.label | lower) %}<span class="front-page__story-kicker">{{ story.data.kicker }}</span>{% endif %}
+                    </div>
+                    <h3>{{ story.data.title }}</h3>
+                  </div>
+                  {% if storyImage and storyImage.src %}<div class="front-page__thumbnail">{% storyImage storyImage.src, "", "thumbnail" %}</div>{% endif %}
+                </a>
                 <div class="front-page__story-meta">
                   <span>{% if storyUpdated %}Updated {% endif %}<time datetime="{{ storyDate | machineDate }}">{{ storyDate | displayDate }}</time></span>
                   {% if storyAuthor %}<a href="{{ storyAuthor.url }}">By {{ storyAuthor.data.name }}</a>{% endif %}
-                  <span>{{ story.templateContent | readingMinutes }} min read</span>
+                  <span>{{ storyBody | readingMinutes }} min read</span>
                   {% if story.data.audio_file | default("") | trim %}<a class="front-page__listen" href="{{ story.url }}#article-audio-heading" aria-label="Listen to {{ story.data.title | escape }}">Listen <span aria-hidden="true">↗</span></a>{% endif %}
                 </div>
               </article>

@@ -25,6 +25,87 @@
 
   .front-page .front-page__lead {
     min-height: 0;
+    padding: clamp(1rem, 2.5vw, 2rem);
+  }
+
+  .front-page__story-labels {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.45rem 0.75rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .front-page__lead-labels {
+    margin-bottom: 0.9rem;
+  }
+
+  .front-page__topic {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.4rem;
+    padding: 0.18rem 0.45rem;
+    border: 1px solid rgb(var(--rule));
+    border-radius: var(--radius-xs);
+    background: rgb(var(--surface-muted));
+    color: rgb(var(--ink));
+    font-family: var(--type-mono);
+    font-size: 0.6rem;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+
+  .front-page__topic[data-topic-kind="investigation"] {
+    border-color: rgb(var(--ink));
+    background: rgb(var(--ink));
+    color: rgb(var(--surface));
+  }
+
+  .front-page__topic[data-topic-kind="politics"] {
+    color: rgb(var(--accent));
+    border-color: rgba(var(--accent), 0.45);
+    background: rgba(var(--accent-soft), 0.5);
+  }
+
+  .front-page__topic[data-topic-kind="opinion"] {
+    border-style: dashed;
+    background: transparent;
+  }
+
+  .front-page__hero {
+    margin: 0 0 1.3rem;
+  }
+
+  .front-page__hero picture,
+  .front-page__thumbnail picture {
+    display: block;
+  }
+
+  .front-page__hero .front-page__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 34rem;
+    object-fit: contain;
+    background: rgb(var(--surface-muted));
+    border-radius: var(--radius-xs);
+  }
+
+  .front-page__hero-caption {
+    display: grid;
+    gap: 0.15rem;
+    margin-top: 0.5rem;
+    font-family: var(--type-ui);
+    font-size: 0.7rem;
+    line-height: 1.5;
+    color: rgb(var(--ink-soft));
+    overflow-wrap: anywhere;
+  }
+
+  .front-page__hero-credit {
+    font-size: 0.65rem;
   }
 
   .front-page .front-page__lead-actions > a {
@@ -87,11 +168,28 @@
   }
 
   .front-page__story {
-    padding-block: 1.15rem 1rem;
+    padding-block: 1rem 0.75rem;
+  }
+
+  .front-page__story-link {
+    display: block;
+    min-height: 2.75rem;
+    color: rgb(var(--ink));
+    text-decoration: none;
+  }
+
+  .front-page__story--illustrated .front-page__story-link {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 9rem;
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .front-page__story-heading {
+    min-width: 0;
   }
 
   .front-page__story-kicker {
-    margin-bottom: 0.45rem;
     font-family: var(--type-mono);
     font-size: 0.62rem;
     line-height: 1.4;
@@ -109,23 +207,27 @@
     overflow-wrap: anywhere;
   }
 
-  .front-page__story h3 a {
-    display: block;
-    min-height: 2.75rem;
-    color: rgb(var(--ink));
-    text-decoration: none;
-  }
-
-  .front-page__story h3 a:hover {
+  .front-page__story-link:hover h3 {
     color: rgb(var(--accent));
   }
 
-  .front-page__story-description {
-    margin-top: 0.5rem;
-    font-family: var(--type-body);
-    font-size: 0.97rem;
-    line-height: 1.6;
-    color: rgb(var(--ink-soft));
+  .front-page__thumbnail {
+    width: 9rem;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: rgb(var(--surface-muted));
+    border-radius: var(--radius-xs);
+  }
+
+  .front-page__thumbnail picture,
+  .front-page__thumbnail .front-page__image {
+    width: 100%;
+    height: 100%;
+  }
+
+  .front-page__thumbnail .front-page__image {
+    display: block;
+    object-fit: cover;
   }
 
   .front-page__story-meta {
@@ -166,6 +268,23 @@
 
   .front-page__evidence {
     min-width: 0;
+  }
+
+  @media (max-width: 639px) {
+    .front-page__story--illustrated .front-page__story-link {
+      grid-template-columns: minmax(0, 1fr) 5.5rem;
+      gap: 0.75rem;
+    }
+
+    .front-page__thumbnail {
+      width: 5.5rem;
+    }
+  }
+
+  @media (max-width: 479px) {
+    .front-page__story h3 {
+      font-size: 1.16rem;
+    }
   }
 
   @media (max-width: 1023px) {
@@ -254,7 +373,7 @@
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    .front-page__story h3 a {
+    .front-page__story-link h3 {
       transition: color 120ms ease;
     }
   }
