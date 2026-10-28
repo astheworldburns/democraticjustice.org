@@ -1,0 +1,16 @@
+<div class="article-history__dates" aria-label="Reporting dates">
+  <span>Published <time datetime="{{ date | machineDate }}">{{ date | displayDate }}</time></span>
+  {% if reportingHistory.updated %}
+    <span>Updated <time datetime="{{ reportingHistory.updated | machineDate }}">{{ reportingHistory.updated | displayDateTime }}</time></span>
+  {% endif %}
+</div>
+{% if reportingHistory.update_note or reportingHistory.correction_note %}
+  <aside class="article-history__notes" aria-label="Reporting updates" data-pagefind-ignore>
+    {% if reportingHistory.correction_note %}
+      <p><strong>Correction</strong><span>{{ reportingHistory.correction_note | escape }}</span></p>
+    {% endif %}
+    {% if reportingHistory.update_note %}
+      <p><strong>Update</strong><span>{{ reportingHistory.update_note | escape }}</span></p>
+    {% endif %}
+  </aside>
+{% endif %}

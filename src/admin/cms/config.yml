@@ -124,6 +124,23 @@ collections:
       - label: Publication Date
         name: date
         widget: datetime
+      - label: Updated Date and Time
+        name: updated
+        widget: datetime
+        format: "YYYY-MM-DDTHH:mm:ssZ"
+        required: false
+        default: ""
+        hint: "Optional reporting update time. Set it explicitly after revising an article; it must be later than the original publication date. Do not change the publication date."
+      - label: Update Note
+        name: update_note
+        widget: text
+        required: false
+        hint: "Optional plain-text explanation of what changed. Requires an updated date. Leave blank when there is no reporting update to describe."
+      - label: Correction Note
+        name: correction_note
+        widget: text
+        required: false
+        hint: "Optional plain-text explanation of an error and its correction. Requires an updated date. Do not invent a correction for unchanged reporting."
       - label: Editorial Categories
         name: tags
         widget: list

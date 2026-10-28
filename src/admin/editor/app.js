@@ -206,6 +206,9 @@ function defaultArticle() {
     description: "",
     author: state.authors[0]?.slug || "",
     date: dateToOffsetIso(new Date()),
+    updated: "",
+    update_note: "",
+    correction_note: "",
     tags: [],
     featured_image: "",
     audio_file: "",
@@ -329,6 +332,9 @@ function normalizeArticle(rawArticle = {}) {
     description: rawArticle.description || "",
     author: rawArticle.author || "",
     date: rawArticle.date || "",
+    updated: rawArticle.updated || "",
+    update_note: rawArticle.update_note || "",
+    correction_note: rawArticle.correction_note || "",
     tags: Array.isArray(rawArticle.tags)
       ? rawArticle.tags.filter((tag) => normalizeWhitespace(tag))
       : normalizeWhitespace(rawArticle.tags || "")
@@ -353,6 +359,9 @@ function serializeArticle(article = {}) {
     description: (article.description || "").trim(),
     author: (article.author || "").trim(),
     date: (article.date || "").trim(),
+    updated: (article.updated || "").trim(),
+    update_note: (article.update_note || "").trim(),
+    correction_note: (article.correction_note || "").trim(),
     tags: (article.tags || []).map((tag) => tag.trim()).filter(Boolean),
     featured_image: (article.featured_image || "").trim(),
     audio_file: (article.audio_file || "").trim(),
@@ -441,6 +450,15 @@ function computeArticleErrors(article = {}) {
 
   if (!(article.date || "").trim()) {
     errors.push("Publication date is required.");
+  }
+
+  const updatedTime = Date.parse(article.updated || "");
+  const publishedTime = Date.parse(article.date || "");
+  if (article.updated && (!Number.isFinite(updatedTime) || !Number.isFinite(publishedTime) || updatedTime <= publishedTime)) {
+    errors.push("Updated date must be valid and later than the original publication date.");
+  }
+  if ((article.update_note || article.correction_note) && !article.updated) {
+    errors.push("Add an updated date for update or correction notes.");
   }
 
   return errors;
@@ -1039,6 +1057,24 @@ function renderStorySection() {
             <input class="editor-input" type="text" value="${escapeHtml(article.featured_image || "")}" data-article-field="featured_image" placeholder="/assets/images/uploads/example.jpg" autocapitalize="none" autocomplete="off" spellcheck="false" />
           </label>
         </div>
+
+        <fieldset class="editor-block" ${state.savingArticle ? "disabled" : ""}>
+          <legend class="editor-label">Reporting history (optional)</legend>
+          <p class="editor-muted">Keep the original publication date. Set an updated date only when you revise the reporting; it must be later than publication.</p>
+          <label class="editor-field">
+            <span class="editor-label">Updated date and time</span>
+            <input class="editor-input" type="datetime-local" value="${escapeHtml(isoToLocalInput(article.updated || ""))}" data-article-field="updated" />
+          </label>
+          <label class="editor-field">
+            <span class="editor-label">Update note</span>
+            <textarea class="editor-textarea" data-article-field="update_note" placeholder="What changed in this update?">${escapeHtml(article.update_note || "")}</textarea>
+          </label>
+          <label class="editor-field">
+            <span class="editor-label">Correction note</span>
+            <textarea class="editor-textarea" data-article-field="correction_note" placeholder="Describe the error and its correction.">${escapeHtml(article.correction_note || "")}</textarea>
+          </label>
+          <p class="editor-muted">Notes are optional plain text and require an updated date. Leave these fields blank when there is no reporting update or correction to record.</p>
+        </fieldset>
 
         <fieldset class="editor-block" ${state.savingArticle || state.uploadingNarration ? "disabled" : ""}>
           <legend class="editor-label">Article narration (optional)</legend>
@@ -1775,8 +1811,8 @@ function handleInput(event) {
         .split(",")
         .map((tag) => tag.trim())
         .filter(Boolean);
-    } else if (articleField === "date") {
-      state.selectedArticle.date = localInputToIso(event.target.value);
+    } else if (articleField === "date" || articleField === "updated") {
+      state.selectedArticle[articleField] = localInputToIso(event.target.value);
     } else {
       state.selectedArticle[articleField] = event.target.value;
     }

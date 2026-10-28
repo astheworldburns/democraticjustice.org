@@ -1,0 +1,81 @@
+name: Deploy Writer Desk gateway
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/deploy-writer-desk.yml'
+      - '.node-version'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'lib/article-history.js'
+      - 'scripts/article-history.test.mjs'
+      - 'scripts/narration-upload.test.mjs'
+      - 'workers/proof-desk-gateway/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: proof-desk-gateway-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      WRANGLER_SEND_METRICS: 'false'
+    steps:
+      - name: Check out the merged code
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            workers/proof-desk-gateway/package-lock.json
+
+      - name: Check deployment credentials
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          if [[ -z "$CLOUDFLARE_ACCOUNT_ID" || -z "$CLOUDFLARE_API_TOKEN" ]]; then
+            echo '::error::Add CLOUDFLARE_ACCOUNT_ID and CLOUDFLARE_API_TOKEN under repository Settings > Secrets and variables > Actions > Repository secrets.'
+            exit 1
+          fi
+
+      - name: Install site test dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Install gateway dependencies
+        working-directory: workers/proof-desk-gateway
+        run: npm ci --no-audit --no-fund
+
+      - name: Test article history and narration
+        run: node --test scripts/article-history.test.mjs scripts/narration-upload.test.mjs
+
+      - name: Check the deployment bundle
+        working-directory: workers/proof-desk-gateway
+        run: npm run deploy -- --dry-run
+
+      - name: Confirm the existing Worker and record rollback versions
+        working-directory: workers/proof-desk-gateway
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: npx --no-install wrangler deployments list
+
+      - name: Deploy the existing Writer Desk gateway
+        working-directory: workers/proof-desk-gateway
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: npm run deploy -- --keep-vars

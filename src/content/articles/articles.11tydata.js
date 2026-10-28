@@ -1,5 +1,6 @@
 import { createProofCard, hasMeaningfulValue } from "../../../lib/proof.js";
 import { DateTime } from "luxon";
+import { getArticleHistory } from "../../../lib/article-history.js";
 
 const SITE_TIMEZONE = "America/New_York";
 const DEFAULT_ARTICLE_SECTION = "politics";
@@ -69,6 +70,7 @@ export default {
     return `/articles/${articleSection}/${articleSlug}/index.html`;
   },
   eleventyComputed: {
+    reportingHistory: (data) => getArticleHistory(data),
     author: (data) => data.author || "seth-sturm",
     section: (data) => getArticleSection(data),
     proofCard: (data) => safeProofCard(data),
