@@ -6,12 +6,16 @@ url_slug: worthington-sewer-crisis
 description: Residents face a public health crisis from raw sewage while officials resist public hearings that could dissolve Worthington or put its failing sewer system under new management.
 author: seth-sturm
 date: 2026-10-26T15:00:00
+updated: ''
+update_note: ''
+correction_note: ''
 tags:
   - article
 featured_image: /assets/images/uploads/Worthington,_West_Virginia.jpg
 featured_image_alt: Elevated view of Main Street in Worthington, West Virginia, showing historic red-brick buildings, houses, utility poles and a two-lane road extending toward wooded hills beneath an overcast sky.
 featured_image_caption: Elevated view of Main Street in Worthington, West Virginia.
 featured_image_credit: Main Street (Route 19) in Worthington, West Virginia, July 2026. Photo by Quintin Soloviev / Wikimedia Commons, CC BY 4.0.
+audio_narrator: ''
 proof: null
 ---
 
@@ -65,7 +69,7 @@ Municipal dissolution would transfer the town's assets and liabilities to the We
 
 The Marion County Commission acknowledged Heflin's dissolution petition at their August 12, 2026, meeting. Upon receipt of a lawfully filed petition, the commission will either set a hearing date or table defective petitions. For Heflin's filing, County Administrator Kris Cinalli announced that no action would be taken that day.
 
-Earlier in the same meeting, engineer Kevin Watkins of The Thrasher Group had described neighboring Farmington's aging water system, which was losing more than half its water despite $3.5 million in grants and loans. Watkins said federal infrastructure money had largely expired and new grants were increasingly difficult to secure. 
+Earlier in the same meeting, engineer Kevin Watkins of The Thrasher Group had described neighboring Farmington's aging water system, which was losing more than half its water despite $3.5 million in grants and loans. Watkins said federal infrastructure money had largely expired and new grants were increasingly difficult to secure.
 
 Commission President Linda Longstreth stated, "All these small towns are having problems."
 
@@ -139,4 +143,4 @@ Melvin Lindsey said the evening "harkened back to how the town used to do things
 
 ***
 
-_Disclosure: Seth Sturm is an elected member of the West Virginia State Democratic Executive Committee and founder of Democratic Justice. He provided unpaid civic, regulatory and strategic advice to former Mayor Deborah Heflin and resident organizer Andrea Zaleski concerning Worthington's municipal and utility remedies. He does not represent or speak for the town._
+_Disclosure: Seth Sturm is an elected member of the West Virginia State Democratic Executive Committee and founder of Democratic Justice. He provided unpaid civic, regulatory and strategic advice to former Mayor Deborah Heflin and resident organizer Andrea Zaleski concerning Worthington's municipal and utility remedies. He does not represent or speak for the town of Worthington._
