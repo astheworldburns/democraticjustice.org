@@ -256,6 +256,37 @@ npm run start
 
 Any push to `main` should trigger a Cloudflare Pages build and production deploy.
 
+### Deploying the Writer Desk gateway
+
+The Writer Desk API runs in the separate Cloudflare Worker `proof-desk-gateway`.
+The GitHub Actions workflow **Deploy Writer Desk gateway** deploys it after
+relevant changes merge into `main`. It also supports **Run workflow** on `main`
+for a retry. Article-only edits do not trigger a Worker deployment.
+
+Set these two **repository secrets** at
+`https://github.com/astheworldburns/democraticjustice.org/settings/secrets/actions`:
+
+- `CLOUDFLARE_ACCOUNT_ID`: the account ID for the existing Worker.
+- `CLOUDFLARE_API_TOKEN`: a Cloudflare **Edit Cloudflare Workers** API token scoped
+  to that account. Use the token already created for deployment.
+
+For each value, select **New repository secret**, enter the exact name and its
+value, then select **Add secret**. These are deployment credentials for GitHub
+Actions; keep them in repository secrets rather than Worker runtime variables,
+source files, PR comments, or chat. No new Worker is needed.
+
+After the secrets are saved and the workflow is merged, open the repository's
+**Actions** tab, select **Deploy Writer Desk gateway**, and check the latest run.
+If an earlier run failed because credentials were missing, use **Run workflow**
+with branch `main` to retry after adding them.
+
+The workflow checks history and narration behavior, bundles the Worker, and
+confirms the existing Worker's deployment history before releasing. Deployment
+preserves dashboard environment variables and existing secrets. The previous
+deployment versions appear in the run logs for rollback. A successful run
+confirms deployment; authenticated Writer Desk saving still needs verification
+with a real editor session.
+
 ### What to do after each major deploy
 
 Check these URLs:
